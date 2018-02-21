@@ -39,6 +39,7 @@ namespace iqoption.webapi
             //services.AddTransient(typeof(IRepository<,>), typeof(EfCoreRepositoryBase<,>));
 
 
+
             var builder = new ContainerBuilder();
             builder.RegisterModule<DataAutofacModule>();
 

@@ -27,6 +27,7 @@ interface RequestWeatherForecastsAction {
     startDateIndex: number;
 }
 
+
 interface ReceiveWeatherForecastsAction {
     type: 'RECEIVE_WEATHER_FORECASTS';
     startDateIndex: number;
