@@ -22,17 +22,30 @@ namespace iqoption.data.AutofacModule
                 })
                 .As<IUnitOfWork>();
 
-            builder.RegisterType<EfCoreRepositoryBase<Person>>()
-                .As<IRepository<Person>>()
+            builder.RegisterType(typeof(EfCoreRepositoryBase<>)).As<IRepositoryWithDbContext>().InstancePerDependency();
+            builder.RegisterType(typeof(EfCoreRepositoryBase<,>)).As<IRepositoryWithDbContext>().InstancePerDependency();
+
+            builder.RegisterGeneric(typeof(EfCoreRepositoryBase<,>))
+                .As(typeof(IRepository<,>))
                 .WithParameters(new[]
                 {
                     new ResolvedParameter(
                         (p, ctx) => p.ParameterType == typeof(iqOptionContext),
                         (p, ctx) => ctx.ResolveNamed<DbContext>("iqoptioncontext"))
-                });
+                }).InstancePerDependency();
+
+            builder.RegisterGeneric(typeof(EfCoreRepositoryBase<>)).As(typeof(IRepository<>))
+                .WithParameters(new[]
+                {
+                    new ResolvedParameter(
+                        (p, ctx) => p.ParameterType == typeof(iqOptionContext),
+                        (p, ctx) => ctx.ResolveNamed<DbContext>("iqoptioncontext"))
+                }).InstancePerDependency();
 
 
             base.Load(builder);
         }
+
+        
     }
 }
