@@ -1,4 +1,5 @@
-﻿using iqoption.data.Configurations;
+﻿using System;
+using iqoption.data.Configurations;
 using iqoption.data.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,11 @@ namespace iqoption.data
         public iqOptionContext(DbContextOptions<iqOptionContext> options): base(options)
         {
             
+        }
+        
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("data source=iqoption.db");
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

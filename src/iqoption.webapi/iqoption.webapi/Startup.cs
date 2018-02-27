@@ -32,8 +32,10 @@ namespace iqoption.webapi
 
             services.AddMvc();
 
+            
             services.AddDbContext<iqOptionContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("iqoptiondb")));
+                options.UseSqlite("Data Source=iqoption.db"));
+
 
             //services.AddTransient(typeof(IRepository<>), typeof(EfCoreRepositoryBase<>));
             //services.AddTransient(typeof(IRepository<,>), typeof(EfCoreRepositoryBase<,>));

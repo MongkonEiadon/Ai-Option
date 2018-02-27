@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace iqoption.data.Migrations
 {
-    public partial class FirstMigrations : Migration
+    public partial class AddFirstSqLiteMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,13 +12,16 @@ namespace iqoption.data.Migrations
                 name: "Persons",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     CreatedOn = table.Column<DateTime>(nullable: true),
+                    PersonId = table.Column<Guid>(nullable: false),
                     UpdatedOn = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Persons", x => x.Id);
+                    table.UniqueConstraint("AK_Persons_PersonId", x => x.PersonId);
                 });
         }
 

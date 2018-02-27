@@ -11,26 +11,32 @@ using System;
 namespace iqoption.data.Migrations
 {
     [DbContext(typeof(iqOptionContext))]
-    [Migration("20180220091348_FirstMigrations")]
-    partial class FirstMigrations
+    [Migration("20180227165032_AddFirstSqLiteMigration")]
+    partial class AddFirstSqLiteMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
 
             modelBuilder.Entity("iqoption.data.Model.Person", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("CreatedOn");
+                    b.Property<DateTime?>("CreatedOn")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("UpdatedOn");
+                    b.Property<Guid>("PersonId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("PersonId");
 
                     b.ToTable("Persons");
                 });
