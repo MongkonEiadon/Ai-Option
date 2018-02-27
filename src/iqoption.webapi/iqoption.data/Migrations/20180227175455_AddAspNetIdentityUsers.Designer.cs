@@ -11,9 +11,10 @@ using System;
 namespace iqoption.data.Migrations
 {
     [DbContext(typeof(iqOptionContext))]
-    partial class iqOptionContextModelSnapshot : ModelSnapshot
+    [Migration("20180227175455_AddAspNetIdentityUsers")]
+    partial class AddAspNetIdentityUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

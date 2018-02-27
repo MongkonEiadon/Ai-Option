@@ -1,11 +1,12 @@
 ﻿using System;
 using iqoption.data.Configurations;
 using iqoption.data.Model;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace iqoption.data
 {
-    public class iqOptionContext : DbContext
+    public class iqOptionContext : IdentityDbContext<User>
     {
         public DbSet<Person> Persons { get; set; }
 
@@ -16,14 +17,13 @@ namespace iqoption.data
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("data source=iqoption.db");
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
             builder.Entity<Person>().HasKey(c => c.Id);
-            
+            base.OnModelCreating(builder);
         }
     }
 
