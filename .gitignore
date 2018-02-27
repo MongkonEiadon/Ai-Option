@@ -208,3 +208,4 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+src/iqoption.webapi/iqoption.webapi/iqoption.db
