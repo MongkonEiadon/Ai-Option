@@ -28,22 +28,14 @@ namespace iqoption.data
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-
-
-            
             services.AddDbContext<iqOptionContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("iqoptiondb")));
-
             
-
             var builder = new ContainerBuilder();
             builder.RegisterModule<DataAutofacModule>();
-
-
+           
             builder.Populate(services);
-
-
-
+            
             var container = builder.Build();
 
             return container.Resolve<IServiceProvider>();

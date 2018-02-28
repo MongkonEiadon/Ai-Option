@@ -49,3 +49,4 @@ namespace iqoption.data.AutofacModule
         
     }
 }
+

@@ -17,7 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace iqoption.webapi
 {
-    public class Startup
+    public partial class Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -29,6 +29,9 @@ namespace iqoption.webapi
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            //config authentication
+            ConfigureAuthenticationService(services);
+
 
             services.AddMvc();
 
@@ -58,6 +61,9 @@ namespace iqoption.webapi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            //configure app authentication
+            ConfigureAuthentication(app);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
