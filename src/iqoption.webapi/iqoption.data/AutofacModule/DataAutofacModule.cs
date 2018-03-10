@@ -12,7 +12,13 @@ namespace iqoption.data.AutofacModule
         protected override void Load(ContainerBuilder builder)
         {
 
-            builder.RegisterType<iqOptionContext>().As<DbContext>().Named<DbContext>("iqoptioncontext").SingleInstance().AsImplementedInterfaces();
+            builder.RegisterType<iqOptionContext>().As<DbContext>()
+                .Named<DbContext>("iqoptioncontext")
+                .SingleInstance()
+                .AsImplementedInterfaces();
+
+
+
             builder.RegisterType<UnitOfWork<iqOptionContext>>()
                 .WithParameters
                 (new []{

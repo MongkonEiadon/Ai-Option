@@ -33,6 +33,7 @@ namespace iqoption.webapi.Controllers {
         }
 
         [HttpPost]
+        [Route("token")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel query) {
             var result = await _signInManager.PasswordSignInAsync(query.Email, query.Password, false, false);
             if (result.Succeeded) {

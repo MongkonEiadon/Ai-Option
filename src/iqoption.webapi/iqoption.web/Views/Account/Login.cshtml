@@ -1,0 +1,133 @@
+﻿@using iqoption.data.Model
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>@ViewData["Title"]</h2>
+<div class="row">
+    <div class="col-md-4">
+        <section>
+            @{
+                var _failedMsg = ViewData["Failed"];
+                if (_failedMsg != null) {
+                    <p class="alert alert-danger" >@_failedMsg</p>
+                }
+            }
+            @using (Html.BeginForm("login", "Account", FormMethod.Post, new {id = "form"})) {
+                <div class="login-form-main-message"></div>
+                <div class="main-login-form">
+                    <fieldset>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Email)
+                            @Html.TextBoxFor(m => m.Email, new {@class = "form-control", id = "emailInput", placeholder = "ระบุอีเมล์"})
+                            <span class="text-danger">@Html.ValidationMessageFor(m => m.Email)</span>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Password)
+                            @Html.TextBoxFor(m => m.Password, new {@class = "form-control", type = "password", id = "passwordInput", placeholder = "ระบุรหัสผ่าน"})
+                            <span class="text-danger">@Html.ValidationMessageFor(m => m.Password)</span>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input name="remember" type="checkbox" value="Remember Me"> Remember Me
+                            </label>
+                        </div>
+                        
+
+                        <input id="btnSubmit" disabled="disabled" class="btn btn-lg btn-success btn-block" type="submit" value="Login">
+                        @Html.ActionLink("ลงทะเบียนผู้ใช้งานใหม่", "Register", new RegisterViewModel(){ Email = Model?.Email ?? ""})
+                    </fieldset>
+                </div>
+
+            }
+        </section>
+    </div>
+    <div class="col-md-6 col-md-offset-2">
+        <section>
+            <h4>Use another service to log in.</h4>
+            <hr />
+            @{
+                var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+                if (loginProviders.Count == 0)
+                {
+                    <div>
+                        <p>
+                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                            for details on setting up this ASP.NET application to support logging in via external services.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in loginProviders)
+                                {
+                                    <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.Name</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script>
+
+
+        $(document).ready(function() {
+            var $emailinput = $("#emailInput");
+            var $passwordBox = $("#passwordInput");
+            var $confirmBox = $("#confirm_password");
+            var $errorMsg = $('<span id="error_msg" class="text-danger" >รหัสผ่านไม่ตรงกัน</span>');
+            var $submitBtn = $("#btnSubmit");
+
+            // This is incase the user hits refresh - some browsers will maintain the disabled state of the button.
+
+            $submitBtn.attr("disabled", "disabled");
+
+            function checkMatchingPasswords() {
+
+                if (!$("#form").valid()) {
+                    $submitBtn.attr("disabled", "disabled");
+                } else {
+                    $submitBtn.removeAttr("disabled");
+                }
+            }
+
+
+            $("#emailInput, #passwordInput")
+                .on("keydown",
+                    function(e) {
+                        /* only check when the tab or enter keys are pressed
+                         * to prevent the method from being called needlessly  */
+                        if (e.keyCode == 13 || e.keyCode == 9) {
+                            checkMatchingPasswords();
+                        }
+                    })
+                .on("blur",
+                    function() {
+                        // also check when the element looses focus (clicks somewhere else)
+                        checkMatchingPasswords();
+                    })
+                .on("focus",
+                    function() {
+                        // reset the error message when they go to make a change
+                        checkMatchingPasswords();
+                });
+            
+
+        });
+    </script>
+}
+

@@ -1,0 +1,117 @@
+﻿@using iqoption.data.Model
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+<h2>Register</h2>
+<h4>New User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @{
+            if (ViewData["Success"] != null) {
+            <p class="alert alert-success">@ViewData["Success"] @Html.ActionLink("คลิกเพื่อเข้าสู่ระบบ", "Login")</p>
+            }
+            if (ViewData["Failed"] != null) {
+            <p class="alert alert-danger">@ViewData["Failed"]</p>
+            }
+        }
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { id = "form" })) {
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", required = true })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(m => m.Email)
+                </span>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Password, new { @class = "form-control", type = "password", required = true, id = "password" })
+                <span class="text-danger">
+                    @Html.ValidationMessageFor(m => m.Password)
+                </span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Confirm Password</label>
+                <input id="confirm_password" class="form-control" type="password"/>
+                <span class="text-danger">
+
+                </span>
+            </div>
+
+            <div class="form-group">
+                <input id="btnSubmit" disabled="disabled" type="submit" value="Register" class="btn btn-default btn-primary"/>
+            </div>
+
+
+        }
+    </div>
+</div>
+<div>
+    @Html.ActionLink("กลับไปหน้า Log in", "Login")
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    
+    <script>
+        $(document).ready(function(){
+            var $submitBtn = $("#btnSubmit");
+            var $passwordBox = $("#password");
+            var $confirmBox = $("#confirm_password");
+            var $errorMsg = $('<span id="error_msg" class="text-danger" >รหัสผ่านไม่ตรงกัน</span>');
+
+            // This is incase the user hits refresh - some browsers will maintain the disabled state of the button.
+            
+
+            function checkMatchingPasswords() {
+                if (!$("#form").valid()) {
+                    $submitBtn.attr("disabled", "disabled");
+                }
+                else if ($confirmBox.val() != $passwordBox.val()) {
+                    $submitBtn.attr("disabled", "disabled");
+                    $errorMsg.insertAfter($confirmBox);
+                    
+                }
+                else {
+                    $submitBtn.removeAttr("disabled");
+                }
+
+            }
+
+            function resetPasswordError(){
+                var $errorCont = $("#error_msg");
+                if($errorCont.length > 0){
+                    $errorCont.remove();
+                }  
+            }
+
+
+            $("#confirm_password, #password")
+                .on("keydown",
+                    function(e) {
+                        /* only check when the tab or enter keys are pressed
+                         * to prevent the method from being called needlessly  */
+                        if (e.keyCode == 13 || e.keyCode == 9) {
+                            checkMatchingPasswords();
+                        }
+                    })
+                .on("blur",
+                    function() {
+                        // also check when the element looses focus (clicks somewhere else)
+                        checkMatchingPasswords();
+                    })
+                .on("focus",
+                    function() {
+                        // reset the error message when they go to make a change
+                        checkMatchingPasswords();
+                        resetPasswordError();
+                    });
+
+        });
+    </script>
+}
+

@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  iqoption.web:
+    image: iqoptionweb
+    build:
+      context: .
+      dockerfile: src/iqoption.webapi/iqoption.web/Dockerfile

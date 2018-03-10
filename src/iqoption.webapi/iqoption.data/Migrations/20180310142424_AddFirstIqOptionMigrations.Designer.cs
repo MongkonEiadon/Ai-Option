@@ -11,14 +11,15 @@ using System;
 namespace iqoption.data.Migrations
 {
     [DbContext(typeof(iqOptionContext))]
-    [Migration("20180227175455_AddAspNetIdentityUsers")]
-    partial class AddAspNetIdentityUsers
+    [Migration("20180310142424_AddFirstIqOptionMigrations")]
+    partial class AddFirstIqOptionMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
+                .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("iqoption.data.Model.IqOptionUser", b =>
                 {
@@ -124,7 +125,8 @@ namespace iqoption.data.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex");
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -147,7 +149,8 @@ namespace iqoption.data.Migrations
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex");
+                        .HasName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
                 });
