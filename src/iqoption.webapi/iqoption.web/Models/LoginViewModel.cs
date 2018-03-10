@@ -21,6 +21,6 @@ namespace iqoption.web.Models
 
         public string LastName { get; set; }
 
-        public Guid Id { get; set; }
+        public string Id { get; set; }
     }
 }

@@ -48,6 +48,11 @@ namespace iqoption.data.AutofacModule
                         (p, ctx) => ctx.ResolveNamed<DbContext>("iqoptioncontext"))
                 }).InstancePerDependency();
 
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .Where(x => x.Name.EndsWith("Service"))
+                .AsImplementedInterfaces()
+                .InstancePerDependency();
+
 
             base.Load(builder);
         }

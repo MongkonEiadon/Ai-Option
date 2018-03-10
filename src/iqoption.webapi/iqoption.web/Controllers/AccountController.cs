@@ -29,6 +29,7 @@ namespace iqoption.web.Controllers
         private readonly IConfiguration _configuration;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        
 
         public AccountController(
             IConfiguration configuration,
@@ -40,11 +41,14 @@ namespace iqoption.web.Controllers
             _signInManager = signInManager;
         }
 
+        [TempData]
+        public string ReturnUrl { get; set; }
+
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login()
-        {
+        public async Task<IActionResult> Login(string returnUrl= "") {
+            ReturnUrl  = returnUrl;
             return View(nameof(Login));
         }
 
@@ -78,7 +82,15 @@ namespace iqoption.web.Controllers
                     principle, 
                     authProperties);
 
-                return RedirectToAction("Index","Home");
+                var dashBoardViewModel = new DashboardViewModel() {
+                    LogInUser = new UserViewModel() {Email = viewModel.Email, UserId = _user.Id}
+                };
+
+                if(string.IsNullOrEmpty(ReturnUrl))
+                    return RedirectToAction(nameof(DashboardController.Index), "Dashboard", dashBoardViewModel);
+                else {
+                    return Redirect(ReturnUrl);
+                }
             }
 
             ViewData["Failed"] = "ไม่สามารถเข้าสู่ระบบได้ กรุณาตรวจสอบ email และ password อีกครั้ง!";
