@@ -38,10 +38,31 @@ password = "Code11054"
 
 
 
-api2 = IQOptionAPI('iqoption.com', username, password)
-api2.connect()
+api = IQOptionAPI("iqoption.com", username, password)
+api.connect()
 
-api2.getcandles(1, 60, 25)
+time.sleep(1)
+
+balance = api.profile.balance
+time.sleep(1)
+logger.info (balance)
+
+api.setactives([1, 2])
+time.sleep(1)
+
+api.subscribe('tradersPulse')
+reslt = api.buy(1, 76, "turbo", "call")
+time.sleep(2)
+logger.info(reslt) 
+
+# api = IQOption(username,password)
+# api.login()
+
+# api.open_position(direction="call",
+#                     expiration_time=api.binary_expiration_list["EURUSD"][-1]["time"],
+#                     market_name="EURUSD",
+#                     price=5,
+#                     type="turbo")
 
 
 

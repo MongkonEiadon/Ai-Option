@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\iqoptionapi\iqoptionapi.csproj" />
+    <ProjectReference Include="..\..\..\iqoptionapi.net\src\iqoptionapi\iqoptionapi.csproj" />
   </ItemGroup>
 
   <ItemGroup>

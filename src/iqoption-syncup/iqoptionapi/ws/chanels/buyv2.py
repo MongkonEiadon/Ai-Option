@@ -1,7 +1,8 @@
 """Module for IQ Option buyV2 websocket chanel."""
 
 from iqoptionapi.ws.chanels.base import Base
-
+import logging, coloredlogs
+import datetime
 
 class Buyv2(Base):
     """Class for IQ option buy websocket chanel."""
@@ -17,12 +18,23 @@ class Buyv2(Base):
         :param option: The buying option.
         :param direction: The buying direction.
         """
-        data = {"price": price,
-                "act": active,
-                "exp": self.api.timesync.expiration_timestamp,
-                "type": option,
-                "direction": direction,
-                "time": self.api.timesync.server_timestamp
-               }
+
+        exp = int(self.api.timesync.expiration_timestamp)
+        #Round to next full minute
+        if datetime.datetime.now().second > 30:
+            exp = exp - (exp % 60) + 60
+        else:
+            exp = exp - (exp % 60)
+
+        data = {
+            "price": price,
+            "act": active,
+            "exp": exp,
+            "type": option,
+            "direction": direction,
+            "time": self.api.timesync.server_timestamp
+        }
+
+        
 
         self.send_websocket_request(self.name, data)

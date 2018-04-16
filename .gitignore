@@ -209,3 +209,4 @@ venv.bak/
 .mypy_cache/
 
 src/iqoption.webapi/iqoption.webapi/iqoption.db
+/src/iqoption.leaders.app/appsettings.Debug.json
