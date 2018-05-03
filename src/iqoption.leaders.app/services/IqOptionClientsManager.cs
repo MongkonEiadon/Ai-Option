@@ -47,6 +47,21 @@ namespace iqoption.leaders.app.services
         }
 
 
+        private Task RemoveClientAsync<T>(IEnumerable<T> clients,  ReactiveCollection<T> collections)
+        where T: UserClient<User>
+        {
+
+            if (typeof(T) is UserClient<Host>) {
+
+            }
+            else if (typeof(T) is UserClient<User>) {
+
+            }
+            return Task.CompletedTask;
+        }
+
+
+
         public Task AppendHostUser(string email, string password) {
             var hostClient = new HostClient(email, password);
             if (!HostClients.Contains(hostClient)) {

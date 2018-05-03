@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace iqoption.data.Migrations
 {
-    public partial class AddFirstIqOptionMigrations : Migration
+    public partial class AddFirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -50,22 +50,6 @@ namespace iqoption.data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Persons",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreatedOn = table.Column<DateTime>(nullable: true),
-                    PersonId = table.Column<Guid>(nullable: false),
-                    UpdatedOn = table.Column<DateTime>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Persons", x => x.Id);
-                    table.UniqueConstraint("AK_Persons_PersonId", x => x.PersonId);
                 });
 
             migrationBuilder.CreateTable(
@@ -178,11 +162,11 @@ namespace iqoption.data.Migrations
                 name: "IqOptionUser",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: true),
+                    IqOptionUserId = table.Column<int>(nullable: false),
                     IqOptionUserName = table.Column<string>(nullable: false),
-                    IsEnable = table.Column<bool>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false),
                     Password = table.Column<string>(nullable: false),
                     UpdatedOn = table.Column<DateTime>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
@@ -262,9 +246,6 @@ namespace iqoption.data.Migrations
 
             migrationBuilder.DropTable(
                 name: "IqOptionUser");
-
-            migrationBuilder.DropTable(
-                name: "Persons");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

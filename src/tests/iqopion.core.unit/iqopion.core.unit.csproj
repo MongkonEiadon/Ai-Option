@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="autofac" Version="4.6.2" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.0" />
+    <PackageReference Include="autofac" Version="4.8.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="NUnit.Runners" Version="3.8.0" />
     <PackageReference Include="shouldly" Version="3.0.0" />
     <PackageReference Include="xunit" Version="2.3.1" />

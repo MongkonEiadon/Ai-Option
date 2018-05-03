@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using iqoption.core.data;
 using Microsoft.EntityFrameworkCore;
 
 namespace iqoption.data
 {
-    public class EfCoreRepositoryBase<TEntity> : EfCoreRepositoryBase<TEntity, int>, IRepository<TEntity>
+    public class EfCoreRepositoryBase<TEntity> : EfCoreRepositoryBase<TEntity, Guid>, IRepository<TEntity>
         where TEntity : class, IEntity
     {
         public EfCoreRepositoryBase(iqOptionContext dbDbContext) : base(dbDbContext)

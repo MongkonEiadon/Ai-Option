@@ -27,14 +27,14 @@ namespace iqoption.web.Controllers
     public class AccountController : Controller
     {
         private readonly IConfiguration _configuration;
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<UserDto> _userManager;
+        private readonly SignInManager<UserDto> _signInManager;
         
 
         public AccountController(
             IConfiguration configuration,
-            UserManager<User> userManager,
-            SignInManager<User> signInManager
+            UserManager<UserDto> userManager,
+            SignInManager<UserDto> signInManager
         ) {
             _configuration = configuration;
             _userManager = userManager;
@@ -117,7 +117,7 @@ namespace iqoption.web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel viewModel) {
 
-            var user = new User() {
+            var user = new UserDto() {
                 Email = viewModel.Email,
                 UserName = viewModel.Email
             };

@@ -22,5 +22,4 @@ namespace iqoption.core.data
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         DateTime? UpdatedOn { get; set; }
     }
-
 }

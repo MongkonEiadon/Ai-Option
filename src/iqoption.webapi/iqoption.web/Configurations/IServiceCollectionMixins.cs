@@ -11,7 +11,7 @@ namespace iqoption.web.Configurations {
         public static IServiceCollection AddIqOptionIdentity(this IServiceCollection services) {
 
 
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<UserDto, IdentityRole>()
                 .AddEntityFrameworkStores<iqOptionContext>()
                 .AddDefaultTokenProviders();
 

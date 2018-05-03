@@ -9,7 +9,7 @@ namespace iqoption.data.Services
     }
     public class PersonService : IPersonService {
 
-        public PersonService(IRepository<Person> personRepository) {
+        public PersonService(IRepository<PersonDto, string> personRepository) {
 
         }
     }

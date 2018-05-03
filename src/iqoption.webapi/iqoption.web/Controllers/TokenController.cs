@@ -20,13 +20,13 @@ namespace iqoption.web.Controllers
     public class TokenController : Controller
     {
         private readonly IConfiguration _configuration;
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<UserDto> _userManager;
+        private readonly SignInManager<UserDto> _signInManager;
 
         public TokenController(
             IConfiguration configuration,
-            UserManager<User> userManager,
-            SignInManager<User> signInManager) {
+            UserManager<UserDto> userManager,
+            SignInManager<UserDto> signInManager) {
             _configuration = configuration;
             _userManager = userManager;
             _signInManager = signInManager;
@@ -51,12 +51,12 @@ namespace iqoption.web.Controllers
 
         }
 
-        private object GenerateJwtToken(string email, User user)
+        private object GenerateJwtToken(string email, UserDto userDto)
         {
             var claims = new List<Claim> {
                 new Claim(JwtRegisteredClaimNames.Sub, email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id)
+                new Claim(ClaimTypes.NameIdentifier, userDto.Id)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));

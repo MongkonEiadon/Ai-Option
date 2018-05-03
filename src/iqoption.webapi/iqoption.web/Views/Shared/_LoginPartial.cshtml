@@ -1,8 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using iqoption.data.Model
 
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
+@inject SignInManager<UserDto> SignInManager
+@inject UserManager<UserDto> UserManager
 
 @if (SignInManager.IsSignedIn(User))
 {

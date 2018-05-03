@@ -15,10 +15,10 @@ using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace iqoption.leaders.app
 {
-    class Program
+    public class Program
     {
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             MainAsync().GetAwaiter().GetResult();
         }

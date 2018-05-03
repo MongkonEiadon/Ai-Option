@@ -6,7 +6,7 @@ using iqoption.core.data;
 
 namespace iqoption.data
 {
-    public class Entity : Entity<int>, IEntity
+    public class Entity : Entity<Guid>, IEntity
     {
     }
 

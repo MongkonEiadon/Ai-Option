@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace iqoption.core.data
 
 {
-    public interface IRepository<TEntity> : IRepository<TEntity, int>
+    public interface IRepository<TEntity> : IRepository<TEntity, Guid>
          where TEntity : class, IEntity
     {
 

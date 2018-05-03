@@ -1,4 +1,6 @@
 ﻿using System.Net;
+using System.Threading.Tasks;
+using iqoption.core.data;
 using iqoption.web.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,4 +13,23 @@ namespace iqoption.web.Controllers
 
         public virtual IActionResult OkRequestWithResult(object result) => Ok(result);
     }
+
+    [Route("api/[controller]")]
+    public class IqOptionController : IqOptionApiControllerBase {
+
+
+        public IqOptionController() {
+
+        }
+
+        [HttpGet()]
+        public async Task<IActionResult> GetAvailableTradersAsync() {
+
+
+
+            return Ok("");
+        }
+    }
+
+   
 }

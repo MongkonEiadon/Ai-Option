@@ -6,9 +6,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace iqoption.data
 {
-    public class iqOptionContext : IdentityDbContext<User>
+    public class iqOptionContext : IdentityDbContext<UserDto>
     {
-        public DbSet<Person> Persons { get; set; }
+        public DbSet<UserDto> Users { get; set; }
+        public DbSet<FollowerDto> Followers { get; set; }
+        public DbSet<TraderDto> Traders { get; set; }
+        
+        public DbSet<TraderFollwerDto> TraderFollowers { get; set; }
+
+        public DbSet<IqOptionUserDto> IqOptionUsers { get; set; }
 
         public iqOptionContext(DbContextOptions<iqOptionContext> options): base(options)
         {
@@ -22,7 +28,6 @@ namespace iqoption.data
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
-            builder.Entity<Person>().HasKey(c => c.Id);
             base.OnModelCreating(builder);
         }
     }
