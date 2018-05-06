@@ -26,7 +26,7 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\..\iqoption.leaders.app\iqoption.leaders.app.csproj" />
+    <ProjectReference Include="..\..\..\..\iqoption.net\src\iqoptionapi\iqoptionapi.csproj" />
     <ProjectReference Include="..\..\iqoption.trading.services\iqoption.trading.services.csproj" />
     <ProjectReference Include="..\iqoption.core\iqoption.core.csproj" />
     <ProjectReference Include="..\iqoption.data\iqoption.data.csproj" />

@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="autofac" Version="4.8.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
@@ -15,14 +16,10 @@
     <PackageReference Include="Microsoft.VisualStudio.SlowCheetah" Version="3.0.61" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\iqoptionapi.net\src\iqoptionapi\iqoptionapi.csproj" />
+    <ProjectReference Include="..\..\..\iqoption.net\src\iqoptionapi\iqoptionapi.csproj" />
     <ProjectReference Include="..\iqoption.domain\iqoption.domain.csproj" />
     <ProjectReference Include="..\iqoption.servicebus\iqoption.servicebus.csproj" />
     <ProjectReference Include="..\iqoption.webapi\iqoption.core\iqoption.core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
-      <HintPath>..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.http.abstractions\2.0.2\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+
 </Project>

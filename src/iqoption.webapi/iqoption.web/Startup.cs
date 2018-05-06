@@ -14,7 +14,6 @@ using iqoption.data;
 using iqoption.data.AutofacModule;
 using iqoption.data.Configurations;
 using iqoption.data.Services;
-using iqoption.leaders.app;
 using iqoption.trading.services;
 using iqoption.web.AutofacModules;
 using iqoption.web.Configurations;

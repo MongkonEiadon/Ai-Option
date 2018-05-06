@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using iqoptionapi;
 using Microsoft.Extensions.Logging;
 
 namespace iqoption.trading.services {
@@ -26,17 +27,13 @@ namespace iqoption.trading.services {
         }
 
 
-        public Task InitializeTradingsServiceAsync() {
+        public async Task InitializeTradingsServiceAsync() {
 
             IsStarted = true;
 
-            _traderManager
-                .TradersInfoData
-                .Subscribe(x => {
-                    _logger.LogInformation(x[0]?.Id.ToString());
-                });
-
-            return Task.CompletedTask;
+            var client = new IqOptionApi("mongkon.eiadon@gmail.com", "Code11054");
+            await client.ConnectAsync();
+            
         }
     }
 }

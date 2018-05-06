@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using iqoption.leaders.app;
+using iqoption.trading.services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -12,13 +12,13 @@ namespace iqoption.web.MiddleWare
     {
         private readonly ILogger _logger;
         private readonly RequestDelegate _next;
-        private readonly ITraderManager _traderManager;
+        private readonly ITradingPersistenceService _tradingPersistenceService;
         private bool IsTradingStart = false;
 
-        public TradersFollowerMiddleWare(ILogger logger, RequestDelegate next, ITraderManager traderManager) {
+        public TradersFollowerMiddleWare(ILogger logger, RequestDelegate next, ITradingPersistenceService tradingPersistenceService) {
             _logger = logger;
             _next = next;
-            _traderManager = traderManager;
+            _tradingPersistenceService = tradingPersistenceService;
         }
 
 
@@ -32,7 +32,7 @@ namespace iqoption.web.MiddleWare
 
         public async Task<bool> SetupTradingSubscriptions() {
             if (IsTradingStart == false) {
-                await _traderManager.BeginSubscribeTradersTask();
+                await _tradingPersistenceService.InitializeTradingsServiceAsync();
                 IsTradingStart = true;
             }
 
