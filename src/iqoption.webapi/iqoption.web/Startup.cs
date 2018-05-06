@@ -1,53 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
+﻿using System.IO;
 using FluentValidation.AspNetCore;
 using iqoption.data;
-using iqoption.data.AutofacModule;
-using iqoption.data.Configurations;
-using iqoption.data.Services;
-using iqoption.leaders.app;
 using iqoption.trading.services;
-using iqoption.web.AutofacModules;
 using iqoption.web.Configurations;
-using iqoption.web.MiddleWare;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
-namespace iqoption.web
-{
-    public partial class Startup
-    {
+namespace iqoption.web {
+    public class Startup {
         public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
         }
 
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
-        {
+        public void ConfigureServices(IServiceCollection services) {
             //appsetting complier
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true)
+                .AddJsonFile("appsettings.json", true)
                 .Build();
 
             //logging
@@ -55,9 +34,7 @@ namespace iqoption.web
                 .AddSingleton<ILoggerFactory, LoggerFactory>()
                 .AddSingleton<ILogger>(c => c.GetService<ILogger<Startup>>())
                 .AddSingleton(typeof(ILogger<>), typeof(Logger<>)); // Add first my already configured instance
-                //.AddLogging(c =>
-                //    c.AddConsole()
-                //     .AddConfiguration(configuration.GetSection("Logging")));
+
 
             services
                 .AddMvc()
@@ -75,45 +52,35 @@ namespace iqoption.web
             services
                 .AddTradingServices();
 
-            var builder = new ContainerBuilder();
+
+            //var builder = new ContainerBuilder();
 
 
-            //data-modules
-            builder.RegisterModule<DataAutofacModule>();
-            builder.Populate(services);
-            builder.RegisterType<TradersFollowerMiddleWare>().SingleInstance();
+            ////data-modules
+            //builder.RegisterModule<DataAutofacModule>();
+            //builder.Populate(services);
 
-            var container = builder.Build();
-            return container.Resolve<IServiceProvider>();
+            //var container = builder.Build();
+            //return container.Resolve<IServiceProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
             else
-            {
                 app.UseExceptionHandler("/Home/Error");
-            }
 
             app
                 .UseStaticFiles()
                 .UseAuthentication()
-                .UseCookiePolicy(new CookiePolicyOptions(){MinimumSameSitePolicy = SameSiteMode.Strict})
-                .UseTradingServicesMiddleware()
+                .UseCookiePolicy(new CookiePolicyOptions {MinimumSameSitePolicy = SameSiteMode.Strict})
+                //.UseTradingServicesMiddleware()
                 .UseMvc(routes => {
                     routes.MapRoute(
-                        name: "default",
-                        template: "{controller=Dashboard}/{action=Index}/{id?}");
+                        "default",
+                        "{controller=Dashboard}/{action=Index}/{id?}");
                 });
         }
-
-   
     }
-
 }
-

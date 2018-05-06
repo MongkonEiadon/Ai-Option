@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
+using iqoptionapi.models;
 using Microsoft.Extensions.Logging;
 
 namespace iqoption.trading.services {
@@ -8,6 +10,7 @@ namespace iqoption.trading.services {
 
         bool IsStarted { get; }
         Task InitializeTradingsServiceAsync();
+
 
     }
     public class TradingPersistenceService : ITradingPersistenceService {
@@ -23,6 +26,14 @@ namespace iqoption.trading.services {
             _traderManager = traderManager;
             _followerManager = followerManager;
             _logger = logger;
+
+            
+
+            //merge when addding new client
+            traderManager.Traders.AddObservable()
+                .Merge(followerManager.Followers.AddObservable())
+                .Select(x => x.ApiClient)
+                .Subscribe(x => x.ConnectAsync());
         }
 
 
@@ -30,13 +41,13 @@ namespace iqoption.trading.services {
 
             IsStarted = true;
 
-            _traderManager
-                .TradersInfoData
-                .Subscribe(x => {
-                    _logger.LogInformation(x[0]?.Id.ToString());
-                });
+            _traderManager.AppendUser("mongkon.eiadon@gmail.com", "Code11054");
+
+            _followerManager.AppendUser("liie.m@excelbangkok.com", "Code11054", _traderManager.TradersInfoDataObservable());
+            
 
             return Task.CompletedTask;
         }
+        
     }
 }

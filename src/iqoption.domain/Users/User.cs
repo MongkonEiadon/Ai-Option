@@ -9,7 +9,7 @@ namespace iqoption.domain.Users {
 
         [Required]
         [JsonProperty("user-id")]
-        public string UserId { get; set; } 
+        public long UserId { get; set; } 
 
         [Required]
         [JsonProperty("email")]

@@ -67,7 +67,7 @@ namespace iqoption.core.Collections {
     {
         public int OldIndex { get; private set; }
         public int NewIndex { get; private set; }
-        public T Value { get; private set; }
+        public T Value { get; private set; } 
 
         public CollectionMoveEvent(int oldIndex, int newIndex, T value)
             : this()
@@ -149,7 +149,7 @@ namespace iqoption.core.Collections {
     public class ReactiveCollection<T> : Collection<T>, IReactiveCollection<T>, IDisposable
     {
         [NonSerialized]
-        bool isDisposed = false;
+        private bool isDisposed = false;
 
         public ReactiveCollection()
         {
@@ -332,5 +332,4 @@ namespace iqoption.core.Collections {
             return new ReactiveCollection<T>(source);
         }
     }
-
 }
