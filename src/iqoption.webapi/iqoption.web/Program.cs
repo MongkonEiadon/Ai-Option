@@ -18,10 +18,16 @@ namespace iqoption.web
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args).UseKestrel()
+            WebHost.CreateDefaultBuilder(args).UseKestrel(o => {o.Limits.KeepAliveTimeout = TimeSpan.Zero;})
+                .UseApplicationInsights()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
+                .ConfigureLogging((ctx, logging) => {
+                    logging.AddAzureWebAppDiagnostics();
+                    logging.AddEventSourceLogger();
+                    logging.AddConsole();
+                })
                 .Build();
     }
 }

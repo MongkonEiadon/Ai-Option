@@ -49,13 +49,13 @@ namespace iqoption.web
                 .AddJsonFile("appsettings.json", optional: true)
                 .Build();
 
+
             //logging
             services
                 .AddSingleton<ILoggerFactory, LoggerFactory>()
                 .AddSingleton<ILogger>(c => c.GetService<ILogger<Startup>>())
                 .AddSingleton(typeof(ILogger<>), typeof(Logger<>)); // Add first my already configured instance
-                //.AddLogging(c =>
-                //    c.AddConsole()
+               
                 //     .AddConfiguration(configuration.GetSection("Logging")));
 
             services
