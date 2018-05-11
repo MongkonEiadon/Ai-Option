@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="autofac" Version="4.8.0" />
+    <PackageReference Include="Autofac" Version="4.8.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="NUnit.Runners" Version="3.8.0" />
     <PackageReference Include="shouldly" Version="3.0.0" />
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\iqoption.webapi\iqoption.core\iqoption.core.csproj" />
+    <ProjectReference Include="..\..\webapi\iqoption.core\iqoption.core.csproj" />
   </ItemGroup>
 
 </Project>
