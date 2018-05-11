@@ -26,10 +26,7 @@ namespace iqoption.trading.services {
 
             _infoDataObservable
                 .Subscribe(async x => {
-                    Console.WriteLine($"{User.Email} opened {x.Direction} {x.ActiveId} {x.Direction} {x.Sum} {x.Value}{x.Currency}");
                     var result = await ApiClient.BuyAsync(x.ActiveId, (int)x.Sum, x.Direction, x.Expired);
-                    Console.WriteLine(result.ToString());
-
                 });
         }
     }
