@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.core", "src\webapi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.data", "src\webapi\iqoption.data\iqoption.data.csproj", "{B9985BAC-1AC4-4071-B8D9-C9E01DA0F5FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iqoption.follower.app", "src\app\iqoption.follower.app\iqoption.follower.app.csproj", "{B7E25417-A04F-4EF1-8CCE-A39D0E646426}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{B9985BAC-1AC4-4071-B8D9-C9E01DA0F5FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9985BAC-1AC4-4071-B8D9-C9E01DA0F5FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9985BAC-1AC4-4071-B8D9-C9E01DA0F5FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7E25417-A04F-4EF1-8CCE-A39D0E646426}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7E25417-A04F-4EF1-8CCE-A39D0E646426}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7E25417-A04F-4EF1-8CCE-A39D0E646426}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7E25417-A04F-4EF1-8CCE-A39D0E646426}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +77,7 @@ Global
 		{3F26E299-B611-4768-8E3D-5A79EC79826C} = {FC2E73E2-132A-4404-AE42-8CF18F5B6A69}
 		{B0EA1B02-0BC1-418E-BD2F-0E65D93B0C76} = {E3F75457-F62C-45C0-BF17-1BD824B389AA}
 		{B9985BAC-1AC4-4071-B8D9-C9E01DA0F5FF} = {E3F75457-F62C-45C0-BF17-1BD824B389AA}
+		{B7E25417-A04F-4EF1-8CCE-A39D0E646426} = {A4B5BA6F-7505-4F73-A84E-C590A43B5D8B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {45A6F755-7349-459E-B474-C21814ACC978}

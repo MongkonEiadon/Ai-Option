@@ -25,7 +25,6 @@ namespace iqoption.web
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .ConfigureLogging((ctx, logging) => {
-                    logging.AddAzureWebAppDiagnostics();
                     logging.AddEventSourceLogger();
                     logging.AddConsole();
                 })

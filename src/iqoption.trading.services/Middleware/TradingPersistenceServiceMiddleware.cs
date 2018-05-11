@@ -26,11 +26,17 @@ namespace iqoption.trading.services.Middleware
 
             _logger.LogTrace($"{nameof(TradingPersistenceServiceMiddleware)} received!");
 
-            if(!_tradingPersistenceService.IsStarted)
-                await _tradingPersistenceService.InitializeTradingsServiceAsync();
+            await InitialServiceAsync();
 
 
             await _next.Invoke(httpContext);
+        }
+
+        public async Task InitialServiceAsync() {
+
+            if (!_tradingPersistenceService.IsStarted)
+                await _tradingPersistenceService.InitializeTradingsServiceAsync();
+
         }
     }
 }
