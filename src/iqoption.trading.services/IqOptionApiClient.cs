@@ -3,21 +3,36 @@ using System.Reactive.Linq;
 using iqoption.domain.Users;
 using iqoptionapi;
 using iqoptionapi.models;
+using Microsoft.Extensions.Logging;
 
 namespace iqoption.trading.services {
     public class IqOptionApiClient
     {
         private readonly IObservable<InfoData> _infoDataObservable;
+
         public User User { get; }
+
         public IIqOptionApi ApiClient { get; }
 
-        public IqOptionApiClient(string email, string password, IObservable<InfoData> infoDataObservable = null)
-        {
+        private ILogger _logger => new LoggerFactory().CreateLogger(nameof(IqOptionApi));
+
+        public IqOptionApiClient(string email, string password, IObservable<InfoData> infoDataObservable = null) {
 
             _infoDataObservable = infoDataObservable ?? Observable.Empty<InfoData>();
+
+
             User = new User() { Email = email, Password = password };
             ApiClient = new IqOptionApi(email, password);
 
+            //auto reconnect when time-sync not update
+            Observable.Interval(TimeSpan.FromMinutes(1))
+                .Where(x => Math.Abs(ApiClient?.WsClient?.TimeSync.Subtract(DateTime.Now).TotalMinutes ?? 0) > 1)
+                .Subscribe(x => {
+                    _logger.LogWarning("Seem like client disconnect from server try to connect again!");
+                    ApiClient.ConnectAsync();
+                });
+                
+            
 
             //auto setup user-id
             ApiClient

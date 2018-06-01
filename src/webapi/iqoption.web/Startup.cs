@@ -17,7 +17,6 @@ using iqoption.data.Services;
 using iqoption.trading.services;
 using iqoption.web.AutofacModules;
 using iqoption.web.Configurations;
-using iqoption.web.MiddleWare;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -81,7 +80,6 @@ namespace iqoption.web
             //data-modules
             builder.RegisterModule<DataAutofacModule>();
             builder.Populate(services);
-            builder.RegisterType<TradersFollowerMiddleWare>().SingleInstance();
 
             var container = builder.Build();
             return container.Resolve<IServiceProvider>();

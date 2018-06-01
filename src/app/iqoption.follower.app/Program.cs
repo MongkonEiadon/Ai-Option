@@ -12,22 +12,21 @@ namespace iqoption.follower.app
     {
         static void Main(string[] args) {
 
+            TradingPersistenceService tradingPersistenceService = null;
+
             try {
                 Console.WriteLine("iqoption-follower-starting");
 
                 var services = new ServiceCollection();
 
                 //    // Startup.cs finally :)
-                    var startup = new Startup();
+                var startup = new Startup();
                 startup.ConfigureServices(services);
-
-
                 var serviceProvider = services.BuildServiceProvider();
 
 
-                serviceProvider
-                    .GetService<TradingPersistenceService>()
-                    .InitializeTradingsServiceAsync().Wait();
+                tradingPersistenceService = serviceProvider.GetService<TradingPersistenceService>();
+                tradingPersistenceService.InitializeTradingsServiceAsync().Wait();
             }
             catch (Exception ex) {
                Console.WriteLine(ex.Message);
