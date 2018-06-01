@@ -40,9 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings.Debug.json">
-      <IsTransformFile>True</IsTransformFile>
-    </None>
     <None Update="appsettings.Development.Debug.json">
       <IsTransformFile>True</IsTransformFile>
     </None>

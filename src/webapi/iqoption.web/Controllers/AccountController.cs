@@ -47,7 +47,7 @@ namespace iqoption.web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(string returnUrl= "") {
+        public IActionResult Login(string returnUrl= "") {
             ReturnUrl  = returnUrl;
             return View(nameof(Login));
         }
@@ -109,7 +109,7 @@ namespace iqoption.web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Register() {
+        public IActionResult Register() {
             return View();
         }
 

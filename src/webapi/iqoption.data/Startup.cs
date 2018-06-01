@@ -48,9 +48,7 @@ namespace iqoption.data
             if (env.IsDevelopment()) {
             }
 
-            app.Run(async core => {
-            });
-
+         
             try {
                 seedService.Seed().Wait();
             }

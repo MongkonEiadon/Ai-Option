@@ -8,11 +8,6 @@ namespace iqoption.data
 {
     public class iqOptionContext : IdentityDbContext<UserDto>
     {
-        public DbSet<UserDto> Users { get; set; }
-        public DbSet<FollowerDto> Followers { get; set; }
-        public DbSet<TraderDto> Traders { get; set; }
-        
-        public DbSet<TraderFollwerDto> TraderFollowers { get; set; }
 
         public DbSet<IqOptionUserDto> IqOptionUsers { get; set; }
 

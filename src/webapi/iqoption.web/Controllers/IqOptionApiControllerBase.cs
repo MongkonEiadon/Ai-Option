@@ -23,7 +23,7 @@ namespace iqoption.web.Controllers
         }
 
         [HttpGet()]
-        public async Task<IActionResult> GetAvailableTradersAsync() {
+        public IActionResult GetAvailableTradersAsync() {
 
 
 

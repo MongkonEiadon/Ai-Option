@@ -103,7 +103,6 @@ namespace iqoption.web
                 .UseStaticFiles()
                 .UseAuthentication()
                 .UseCookiePolicy(new CookiePolicyOptions(){MinimumSameSitePolicy = SameSiteMode.Strict})
-                .UseTradingServicesMiddleware()
                 .UseMvc(routes => {
                     routes.MapRoute(
                         name: "default",

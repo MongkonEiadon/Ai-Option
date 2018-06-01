@@ -27,8 +27,8 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\..\iqoption.core\iqoption.core.csproj" />
     <ProjectReference Include="..\..\iqoption.trading.services\iqoption.trading.services.csproj" />
-    <ProjectReference Include="..\iqoption.core\iqoption.core.csproj" />
     <ProjectReference Include="..\iqoption.data\iqoption.data.csproj" />
   </ItemGroup>
 

@@ -21,7 +21,7 @@
     <ProjectReference Include="..\..\..\iqoption.net\src\iqoptionapi\iqoptionapi.csproj" />
     <ProjectReference Include="..\iqoption.domain\iqoption.domain.csproj" />
     <ProjectReference Include="..\iqoption.servicebus\iqoption.servicebus.csproj" />
-    <ProjectReference Include="..\webapi\iqoption.core\iqoption.core.csproj" />
+    <ProjectReference Include="..\iqoption.core\iqoption.core.csproj" />
   </ItemGroup>
 
 </Project>
