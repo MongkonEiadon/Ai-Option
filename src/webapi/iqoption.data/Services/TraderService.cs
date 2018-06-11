@@ -14,6 +14,10 @@ namespace iqoption.data.Services {
         public TraderService(IRepository<TraderFollwerDto> traderFollowerDto) {
             _traderFollowerDto = traderFollowerDto;
         }
+
+
+
+
         
 
 

@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\iqoption.net\src\iqoptionapi\iqoptionapi.csproj" />
+    <ProjectReference Include="..\..\iqoption.core\iqoption.core.csproj" />
+    <ProjectReference Include="..\..\iqoption.domain\iqoption.domain.csproj" />
+    <ProjectReference Include="..\..\webapi\iqoption.data\iqoption.data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Login\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\IqOption\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\_IqOptionPartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
+</Project>

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using iqoption.core.Extensions;
 
 namespace iqoption.data.Model {
+
     [Table("IqOptionUser")]
     public class IqOptionUserDto : EntityWithDateTimeStamp
     {
-        public UserDto User { get; set; }
-
 
         public int IqOptionUserId { get; set; }
 
@@ -17,6 +17,11 @@ namespace iqoption.data.Model {
 
         [Required]
         public string Password { get; set; }
+
+        public virtual UserDto User { get; set; }
+
+        public DateTime? LastSyned { get; set; }
+        
 
     }
 }

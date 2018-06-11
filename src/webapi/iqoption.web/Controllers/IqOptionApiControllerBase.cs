@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using iqoption.core.data;
 using iqoption.web.Models;
+using iqoptionapi;
 using Microsoft.AspNetCore.Mvc;
 
 namespace iqoption.web.Controllers
@@ -16,18 +17,25 @@ namespace iqoption.web.Controllers
 
     [Route("api/[controller]")]
     public class IqOptionController : IqOptionApiControllerBase {
+        private readonly IIqOptionApi _apiClient;
 
 
         public IqOptionController() {
-
         }
 
-        [HttpGet()]
-        public IActionResult GetAvailableTradersAsync() {
+
+        [HttpPost]
+        public async Task<IActionResult> VerifyIqOptionUserNameAndPasswordAsync(string email, string password) {
 
 
+            using (var _apiClient = new IqOptionApi(email, password)) {
 
-            return Ok("");
+                if (await _apiClient.ConnectAsync()) {
+                    return Ok();
+                }
+            }
+
+            return Ok();
         }
     }
 

@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{E3F75457-F62C-45C0-BF17-1BD824B389AA}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FC2E73E2-132A-4404-AE42-8CF18F5B6A69}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqopion.core.unit", "src\tests\iqopion.core.unit\iqopion.core.unit.csproj", "{3F26E299-B611-4768-8E3D-5A79EC79826C}"
@@ -17,8 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{A4B5BA6F-750
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.trading.services", "src\iqoption.trading.services\iqoption.trading.services.csproj", "{B6263D17-137E-47FD-8D7C-98072CB483BD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.web", "src\webapi\iqoption.web\iqoption.web.csproj", "{B0EA1B02-0BC1-418E-BD2F-0E65D93B0C76}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoptionapi", "..\iqoption.net\src\iqoptionapi\iqoptionapi.csproj", "{48C78110-591C-4494-8BF9-2BCBA0C64962}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.data", "src\webapi\iqoption.data\iqoption.data.csproj", "{B9985BAC-1AC4-4071-B8D9-C9E01DA0F5FF}"
@@ -26,6 +22,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.follower.app", "src\app\iqoption.follower.app\iqoption.follower.app.csproj", "{B7E25417-A04F-4EF1-8CCE-A39D0E646426}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.core", "src\iqoption.core\iqoption.core.csproj", "{C572FA46-851F-4634-BB6C-F63FB1764E17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ai.option.web", "src\App\ai.option.web\ai.option.web.csproj", "{28F0EBA7-0466-4EF5-82AA-3A2571C78785}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,10 +47,6 @@ Global
 		{B6263D17-137E-47FD-8D7C-98072CB483BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6263D17-137E-47FD-8D7C-98072CB483BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6263D17-137E-47FD-8D7C-98072CB483BD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B0EA1B02-0BC1-418E-BD2F-0E65D93B0C76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B0EA1B02-0BC1-418E-BD2F-0E65D93B0C76}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B0EA1B02-0BC1-418E-BD2F-0E65D93B0C76}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B0EA1B02-0BC1-418E-BD2F-0E65D93B0C76}.Release|Any CPU.Build.0 = Release|Any CPU
 		{48C78110-591C-4494-8BF9-2BCBA0C64962}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{48C78110-591C-4494-8BF9-2BCBA0C64962}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48C78110-591C-4494-8BF9-2BCBA0C64962}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -69,15 +63,18 @@ Global
 		{C572FA46-851F-4634-BB6C-F63FB1764E17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C572FA46-851F-4634-BB6C-F63FB1764E17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C572FA46-851F-4634-BB6C-F63FB1764E17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28F0EBA7-0466-4EF5-82AA-3A2571C78785}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28F0EBA7-0466-4EF5-82AA-3A2571C78785}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28F0EBA7-0466-4EF5-82AA-3A2571C78785}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28F0EBA7-0466-4EF5-82AA-3A2571C78785}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3F26E299-B611-4768-8E3D-5A79EC79826C} = {FC2E73E2-132A-4404-AE42-8CF18F5B6A69}
-		{B0EA1B02-0BC1-418E-BD2F-0E65D93B0C76} = {E3F75457-F62C-45C0-BF17-1BD824B389AA}
-		{B9985BAC-1AC4-4071-B8D9-C9E01DA0F5FF} = {E3F75457-F62C-45C0-BF17-1BD824B389AA}
 		{B7E25417-A04F-4EF1-8CCE-A39D0E646426} = {A4B5BA6F-7505-4F73-A84E-C590A43B5D8B}
+		{28F0EBA7-0466-4EF5-82AA-3A2571C78785} = {A4B5BA6F-7505-4F73-A84E-C590A43B5D8B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {45A6F755-7349-459E-B474-C21814ACC978}

@@ -1,0 +1,82 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using ai.option.web.ViewModels
+@model ai.option.web.ViewModels.IqOptionRequest
+<div class="container">
+    <div class="row mb30">
+        <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 section-title text-center">
+            <h2>Connect to IqOption</h2>
+            <span class="section-divider mb15"></span>
+            <p class="no-margin scaleReveal" data-sr-id="49" style="; visibility: visible; -webkit-transform: translateY(0) scale(1); opacity: 1; transform: translateY(0) scale(1); opacity: 1; -webkit-transition: -webkit-transform 1.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0.05s, opacity 1.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0.05s; transition: transform 1.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0.05s, opacity 1.5s cubic-bezier(0.6, 0.2, 0.1, 1) 0.05s;">
+                Our team is from all over the world and we know how to deliver quality pixels from miles away.
+            </p>
+        </div><!-- /.column -->
+    </div>
+
+    <div class="row">
+        <div class="col-sm-5 col-lg-4">
+            <h5 class="heading-1 mb20">Visit Us</h5>
+            <h4 class="mb15">142 Pelican Drive • 1252nd Floor, Suite 420<br>New York City, New York 99912</h4>
+            <p class="no-margin text-xs-small">Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates. Temporibus autem quibusdam et aut.</p>
+            <hr class="mini-hr">
+            <p class="text-xs-small mb5"><strong class="text-switch">Email:</strong> info@particle.com</p>
+            <p class="text-xs-small mb5"><strong class="text-switch">Phone:</strong> +1 212-249-2390</p>
+            <p class="text-xs-small mb5"><strong class="text-switch">Fax:</strong> +1 112-444-2390</p>
+        </div><!-- /.column -->
+        <div class="col-sm-6 col-lg-7 mt30-xs">
+
+            @using (Html.BeginForm("GetTokenAsync", "IqOption", FormMethod.Post, new { cssClass = "vertical-form sign-in" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <h5 class="heading-1 mb20">Add IqOption</h5>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group has-error">
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", id = "emailAddress", required = true, type = "email" })
+                                @Html.ValidationMessageFor(m => m.EmailAddress)
+
+                            </div>
+                        </div>
+                    </div><!-- /.column -->
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group has-error">
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Password, new { @class = "form-control", id = "emailAddress", required = true, type = "password" })
+                                @Html.ValidationMessageFor(m => m.Password)
+
+                            </div>
+                        </div>
+                    </div><!-- /.column -->
+
+                </div>
+
+                <div class="row mb10">
+                    <div class="col-sm-6">
+                        <svg class="Navbar__logoIcon" style="width: 124px; height: 30px; color: #fff}">
+                            <use xlink:href="#icon_general_logo-with-text-v2"></use>
+                        </svg>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div id="msgSubmit" class="h4 hidden mt10 no-margin-bottom"></div>
+                    </div><!-- /.column -->
+                    <div class="col-sm-6 text-right">
+                        <button type="submit" id="submit" class="btn btn-default btn-lg disabled" style="pointer-events: all; cursor: pointer;">Connect to IqOption</button>
+                    </div><!-- /.column -->
+
+                </div>
+            }
+
+
+        </div><!-- /.column -->
+    </div>
+
+</div>

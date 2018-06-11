@@ -1,0 +1,264 @@
+﻿/* line 6, /app/app/assets/stylesheets/v2/login/login.scss */
+.login {
+    background: #0069ff;
+    font-family: "proxima-nova";
+    padding: 0;
+    margin: 0;
+}
+    /* line 11, /app/app/assets/stylesheets/v2/login/login.scss */
+    .login * {
+        box-sizing: border-box;
+        font-family: "proxima-nova", helvetica;
+    }
+    /* line 15, /app/app/assets/stylesheets/v2/login/login.scss */
+    .login br.only-mobile {
+        display: none;
+    }
+    /* line 18, /app/app/assets/stylesheets/v2/login/login.scss */
+    .login .logo {
+        display: block;
+        height: 75px;
+        padding-top: 40px;
+        margin: 0 auto 30px;
+    }
+        /* line 23, /app/app/assets/stylesheets/v2/login/login.scss */
+        .login .logo.registration-message {
+            margin-bottom: 0;
+        }
+    /* line 27, /app/app/assets/stylesheets/v2/login/login.scss */
+    .login a, .login a:visited {
+        text-decoration: underline;
+        color: inherit;
+    }
+    /* line 32, /app/app/assets/stylesheets/v2/login/login.scss */
+    .login ul.notice {
+        margin: 0;
+        border: 0;
+        width: 100%;
+        text-align: center;
+        list-style-position: inside;
+        list-style: none;
+        font-weight: 600;
+        font-size: 15px;
+        padding: 10px;
+    }
+        /* line 42, /app/app/assets/stylesheets/v2/login/login.scss */
+        .login ul.notice.errors {
+            background-color: #EDE04D;
+            color: #212200;
+        }
+        /* line 46, /app/app/assets/stylesheets/v2/login/login.scss */
+        .login ul.notice.success {
+            background-color: #15CD72;
+            color: white;
+        }
+        /* line 50, /app/app/assets/stylesheets/v2/login/login.scss */
+        .login ul.notice li {
+            padding: 5px 0;
+        }
+    /* line 55, /app/app/assets/stylesheets/v2/login/login.scss */
+    .login p.registration-message {
+        font-size: 22px;
+        line-height: 28px;
+        font-weight: 400;
+        text-align: center;
+        color: white;
+        margin: 15px 0 40px;
+    }
+    /* line 64, /app/app/assets/stylesheets/v2/login/login.scss */
+    .login .vertical-form {
+        margin: 0 auto;
+        width: 470px;
+        padding: 40px;
+        border-radius: 3px;
+        background: white;
+    }
+        /* line 71, /app/app/assets/stylesheets/v2/login/login.scss */
+        .login .vertical-form .referral-credit {
+            padding: 20px 20px;
+            margin: 0 auto 30px;
+            line-height: 21px;
+            text-align: center;
+            color: #0d8047;
+            border-radius: 2px;
+            background-color: #ecfbf4;
+            border: solid 2px #11a95e;
+        }
+            /* line 81, /app/app/assets/stylesheets/v2/login/login.scss */
+            .login .vertical-form .referral-credit .message {
+                padding: 0 25px;
+            }
+        /* line 86, /app/app/assets/stylesheets/v2/login/login.scss */
+        .login .vertical-form legend {
+            text-align: center;
+            font-weight: 300;
+            color: #444;
+            margin: 0 auto 45px;
+            font-size: 35px;
+            line-height: 38px;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+            /* line 96, /app/app/assets/stylesheets/v2/login/login.scss */
+            .login .vertical-form legend:after {
+                display: none;
+            }
+        /* line 100, /app/app/assets/stylesheets/v2/login/login.scss */
+        .login .vertical-form ::-webkit-input-placeholder {
+            color: #afafaf;
+            font-size: 17px;
+        }
+        /* line 104, /app/app/assets/stylesheets/v2/login/login.scss */
+        .login .vertical-form input[type='text'], .login .vertical-form input[type='email'], .login .vertical-form input[type='password'], .login .vertical-form input[type='number'], .login .vertical-form input[type='submit'] {
+            background: #fcfcfc;
+            border: 2px solid #e7e7e7;
+            margin: 20px auto;
+            padding: 15px;
+            width: 100%;
+            display: block;
+            border-radius: 3px;
+            font-size: 18px;
+            transition: opacity 0.4s;
+            text-align: left;
+            height: auto;
+            -webkit-appearance: none;
+        }
+            /* line 118, /app/app/assets/stylesheets/v2/login/login.scss */
+            .login .vertical-form input[type='text']:focus, .login .vertical-form input[type='email']:focus, .login .vertical-form input[type='password']:focus, .login .vertical-form input[type='number']:focus, .login .vertical-form input[type='submit']:focus {
+                border-color: #E7E7E7;
+                box-shadow: none;
+            }
+        /* line 123, /app/app/assets/stylesheets/v2/login/login.scss */
+        .login .vertical-form input[type='submit'] {
+            color: white;
+            background: #15CD72;
+            border: 0;
+            font-weight: 600;
+            font-size: 17px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 0;
+            height: auto;
+            -webkit-appearance: none;
+        }
+        /* line 135, /app/app/assets/stylesheets/v2/login/login.scss */
+        .login .vertical-form input:hover[type='submit'] {
+            background-color: #0CB863;
+            -webkit-transition: background 0.1s;
+            -moz-transition: background 0.1s;
+            -o-transition: background 0.1s;
+            transition: background 0.1s;
+        }
+        /* line 143, /app/app/assets/stylesheets/v2/login/login.scss */
+        .login .vertical-form p {
+            font-size: 17px;
+            line-height: 1.5;
+            text-align: center;
+            margin: 0;
+            margin-top: 10px;
+            color: #666;
+        }
+            /* line 150, /app/app/assets/stylesheets/v2/login/login.scss */
+            .login .vertical-form p a {
+                color: #0069ff;
+                text-decoration: none;
+            }
+                /* line 154, /app/app/assets/stylesheets/v2/login/login.scss */
+                .login .vertical-form p a.google-oauth {
+                    position: relative;
+                    display: block;
+                    color: #444;
+                    background: white;
+                    border: 1px solid #ddd;
+                    font-weight: 600;
+                    font-size: 17px;
+                    text-align: center;
+                    padding: 12px;
+                    border-radius: 3px;
+                    -webkit-appearance: none;
+                }
+                    /* line 167, /app/app/assets/stylesheets/v2/login/login.scss */
+                    .login .vertical-form p a.google-oauth:hover {
+                        background-color: #dfdfdf;
+                        -webkit-transition: background 0.1s;
+                        -moz-transition: background 0.1s;
+                        -o-transition: background 0.1s;
+                        transition: background 0.1s;
+                    }
+            /* line 174, /app/app/assets/stylesheets/v2/login/login.scss */
+            .login .vertical-form p img.google-logo {
+                position: absolute;
+                top: 14px;
+                left: 16px;
+                bottom: 0;
+                right: 0;
+            }
+        /* line 180, /app/app/assets/stylesheets/v2/login/login.scss */
+        .login .vertical-form.sign-in, .login .vertical-form.register {
+            padding-bottom: 20px;
+        }
+            /* line 182, /app/app/assets/stylesheets/v2/login/login.scss */
+            .login .vertical-form.sign-in p, .login .vertical-form.register p {
+                padding-top: 8px;
+            }
+        /* line 186, /app/app/assets/stylesheets/v2/login/login.scss */
+        .login .vertical-form.tfa-form legend, .login .vertical-form.verify-form legend {
+            margin-bottom: 15px;
+        }
+        /* line 187, /app/app/assets/stylesheets/v2/login/login.scss */
+        .login .vertical-form.tfa-form + .footer p, .login .vertical-form.verify-form + .footer p {
+            margin-bottom: 5px;
+        }
+    /* line 191, /app/app/assets/stylesheets/v2/login/login.scss */
+    .login .footer {
+        text-align: center;
+        color: white;
+        margin: 20px auto;
+    }
+        /* line 195, /app/app/assets/stylesheets/v2/login/login.scss */
+        .login .footer a {
+            font-weight: 600;
+            border: 0;
+            padding: 0;
+        }
+            /* line 199, /app/app/assets/stylesheets/v2/login/login.scss */
+            .login .footer a:hover {
+                color: #E7F1F9;
+            }
+        /* line 203, /app/app/assets/stylesheets/v2/login/login.scss */
+        .login .footer p {
+            margin-bottom: 40px;
+        }
+
+@media screen and (max-width: 550px) {
+    /* line 209, /app/app/assets/stylesheets/v2/login/login.scss */
+    .login .logo {
+        padding-top: 35px;
+        padding-bottom: 5px;
+    }
+    /* line 213, /app/app/assets/stylesheets/v2/login/login.scss */
+    .login p.oauth {
+        margin: 15px 0 25px;
+        font-size: 17px;
+        line-height: 21px;
+        font-weight: 600;
+    }
+    /* line 219, /app/app/assets/stylesheets/v2/login/login.scss */
+    .login .vertical-form {
+        width: 100%;
+        border-radius: 0;
+        padding: 40px 20px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    /* line 226, /app/app/assets/stylesheets/v2/login/login.scss */
+    .login br.only-mobile {
+        display: inline;
+    }
+}
+
+/* line 232, /app/app/assets/stylesheets/v2/login/login.scss */
+.grecaptcha-badge {
+    display: none;
+}

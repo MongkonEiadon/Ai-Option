@@ -13,4 +13,7 @@ namespace iqoption.data.Configurations
         {
         }
     }
+
+
+    
 }
