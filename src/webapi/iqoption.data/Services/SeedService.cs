@@ -9,10 +9,10 @@ namespace iqoption.data.Services {
         Task Seed();
     }
     public class SeedService : ISeedService {
-        private readonly iqOptionContext _context;
+        private readonly AiOptionContext _context;
         private readonly UserManager<UserDto> _userManager;
 
-        public SeedService(iqOptionContext context, UserManager<UserDto> userManager) {
+        public SeedService(AiOptionContext context, UserManager<UserDto> userManager) {
             _context = context;
             _userManager = userManager;
         }

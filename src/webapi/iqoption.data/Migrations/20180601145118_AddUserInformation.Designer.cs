@@ -9,7 +9,7 @@ using iqoption.data;
 
 namespace iqoption.data.Migrations
 {
-    [DbContext(typeof(iqOptionContext))]
+    [DbContext(typeof(AiOptionContext))]
     [Migration("20180601145118_AddUserInformation")]
     partial class AddUserInformation
     {

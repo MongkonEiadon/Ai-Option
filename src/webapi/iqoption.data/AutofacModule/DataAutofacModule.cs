@@ -12,18 +12,18 @@ namespace iqoption.data.AutofacModule
         protected override void Load(ContainerBuilder builder)
         {
 
-            builder.RegisterType<iqOptionContext>().As<DbContext>()
+            builder.RegisterType<AiOptionContext>().As<DbContext>()
                 .Named<DbContext>("iqoptioncontext")
                 .SingleInstance()
                 .AsImplementedInterfaces();
 
 
 
-            builder.RegisterType<UnitOfWork<iqOptionContext>>()
+            builder.RegisterType<UnitOfWork<AiOptionContext>>()
                 .WithParameters
                 (new []{
                     new ResolvedParameter(
-                               (p,ctx) => p.ParameterType == typeof(iqOptionContext),
+                               (p,ctx) => p.ParameterType == typeof(AiOptionContext),
                                (p,ctx) => ctx.ResolveNamed<DbContext>("iqoptioncontext"))
                 })
                 .As<IUnitOfWork>();
@@ -36,7 +36,7 @@ namespace iqoption.data.AutofacModule
                 .WithParameters(new[]
                 {
                     new ResolvedParameter(
-                        (p, ctx) => p.ParameterType == typeof(iqOptionContext),
+                        (p, ctx) => p.ParameterType == typeof(AiOptionContext),
                         (p, ctx) => ctx.ResolveNamed<DbContext>("iqoptioncontext"))
                 }).InstancePerDependency();
 
@@ -44,7 +44,7 @@ namespace iqoption.data.AutofacModule
                 .WithParameters(new[]
                 {
                     new ResolvedParameter(
-                        (p, ctx) => p.ParameterType == typeof(iqOptionContext),
+                        (p, ctx) => p.ParameterType == typeof(AiOptionContext),
                         (p, ctx) => ctx.ResolveNamed<DbContext>("iqoptioncontext"))
                 }).InstancePerDependency();
 

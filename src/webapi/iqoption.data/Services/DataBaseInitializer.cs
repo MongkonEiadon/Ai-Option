@@ -14,12 +14,12 @@ namespace iqoption.data.Services
     }
     public class DbSeedingService : IDbSeeding
     {
-        private readonly iqOptionContext _context;
+        private readonly AiOptionContext _context;
         private readonly UserManager<UserDto> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
         public DbSeedingService(
-            iqOptionContext context,
+            AiOptionContext context,
             UserManager<UserDto> userManager,
             RoleManager<IdentityRole> roleManager) {
             _context = context;

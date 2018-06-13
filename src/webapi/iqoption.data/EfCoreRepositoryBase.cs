@@ -9,18 +9,18 @@ namespace iqoption.data
     public class EfCoreRepositoryBase<TEntity> : EfCoreRepositoryBase<TEntity, Guid>, IRepository<TEntity>
         where TEntity : class, IEntity
     {
-        public EfCoreRepositoryBase(iqOptionContext dbDbContext) : base(dbDbContext)
+        public EfCoreRepositoryBase(AiOptionContext dbDbContext) : base(dbDbContext)
         {
         }
     }
     public class EfCoreRepositoryBase<TEntity, TPrimaryKey> : RepositoryBase<TEntity, TPrimaryKey>, IRepositoryWithDbContext
         where TEntity : class, IEntity<TPrimaryKey>
     {
-        private readonly iqOptionContext _dbContext;
+        private readonly AiOptionContext _dbContext;
 
         public virtual DbSet<TEntity> Table => _dbContext.Set<TEntity>();
 
-        public EfCoreRepositoryBase(iqOptionContext dbDbContext)
+        public EfCoreRepositoryBase(AiOptionContext dbDbContext)
         {
             _dbContext = dbDbContext;
         }

@@ -4,26 +4,6 @@ using iqoptionapi;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ai.option.web.Controllers {
-
-    public class LoginController : Controller {
-
-        public IActionResult Index() {
-            return View();
-        }
-
-        public IActionResult Login() {
-            return View("Index", "Home");
-        }
-
-        [HttpPost]
-        public IActionResult LoginAsync(LoginViewModel loginViewModel) {
-
-            //if login success
-
-            return Index();
-        }
-    }
-    
     public class IqOptionController : Controller {
         
         public IqOptionController() {

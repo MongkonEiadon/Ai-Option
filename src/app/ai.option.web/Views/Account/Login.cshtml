@@ -1,0 +1,55 @@
+﻿@using ai.option.web.ViewModels 
+@model LoginViewModel 
+@{ Layout = "_LayoutSinglePage"; }
+
+
+<div id="particles-js" class="fullscreen" >
+    <canvas class="particles-js-canvas-el" style="width: 100%; height: 100%;" width="941" height="905"></canvas>
+</div>
+
+<div class="back-link">
+    <a href="@Url.Action("Index", "Home")" class="btn btn-accent"> < Back to welcome page</a>
+</div>
+
+<div class="container-center animated slideInDown">
+    <div class="view-header">
+        <div class="header-icon">
+            <i class="pe page-header-icon pe-7s-unlock"></i>
+        </div>
+        <div class="header-title">
+            <h3 class="m-b-none">Login</h3>
+            <small>
+                Please enter your credentials to login.
+            </small>
+        </div>
+    </div>
+
+    <div class="panel panel-filled">
+        <div class="panel-body">
+
+            @using (Html.BeginForm("LoginAsync", "Account", FormMethod.Post)) {
+                <div class="form-group">
+                    @Html.LabelFor(m => m.EmailAddress, new {@class = "control-label"}) @Html.TextBoxFor(m => m.EmailAddress, new {@class = "form-control", id = "emailAddress", required = true, type = "email"}) @Html.ValidationMessageFor(m => m.EmailAddress)
+
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new {@class = "control-label"}) @Html.TextBoxFor(m => m.Password, new {@class = "form-control", id = "emailAddress", required = true, type = "password"}) @Html.ValidationMessageFor(m => m.Password)
+
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-accent">Login</button>
+                    <a class="btn btn-default" href="@Url.Action("Register", "Account")">Register</a>
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>
+
+
+
+@section Scripts {
+    <script src="~/js/particles.min.js"></script>
+    <script src="~/js/particlesRun.js"></script>
+}

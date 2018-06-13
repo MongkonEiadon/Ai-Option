@@ -8,7 +8,7 @@ using iqoption.data;
 
 namespace iqoption.data.Migrations
 {
-    [DbContext(typeof(iqOptionContext))]
+    [DbContext(typeof(AiOptionContext))]
     partial class iqOptionContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

@@ -9,9 +9,9 @@ namespace iqoption.data
 {
     public class UnitOfWork<TDbContext> : IUnitOfWork where TDbContext : DbContext
     {
-        private readonly iqOptionContext _dbContext;
+        private readonly AiOptionContext _dbContext;
 
-        public UnitOfWork(iqOptionContext context)
+        public UnitOfWork(AiOptionContext context)
         {
             _dbContext = context ?? throw new ArgumentNullException(nameof(context));
         }

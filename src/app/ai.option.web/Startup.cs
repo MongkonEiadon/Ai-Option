@@ -18,8 +18,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 
+using iqoption.core.Extensions;
 namespace ai.option.web
 {
     public class Startup
@@ -44,8 +46,7 @@ namespace ai.option.web
             services
                 .AddEntityFrameworkInMemoryDatabase()
                 //.AddEntityFrameworkSqlServer()
-                .AddDbContext<iqOptionContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("aioptiondb")))
+                .AddDbContext<AiOptionContext>(options => options.UseSqlServer(Configuration.GetConnectionString("aioptiondb")))
                 .AddIqOptionIdentity()
                 .AddAuthentication()
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -65,6 +66,7 @@ namespace ai.option.web
 
 
             services
+                .AddAutoMapper()
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -89,6 +91,13 @@ namespace ai.option.web
             }
 
             seed.SeedAsync().Wait();
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+            //    FileProvider = new PhysicalFileProvider(
+            //        Path.Combine(Directory.GetCurrentDirectory(), @"Libs")),
+            //    RequestPath = new PathString("/libs")
+            });
 
             app.UseHttpsRedirection()
                 .UseAuthentication()
