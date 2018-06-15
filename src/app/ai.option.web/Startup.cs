@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using ai.option.web.Configurations;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using iqoption.core.Extensions;
 using iqoption.data;
 using iqoption.data.AutofacModule;
 using iqoption.data.Services;
@@ -13,21 +11,15 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 
-using iqoption.core.Extensions;
-namespace ai.option.web
-{
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
+namespace ai.option.web {
+    public class Startup {
+        public Startup(IConfiguration configuration) {
             Configuration = configuration;
         }
 
@@ -40,19 +32,21 @@ namespace ai.option.web
             //appsetting complier
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true)
+                .AddJsonFile("appsettings.json", true)
                 .Build();
 
             services
                 .AddEntityFrameworkInMemoryDatabase()
                 //.AddEntityFrameworkSqlServer()
-                .AddDbContext<AiOptionContext>(options => options.UseSqlServer(Configuration.GetConnectionString("aioptiondb")))
+                .AddDbContext<AiOptionContext>(options =>
+                    options
+                        .UseLazyLoadingProxies()
+                        .UseSqlServer(Configuration.GetConnectionString("aioptiondb")))
                 .AddIqOptionIdentity()
                 .AddAuthentication()
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            services.Configure<CookiePolicyOptions>(options =>
-            {
+            services.Configure<CookiePolicyOptions>(options => {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
@@ -74,41 +68,33 @@ namespace ai.option.web
             builder.Populate(services);
 
             var container = builder.Build();
+
             return container.Resolve<IServiceProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IDbSeeding seed)
-        {
-            if (env.IsDevelopment())
-            {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IDbSeeding seed) {
+            if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
+            else {
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
 
             seed.SeedAsync().Wait();
 
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-            //    FileProvider = new PhysicalFileProvider(
-            //        Path.Combine(Directory.GetCurrentDirectory(), @"Libs")),
-            //    RequestPath = new PathString("/libs")
-            });
+            app.UseStaticFiles(new StaticFileOptions());
 
             app.UseHttpsRedirection()
                 .UseAuthentication()
                 .UseStaticFiles()
                 .UseCookiePolicy();
 
-            app.UseMvc(routes =>
-            {
+            app.UseMvc(routes => {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    "default",
+                    "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

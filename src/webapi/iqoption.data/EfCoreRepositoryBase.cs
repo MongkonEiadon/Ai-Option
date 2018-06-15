@@ -33,7 +33,7 @@ namespace iqoption.data
         public override TEntity Insert(TEntity entity)
         {
             var newEntity = Table.Add(entity).Entity;
-            //_dbContext.SaveChanges();
+            _dbContext.SaveChanges();
             return newEntity;
         }
 
@@ -42,7 +42,7 @@ namespace iqoption.data
             AttachIfNot(entity);
             _dbContext.Entry(entity).State = EntityState.Modified;
 
-            //_dbContext.SaveChanges();
+            _dbContext.SaveChanges();
 
             return entity;
         }
@@ -52,7 +52,7 @@ namespace iqoption.data
             AttachIfNot(entity);
             Table.Remove(entity);
 
-            //_dbContext.SaveChanges();
+            _dbContext.SaveChanges();
         }
 
         public override void Delete(TPrimaryKey id)

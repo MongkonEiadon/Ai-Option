@@ -1,13 +1,14 @@
-﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+﻿@using Microsoft.ApplicationInsights.AspNetCore
+@inject JavaScriptSnippet JavaScriptSnippet
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - ai.option.web</title>
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="~/css/site.css"/>
     <link rel="stylesheet" href="~/css/style.css"/>
     <link rel="stylesheet" href="~/css/orange.css"/>
     <link rel="stylesheet" href="~/css/logoiconfont.css"/>
@@ -30,19 +31,27 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand scroll-link" href="#home" data-id="home">
-                       <img class="img-responsive" style="max-height: 40px" src="images/logo.jpg"/>
+                        <img class="img-responsive" style="max-height: 40px" src="images/logo.jpg"/>
                     </a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="active"><a href="@Url.Action("Index", "Home")">Home</a></li>
-                        <li class=""><a href="">How it work</a></li>
-                        <li class=""><a href="">Contact Us</a></li>
-                        
+                        <li class="active">
+                            <a href="@Url.Action("Index", "Home")">Home</a>
+                        </li>
+                        <li class="">
+                            <a href="">How it work</a>
+                        </li>
+                        <li class="">
+                            <a href="">Contact Us</a>
+                        </li>
+
                         @if (!User.Identity.IsAuthenticated) {
-                            <li class=""><a href="@Url.Action("Login", "Account")">Login</a></li>
+                            <li class="">
+                                <a href="@Url.Action("Login", "Account")">Login</a>
+                            </li>
                         }
 
                         @*<li class=""><a href="#ideology" data-id="ideology" class="scroll-link">Ideology</a></li>
@@ -58,10 +67,13 @@
                                     <span class="glyphicon glyphicon-menu-down"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="@Url.Action("Index", "AiOptionPortal")">Go to Portal</a></li>
-                                    <li><a href="@Url.Action("Logout", "Account")">Logout</a></li>
+                                    <li>
+                                        <a href="@Url.Action("Index", "Portal")">Go to Portal</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Logout", "Account")">Logout</a>
+                                    </li>
                                 </ul>
-
                             }
 
                             @*<li><a href="components.html">Components</a></li>
@@ -69,7 +81,6 @@
         <li><a href="team-options.html">Team Options</a></li>
         <li><a href="../index.html">Demos</a></li>
         <li><a href="https://wrapbootstrap.com/theme/particles-personal-agency-template-WB05N7852" target="_blank">Purchase</a></li>*@
-                        
                         </li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
@@ -80,7 +91,7 @@
 </div>
 
 <partial name="_CookieConsentPartial"/>
-    
+
 @RenderBody()
 
 
@@ -90,9 +101,15 @@
             <div class="col-sm-8 col-sm-offset-2 text-center">
                 <span class="icon-handle-streamline-vector logo"></span>
                 <h2 class="theme-title">Particles<span class="theme-title-smaller">Theme</span></h2>
-                <a href="#"><span class="ion-social-twitter social-icons-dark-hover mr15"></span></a>
-                <a href="#"><span class="ion-social-facebook social-icons-dark-hover mr15"></span></a>
-                <a href="#"><span class="ion-social-googleplus-outline social-icons-dark-hover"></span></a>
+                <a href="#">
+                    <span class="ion-social-twitter social-icons-dark-hover mr15"></span>
+                </a>
+                <a href="#">
+                    <span class="ion-social-facebook social-icons-dark-hover mr15"></span>
+                </a>
+                <a href="#">
+                    <span class="ion-social-googleplus-outline social-icons-dark-hover"></span>
+                </a>
             </div>
         </div>
         <div class="row">
@@ -106,10 +123,10 @@
 </footer>
 
 
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/parallax.min.js"></script>
-    @RenderSection("Scripts", required: false)
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/js/parallax.min.js"></script>
+@RenderSection("Scripts", false)
 </body>
 </html>

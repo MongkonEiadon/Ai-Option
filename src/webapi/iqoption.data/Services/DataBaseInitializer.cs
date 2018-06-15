@@ -37,14 +37,16 @@ namespace iqoption.data.Services
         }
 
         private async Task SeedUser() {
-  //
-            if (_context.Roles.Any(x => x.Name == "Administrator")) {
+
+            if (_context.Roles.Any(x => x.Name == "Administrator"))
+            {
                 return;
             }
 
             await _roleManager.CreateAsync(new IdentityRole("Administrator"));
 
-            await _userManager.CreateAsync(new UserDto() {
+            await _userManager.CreateAsync(new UserDto()
+            {
                 UserName = "m@email.com",
                 EmailConfirmed = true,
                 Email = "m@email.com"

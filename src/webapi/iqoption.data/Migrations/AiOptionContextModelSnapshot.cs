@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using iqoption.data;
 
 namespace iqoption.data.Migrations
 {
     [DbContext(typeof(AiOptionContext))]
-    [Migration("20180601145118_AddUserInformation")]
-    partial class AddUserInformation
+    partial class AiOptionContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,13 +19,28 @@ namespace iqoption.data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("iqoption.data.Model.IqOptionUserDto", b =>
+            modelBuilder.Entity("iqoption.data.Model.IqOptionAccountDto", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("CreatedOn")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Address");
+
+                    b.Property<string>("Avartar");
+
+                    b.Property<long>("Balance");
+
+                    b.Property<long>("BalanceId");
+
+                    b.Property<DateTime>("BirthDate");
+
+                    b.Property<string>("City");
+
+                    b.Property<DateTime?>("CreatedOn");
+
+                    b.Property<string>("Currency");
+
+                    b.Property<string>("CurrencyChar");
 
                     b.Property<int>("IqOptionUserId");
 
@@ -36,11 +49,12 @@ namespace iqoption.data.Migrations
 
                     b.Property<bool>("IsActive");
 
+                    b.Property<DateTime?>("LastSyned");
+
                     b.Property<string>("Password")
                         .IsRequired();
 
-                    b.Property<DateTime?>("UpdatedOn")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<DateTime?>("UpdatedOn");
 
                     b.Property<string>("UserId");
 
@@ -48,7 +62,7 @@ namespace iqoption.data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("IqOptionUser");
+                    b.ToTable("IqOptionAccount");
                 });
 
             modelBuilder.Entity("iqoption.data.Model.UserDto", b =>
@@ -222,10 +236,10 @@ namespace iqoption.data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("iqoption.data.Model.IqOptionUserDto", b =>
+            modelBuilder.Entity("iqoption.data.Model.IqOptionAccountDto", b =>
                 {
                     b.HasOne("iqoption.data.Model.UserDto", "User")
-                        .WithMany("IqOptionUsers")
+                        .WithMany()
                         .HasForeignKey("UserId");
                 });
 

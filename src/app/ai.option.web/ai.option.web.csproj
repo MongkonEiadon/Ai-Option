@@ -32,6 +32,12 @@
     <Content Update="Views\IqOption\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\IqOption\Partial\_IqOptionProfileResponsePartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Portal\IqOptionAccount.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Shared\_IqOptionPartial.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

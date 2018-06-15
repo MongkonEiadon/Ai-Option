@@ -1,34 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
-using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
-namespace ai.option.web.ViewModels
-{
-    public class IqOptionRequest
-    {
+namespace ai.option.web.ViewModels {
+    public class IqOptionRequestViewModel {
+        [JsonProperty("EmailAddress")]
         [Required(ErrorMessage = "IqOption username required!")]
         [EmailAddress(ErrorMessage = "Please enter valid email address!")]
         [Display(Prompt = "Username")]
         public string EmailAddress { get; set; }
-        
+
+        [JsonProperty("Password")]
         [Required(ErrorMessage = "IqOption Password required!")]
         [Display(Prompt = "Password")]
         public string Password { get; set; }
+
+        public IqOptionProfileResponseViewModel ProfileResponseViewModel { get; set; }
     }
 
     public class LoginViewModel {
-
         [Display(Description = "Username", Prompt = "example@email.com")]
-        [Required (ErrorMessage = "Your unique email to login app")]
-        [EmailAddress (ErrorMessage = "Username must be in email format")]
+        [Required(ErrorMessage = "Your unique email to login app")]
+        [EmailAddress(ErrorMessage = "Username must be in email format")]
         public string EmailAddress { get; set; }
-        
+
         [Display(Description = "Password", Prompt = "********")]
         [Required(ErrorMessage = "Password required!")]
         public string Password { get; set; }
@@ -41,11 +35,4 @@ namespace ai.option.web.ViewModels
         [Display(Description = "Invitation Code")]
         public string InvitationCode { get; set; }
     }
-    
-
-
-
-
-
 }
-    

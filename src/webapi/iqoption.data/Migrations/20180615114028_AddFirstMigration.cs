@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace iqoption.data.Migrations
 {
-    public partial class AddUserInformation : Migration
+    public partial class AddFirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,23 +26,23 @@ namespace iqoption.data.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    Id = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: true),
                     SecurityStamp = table.Column<string>(nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
                     GivenName = table.Column<string>(nullable: true),
                     FamilyName = table.Column<string>(nullable: true),
+                    Id = table.Column<string>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: true),
                     UpdatedOn = table.Column<DateTime>(nullable: true)
                 },
@@ -158,23 +158,32 @@ namespace iqoption.data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "IqOptionUser",
+                name: "IqOptionAccount",
                 columns: table => new
                 {
                     CreatedOn = table.Column<DateTime>(nullable: true),
                     UpdatedOn = table.Column<DateTime>(nullable: true),
                     IsActive = table.Column<bool>(nullable: false),
                     Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<string>(nullable: true),
                     IqOptionUserId = table.Column<int>(nullable: false),
                     IqOptionUserName = table.Column<string>(nullable: false),
-                    Password = table.Column<string>(nullable: false)
+                    Password = table.Column<string>(nullable: false),
+                    LastSyned = table.Column<DateTime>(nullable: true),
+                    Balance = table.Column<long>(nullable: false),
+                    BalanceId = table.Column<long>(nullable: false),
+                    Currency = table.Column<string>(nullable: true),
+                    CurrencyChar = table.Column<string>(nullable: true),
+                    BirthDate = table.Column<DateTime>(nullable: false),
+                    Address = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    Avartar = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IqOptionUser", x => x.Id);
+                    table.PrimaryKey("PK_IqOptionAccount", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_IqOptionUser_AspNetUsers_UserId",
+                        name: "FK_IqOptionAccount_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -221,8 +230,8 @@ namespace iqoption.data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IqOptionUser_UserId",
-                table: "IqOptionUser",
+                name: "IX_IqOptionAccount_UserId",
+                table: "IqOptionAccount",
                 column: "UserId");
         }
 
@@ -244,7 +253,7 @@ namespace iqoption.data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "IqOptionUser");
+                name: "IqOptionAccount");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

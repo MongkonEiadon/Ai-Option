@@ -55,34 +55,34 @@ namespace iqoption.data.Services {
         private async Task SeedTraderFollowers() {
 
             var trader = new TraderDto() {
-                IqOptionUserDto = new IqOptionUserDto() {
+                IqOptionAccountDto = new IqOptionAccountDto() {
                     IqOptionUserId = 31773196,
                     Password = "Code11054",
                     IqOptionUserName = "mongkon.eiadon@gmail.com"
                 }
             };
 
-            if (_context.IqOptionUsers.Find(trader.IqOptionUserDto.Id) == null) {
+            if (_context.IqOptionUsers.Find(trader.IqOptionAccountDto.Id) == null) {
 
-                trader.IqOptionUserDto.User = await _userManager.FindByEmailAsync(trader.IqOptionUserDto.IqOptionUserName);
-                _context.IqOptionUsers.Add(trader.IqOptionUserDto);
+                trader.IqOptionAccountDto.User = await _userManager.FindByEmailAsync(trader.IqOptionAccountDto.IqOptionUserName);
+                _context.IqOptionUsers.Add(trader.IqOptionAccountDto);
                
             }
 
 
             var follower = new FollowerDto() {
-                IqOptionUserDto = new IqOptionUserDto() {
+                IqOptionAccountDto = new IqOptionAccountDto() {
                     IqOptionUserId = 21853876,
                     Password = "Code11054",
                     IqOptionUserName = "liie.m@excelbangkok.com"
                 }
             };
 
-            if (_context.IqOptionUsers.Find(follower.IqOptionUserDto.Id) == null)
+            if (_context.IqOptionUsers.Find(follower.IqOptionAccountDto.Id) == null)
             {
 
-                follower.IqOptionUserDto.User = await _userManager.FindByEmailAsync(follower.IqOptionUserDto.IqOptionUserName);
-                _context.IqOptionUsers.Add(follower.IqOptionUserDto);
+                follower.IqOptionAccountDto.User = await _userManager.FindByEmailAsync(follower.IqOptionAccountDto.IqOptionUserName);
+                _context.IqOptionUsers.Add(follower.IqOptionAccountDto);
             }
         }
         

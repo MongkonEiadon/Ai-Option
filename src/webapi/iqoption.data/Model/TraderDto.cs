@@ -10,7 +10,7 @@ namespace iqoption.data.Model {
         
         
         [Required]
-        public IqOptionUserDto IqOptionUserDto { get; set; }
+        public IqOptionAccountDto IqOptionAccountDto { get; set; }
 
     }
 }

@@ -1,13 +1,15 @@
 ﻿using System.Threading.Tasks;
 using ai.option.web.ViewModels;
+using AutoMapper;
 using iqoptionapi;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ai.option.web.Controllers {
     public class IqOptionController : Controller {
-        
-        public IqOptionController() {
+        private readonly IMapper _mapper;
 
+        public IqOptionController(IMapper mapper) {
+            _mapper = mapper;
         }
 
 
@@ -15,20 +17,26 @@ namespace ai.option.web.Controllers {
             return View();
         }
 
+        public IActionResult IqOptionProfile(IqOptionRequestViewModel model) {
+            return PartialView("Partial/_IqOptionProfileResponsePartial", model);
+        }
 
-        [HttpPost]
-        public async Task<IActionResult> GetTokenAsync([Bind("EmailAddress,Password")] IqOptionRequest request) { 
-            var response = new IqOptionResponse();
 
-            using (var api = new IqOptionApi(request.EmailAddress, request.Password)) {
+        [HttpGet]
+        public async Task<IActionResult> GetTokenAsync(IqOptionRequestViewModel requestViewModel) {
+            if (string.IsNullOrEmpty(requestViewModel.EmailAddress) ||
+                string.IsNullOrEmpty(requestViewModel.Password))
+                return Ok();
 
-                var token = await api.GetTokenAsync();
+            var api = new IqOptionApi(requestViewModel.EmailAddress, requestViewModel.Password);
 
-                response.Token = token;
-            }
+            var token = await api.GetTokenAsync()
+                .ContinueWith(t => api.GetProfileAsync())
+                .Unwrap();
 
-            return Index();
+            requestViewModel.ProfileResponseViewModel = _mapper.Map<IqOptionProfileResponseViewModel>(token);
+
+            return IqOptionProfile(requestViewModel);
         }
     }
 }
-

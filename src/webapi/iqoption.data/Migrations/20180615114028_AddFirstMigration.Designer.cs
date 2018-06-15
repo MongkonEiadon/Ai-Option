@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using iqoption.data;
 
 namespace iqoption.data.Migrations
 {
     [DbContext(typeof(AiOptionContext))]
-    partial class iqOptionContextModelSnapshot : ModelSnapshot
+    [Migration("20180615114028_AddFirstMigration")]
+    partial class AddFirstMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,35 +21,28 @@ namespace iqoption.data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("iqoption.data.Model.FollowerDto", b =>
+            modelBuilder.Entity("iqoption.data.Model.IqOptionAccountDto", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("CreatedOn")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Address");
 
-                    b.Property<Guid>("IqOptionUserDtoId");
+                    b.Property<string>("Avartar");
 
-                    b.Property<bool>("IsActive");
+                    b.Property<long>("Balance");
 
-                    b.Property<DateTime?>("UpdatedOn")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<long>("BalanceId");
 
-                    b.HasKey("Id");
+                    b.Property<DateTime>("BirthDate");
 
-                    b.HasIndex("IqOptionUserDtoId");
+                    b.Property<string>("City");
 
-                    b.ToTable("Follower");
-                });
+                    b.Property<DateTime?>("CreatedOn");
 
-            modelBuilder.Entity("iqoption.data.Model.IqOptionUserDto", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Currency");
 
-                    b.Property<DateTime?>("CreatedOn")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("CurrencyChar");
 
                     b.Property<int>("IqOptionUserId");
 
@@ -56,11 +51,12 @@ namespace iqoption.data.Migrations
 
                     b.Property<bool>("IsActive");
 
+                    b.Property<DateTime?>("LastSyned");
+
                     b.Property<string>("Password")
                         .IsRequired();
 
-                    b.Property<DateTime?>("UpdatedOn")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<DateTime?>("UpdatedOn");
 
                     b.Property<string>("UserId");
 
@@ -68,55 +64,7 @@ namespace iqoption.data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("IqOptionUser");
-                });
-
-            modelBuilder.Entity("iqoption.data.Model.TraderDto", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime?>("CreatedOn")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid>("IqOptionUserDtoId");
-
-                    b.Property<bool>("IsActive");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IqOptionUserDtoId");
-
-                    b.ToTable("Trader");
-                });
-
-            modelBuilder.Entity("iqoption.data.Model.TraderFollwerDto", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime?>("CreatedOn")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid>("FollowerId");
-
-                    b.Property<bool>("IsActive");
-
-                    b.Property<Guid>("TraderId");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FollowerId");
-
-                    b.HasIndex("TraderId");
-
-                    b.ToTable("TraderFollwers");
+                    b.ToTable("IqOptionAccount");
                 });
 
             modelBuilder.Entity("iqoption.data.Model.UserDto", b =>
@@ -290,40 +238,11 @@ namespace iqoption.data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("iqoption.data.Model.FollowerDto", b =>
-                {
-                    b.HasOne("iqoption.data.Model.IqOptionUserDto", "IqOptionUserDto")
-                        .WithMany()
-                        .HasForeignKey("IqOptionUserDtoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("iqoption.data.Model.IqOptionUserDto", b =>
+            modelBuilder.Entity("iqoption.data.Model.IqOptionAccountDto", b =>
                 {
                     b.HasOne("iqoption.data.Model.UserDto", "User")
-                        .WithMany("IqOptionUsers")
+                        .WithMany()
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("iqoption.data.Model.TraderDto", b =>
-                {
-                    b.HasOne("iqoption.data.Model.IqOptionUserDto", "IqOptionUserDto")
-                        .WithMany()
-                        .HasForeignKey("IqOptionUserDtoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("iqoption.data.Model.TraderFollwerDto", b =>
-                {
-                    b.HasOne("iqoption.data.Model.FollowerDto", "Follower")
-                        .WithMany()
-                        .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("iqoption.data.Model.TraderDto", "Trader")
-                        .WithMany()
-                        .HasForeignKey("TraderId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
