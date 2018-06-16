@@ -6,7 +6,7 @@ using iqoptionapi.models;
 using Microsoft.Extensions.Logging;
 
 namespace iqoption.trading.services {
-    public class IqOptionApiClient
+    public class IqOptionApiClient : IDisposable
     {
         private readonly IObservable<InfoData> _infoDataObservable;
 
@@ -43,6 +43,10 @@ namespace iqoption.trading.services {
                 .Subscribe(async x => {
                     var result = await ApiClient.BuyAsync(x.ActiveId, (int)x.Sum, x.Direction, x.Expired);
                 });
+        }
+
+        public void Dispose() {
+            ApiClient?.Dispose();
         }
     }
 }

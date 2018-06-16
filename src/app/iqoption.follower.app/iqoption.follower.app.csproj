@@ -16,7 +16,6 @@
   <ItemGroup>
     <Content Include="appsettings.json">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TransformOnBuild>true</TransformOnBuild>
     </Content>
   </ItemGroup>
@@ -36,11 +35,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\iqoption.core\iqoption.core.csproj" />
+    <ProjectReference Include="..\..\iqoption.domain\iqoption.domain.csproj" />
     <ProjectReference Include="..\..\iqoption.trading.services\iqoption.trading.services.csproj" />
+    <ProjectReference Include="..\..\webapi\iqoption.data\iqoption.data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="appsettings - Copy.Release.json">
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Update="appsettings.Debug.json">
+      <IsTransformFile>True</IsTransformFile>
+    </None>
     <None Update="appsettings.Development.Debug.json">
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Update="appsettings.FolderProfile.json">
       <IsTransformFile>True</IsTransformFile>
     </None>
     <None Update="appsettings.Release.json">

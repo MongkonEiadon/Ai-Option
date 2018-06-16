@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Content Remove="appsettings.aioption - Web Deploy.json" />
-    <Content Remove="appsettings.Debug.json" />
     <Content Remove="appsettings.FolderProfile.json" />
     <Content Remove="appsettings.Release.json" />
   </ItemGroup>
@@ -100,9 +99,6 @@
 
   <ItemGroup>
     <None Include="appsettings.aioption - Web Deploy.json">
-      <IsTransformFile>True</IsTransformFile>
-    </None>
-    <None Include="appsettings.Debug.json">
       <IsTransformFile>True</IsTransformFile>
     </None>
     <None Include="appsettings.FolderProfile.json">

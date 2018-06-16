@@ -1,19 +1,18 @@
 ﻿using System;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using iqoptionapi.models;
 using Microsoft.Extensions.Logging;
 
 namespace iqoption.trading.services
 {
-
     public interface ITradingPersistenceService
     {
 
         bool IsStarted { get; }
         Task InitializeTradingsServiceAsync();
-
-
     }
     public class TradingPersistenceService : ITradingPersistenceService
     {
@@ -31,8 +30,6 @@ namespace iqoption.trading.services
             _followerManager = followerManager;
             _logger = logger;
 
-
-
             //merge when addding new client
             traderManager.Traders.AddObservable()
                 .Merge(followerManager.Followers.AddObservable())
@@ -45,16 +42,33 @@ namespace iqoption.trading.services
         {
 
             IsStarted = true;
-            
-            //_traderManager.AppendUser("mongkon.eiadon@gmail.com", "Code11054");
-
             _traderManager.AppendUser("master.trader.xm6@hotmail.com", "123456789xyz");
-            _followerManager.AppendUser("master.trader.xm3@hotmail.com", "123456789def", _traderManager.TradersInfoDataObservable());
-            _followerManager.AppendUser("master.trader.xm5@hotmail.com", "123456789abc", _traderManager.TradersInfoDataObservable());
-            _followerManager.AppendUser("liie.m@excelbangkok.com", "Code11054", _traderManager.TradersInfoDataObservable());
 
 
+           var interval =  Observable
+                .Interval(TimeSpan.FromMinutes(1), Scheduler.Immediate)
+                .Publish();
 
+            interval
+                .Select(x => _followerManager.GetActiveAccountNotOnFollowersTask().Result)
+                .Subscribe(x => {
+                    x.ForEach(y => {
+                        _followerManager.AppendUser(y.IqOptionUserName, y.Password, _traderManager.TradersInfoDataObservable());
+                    });
+                });
+
+            interval
+                .Select(x => _followerManager.GetInActiveAccountOnFollowersTask().Result)
+                .Subscribe(x => {
+                    x.ForEach(y => {
+                        _followerManager.RemoveByEmailAddress(y.IqOptionUserName);
+                    });
+                });
+
+            interval.Connect();
+
+            
+            
 
             return Task.CompletedTask;
         }
