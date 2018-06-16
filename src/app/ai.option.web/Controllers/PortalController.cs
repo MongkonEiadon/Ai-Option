@@ -69,5 +69,21 @@ namespace ai.option.web.Controllers {
 
             return RedirectToAction("IqOptionAccount", "Portal");
         }
+
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> UpdateIsActiveAsync(Guid iqoptionAccountId) {
+
+
+            var dto = await _iqOptionAccountService.GetAccountByIdAsync(iqoptionAccountId);
+            if (dto != null) {
+                dto.IsActive = !dto.IsActive;
+                dto.UpdatedOn = DateTime.Now;
+                await _iqOptionAccountService.UpdateAccountTask(dto);
+            }
+
+            return RedirectToAction("IqOptionAccount", "Portal");
+        }
     }
 }

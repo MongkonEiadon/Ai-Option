@@ -7,7 +7,9 @@ namespace ai.option.web.ViewModels {
         public string Balance { get; set; }
         public string Currency { get; set; }
         public string CurrencyChar { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedOn { get; set; }
         public DateTime LastSynced { get; set; }
+        public bool IsActive { get; set; }
+        public Guid IqOptionAccountId { get; set; }
     }
 }

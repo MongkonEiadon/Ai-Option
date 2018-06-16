@@ -12,6 +12,7 @@ namespace iqoption.data.Services {
         Task<List<IqOptionAccountDto>> GetIqOptionAccountsByUserIdAsync(string userName);
         Task<IqOptionAccountDto> UpdateAccountTask(IqOptionAccountDto accont);
         Task<IqOptionAccountDto> GetAccountByUserIdAsync(long userId);
+        Task<IqOptionAccountDto> GetAccountByIdAsync(Guid id);
     }
     public class IqOptionAccountService : IIqOptionAccountService {
         private readonly IRepository<IqOptionAccountDto> _iqOptionUserRepository;
@@ -41,6 +42,11 @@ namespace iqoption.data.Services {
 
         public Task<IqOptionAccountDto> GetAccountByUserIdAsync(long userId) {
             return _iqOptionUserRepository.FirstOrDefaultAsync(x => x.IqOptionUserId == userId);
+        }
+
+
+        public Task<IqOptionAccountDto> GetAccountByIdAsync(Guid id) {
+            return _iqOptionUserRepository.FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

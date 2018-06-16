@@ -60,7 +60,7 @@ namespace ai.option.web.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> RegisterAsync(LoginViewModel model) {
-            if (ModelState.IsValid) {
+            if (ModelState.IsValid && model.InvitationCode == "Bas Mastertrade") {
                 var user = _mapper.Map<UserDto>(model);
                 var result = await _userManager.CreateAsync(user, model.Password);
 

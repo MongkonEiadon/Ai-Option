@@ -21,6 +21,8 @@ namespace iqoption.data.Model
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? UpdatedOn { get; set; }
+
+        public string InviationCode { get; set; }
         
     }
 }

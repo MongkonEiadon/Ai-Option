@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using ai.option.web.ViewModels;
 using AutoMapper;
 using iqoptionapi;
@@ -18,7 +19,7 @@ namespace ai.option.web.Controllers {
         }
 
         public IActionResult IqOptionProfile(IqOptionRequestViewModel model) {
-            return PartialView("Partial/_IqOptionProfileResponsePartial", model);
+            return PartialView("IqOption/_IqOptionAccountViewPartial", model);
         }
 
 
@@ -38,5 +39,6 @@ namespace ai.option.web.Controllers {
 
             return IqOptionProfile(requestViewModel);
         }
+        
     }
 }

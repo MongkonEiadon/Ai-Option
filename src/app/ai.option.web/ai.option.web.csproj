@@ -7,9 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="appsettings.aioption - Web Deploy.json" />
+    <Content Remove="appsettings.Debug.json" />
+    <Content Remove="appsettings.FolderProfile.json" />
+    <Content Remove="appsettings.Release.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Properties\PublishProfiles\aioption - Web Deploy.pubxml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="4.0.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.SlowCheetah" Version="3.0.61" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="appsettings.json">
+      <TransformOnBuild>true</TransformOnBuild>
+    </Content>
     <Content Update="Views\Account\Register.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
@@ -32,7 +47,10 @@
     <Content Update="Views\IqOption\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\IqOption\Partial\_IqOptionProfileResponsePartial.cshtml">
+    <Content Update="Views\Shared\IqOption\_IqOptionAccountViewPartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\Portal\_IqOptionProfileResponsePartial.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Portal\IqOptionAccount.cshtml">
@@ -78,6 +96,21 @@
 
   <ItemGroup>
     <Folder Include="Pages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="appsettings.aioption - Web Deploy.json">
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="appsettings.Debug.json">
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="appsettings.FolderProfile.json">
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="appsettings.Release.json">
+      <IsTransformFile>True</IsTransformFile>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
