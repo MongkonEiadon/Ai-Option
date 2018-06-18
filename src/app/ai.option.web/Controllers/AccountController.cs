@@ -54,7 +54,7 @@ namespace ai.option.web.Controllers {
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Register() {
+        public IActionResult Register() {
             return View("Register");
         }
 

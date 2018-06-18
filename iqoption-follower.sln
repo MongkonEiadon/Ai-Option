@@ -17,17 +17,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.trading.services",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoptionapi", "src\iqoptionapi\iqoptionapi.csproj", "{48C78110-591C-4494-8BF9-2BCBA0C64962}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.data", "src\webapi\iqoption.data\iqoption.data.csproj", "{B9985BAC-1AC4-4071-B8D9-C9E01DA0F5FF}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.follower.app", "src\app\iqoption.follower.app\iqoption.follower.app.csproj", "{B7E25417-A04F-4EF1-8CCE-A39D0E646426}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.core", "src\iqoption.core\iqoption.core.csproj", "{C572FA46-851F-4634-BB6C-F63FB1764E17}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ai.option.web", "src\App\ai.option.web\ai.option.web.csproj", "{28F0EBA7-0466-4EF5-82AA-3A2571C78785}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ai.option.web.unit", "tests\App\ai.option.web.unit\ai.option.web.unit.csproj", "{B6A80E49-CF39-4B2E-8792-BFC0E2311F91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ai.option.web.unit", "tests\App\ai.option.web.unit\ai.option.web.unit.csproj", "{B6A80E49-CF39-4B2E-8792-BFC0E2311F91}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutofacContrib.Nsubstitute", "tests\AutofacContrib.Nsubstitute\AutofacContrib.Nsubstitute.csproj", "{4F23AF62-1BC6-4B69-881C-738683ACB19A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.data", "src\iqoption.data\iqoption.data.csproj", "{4213CA71-A52D-4F1B-A061-4DD500C222EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,10 +55,6 @@ Global
 		{48C78110-591C-4494-8BF9-2BCBA0C64962}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48C78110-591C-4494-8BF9-2BCBA0C64962}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48C78110-591C-4494-8BF9-2BCBA0C64962}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B9985BAC-1AC4-4071-B8D9-C9E01DA0F5FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B9985BAC-1AC4-4071-B8D9-C9E01DA0F5FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B9985BAC-1AC4-4071-B8D9-C9E01DA0F5FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B9985BAC-1AC4-4071-B8D9-C9E01DA0F5FF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B7E25417-A04F-4EF1-8CCE-A39D0E646426}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B7E25417-A04F-4EF1-8CCE-A39D0E646426}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7E25417-A04F-4EF1-8CCE-A39D0E646426}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -79,6 +75,10 @@ Global
 		{4F23AF62-1BC6-4B69-881C-738683ACB19A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F23AF62-1BC6-4B69-881C-738683ACB19A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F23AF62-1BC6-4B69-881C-738683ACB19A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4213CA71-A52D-4F1B-A061-4DD500C222EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4213CA71-A52D-4F1B-A061-4DD500C222EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4213CA71-A52D-4F1B-A061-4DD500C222EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4213CA71-A52D-4F1B-A061-4DD500C222EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
