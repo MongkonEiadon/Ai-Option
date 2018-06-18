@@ -12,6 +12,8 @@ using iqoption.core.Extensions;
 using iqoption.data;
 using iqoption.data.AutofacModule;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging.Configuration;
 
 namespace iqoption.follower.app
 {
@@ -66,15 +68,22 @@ namespace iqoption.follower.app
             services
                 .AddEntityFrameworkInMemoryDatabase()
                 .AddDbContext<AiOptionContext>(op => {
+                    
                     op.UseLazyLoadingProxies()
+                        .UseLoggerFactory(new NullLoggerFactory())
                         .UseSqlServer(Configuration.GetConnectionString("aioptiondb"));
                 })
                 .AddAutoMapper()
                 .AddMvc()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+            
+            
 
             //logging
             services
+                .AddLogging(c => {
+                    c.AddConsole(cfg => { cfg.DisableColors = false; });
+                })
                 .AddSingleton<ILoggerFactory, LoggerFactory>()
                 .AddSingleton<ILogger>(c => c.GetService<ILogger<Startup>>())
                 .AddSingleton(typeof(ILogger<>), typeof(Logger<>)); // Add first my already configured instance

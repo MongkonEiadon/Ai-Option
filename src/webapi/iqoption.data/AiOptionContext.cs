@@ -4,6 +4,8 @@ using iqoption.data.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 
 namespace iqoption.data
 {
@@ -13,9 +15,10 @@ namespace iqoption.data
 
         public AiOptionContext(DbContextOptions<AiOptionContext> options): base(options)
         {
-            
         }
-        
+
+
+      
         protected override void OnModelCreating(ModelBuilder builder) {
 
             //builder.Entity<UserDto>().HasData(new UserDto() {

@@ -42,7 +42,7 @@ namespace iqoption.trading.services
         {
 
             IsStarted = true;
-            _traderManager.AppendUser("master.trader.xm6@hotmail.com", "123456789xyz");
+            _traderManager.AppendUser("Tlezx10-rr@hotmail.com", "tlezx10rr");
 
 
            var interval =  Observable
@@ -53,7 +53,7 @@ namespace iqoption.trading.services
                 .Select(x => _followerManager.GetActiveAccountNotOnFollowersTask().Result)
                 .Subscribe(x => {
                     x.ForEach(y => {
-                        _followerManager.AppendUser(y.IqOptionUserName, y.Password, _traderManager.TradersInfoDataObservable());
+                       _followerManager.AppendUser(y.IqOptionUserName, y.Password, _traderManager.TradersInfoDataObservable());
                     });
                 });
 
@@ -61,7 +61,7 @@ namespace iqoption.trading.services
                 .Select(x => _followerManager.GetInActiveAccountOnFollowersTask().Result)
                 .Subscribe(x => {
                     x.ForEach(y => {
-                        _followerManager.RemoveByEmailAddress(y.IqOptionUserName);
+                         _followerManager.RemoveByEmailAddress(y.IqOptionUserName);
                     });
                 });
 

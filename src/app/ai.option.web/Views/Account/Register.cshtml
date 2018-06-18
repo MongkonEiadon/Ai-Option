@@ -50,6 +50,11 @@
                 @Html.TextBoxFor(m => m.InvitationCode, new {@class = "form-control", id = "invitationCode", required = true, type = "password"})
                 <span class="help-block small field-validation-valid" data-valmsg-for="invitationCode">@Html.ValidationMessageFor(m => m.InvitationCode)</span>
             </div>
+
+            <div class="form-group">
+                <span class="help-block small field-validation-error">@ViewData["ErrorMessage"]</span>
+            </div>
+
             <div>
                 <button type="submit" class="btn btn-accent">Register</button>
                 <a class="btn btn-default" href="@Url.Action("Login", "Account")">Login</a>

@@ -60,14 +60,22 @@ namespace ai.option.web.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> RegisterAsync(LoginViewModel model) {
-            if (ModelState.IsValid && model.InvitationCode == "Bas Mastertrade") {
+
+            ViewData["ErrorMessage"] = "";
+
+            if (model.InvitationCode != "AIoptionV1") {
+                ViewData["ErrorMessage"] = "รหัส InvitationCode ไม่ถูกต้อง!";
+                return View("Register");
+            }
+
+            if (ModelState.IsValid && model.InvitationCode == "AIoptionV1") {
                 var user = _mapper.Map<UserDto>(model);
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                     return await LogInAsync(model);
 
-                ModelState.AddModelError("ErrorMessage", string.Join(", ", result.Errors.Select(x => x.Description)));
+                ViewData["ErrorMessage"] = string.Join(", ", result.Errors.Select(x => x.Description));
             }
 
 

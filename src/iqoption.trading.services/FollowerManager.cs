@@ -40,7 +40,9 @@ namespace iqoption.trading.services
         public void AppendUser(string email, string password, IObservable<InfoData> tradersInfoDataObservable) {
 
             if (Followers.All(x => x.User.Email != email)) {
-                _logger.LogInformation($"Append user to followers list [{Followers.Count}] - {email}");
+                _logger.LogInformation(new StringBuilder($"Add {email},")
+                    .AppendLine($"Now trading-followers account = {Followers.Count} Account(s).").ToString());
+
                 var follower = new IqOptionApiClient(email, password, tradersInfoDataObservable.Where(x => x.Win.ToLower() == "equal"));
                 Followers.Add(follower);
             }
@@ -52,8 +54,8 @@ namespace iqoption.trading.services
 
             _logger
                 .LogInformation(new StringBuilder(
-                            $"Remove inactive account by email {emailAddress}")
-                .AppendLine($"Now trading-followers account  = {Followers.Count} Accout.")
+                            $"Remove {emailAddress},")
+                .AppendLine($"Now trading-followers account  = {Followers.Count} Accout(s).")
                 .ToString());
 
         }

@@ -38,6 +38,7 @@
     <ProjectReference Include="..\..\iqoption.core\iqoption.core.csproj" />
     <ProjectReference Include="..\..\iqoption.domain\iqoption.domain.csproj" />
     <ProjectReference Include="..\..\iqoption.trading.services\iqoption.trading.services.csproj" />
+    <ProjectReference Include="..\..\iqoptionapi\iqoptionapi.csproj" />
     <ProjectReference Include="..\..\webapi\iqoption.data\iqoption.data.csproj" />
   </ItemGroup>
 
