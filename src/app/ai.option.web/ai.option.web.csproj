@@ -2,13 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <ApplicationInsightsResourceId>/subscriptions/0e286d20-e024-4558-acbf-dc44a2974151/resourcegroups/iqoption-devtest/providers/microsoft.insights/components/aioption-appinsights</ApplicationInsightsResourceId>
-    <ApplicationInsightsAnnotationResourceId>/subscriptions/0e286d20-e024-4558-acbf-dc44a2974151/resourcegroups/iqoption-devtest/providers/microsoft.insights/components/aioption-appinsights</ApplicationInsightsAnnotationResourceId>
+    <ApplicationInsightsResourceId>/subscriptions/0e286d20-e024-4558-acbf-dc44a2974151/resourcegroups/aioption-prod/providers/microsoft.insights/components/aioption</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/0e286d20-e024-4558-acbf-dc44a2974151/resourceGroups/aioption-prod/providers/microsoft.insights/components/aioption</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="appsettings.aioption - Web Deploy.json" />
-    <Content Remove="appsettings.FolderProfile.json" />
+    <Content Remove="appsettings.Debug.json" />
     <Content Remove="appsettings.Release.json" />
   </ItemGroup>
 
@@ -98,10 +97,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="appsettings.aioption - Web Deploy.json">
-      <IsTransformFile>True</IsTransformFile>
-    </None>
-    <None Include="appsettings.FolderProfile.json">
+    <None Include="appsettings.Debug.json">
       <IsTransformFile>True</IsTransformFile>
     </None>
     <None Include="appsettings.Release.json">

@@ -10,7 +10,7 @@ namespace iqoption.trading.services
         public static IServiceCollection AddTradingServices(this IServiceCollection This) {
 
 
-            This.AddTransient<ITraderManager, TradersManager>();
+            This.AddTransient<IMasterTraderManager, MasterTradersManager>();
             This.AddTransient<IFollowerManager, FollowerManager>();
             This.AddSingleton<TradingPersistenceService>();
 
