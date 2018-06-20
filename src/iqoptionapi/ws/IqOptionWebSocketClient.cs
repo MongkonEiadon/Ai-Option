@@ -140,16 +140,22 @@ namespace iqoptionapi.ws {
                         break;
                     }
 
-                    case "activeCommissionChange": {
+                    case "activecommissionchange": {
                         break;
                     }
-
 
                     case "user-tournament-position-changed": {
                         break;
                     }
 
                     case "chat-state-updated": {
+                        break;
+                    }
+
+                    case "chat-room-generated": {
+                        break;
+                    }
+                    case "front": {
                         break;
                     }
 
@@ -179,7 +185,6 @@ namespace iqoptionapi.ws {
                     }
 
                     default: {
-
                         _logger.LogDebug(this.Profile?.Email + "    =>  " +a.AsJson());
                         break;
                     }
