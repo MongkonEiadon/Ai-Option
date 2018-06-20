@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using At = AutoMapper;
 
 namespace iqoption.core.Extensions
@@ -16,10 +17,10 @@ namespace iqoption.core.Extensions
         {
 
             At.ServiceCollectionExtensions.AddAutoMapper(This);
-
-          
-
             return This;
         }
+
+
+      
     }
 }

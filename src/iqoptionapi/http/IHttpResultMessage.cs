@@ -2,4 +2,8 @@
     public interface IHttpResultMessage {
 
     }
+
+    public class HttpResultMessage : IHttpResultMessage {
+
+    }
 }

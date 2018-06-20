@@ -14,6 +14,9 @@ using iqoption.data.AutofacModule;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging.Configuration;
+using Serilog.Events;
+using Serilog;
+using Serilog.Configuration;
 
 namespace iqoption.follower.app
 {
@@ -76,18 +79,28 @@ namespace iqoption.follower.app
                 .AddAutoMapper()
                 .AddMvc()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
-            
-            
+
+
 
             //logging
-            services
-                .AddLogging(c => {
-                    c.AddConsole(cfg => { cfg.DisableColors = false; });
-                })
-                .AddSingleton<ILoggerFactory, LoggerFactory>()
-                .AddSingleton<ILogger>(c => c.GetService<ILogger<Startup>>())
-                .AddSingleton(typeof(ILogger<>), typeof(Logger<>)); // Add first my already configured instance
-            
+
+
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.ColoredConsole()
+                .CreateLogger();
+
+            var loggerFactory = new LoggerFactory().AddSerilog(Log.Logger);
+
+            services.AddSingleton(loggerFactory);
+            services.AddSingleton(loggerFactory.CreateLogger(nameof(data.Startup)));
+            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+
+
+
 
             //add trandings services
             services
@@ -98,6 +111,24 @@ namespace iqoption.follower.app
             var container = builder.Build();
 
             return container.Resolve<IServiceProvider>();
+        }
+
+
+    }
+
+    public static class SeriLogMixins {
+
+        private static IServiceCollection AddSeriLogs(this IServiceCollection This) {
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .CreateLogger();
+
+
+            return This;
         }
     }
 }

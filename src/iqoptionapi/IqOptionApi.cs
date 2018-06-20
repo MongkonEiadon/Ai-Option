@@ -107,10 +107,19 @@ namespace iqoptionapi {
 
         public async Task<Profile> GetProfileAsync() {
             var result = await HttpClient.GetProfileAsync();
-            var profile = result.Content.JsonAs<IqHttpResult<Profile>>()?.Result;
-            _logger.LogTrace($"Get Profile!: \t{profile.Email}");
 
-            return profile;
+            if (result.StatusCode == HttpStatusCode.OK && 
+                result.Content.JsonAs<IqHttpResult<HttpResultMessage>>().IsSuccessful) {
+
+                var profile = result.Content.JsonAs<IqHttpResult<Profile>>()?.Result;
+                _logger.LogTrace($"Get Profile!: \t{profile.Email}");
+
+
+                return profile;
+            }
+
+            _logger.LogError(result.Content);
+            return null;
         }
 
         public async Task<bool> ChangeBalanceAsync(long balanceId) {

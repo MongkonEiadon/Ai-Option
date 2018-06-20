@@ -26,7 +26,7 @@ namespace iqoptionapi.ws {
         private readonly ILogger _logger;
         private WebSocket Client { get; }
 
-        #region [Public's]
+         #region [Public's]
 
         public IObservable<string> MessageReceivedObservable { get; }
 
@@ -133,6 +133,23 @@ namespace iqoptionapi.ws {
                             _instrumentResultSetSubject.OnCompleted();
                         }
 
+                        break;
+                    }
+
+                    case "profit-top-user-moved-up": {
+                        break;
+                    }
+
+                    case "activeCommissionChange": {
+                        break;
+                    }
+
+
+                    case "user-tournament-position-changed": {
+                        break;
+                    }
+
+                    case "chat-state-updated": {
                         break;
                     }
 

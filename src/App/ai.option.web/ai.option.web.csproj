@@ -98,12 +98,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="appsettings.aioption - Web Deploy.json">
-      <IsTransformFile>True</IsTransformFile>
-    </None>
-    <None Include="appsettings.FolderProfile.json">
-      <IsTransformFile>True</IsTransformFile>
-    </None>
     <None Include="appsettings.Release.json">
       <IsTransformFile>True</IsTransformFile>
     </None>
