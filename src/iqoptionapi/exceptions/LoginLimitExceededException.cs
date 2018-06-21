@@ -11,4 +11,13 @@ namespace iqoptionapi.exceptions
 
         }
     }
+
+    public class LoginFailedException : Exception {
+
+        public LoginFailedException(string emailAddress, object content) :
+            base($"Login With {emailAddress} not passed!, Response is : {content}")
+        {
+
+        }
+    }
 }

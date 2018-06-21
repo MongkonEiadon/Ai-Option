@@ -16,6 +16,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace ai.option.web {
     public class Startup {
@@ -54,9 +56,15 @@ namespace ai.option.web {
 
             //logging
             var loggerFactory = new LoggerFactory()
-                .AddDebug()
-                .AddConsole()
-                .AddAzureWebAppDiagnostics();
+                    .AddDebug()
+                    .AddConsole()
+                    .AddSerilog(new LoggerConfiguration()
+                        .MinimumLevel.Warning()
+                        .Enrich.FromLogContext()
+                        .WriteTo.RollingFile("Logs/web-{Date}.txt")
+                        .CreateLogger())
+                    .AddFile("Logs/ts-{Date}.txt", LogLevel.Warning)
+                    .AddAzureWebAppDiagnostics();
 
             services
                 .AddSingleton<ILoggerFactory>(loggerFactory)
@@ -74,7 +82,8 @@ namespace ai.option.web {
 
             var container = builder.Build();
 
-            return container.Resolve<IServiceProvider>();
+            var serviceProvider =  container.Resolve<IServiceProvider>();
+            return serviceProvider;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

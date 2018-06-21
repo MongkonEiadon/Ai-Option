@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using ai.option.web.ViewModels;
 using AutoMapper;
+using iqoption.core.Extensions;
 using iqoption.data.Model;
 using iqoption.data.Services;
+using iqoptionapi.http;
+using iqoptionapi.models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RestSharp;
 
 namespace ai.option.web.Controllers {
     [Authorize]
@@ -44,6 +49,20 @@ namespace ai.option.web.Controllers {
             IqOptionRequestViewModel requestViewModel
         ) {
             return View("Index");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("LoginAsync")]
+        public async Task<IActionResult> Postting() {
+
+            var restClient = new RestClient("https://iqoption.com/api");
+
+            var result = await restClient.ExecuteTaskAsync(
+                new LoginV2Request(new LoginModel() {Email = "mongkon.eiadon@hotmail.com", Password = "Code11054"}));
+
+
+            return Ok(result.Content);
         }
 
         [HttpPost]

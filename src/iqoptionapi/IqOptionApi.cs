@@ -25,21 +25,21 @@ namespace iqoptionapi {
         bool IsConnected { get; }
 
         IObservable<bool> IsConnectedObservable { get; }
-
-        Task<string> GetTokenAsync();
+        
         Task<bool> ConnectAsync();
         Task<Profile> GetProfileAsync();
         Task<bool> ChangeBalanceAsync(long balanceId);
 
         Task<BuyResult> BuyAsync(ActivePair pair, int size, OrderDirection direction,
             DateTime expiration = default(DateTime));
+
+        Task<Profile> LoginAsync();
     }
 
 
     public class IqOptionApi : IIqOptionApi {
         private readonly IqOptionConfiguration _configuration;
         private readonly ILogger _logger;
-
         private readonly Subject<Profile> _profileSubject = new Subject<Profile>();
         private Profile _profile;
 
@@ -64,11 +64,10 @@ namespace iqoptionapi {
 
         public IObservable<bool> IsConnectedObservable => connectedSubject;
 
-        public Task<string> GetTokenAsync() {
-            return HttpClient.LoginAsync().ContinueWith(async t => {
-                await t;
-                return HttpClient.SecuredToken;
-            }).Unwrap();
+
+        public Task<Profile> LoginAsync() {
+            return HttpClient.LoginAsync()
+                .ContinueWith(t => HttpClient.Profile);
         }
 
         public Task<bool> ConnectAsync() {
@@ -77,14 +76,16 @@ namespace iqoptionapi {
 
             var tcs = new TaskCompletionSource<bool>();
             try {
-                HttpClient.LoginAsync()
+                HttpClient
+                    .LoginAsync()
                     .ContinueWith(async t => {
                         if ((await t).StatusCode == HttpStatusCode.OK) {
                             _logger.LogInformation(
                                 $"{_configuration.Email} logged in to {_configuration.Host} success!");
                             WsClient = new IqOptionWebSocketClient(HttpClient.SecuredToken, _configuration.Host);
 
-                            if (await WsClient.OpenWebSocketAsync()) SubscribeWebSocket();
+                            if (await WsClient.OpenWebSocketAsync())
+                                SubscribeWebSocket();
 
                             var profile = await GetProfileAsync();
 
@@ -111,7 +112,8 @@ namespace iqoptionapi {
 
             try {
 
-                HttpClient.GetProfileAsync()
+                HttpClient
+                    .GetProfileAsync()
                     .ContinueWith(async t => {
 
                         if ((await t).StatusCode == HttpStatusCode.OK) {
@@ -121,7 +123,7 @@ namespace iqoptionapi {
                             }
                         }
 
-                        tcs.TrySetException(new IqOptionApiGetProfileFailedException((await t).Content));
+                        tcs.TrySetException(new IqOptionApiGetProfileFailedException($"token = '' & content = '{(await t).Content}'"));
 
                         return tcs.Task;
                     });

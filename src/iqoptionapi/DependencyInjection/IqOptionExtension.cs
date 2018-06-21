@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace iqoptionapi.DependencyInjection
 {
@@ -9,7 +11,11 @@ namespace iqoptionapi.DependencyInjection
             services.Configure<IqOptionConfiguration>(c => { });
             services.AddTransient<IIqOptionApi, IqOptionApi>();
 
+
             return services;
         }
+
+      
+
     }
 }

@@ -4,15 +4,19 @@ using System.Threading.Tasks;
 using ai.option.web.Models;
 using ai.option.web.ViewModels;
 using AutoMapper;
+using Castle.Core.Logging;
 using iqoptionapi;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ai.option.web.Controllers {
     public class IqOptionController : Controller {
         private readonly IMapper _mapper;
+        private readonly ILogger<IqOptionController> _logger;
 
-        public IqOptionController(IMapper mapper) {
+        public IqOptionController(IMapper mapper, ILogger<IqOptionController> logger) {
             _mapper = mapper;
+            _logger = logger;
         }
 
 
@@ -32,12 +36,10 @@ namespace ai.option.web.Controllers {
                 return Ok();
 
             try {
+
                 var api = new IqOptionApi(requestViewModel.EmailAddress, requestViewModel.Password);
 
-                var token = await api.GetTokenAsync()
-                    .ContinueWith(t => api.GetProfileAsync())
-                    .Unwrap();
-
+                var token = await api.LoginAsync();
 
                 requestViewModel.ProfileResponseViewModel = _mapper.Map<IqOptionProfileResponseViewModel>(token);
                 requestViewModel.IsPassed = true;
@@ -47,8 +49,12 @@ namespace ai.option.web.Controllers {
             catch (Exception ex) {
                 requestViewModel.IsPassed = false;
                 requestViewModel.Temp = ex.Message;
+
+                _logger.LogCritical("Login Failed", ex);
+
                 return IqOptionProfile(requestViewModel);
             }
+              
         }
         
     }
