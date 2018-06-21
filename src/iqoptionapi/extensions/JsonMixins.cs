@@ -16,5 +16,17 @@ namespace iqoptionapi.extensions
         {
             return JsonConvert.DeserializeObject<T>(This);
         }
+
+        public static bool TryParseJson<T>(this string This, out T value) {
+            try {
+                value = This.JsonAs<T>();
+                return true;
+            }
+            catch (Exception ex) {
+                value = default(T);
+            }
+
+            return false;
+        }
     }
 }

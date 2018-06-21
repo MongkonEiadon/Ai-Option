@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
+using ai.option.web.Models;
 using ai.option.web.ViewModels;
 using AutoMapper;
 using iqoptionapi;
@@ -29,15 +31,24 @@ namespace ai.option.web.Controllers {
                 string.IsNullOrEmpty(requestViewModel.Password))
                 return Ok();
 
-            var api = new IqOptionApi(requestViewModel.EmailAddress, requestViewModel.Password);
+            try {
+                var api = new IqOptionApi(requestViewModel.EmailAddress, requestViewModel.Password);
 
-            var token = await api.GetTokenAsync()
-                .ContinueWith(t => api.GetProfileAsync())
-                .Unwrap();
+                var token = await api.GetTokenAsync()
+                    .ContinueWith(t => api.GetProfileAsync())
+                    .Unwrap();
 
-            requestViewModel.ProfileResponseViewModel = _mapper.Map<IqOptionProfileResponseViewModel>(token);
 
-            return IqOptionProfile(requestViewModel);
+                requestViewModel.ProfileResponseViewModel = _mapper.Map<IqOptionProfileResponseViewModel>(token);
+                requestViewModel.IsPassed = true;
+
+                return IqOptionProfile(requestViewModel);
+            }
+            catch (Exception ex) {
+                requestViewModel.IsPassed = false;
+                requestViewModel.Temp = ex.Message;
+                return IqOptionProfile(requestViewModel);
+            }
         }
         
     }

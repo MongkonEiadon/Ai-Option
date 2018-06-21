@@ -20,6 +20,10 @@ namespace ai.option.web
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseApplicationInsights()
+                .ConfigureLogging((h, i) => {
+                        i.AddConsole()
+                        .AddAzureWebAppDiagnostics();
+                })
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()

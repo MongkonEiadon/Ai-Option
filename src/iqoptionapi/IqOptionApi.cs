@@ -105,12 +105,34 @@ namespace iqoptionapi {
             return tcs.Task;
         }
 
-        public async Task<Profile> GetProfileAsync() {
-            var result = await HttpClient.GetProfileAsync();
-            var profile = result.Content.JsonAs<IqHttpResult<Profile>>()?.Result;
-            _logger.LogTrace($"Get Profile!: \t{profile.Email}");
+        public Task<Profile> GetProfileAsync() {
 
-            return profile;
+            var tcs = new TaskCompletionSource<Profile>();
+
+            try {
+
+                HttpClient.GetProfileAsync()
+                    .ContinueWith(async t => {
+
+                        if ((await t).StatusCode == HttpStatusCode.OK) {
+
+                            if ((await t).Content.TryParseJson(out IqHttpResult<Profile> content)) {
+                                tcs.TrySetResult(content.Result);
+                            }
+                        }
+
+                        tcs.TrySetException(new IqOptionApiGetProfileFailedException((await t).Content));
+
+                        return tcs.Task;
+                    });
+
+            }
+            catch (Exception ex) {
+                _logger.LogCritical(ex, nameof(GetProfileAsync));
+                tcs.TrySetException(ex);
+            }
+            
+            return tcs.Task;
         }
 
         public async Task<bool> ChangeBalanceAsync(long balanceId) {
@@ -186,5 +208,14 @@ namespace iqoptionapi {
         [EnumMember(Value = "put")] Put = 1,
 
         [EnumMember(Value = "call")] Call = 2
+    }
+
+
+    public class IqOptionApiGetProfileFailedException : Exception {
+        public IqOptionApiGetProfileFailedException(object receivedContent) : base(
+            $"received incorrect content : {receivedContent}") {
+
+
+        }
     }
 }
