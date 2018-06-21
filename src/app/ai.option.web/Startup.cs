@@ -53,9 +53,14 @@ namespace ai.option.web {
             });
 
             //logging
+            var loggerFactory = new LoggerFactory()
+                .AddDebug()
+                .AddConsole()
+                .AddAzureWebAppDiagnostics();
+
             services
-                .AddSingleton<ILoggerFactory, LoggerFactory>()
-                .AddSingleton<ILogger>(c => c.GetService<ILogger<Startup>>())
+                .AddSingleton<ILoggerFactory>(loggerFactory)
+                .AddSingleton<ILogger>(loggerFactory.CreateLogger(nameof(Startup)))
                 .AddSingleton(typeof(ILogger<>), typeof(Logger<>));
 
 

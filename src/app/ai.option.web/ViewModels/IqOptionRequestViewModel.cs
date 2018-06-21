@@ -15,6 +15,9 @@ namespace ai.option.web.ViewModels {
         public string Password { get; set; }
 
         public IqOptionProfileResponseViewModel ProfileResponseViewModel { get; set; }
+
+        public string Temp { get; set; }
+        public bool IsPassed { get; set; }
     }
 
     public class LoginViewModel {
