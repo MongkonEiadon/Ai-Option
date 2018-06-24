@@ -37,6 +37,9 @@
                             <div class="controls">
                                 @Html.TextBoxFor(m => m.EmailAddress, new {@class = "form-control", id = "emailAddress", required = true, type = "email"})
                                 @Html.ValidationMessageFor(m => m.EmailAddress)
+                                <small>
+                                    @string.Join(',', @Model.ErrorEmail)
+                                </small>
 
                             </div>
                         </div>
@@ -48,9 +51,11 @@
                     <div class="col-sm-12">
                         <div class="form-group has-error">
                             <div class="controls">
-                                @Html.TextBoxFor(m => m.Password, new {@class = "form-control", id = "emailAddress", required = true, type = "password"})
+                                @Html.TextBoxFor(m => m.Password, new { @class = "form-control", id = "emailAddress", required = true, type = "password" })
                                 @Html.ValidationMessageFor(m => m.Password)
-
+                                <small>
+                                    @string.Join(',', @Model.ErrorPassword)
+                                </small>
                             </div>
                         </div>
                     </div><!-- /.column -->

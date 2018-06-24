@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using iqoptionapi.extensions;
+using iqoptionapi.http;
 
 namespace iqoptionapi.exceptions
 {
@@ -14,10 +16,15 @@ namespace iqoptionapi.exceptions
 
     public class LoginFailedException : Exception {
 
-        public LoginFailedException(string emailAddress, object content) :
-            base($"Login With {emailAddress} not passed!, Response is : {content}")
-        {
+        public LoginFailedMessage LoginFailedMessage { get; }
 
+        public LoginFailedException(string emailAddress, LoginFailedMessage message) :
+            base($"Login With {emailAddress} not passed!, Response is : {message.AsJson()}") {
+            LoginFailedMessage = message;
+        }
+        public LoginFailedException(string emailAddress, object message) :
+            base($"Login With {emailAddress} not passed!, Response is : {message}")
+        {
         }
     }
 }

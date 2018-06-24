@@ -6,8 +6,7 @@ using iqoption.core.Extensions;
 namespace iqoption.data.Model {
 
     [Table("IqOptionAccount")]
-    public class IqOptionAccountDto : EntityWithDateTimeStamp
-    {
+    public class IqOptionAccountDto : EntityWithDateTimeStamp {
         public int IqOptionUserId { get; set; }
 
         [Required]
@@ -27,6 +26,8 @@ namespace iqoption.data.Model {
         public string Address { get; set; }
         public string City { get; set; }
         public string Avartar { get; set; }
+        //public string Ssid { get; set; }
+        //public DateTime? SsiCreated { get; set; }
         
 
         public virtual UserDto User { get; set; }

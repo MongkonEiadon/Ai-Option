@@ -75,6 +75,10 @@ namespace iqoption.follower.app
                 })
                 .AddAutoMapper()
                 .AddMvc()
+                .AddJsonOptions(
+                    options => options.SerializerSettings.ReferenceLoopHandling =
+                        Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                )
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
             
             

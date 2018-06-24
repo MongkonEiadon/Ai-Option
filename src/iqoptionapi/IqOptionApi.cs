@@ -13,30 +13,6 @@ using iqoptionapi.ws;
 using Microsoft.Extensions.Logging;
 
 namespace iqoptionapi {
-    public interface IIqOptionApi : IDisposable {
-        IqOptionWebSocketClient WsClient { get; }
-        IqOptionHttpClient HttpClient { get; }
-
-        IObservable<Profile> ProfileObservable { get; }
-        IObservable<InfoData[]> InfoDatasObservable { get; }
-
-        Profile Profile { get; }
-
-        bool IsConnected { get; }
-
-        IObservable<bool> IsConnectedObservable { get; }
-        
-        Task<bool> ConnectAsync();
-        Task<Profile> GetProfileAsync();
-        Task<bool> ChangeBalanceAsync(long balanceId);
-
-        Task<BuyResult> BuyAsync(ActivePair pair, int size, OrderDirection direction,
-            DateTime expiration = default(DateTime));
-
-        Task<Profile> LoginAsync();
-    }
-
-
     public class IqOptionApi : IIqOptionApi {
         private readonly IqOptionConfiguration _configuration;
         private readonly ILogger _logger;
@@ -66,8 +42,23 @@ namespace iqoptionapi {
 
 
         public Task<Profile> LoginAsync() {
-            return HttpClient.LoginAsync()
-                .ContinueWith(t => HttpClient.Profile);
+
+            var tcs = new TaskCompletionSource<Profile>();
+
+            try {
+                var t = HttpClient.LoginAsync();
+                
+
+                tcs.TrySetResult(HttpClient.Profile);
+            }
+            catch (AggregateException aggregateException) {
+                tcs.TrySetException(aggregateException.Flatten());
+            }
+            catch (Exception ex) {
+                tcs.TrySetException(ex);
+            }
+
+            return tcs.Task;
         }
 
         public Task<bool> ConnectAsync() {
@@ -216,8 +207,6 @@ namespace iqoptionapi {
     public class IqOptionApiGetProfileFailedException : Exception {
         public IqOptionApiGetProfileFailedException(object receivedContent) : base(
             $"received incorrect content : {receivedContent}") {
-
-
         }
     }
 }

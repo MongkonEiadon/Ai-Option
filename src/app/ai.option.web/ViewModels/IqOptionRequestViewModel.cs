@@ -18,6 +18,11 @@ namespace ai.option.web.ViewModels {
 
         public string Temp { get; set; }
         public bool IsPassed { get; set; }
+
+
+        public string[] ErrorEmail { get; set; }
+
+        public string[] ErrorPassword { get; set; }
     }
 
     public class LoginViewModel {

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using iqoption.core;
 using iqoption.core.data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -24,5 +25,11 @@ namespace iqoption.data.Model
 
         public string InviationCode { get; set; }
         
+    }
+
+
+
+    public class RoleLevelDto : IdentityRole {
+
     }
 }

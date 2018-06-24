@@ -66,6 +66,7 @@
                     <label for="passwordInput">กำหนดรหัสผ่าน</label>
                     <input class="form-control" id="passwordInput" placeholder="Password" type="password">
                     <p class="help-block">ระบุรหัสผ่านสำหรับใช้งานร่วมกับ iq option</p>
+                    <small>@TempData["ErrorMessage"]</small>
                 </div>
                 <button id="connectButton" class="btn btn-default">ตรวจสอบบัญชีซื้อขาย</button>
 
@@ -133,19 +134,20 @@
     <script>
         activeNav('iqoptionAccountNav');
 
-        
 
         var postActive = function(id) {
-            $('formAccRow_'+id).submit();
-                    
+            $('formAccRow_' + id).submit();
+
         }
 
-        $(document).ready(function () {
+        $(document).ready(function() {
 
             var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
             elems.forEach(function(html) {
                 var switchery = new Switchery(html);
             });
+
+           
 
             $('#connectButton').on('click',
                 function(e) {
@@ -161,11 +163,16 @@
                             $('#profileResultPanelBody').html(msg);
                             $('#profilePanel').removeClass('ld-loading');
                         },
-                        error: function(msg) {
-                            alert(msg);
+                        error: function (msg) {
+                            alert(msg.responseText);
+                            $('#profilePanel').removeClass('ld-loading');
+                        },
+                        complete: function (msg) {
                             $('#profilePanel').removeClass('ld-loading');
                         }
                     });
+
+
                 });
 
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using iqoption.core;
 using iqoption.core.data;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 

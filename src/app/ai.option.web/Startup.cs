@@ -16,7 +16,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Serilog;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace ai.option.web {
@@ -36,10 +35,17 @@ namespace ai.option.web {
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true)
                 .Build();
-
+            
             services
+                //cors
+                .AddCors(options => {
+                    options.AddPolicy("CorsPolicy", 
+                        cb => cb.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials());
+                })
                 .AddEntityFrameworkInMemoryDatabase()
-                //.AddEntityFrameworkSqlServer()
                 .AddDbContext<AiOptionContext>(options =>
                     options
                         .UseLazyLoadingProxies()
@@ -58,12 +64,6 @@ namespace ai.option.web {
             var loggerFactory = new LoggerFactory()
                     .AddDebug()
                     .AddConsole()
-                    .AddSerilog(new LoggerConfiguration()
-                        .MinimumLevel.Warning()
-                        .Enrich.FromLogContext()
-                        .WriteTo.RollingFile("Logs/web-{Date}.txt")
-                        .CreateLogger())
-                    .AddFile("Logs/ts-{Date}.txt", LogLevel.Warning)
                     .AddAzureWebAppDiagnostics();
 
             services
@@ -78,6 +78,7 @@ namespace ai.option.web {
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             builder.RegisterModule<DataAutofacModule>();
+            builder.RegisterModule<iqoption.apiservice.DependencyModule.ApiServiceModule>();
             builder.Populate(services);
 
             var container = builder.Build();
@@ -98,14 +99,14 @@ namespace ai.option.web {
 
             seed.SeedAsync().Wait();
 
-            app.UseStaticFiles(new StaticFileOptions());
-
-            app.UseHttpsRedirection()
+            app
+                .UseCors("CorsPolicy")
+                .UseStaticFiles(new StaticFileOptions())
+                .UseHttpsRedirection()
                 .UseAuthentication()
                 .UseStaticFiles()
-                .UseCookiePolicy();
-
-            app.UseMvc(routes => {
+                .UseCookiePolicy()
+                .UseMvc(routes => {
                 routes.MapRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");

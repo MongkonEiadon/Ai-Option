@@ -5,14 +5,6 @@ using System.Linq.Expressions;
 
 namespace iqoption.core
 {
-    
-    public class Class1
-    {
-    }
-}
-
-namespace iqoption.core.data
-{
     public interface IDateTimeStamp
     {
 

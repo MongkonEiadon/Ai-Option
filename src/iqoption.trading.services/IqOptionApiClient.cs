@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
+using System.Threading;
 using iqoption.domain.Users;
 using iqoptionapi;
 using iqoptionapi.models;

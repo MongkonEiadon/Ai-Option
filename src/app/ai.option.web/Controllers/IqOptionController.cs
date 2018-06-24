@@ -1,22 +1,37 @@
 ﻿using System;
+using System.Reactive.Threading.Tasks;
 using System.Text;
 using System.Threading.Tasks;
 using ai.option.web.Models;
 using ai.option.web.ViewModels;
 using AutoMapper;
 using Castle.Core.Logging;
-using iqoptionapi;
+using iqoption.apiservice;
+using iqoption.apiservice.Queries;
+using iqoption.domain.IqOption.Command;
+using iqoption.domain.IqOption.Exceptions;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace ai.option.web.Controllers {
+
+
+    [EnableCors("CorsPolicy")]
     public class IqOptionController : Controller {
         private readonly IMapper _mapper;
         private readonly ILogger<IqOptionController> _logger;
+        private readonly IGetProfileCommandHandler _getProfileCommandHandler;
+        private readonly ILoginCommandHandler _loginCommandHandler;
 
-        public IqOptionController(IMapper mapper, ILogger<IqOptionController> logger) {
+        public IqOptionController(IMapper mapper,
+            ILogger<IqOptionController> logger,
+            IGetProfileCommandHandler getProfileCommandHandler, 
+            ILoginCommandHandler loginCommandHandler) {
             _mapper = mapper;
             _logger = logger;
+            _getProfileCommandHandler = getProfileCommandHandler;
+            _loginCommandHandler = loginCommandHandler;
         }
 
 
@@ -37,22 +52,28 @@ namespace ai.option.web.Controllers {
 
             try {
 
-                var api = new IqOptionApi(requestViewModel.EmailAddress, requestViewModel.Password);
+                await _loginCommandHandler
+                    .ExecuteAsync(new LoginCommand(requestViewModel.EmailAddress, requestViewModel.Password))
+                    .ContinueWith(t => _getProfileCommandHandler.RetreiveProfileQueryAsync(t.Result))
+                    .Unwrap()
+                    .ContinueWith(t => {
+                        requestViewModel.ProfileResponseViewModel = _mapper.Map<IqOptionProfileResponseViewModel>(t.Result);
+                        requestViewModel.IsPassed = true;
+                    });
 
-                var token = await api.LoginAsync();
 
-                requestViewModel.ProfileResponseViewModel = _mapper.Map<IqOptionProfileResponseViewModel>(token);
-                requestViewModel.IsPassed = true;
 
                 return IqOptionProfile(requestViewModel);
             }
+
+            catch (AggregateException arex) {
+                _logger.LogWarning("GetToken Failed", arex.GetBaseException().Message);
+                return BadRequest(arex.GetBaseException().Message);
+            }
+
             catch (Exception ex) {
-                requestViewModel.IsPassed = false;
-                requestViewModel.Temp = ex.Message;
-
-                _logger.LogCritical("Login Failed", ex);
-
-                return IqOptionProfile(requestViewModel);
+                _logger.LogCritical(nameof(IqOptionProfile), ex);
+                return BadRequest(ex.Message);
             }
               
         }
