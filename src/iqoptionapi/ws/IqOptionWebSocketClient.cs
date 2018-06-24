@@ -1,27 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Net;
 using System.Reactive.Concurrency;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Reflection;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.ExceptionServices;
-using System.Security.Authentication;
-using System.Threading;
 using System.Threading.Tasks;
 using iqoptionapi.extensions;
 using iqoptionapi.models;
 using iqoptionapi.ws.request;
-using WebSocket4Net;
 using Microsoft.Extensions.Logging;
+using WebSocket4Net;
 
 namespace iqoptionapi.ws {
     public class IqOptionWebSocketClient : IDisposable {
-
         //privates
         private readonly ILogger _logger;
         private WebSocket Client { get; }
@@ -37,12 +27,14 @@ namespace iqoptionapi.ws {
 
 
         private long _timeSync;
-        private Subject<long> _timeSyncSubject = new Subject<long>();
+        private readonly Subject<long> _timeSyncSubject = new Subject<long>();
         public DateTime TimeSync => _timeSync.FromUnixToDateTime();
 
         #region [Profile]
+
         private Profile _profile;
-        private Subject<Profile> _profileSubject = new Subject<Profile>();
+        private readonly Subject<Profile> _profileSubject = new Subject<Profile>();
+
         public Profile Profile {
             get => _profile;
             set {
@@ -50,13 +42,15 @@ namespace iqoptionapi.ws {
                 _profileSubject.OnNext(value);
             }
         }
+
         public IObservable<Profile> ProfileObservable => _profileSubject;
 
         #endregion
 
         #region [Instruments]
+
         private InstrumentResultSet _instrumentResultSet = new InstrumentResultSet();
-        private Subject<InstrumentResultSet> _instrumentResultSetSubject = new Subject<InstrumentResultSet>();
+        private readonly Subject<InstrumentResultSet> _instrumentResultSetSubject = new Subject<InstrumentResultSet>();
 
         public IObservable<InstrumentResultSet> InstrumentResultSetObservable { get; }
 
@@ -64,25 +58,23 @@ namespace iqoptionapi.ws {
 
         #region [InfoData]
 
-        Subject<InfoData[]> _infoDataSubject = new Subject<InfoData[]>();
+        private readonly Subject<InfoData[]> _infoDataSubject = new Subject<InfoData[]>();
         public IObservable<InfoData[]> InfoDataObservable => _infoDataSubject.Publish().RefCount();
-
 
         #endregion
 
         #region [BuyV2]
 
-        private Subject<BuyResult> _buyResulSjSubject = new Subject<BuyResult>();
+        private readonly Subject<BuyResult> _buyResulSjSubject = new Subject<BuyResult>();
         public IObservable<BuyResult> BuyResultObservable { get; }
 
         #endregion
 
 
         public IqOptionWebSocketClient(string secureToken, string host = "iqoption.com") {
-
-            Client = new WebSocket(uri: $"wss://{host}/echo/websocket");
+            Client = new WebSocket($"wss://{host}/echo/websocket");
             _logger = IqOptionLoggerFactory.CreateLogger();
-            this.SecureToken = secureToken;
+            SecureToken = secureToken;
 
             //set up shred obs.
             InstrumentResultSetObservable =
@@ -91,7 +83,7 @@ namespace iqoptionapi.ws {
             BuyResultObservable =
                 _buyResulSjSubject.Publish().RefCount();
 
-            this.MessageReceivedObservable =
+            MessageReceivedObservable =
                 Observable.Using(
                         () => Client,
                         _ => Observable
@@ -102,25 +94,24 @@ namespace iqoptionapi.ws {
                     .SubscribeOn(new EventLoopScheduler())
                     .Publish()
                     .RefCount();
-            
-           
+
+
             MessageReceivedObservable.Subscribe(x => {
                 var a = x.JsonAs<WsRequestMessageBase<object>>();
                 switch (a.Name?.ToLower()) {
-
                     case "heartbeat": {
                         break;
                     }
 
                     case "timesync": {
-                        _timeSync = Int64.Parse(a.Message.ToString());
+                        _timeSync = long.Parse(a.Message.ToString());
                         _timeSyncSubject.OnNext(_timeSync);
                         break;
                     }
                     case "profile": {
                         _profile = x.JsonAs<WsRequestMessageBase<Profile>>().Message;
                         _logger.LogTrace($"Received Prof. => {_profile?.Email}");
-                       
+
                         break;
                     }
                     case "instruments": {
@@ -129,10 +120,27 @@ namespace iqoptionapi.ws {
                         _instrumentResultSet[result.Type] = result.Instruments;
                         _instrumentResultSetSubject.OnNext(_instrumentResultSet);
 
-                        if (_instrumentResultSet.All(i => i.Value.Any())) {
-                            _instrumentResultSetSubject.OnCompleted();
-                        }
+                        if (_instrumentResultSet.All(i => i.Value.Any())) _instrumentResultSetSubject.OnCompleted();
 
+                        break;
+                    }
+
+                    case "profit-top-user-moved-up": {
+                        break;
+                    }
+
+                    case "activecommissionchange": {
+                        break;
+                    }
+
+                    case "user-tournament-position-changed": {
+                        break;
+                    }
+
+                    case "chat-state-updated": {
+                        break;
+                    }
+                    case "front": {
                         break;
                     }
 
@@ -140,8 +148,9 @@ namespace iqoptionapi.ws {
                         var result = x.JsonAs<WsRequestMessageBase<InfoData[]>>();
                         _infoDataSubject.OnNext(result?.Message);
                         var first = result?.Message.FirstOrDefault();
-                        if (first != null) 
-                            _logger.LogInformation($"info-received  => {first.UserId} {first.Win} {first.Direction} {first.Sum} {first.Active} @{first.Value}");
+                        if (first != null)
+                            _logger.LogInformation(
+                                $"info-received  => {first.UserId} {first.Win} {first.Direction} {first.Sum} {first.Active} @{first.Value}");
                         break;
                     }
 
@@ -149,7 +158,8 @@ namespace iqoptionapi.ws {
                         var result = x.JsonAs<WsRequestMessageBase<WsMsgResult<object>>>().Message;
                         if (result.IsSuccessful) {
                             var buyResult = x.JsonAs<WsRequestMessageBase<WsMsgResult<BuyResult>>>().Message.Result;
-                            _logger.LogInformation($"buycompleted   => {buyResult.UserId} {buyResult.Type} {buyResult.Direction} {buyResult.Price} {(ActivePair)buyResult.Act} @{buyResult.Value} ");
+                            _logger.LogInformation(
+                                $"buycompleted   => {buyResult.UserId} {buyResult.Type} {buyResult.Direction} {buyResult.Price} {(ActivePair) buyResult.Act} @{buyResult.Value} ");
                             _buyResulSjSubject.OnNext(buyResult);
                         }
                         else {
@@ -162,12 +172,11 @@ namespace iqoptionapi.ws {
                     }
 
                     default: {
-
-                        _logger.LogDebug(this.Profile?.Email + "    =>  " +a.AsJson());
+                        _logger.LogDebug(Profile?.Email + "    =>  " + a.AsJson());
                         break;
                     }
                 }
-            }, onError: ex => { _logger.LogCritical(ex.Message); });
+            }, ex => { _logger.LogCritical(ex.Message); });
 
             //send ssid message
             OpenSecuredSocketAsync();
@@ -184,17 +193,14 @@ namespace iqoptionapi.ws {
         public Task<InstrumentResultSet> SendInstrumentsRequestAsync() {
             var tcs = new TaskCompletionSource<InstrumentResultSet>();
             try {
-
                 _logger.LogDebug(nameof(SendInstrumentsRequestAsync));
 
                 //subscribe for the lastest result
-                this.InstrumentResultSetObservable
-                    .Subscribe(x => {
-                        tcs.TrySetResult(x);
-                    });
+                InstrumentResultSetObservable
+                    .Subscribe(x => { tcs.TrySetResult(x); });
 
                 //clear before query new 
-                this._instrumentResultSet = new InstrumentResultSet();
+                _instrumentResultSet = new InstrumentResultSet();
 
                 //execute them all
                 Task.WhenAll(
@@ -212,35 +218,28 @@ namespace iqoptionapi.ws {
         }
 
         public Task<BuyResult> BuyAsync(
-            ActivePair pair, 
-            int size, 
+            ActivePair pair,
+            int size,
             OrderDirection direction,
             DateTime expiration = default(DateTime)) {
-
             var tcs = new TaskCompletionSource<BuyResult>();
             try {
-                
                 BuyResultObservable
-                    .Subscribe(x => {
-                            tcs.TrySetResult(x);
-                        }, 
+                    .Subscribe(x => { tcs.TrySetResult(x); },
                         ex => { tcs.TrySetException(ex); });
 
                 //expiration = this._instrumentResultSet.GetByActivityType(pair).Schedule[3].CloseDateTime;
 
-                Task.Run(() => this.SendMessageAsync(new BuyV2WsRequestMessage(pair, size, direction, expiration, this.TimeSync.ToLocalTime())));
-
-                
-
+                Task.Run(() =>
+                    SendMessageAsync(new BuyV2WsRequestMessage(pair, size, direction, expiration,
+                        TimeSync.ToLocalTime())));
             }
             catch (Exception ex) {
                 tcs.TrySetException(ex);
-
             }
 
             return tcs.Task;
         }
-
 
 
         public async Task<bool> OpenWebSocketAsync() {
@@ -258,8 +257,5 @@ namespace iqoptionapi.ws {
         private Task OpenSecuredSocketAsync() {
             return SendMessageAsync(new SsidWsRequestMessageBase(SecureToken));
         }
-
-
-
     }
 }
