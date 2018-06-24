@@ -1,8 +1,6 @@
 ﻿using System.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
-using Serilog;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace iqoptionapi {
@@ -26,8 +24,6 @@ namespace iqoptionapi {
 
                 var loggerFactory = new LoggerFactory()
                     .AddConsole(configuration.GetSection("Logging"))
-                    .AddFile("Logs/iqoptionapi--{Date}.txt", minimumLevel: LogLevel.Warning)
-                    .AddFile("Logs/iqoptionapi-trace--{Date}.txt", minimumLevel: LogLevel.Trace)
                     .AddDebug(LogLevel.Trace);
 
 

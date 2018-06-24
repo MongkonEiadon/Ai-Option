@@ -40,7 +40,7 @@ namespace iqoption.trading.services {
 
 
             var interval = Observable
-                .Interval(TimeSpan.FromMinutes(1), Scheduler.Immediate)
+                .Interval(TimeSpan.FromSeconds(1), Scheduler.Immediate)
                 .Publish();
 
             interval

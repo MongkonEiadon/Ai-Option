@@ -86,6 +86,7 @@ namespace iqoption.follower.app
             //logging
             services
                 .AddLogging(c => {
+                    c.AddDebug();
                     c.AddConsole(cfg => { cfg.DisableColors = false; });
                 })
                 .AddSingleton<ILoggerFactory, LoggerFactory>()

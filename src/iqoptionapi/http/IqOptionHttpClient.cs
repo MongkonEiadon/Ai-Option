@@ -139,14 +139,9 @@ namespace iqoptionapi.http {
         }
 
         private Task<IRestResponse> ExecuteHttpClientAsync(IRestRequest request) {
-            
 
-            var result = Client.ExecuteTaskAsync(request)
-                .ContinueWith(t => {
-                    _logger.LogTrace(t.Result.AsJson());
-                    return t;
-                }).Unwrap();
 
+            var result = Client.ExecuteTaskAsync(request);
             return result;
         }
 
