@@ -24,6 +24,7 @@ namespace iqoptionapi {
 
                 var loggerFactory = new LoggerFactory()
                     .AddConsole(configuration.GetSection("Logging"))
+                    .AddFile("Logs/iqoptionapi-{Date}.txt", LogLevel.Warning)
                     .AddDebug(LogLevel.Trace);
 
 
