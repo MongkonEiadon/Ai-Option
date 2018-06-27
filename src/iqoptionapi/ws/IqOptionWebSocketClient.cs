@@ -164,7 +164,7 @@ namespace iqoptionapi.ws {
                         }
                         else {
                             var ex = string.Join(", ", result.Message.ToList());
-                            _logger.LogError(ex);
+                            _logger.LogError($"{this.Profile?.UserId}\t{ex}", ex);
                             _buyResulSjSubject.OnNext(BuyResult.BuyResultError(result.Message));
                         }
 
