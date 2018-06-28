@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace ai.option.web
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
+namespace ai.option.web {
+    public class Program {
+        public static void Main(string[] args) {
             CreateWebHostBuilder(args).Build().Run();
         }
 
@@ -21,7 +13,7 @@ namespace ai.option.web
             WebHost.CreateDefaultBuilder(args)
                 .UseApplicationInsights()
                 .ConfigureLogging((h, i) => {
-                        i.AddConsole()
+                    i.AddConsole()
                         .AddAzureWebAppDiagnostics();
                 })
                 .UseKestrel()

@@ -1,34 +1,31 @@
 ﻿using System;
-using System.Reactive.Threading.Tasks;
-using System.Text;
 using System.Threading.Tasks;
-using ai.option.web.Models;
 using ai.option.web.ViewModels;
 using AutoMapper;
-using Castle.Core.Logging;
+using iqopoption.core;
 using iqoption.apiservice;
 using iqoption.apiservice.Queries;
 using iqoption.domain.IqOption.Command;
-using iqoption.domain.IqOption.Exceptions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace ai.option.web.Controllers {
-
-
     [EnableCors("CorsPolicy")]
     public class IqOptionController : Controller {
-        private readonly IMapper _mapper;
-        private readonly ILogger<IqOptionController> _logger;
         private readonly IGetProfileCommandHandler _getProfileCommandHandler;
+        private readonly ILogger<IqOptionController> _logger;
         private readonly ILoginCommandHandler _loginCommandHandler;
+        private readonly IMapper _mapper;
+        private readonly ISession _session;
 
         public IqOptionController(IMapper mapper,
+            ISession session,
             ILogger<IqOptionController> logger,
-            IGetProfileCommandHandler getProfileCommandHandler, 
+            IGetProfileCommandHandler getProfileCommandHandler,
             ILoginCommandHandler loginCommandHandler) {
             _mapper = mapper;
+            _session = session;
             _logger = logger;
             _getProfileCommandHandler = getProfileCommandHandler;
             _loginCommandHandler = loginCommandHandler;
@@ -51,16 +48,20 @@ namespace ai.option.web.Controllers {
                 return Ok();
 
             try {
+                await _session
+                    .Send(new LoginCommand(requestViewModel.EmailAddress, requestViewModel.Password))
+                    .ContinueWith(t => {
+                        if (t.Result.IsSuccess)
+                            return _getProfileCommandHandler.RetreiveProfileQueryAsync(t.Result.Ssid);
 
-                await _loginCommandHandler
-                    .ExecuteAsync(new LoginCommand(requestViewModel.EmailAddress, requestViewModel.Password))
-                    .ContinueWith(t => _getProfileCommandHandler.RetreiveProfileQueryAsync(t.Result))
+                        throw new Exception(t.Result.Message);
+                    })
                     .Unwrap()
                     .ContinueWith(t => {
-                        requestViewModel.ProfileResponseViewModel = _mapper.Map<IqOptionProfileResponseViewModel>(t.Result);
+                        requestViewModel.ProfileResponseViewModel =
+                            _mapper.Map<IqOptionProfileResponseViewModel>(t.Result);
                         requestViewModel.IsPassed = true;
                     });
-
 
 
                 return IqOptionProfile(requestViewModel);
@@ -75,8 +76,6 @@ namespace ai.option.web.Controllers {
                 _logger.LogCritical(nameof(IqOptionProfile), ex);
                 return BadRequest(ex.Message);
             }
-              
         }
-        
     }
 }

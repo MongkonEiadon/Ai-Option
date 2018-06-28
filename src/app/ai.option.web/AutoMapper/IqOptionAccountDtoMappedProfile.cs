@@ -1,5 +1,4 @@
-﻿using System;
-using ai.option.web.ViewModels;
+﻿using ai.option.web.ViewModels;
 using AutoMapper;
 using iqoption.data.Model;
 
@@ -24,9 +23,6 @@ namespace ai.option.web.AutoMapper {
                 .ForMember(m => m.UpdatedOn, s => s.Ignore())
                 .ForMember(m => m.LastSyned, s => s.Ignore())
                 .ForMember(m => m.IsActive, s => s.Ignore());
-
-
         }
-
     }
 }

@@ -1,41 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using ai.option.web.ViewModels;
 using AutoMapper;
 using iqoption.apiservice;
-using iqoption.apiservice.Queries;
-using iqoption.core.Extensions;
 using iqoption.data.Model;
 using iqoption.data.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RestSharp;
 
 namespace ai.option.web.Controllers {
-    [EnableCors("CorsPolicy")]
     [Authorize]
     public class PortalController : Controller {
         private readonly IIqOptionAccountService _iqOptionAccountService;
         private readonly ILogger _logger;
-        private readonly ILoginCommandHandler _loginCommandHandler;
-        private readonly IGetProfileCommandHandler _getProfileCommandHandler;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
 
         public PortalController(IMapper mapper,
             ILogger logger,
             ILoginCommandHandler loginCommandHandler,
-            IGetProfileCommandHandler getProfileCommandHandler,
             IUserService userService,
             IIqOptionAccountService iqOptionAccountService) {
             _mapper = mapper;
             _logger = logger;
-            _loginCommandHandler = loginCommandHandler;
-            _getProfileCommandHandler = getProfileCommandHandler;
             _userService = userService;
             _iqOptionAccountService = iqOptionAccountService;
         }
@@ -64,7 +54,6 @@ namespace ai.option.web.Controllers {
         [AllowAnonymous]
         [Route("TokenAsync")]
         public async Task<IActionResult> PostTokenAsync() {
-
             var client = new RestClient("https://auth.iqoption.com/api/v1.0/login");
             var request = new RestRequest(Method.POST) {RequestFormat = DataFormat.Json};
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -74,8 +63,7 @@ namespace ai.option.web.Controllers {
             request.AddParameter("password", "Code11054", ParameterType.QueryString);
 
             var result = await client.ExecuteTaskAsync(request);
-            return Ok(new
-            {
+            return Ok(new {
                 server = result.Server,
                 statuscode = result.StatusCode,
                 cookies = result.Cookies,
@@ -101,7 +89,7 @@ namespace ai.option.web.Controllers {
                 var result = await _iqOptionAccountService.CreateAccountTask(dto);
                 _logger.LogDebug($"Create User-IqoptionUser Id: {result}");
             }
-            
+
             else {
                 existingUser = _mapper.Map(requestViewModel, existingUser);
                 existingUser.LastSyned = DateTime.Now;
@@ -117,8 +105,6 @@ namespace ai.option.web.Controllers {
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> UpdateIsActiveAsync(Guid iqoptionAccountId) {
-
-
             var dto = await _iqOptionAccountService.GetAccountByIdAsync(iqoptionAccountId);
             if (dto != null) {
                 dto.IsActive = !dto.IsActive;

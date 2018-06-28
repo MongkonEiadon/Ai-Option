@@ -11,17 +11,23 @@ using RestSharp;
 
 namespace iqoptionapi.http {
     public class IqOptionHttpClient : ObservableObject {
+        private readonly ILogger _logger;
+
+        public IqOptionHttpClient(string username, string password, string host = "iqoption.com") {
+            Client = new RestClient(ApiEndPoint(host));
+            LoginModel = new LoginModel {Email = username, Password = password};
+            _logger = IqOptionLoggerFactory.CreateLogger();
+        }
+
         public LoginModel LoginModel { get; }
 
-        private readonly ILogger _logger;
+
+        public string SecuredToken { get; private set; }
+        public IRestClient Client { get; }
 
         protected static Uri ApiEndPoint(string host) {
             return new Uri($"https://{host}/api");
         }
-        
-
-        public string SecuredToken { get; private set; }
-        public IRestClient Client { get; }
 
         #region [Profile]
 
@@ -42,22 +48,14 @@ namespace iqoptionapi.http {
 
         #endregion
 
-        public IqOptionHttpClient(string username, string password, string host = "iqoption.com") {
-            Client = new RestClient(ApiEndPoint(host));
-            LoginModel = new LoginModel {Email = username, Password = password};
-            _logger = IqOptionLoggerFactory.CreateLogger();
-        }
-
-
 
         #region Web-Methods
 
         public Task<string> GetTokenAsync() {
             var tcs = new TaskCompletionSource<string>();
-            try
-            {
+            try {
                 var client = new RestClient("https://auth.iqoption.com/api/v1.0/login");
-                var request = new RestRequest(Method.POST) { RequestFormat = DataFormat.Json }
+                var request = new RestRequest(Method.POST) {RequestFormat = DataFormat.Json}
                     .AddHeader("Content-Type", "application/x-www-form-urlencoded")
                     .AddHeader("content-type", "multipart/form-data")
                     .AddHeader("Accept", "application/json")
@@ -65,17 +63,13 @@ namespace iqoptionapi.http {
                     .AddParameter("password", LoginModel.Password, ParameterType.QueryString);
 
                 var result = client.ExecuteTaskAsync(request)
-                    .ContinueWith(t => {
-
-                    });
-
+                    .ContinueWith(t => { });
             }
             catch (Exception ex) {
                 tcs.TrySetException(ex);
             }
 
             return tcs.Task;
-
         }
 
         public async Task<IRestResponse> LoginAsync() {
@@ -99,6 +93,7 @@ namespace iqoptionapi.http {
                         var exception = result.Content.JsonAs<IqHttpResult<LoginTooMuchResultMessage>>();
                         throw new LoginLimitExceededException(exception.Result.Ttl);
                     }
+
                     break;
                 }
 
@@ -139,8 +134,6 @@ namespace iqoptionapi.http {
         }
 
         private Task<IRestResponse> ExecuteHttpClientAsync(IRestRequest request) {
-
-
             var result = Client.ExecuteTaskAsync(request);
             return result;
         }

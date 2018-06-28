@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\iqoption.core\iqoption.core.csproj" />
+    <ProjectReference Include="..\iqoption.domain\iqoption.domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +30,10 @@
     <None Update="appsettings.Release.json">
       <IsTransformFile>True</IsTransformFile>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Queries\" />
   </ItemGroup>
 
 

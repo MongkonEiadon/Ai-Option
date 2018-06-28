@@ -4,7 +4,6 @@
 }
 
 
-
 <div>
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="height: 0; position: absolute; width: 0;">
         <symbol viewBox="0 0 579 140" id="icon_general_logo-with-text-v2">
@@ -71,7 +70,6 @@
                 <button id="connectButton" class="btn btn-default">ตรวจสอบบัญชีซื้อขาย</button>
 
 
-
             </div>
         </div>
     </div>
@@ -90,8 +88,12 @@
         <div class="panel panel-filled">
             <div class="panel-heading">
                 <div class="panel-tools">
-                    <a class="panel-toggle"><i class="fa fa-chevron-up"></i></a>
-                    <a class="panel-close"><i class="fa fa-times"></i></a>
+                    <a class="panel-toggle">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="panel-close">
+                        <i class="fa fa-times"></i>
+                    </a>
                 </div>
                 <b>รายละเอียดบัญชี และสถานะการทำการซื้อขายอัตโนมัติ</b>
             </div>
@@ -103,19 +105,18 @@
                 <div class="table-responsive">
                     <table class="table table-hover table-striped">
                         <thead>
-                            <tr>
-                                <th>บัญชีอีเมล์</th>
-                                <th>ยอดเงินในบัญชี</th>
-                                <th>สกุลเงินในบัญชี</th>
-                                <th>วันที่บันทึก</th>
-                                <th>เปิดปิดสถานะอัตโนมัติ</th>
-                            </tr>
+                        <tr>
+                            <th>บัญชีอีเมล์</th>
+                            <th>ยอดเงินในบัญชี</th>
+                            <th>สกุลเงินในบัญชี</th>
+                            <th>วันที่บันทึก</th>
+                            <th>เปิดปิดสถานะอัตโนมัติ</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @foreach (var m in @Model)
-                            {
-                                @await Html.PartialAsync("Portal/_IqOptionProfileResponsePartial", m)
-                            }
+                        @foreach (var m in @Model) {
+                            @await Html.PartialAsync("Portal/_IqOptionProfileResponsePartial", m)
+                        }
                         </tbody>
                     </table>
                 </div>
@@ -138,7 +139,7 @@
         var postActive = function(id) {
             $('formAccRow_' + id).submit();
 
-        }
+        };
 
         $(document).ready(function() {
 
@@ -147,7 +148,6 @@
                 var switchery = new Switchery(html);
             });
 
-           
 
             $('#connectButton').on('click',
                 function(e) {
@@ -163,11 +163,11 @@
                             $('#profileResultPanelBody').html(msg);
                             $('#profilePanel').removeClass('ld-loading');
                         },
-                        error: function (msg) {
+                        error: function(msg) {
                             alert(msg.responseText);
                             $('#profilePanel').removeClass('ld-loading');
                         },
-                        complete: function (msg) {
+                        complete: function(msg) {
                             $('#profilePanel').removeClass('ld-loading');
                         }
                     });

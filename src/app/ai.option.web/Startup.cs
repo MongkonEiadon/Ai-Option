@@ -3,10 +3,13 @@ using System.IO;
 using ai.option.web.Configurations;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using iqoption.apiservice;
+using iqoption.apiservice.DependencyModule;
 using iqoption.core.Extensions;
 using iqoption.data;
 using iqoption.data.AutofacModule;
 using iqoption.data.Services;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,7 +19,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace ai.option.web {
     public class Startup {
@@ -35,11 +37,11 @@ namespace ai.option.web {
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true)
                 .Build();
-            
+
             services
                 //cors
                 .AddCors(options => {
-                    options.AddPolicy("CorsPolicy", 
+                    options.AddPolicy("CorsPolicy",
                         cb => cb.AllowAnyOrigin()
                             .AllowAnyMethod()
                             .AllowAnyHeader()
@@ -62,28 +64,29 @@ namespace ai.option.web {
 
             //logging
             var loggerFactory = new LoggerFactory()
-                    .AddDebug()
-                    .AddConsole()
-                    .AddAzureWebAppDiagnostics();
+                .AddDebug()
+                .AddConsole()
+                .AddAzureWebAppDiagnostics();
 
             services
-                .AddSingleton<ILoggerFactory>(loggerFactory)
-                .AddSingleton<ILogger>(loggerFactory.CreateLogger(nameof(Startup)))
-                .AddSingleton(typeof(ILogger<>), typeof(Logger<>));
-
-
-            services
+                .AddSingleton(loggerFactory)
+                .AddSingleton(loggerFactory.CreateLogger(nameof(Startup)))
+                .AddSingleton(typeof(ILogger<>), typeof(Logger<>))
                 .AddAutoMapper()
+                .AddMediatR()
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             builder.RegisterModule<DataAutofacModule>();
-            builder.RegisterModule<iqoption.apiservice.DependencyModule.ApiServiceModule>();
+            builder.RegisterModule<ApiServiceModule>();
             builder.Populate(services);
 
             var container = builder.Build();
 
-            var serviceProvider =  container.Resolve<IServiceProvider>();
+
+            var loginCommandHandler = container.Resolve<ILoginCommandHandler>();
+
+            var serviceProvider = container.Resolve<IServiceProvider>();
             return serviceProvider;
         }
 
@@ -107,10 +110,10 @@ namespace ai.option.web {
                 .UseStaticFiles()
                 .UseCookiePolicy()
                 .UseMvc(routes => {
-                routes.MapRoute(
-                    "default",
-                    "{controller=Home}/{action=Index}/{id?}");
-            });
+                    routes.MapRoute(
+                        "default",
+                        "{controller=Home}/{action=Index}/{id?}");
+                });
         }
     }
 }

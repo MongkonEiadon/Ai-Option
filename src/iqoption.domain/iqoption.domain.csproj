@@ -13,4 +13,8 @@
     <ProjectReference Include="..\iqoption.core\iqoption.core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Users\Queries\" />
+  </ItemGroup>
+
 </Project>

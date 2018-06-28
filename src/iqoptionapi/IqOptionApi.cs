@@ -17,9 +17,9 @@ namespace iqoptionapi {
         private readonly IqOptionConfiguration _configuration;
         private readonly ILogger _logger;
         private readonly Subject<Profile> _profileSubject = new Subject<Profile>();
-        private Profile _profile;
 
         private readonly Subject<bool> connectedSubject = new Subject<bool>();
+        private Profile _profile;
 
         public IDictionary<InstrumentType, Instrument[]> Instruments { get; private set; }
 
@@ -42,12 +42,11 @@ namespace iqoptionapi {
 
 
         public Task<Profile> LoginAsync() {
-
             var tcs = new TaskCompletionSource<Profile>();
 
             try {
                 var t = HttpClient.LoginAsync();
-                
+
 
                 tcs.TrySetResult(HttpClient.Profile);
             }
@@ -98,33 +97,29 @@ namespace iqoptionapi {
         }
 
         public Task<Profile> GetProfileAsync() {
-
             var tcs = new TaskCompletionSource<Profile>();
 
             try {
-
                 HttpClient
                     .GetProfileAsync()
                     .ContinueWith(async t => {
-
                         if ((await t).StatusCode == HttpStatusCode.OK) {
-
                             if ((await t).Content.TryParseJson(out IqHttpResult<Profile> content)) {
                                 tcs.TrySetResult(content.Result);
                             }
                         }
 
-                        tcs.TrySetException(new IqOptionApiGetProfileFailedException($"token = '' & content = '{(await t).Content}'"));
+                        tcs.TrySetException(
+                            new IqOptionApiGetProfileFailedException($"token = '' & content = '{(await t).Content}'"));
 
                         return tcs.Task;
                     });
-
             }
             catch (Exception ex) {
                 _logger.LogCritical(ex, nameof(GetProfileAsync));
                 tcs.TrySetException(ex);
             }
-            
+
             return tcs.Task;
         }
 

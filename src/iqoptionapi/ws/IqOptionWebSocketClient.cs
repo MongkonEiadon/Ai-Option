@@ -14,61 +14,10 @@ namespace iqoptionapi.ws {
     public class IqOptionWebSocketClient : IDisposable {
         //privates
         private readonly ILogger _logger;
-        private WebSocket Client { get; }
-
-        #region [Public's]
-
-        public IObservable<string> MessageReceivedObservable { get; }
-
-        public IObservable<object> DataReceivedObservable { get; }
-        public string SecureToken { get; set; }
-
-        #endregion
+        private readonly Subject<long> _timeSyncSubject = new Subject<long>();
 
 
         private long _timeSync;
-        private readonly Subject<long> _timeSyncSubject = new Subject<long>();
-        public DateTime TimeSync => _timeSync.FromUnixToDateTime();
-
-        #region [Profile]
-
-        private Profile _profile;
-        private readonly Subject<Profile> _profileSubject = new Subject<Profile>();
-
-        public Profile Profile {
-            get => _profile;
-            set {
-                _profile = value;
-                _profileSubject.OnNext(value);
-            }
-        }
-
-        public IObservable<Profile> ProfileObservable => _profileSubject;
-
-        #endregion
-
-        #region [Instruments]
-
-        private InstrumentResultSet _instrumentResultSet = new InstrumentResultSet();
-        private readonly Subject<InstrumentResultSet> _instrumentResultSetSubject = new Subject<InstrumentResultSet>();
-
-        public IObservable<InstrumentResultSet> InstrumentResultSetObservable { get; }
-
-        #endregion
-
-        #region [InfoData]
-
-        private readonly Subject<InfoData[]> _infoDataSubject = new Subject<InfoData[]>();
-        public IObservable<InfoData[]> InfoDataObservable => _infoDataSubject.Publish().RefCount();
-
-        #endregion
-
-        #region [BuyV2]
-
-        private readonly Subject<BuyResult> _buyResulSjSubject = new Subject<BuyResult>();
-        public IObservable<BuyResult> BuyResultObservable { get; }
-
-        #endregion
 
 
         public IqOptionWebSocketClient(string secureToken, string host = "iqoption.com") {
@@ -182,6 +131,14 @@ namespace iqoptionapi.ws {
             OpenSecuredSocketAsync();
         }
 
+        private WebSocket Client { get; }
+        public DateTime TimeSync => _timeSync.FromUnixToDateTime();
+
+
+        public void Dispose() {
+            Client?.Dispose();
+        }
+
 
         public async Task SendMessageAsync(IWsIqOptionMessageCreator messageCreator) {
             if (await OpenWebSocketAsync()) {
@@ -249,13 +206,57 @@ namespace iqoptionapi.ws {
             return await Client.OpenAsync();
         }
 
-
-        public void Dispose() {
-            Client?.Dispose();
-        }
-
         private Task OpenSecuredSocketAsync() {
             return SendMessageAsync(new SsidWsRequestMessageBase(SecureToken));
         }
+
+        #region [Public's]
+
+        public IObservable<string> MessageReceivedObservable { get; }
+
+        public IObservable<object> DataReceivedObservable { get; }
+        public string SecureToken { get; set; }
+
+        #endregion
+
+        #region [Profile]
+
+        private Profile _profile;
+        private readonly Subject<Profile> _profileSubject = new Subject<Profile>();
+
+        public Profile Profile {
+            get => _profile;
+            set {
+                _profile = value;
+                _profileSubject.OnNext(value);
+            }
+        }
+
+        public IObservable<Profile> ProfileObservable => _profileSubject;
+
+        #endregion
+
+        #region [Instruments]
+
+        private InstrumentResultSet _instrumentResultSet = new InstrumentResultSet();
+        private readonly Subject<InstrumentResultSet> _instrumentResultSetSubject = new Subject<InstrumentResultSet>();
+
+        public IObservable<InstrumentResultSet> InstrumentResultSetObservable { get; }
+
+        #endregion
+
+        #region [InfoData]
+
+        private readonly Subject<InfoData[]> _infoDataSubject = new Subject<InfoData[]>();
+        public IObservable<InfoData[]> InfoDataObservable => _infoDataSubject.Publish().RefCount();
+
+        #endregion
+
+        #region [BuyV2]
+
+        private readonly Subject<BuyResult> _buyResulSjSubject = new Subject<BuyResult>();
+        public IObservable<BuyResult> BuyResultObservable { get; }
+
+        #endregion
     }
 }

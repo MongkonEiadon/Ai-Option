@@ -5,8 +5,6 @@ using iqoption.core.data;
 using iqoption.data.Model;
 
 namespace iqoption.data.Services {
-
-
     public interface IIqOptionAccountService {
         Task<Guid> CreateAccountTask(IqOptionAccountDto user);
         Task<List<IqOptionAccountDto>> GetIqOptionAccountsByUserIdAsync(string userName);
@@ -14,6 +12,7 @@ namespace iqoption.data.Services {
         Task<IqOptionAccountDto> GetAccountByUserIdAsync(long userId);
         Task<IqOptionAccountDto> GetAccountByIdAsync(Guid id);
     }
+
     public class IqOptionAccountService : IIqOptionAccountService {
         private readonly IRepository<IqOptionAccountDto> _iqOptionUserRepository;
 
@@ -24,13 +23,13 @@ namespace iqoption.data.Services {
         public Task<Guid> CreateAccountTask(IqOptionAccountDto user) {
             user.LastSyned = DateTime.Now;
             user.CreatedOn = DateTime.Now;
-            
+
             return _iqOptionUserRepository.InsertAndGetIdAsync(user);
         }
 
         public Task<IqOptionAccountDto> UpdateAccountTask(IqOptionAccountDto accont) {
             accont.UpdatedOn = DateTime.Now;
-            
+
             return _iqOptionUserRepository.UpdateAsync(accont);
         }
 

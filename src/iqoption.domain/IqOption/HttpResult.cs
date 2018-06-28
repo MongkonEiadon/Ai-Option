@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace iqoption.domain.IqOption
-{
-    public class IqHttpResult<T> 
-    {
+namespace iqoption.domain.IqOption {
+    public class IqHttpResult<T> {
         [JsonProperty("isSuccessful")]
         public bool IsSuccessful { get; set; }
 
@@ -18,11 +13,9 @@ namespace iqoption.domain.IqOption
 
         [JsonProperty("location")]
         public string Location { get; set; }
-
     }
 
-    public class LoginFailedResultMessage
-    {
+    public class LoginFailedResultMessage {
         [JsonProperty("isSuccessful")]
         public bool IsSuccessful { get; set; }
 
@@ -31,12 +24,10 @@ namespace iqoption.domain.IqOption
 
         [JsonProperty("result")]
         public string[] Result { get; set; }
-
     }
 
 
-    public class LoginFailedMessage
-    {
+    public class LoginFailedMessage {
         [JsonProperty("email")]
         public string[] Email { get; set; }
 
@@ -45,14 +36,11 @@ namespace iqoption.domain.IqOption
     }
 
 
-    public class LoginTooMuchResultMessage 
-    {
-
+    public class LoginTooMuchResultMessage {
         [JsonProperty("status")]
         public string Status { get; set; }
 
         [JsonProperty("ttl")]
         public int Ttl { get; set; }
-
     }
 }

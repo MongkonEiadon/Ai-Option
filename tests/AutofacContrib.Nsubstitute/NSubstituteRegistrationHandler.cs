@@ -9,10 +9,8 @@ using NSubstitute;
 
 namespace AutofacContrib.NSubstitute {
     /// <summary> Resolves unknown interfaces and Mocks using the <see cref="Substitute" />. </summary>
-    internal class NSubstituteRegistrationHandler : IRegistrationSource
-    {
-        private static readonly IReadOnlyCollection<Type> GenericCollectionTypes = new List<Type>
-        {
+    internal class NSubstituteRegistrationHandler : IRegistrationSource {
+        private static readonly IReadOnlyCollection<Type> GenericCollectionTypes = new List<Type> {
             typeof(IEnumerable<>),
             typeof(IList<>),
             typeof(IReadOnlyCollection<>),
@@ -30,8 +28,7 @@ namespace AutofacContrib.NSubstitute {
         ///     Registrations for the service.
         /// </returns>
         public IEnumerable<IComponentRegistration> RegistrationsFor
-            (Service service, Func<Service, IEnumerable<IComponentRegistration>> registrationAccessor)
-        {
+            (Service service, Func<Service, IEnumerable<IComponentRegistration>> registrationAccessor) {
             if (service == null)
                 throw new ArgumentNullException("service");
 
@@ -44,23 +41,20 @@ namespace AutofacContrib.NSubstitute {
                 typeof(IStartable).IsAssignableFrom(typedService.ServiceType))
                 return Enumerable.Empty<IComponentRegistration>();
 
-            var rb = RegistrationBuilder.ForDelegate((c, p) => Substitute.For(new[] { typedService.ServiceType }, null))
+            var rb = RegistrationBuilder.ForDelegate((c, p) => Substitute.For(new[] {typedService.ServiceType}, null))
                 .As(service)
                 .InstancePerLifetimeScope();
 
-            return new[] { rb.CreateRegistration() };
+            return new[] {rb.CreateRegistration()};
         }
 
-        public bool IsAdapterForIndividualComponents
-        {
-            get { return false; }
-        }
+        public bool IsAdapterForIndividualComponents => false;
 
-        private static bool IsGenericListOrCollectionInterface(Type serviceType)
-        {
+        private static bool IsGenericListOrCollectionInterface(Type serviceType) {
             // TODO make backwards compatible
             //return serviceType.IsGenericType && GenericCollectionTypes.Contains(serviceType.GetGenericTypeDefinition());
-            return serviceType.GetTypeInfo().IsGenericType && GenericCollectionTypes.Contains(serviceType.GetGenericTypeDefinition());
+            return serviceType.GetTypeInfo().IsGenericType &&
+                   GenericCollectionTypes.Contains(serviceType.GetGenericTypeDefinition());
         }
     }
 }

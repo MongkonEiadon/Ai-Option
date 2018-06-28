@@ -60,7 +60,6 @@ namespace ai.option.web.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> RegisterAsync(LoginViewModel model) {
-
             ViewData["ErrorMessage"] = "";
 
             if (model.InvitationCode != "AIoptionV1") {

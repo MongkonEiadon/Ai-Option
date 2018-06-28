@@ -3,13 +3,12 @@ using Newtonsoft.Json;
 
 namespace iqoption.domain.Users {
     public class User {
-
         [JsonProperty("id")]
         public string Id { get; set; }
 
         [Required]
         [JsonProperty("user-id")]
-        public long UserId { get; set; } 
+        public long UserId { get; set; }
 
         [Required]
         [JsonProperty("email")]

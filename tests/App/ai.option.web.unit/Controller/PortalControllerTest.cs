@@ -10,21 +10,18 @@ using Shouldly;
 namespace ai.option.web.unit.Controller {
     [TestFixture]
     public class PortalControllerTest : BaseUnitTest {
-        private IUserService _UserService;
-        private IIqOptionAccountService _iqOptionAccountService;
-
         [SetUp]
         public void Setup() {
             _UserService = AutoSubstitute.Resolve<IUserService>();
             _iqOptionAccountService = AutoSubstitute.Resolve<IIqOptionAccountService>();
-
-
         }
+
+        private IUserService _UserService;
+        private IIqOptionAccountService _iqOptionAccountService;
 
 
         [Test]
         public async Task AddIqOptionAccountAsync_WithExistingAccount_UpdateShouldReceived() {
-
             //arrange
             var accountDto = new IqOptionAccountDto();
             var model = new IqOptionRequestViewModel {

@@ -1,12 +1,9 @@
 ﻿using System.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace iqoptionapi {
-
     internal static class IqOptionLoggerFactory {
-
         private static ILogger _loggerInstance;
 
         public static void SetLogger(ILogger logger) {
@@ -14,7 +11,6 @@ namespace iqoptionapi {
         }
 
         public static ILogger CreateLogger() {
-
             if (_loggerInstance == null) {
                 var configuration = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())

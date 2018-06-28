@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq.Expressions;
 
-namespace iqoption.core
-{
-    public interface IDateTimeStamp
-    {
-
+namespace iqoption.core {
+    public interface IDateTimeStamp {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         DateTime? CreatedOn { get; set; }
 

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace iqoptionapi.http {
     public class IqHttpResult<T> where T : IHttpResultMessage {
@@ -10,11 +9,10 @@ namespace iqoptionapi.http {
         public object Message { get; set; }
 
         [JsonProperty("result")]
-        public T Result { get; set; } 
-        
+        public T Result { get; set; }
+
         [JsonProperty("location")]
         public string Location { get; set; }
-
     }
 
     public class LoginFailedResultMessage {
@@ -26,7 +24,6 @@ namespace iqoptionapi.http {
 
         [JsonProperty("result")]
         public string[] Result { get; set; }
-
     }
 
 
@@ -40,13 +37,10 @@ namespace iqoptionapi.http {
 
 
     public class LoginTooMuchResultMessage : IHttpResultMessage {
-
         [JsonProperty("status")]
         public string Status { get; set; }
 
         [JsonProperty("ttl")]
         public int Ttl { get; set; }
-
     }
-    
 }

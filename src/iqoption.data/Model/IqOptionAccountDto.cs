@@ -1,10 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using iqoption.core.Extensions;
 
 namespace iqoption.data.Model {
-
     [Table("IqOptionAccount")]
     public class IqOptionAccountDto : EntityWithDateTimeStamp {
         public int IqOptionUserId { get; set; }
@@ -25,13 +23,12 @@ namespace iqoption.data.Model {
         public DateTime BirthDate { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
+
         public string Avartar { get; set; }
         //public string Ssid { get; set; }
         //public DateTime? SsiCreated { get; set; }
-        
+
 
         public virtual UserDto User { get; set; }
-        
-
     }
 }

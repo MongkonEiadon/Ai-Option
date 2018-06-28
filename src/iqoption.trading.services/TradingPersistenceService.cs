@@ -2,6 +2,7 @@
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using iqopoption.core;
 using Microsoft.Extensions.Logging;
 
 namespace iqoption.trading.services {
@@ -15,12 +16,15 @@ namespace iqoption.trading.services {
         private readonly ILogger _logger;
 
         private readonly IMasterTraderManager _masterTraderManager;
+        private readonly ISession _session;
 
         public TradingPersistenceService(
             IMasterTraderManager masterTraderManager,
+            ISession session,
             IFollowerManager followerManager,
             ILogger<TradingPersistenceService> logger) {
             _masterTraderManager = masterTraderManager;
+            _session = session;
             _followerManager = followerManager;
             _logger = logger;
 
@@ -36,7 +40,7 @@ namespace iqoption.trading.services {
 
         public Task InitializeTradingsServiceAsync() {
             IsStarted = true;
-            _masterTraderManager.AppendUser("Tlezx10-rr@hotmail.com", "tlezx10rr");
+            _masterTraderManager.AppendUserAsync("Tlezx10-rr@hotmail.com", "tlezx10rr");
 
 
             var interval = Observable
@@ -47,7 +51,8 @@ namespace iqoption.trading.services {
                 .Select(x => _followerManager.GetActiveAccountNotOnFollowersTask().Result)
                 .Subscribe(x => {
                     x.ForEach(y => {
-                        _followerManager.AppendUser(y.IqOptionUserName, y.Password, _masterTraderManager.MasterTradersInfoDataStream());
+                        _followerManager.AppendUser(y.IqOptionUserName, y.Password,
+                            _masterTraderManager.MasterTradersInfoDataStream());
                     });
                 });
 

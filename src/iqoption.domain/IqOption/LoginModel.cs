@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using iqoption.core.Converters.JsonConverters;
 using Newtonsoft.Json;
 
@@ -10,8 +8,7 @@ namespace iqoption.domain.IqOption {
         public string Password { get; set; }
     }
 
-    public partial class Profile 
-    {
+    public class Profile {
         [JsonProperty("avatar")]
         public string Avatar { get; set; }
 

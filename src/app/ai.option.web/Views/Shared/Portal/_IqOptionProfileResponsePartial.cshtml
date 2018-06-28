@@ -2,9 +2,8 @@
 
 
 <tr>
-    
-    @using (Html.BeginForm("UpdateIsActiveAsync", "Portal", FormMethod.Post, new {id =$"formAccRow_{@Model.IqOptionAccountId}"})) {
 
+    @using (Html.BeginForm("UpdateIsActiveAsync", "Portal", FormMethod.Post, new {id = $"formAccRow_{@Model.IqOptionAccountId}"})) {
         @Html.HiddenFor(m => m.IqOptionAccountId)
         <td>@Model.EmailAddress</td>
         <td>@Model.Balance</td>
@@ -12,9 +11,9 @@
         <td>@Model.CreatedOn.ToShortDateString()</td>
         <td>
             @Html.CheckBoxFor(m => m.IsActive, new {
-           onchange = $"$('#formAccRow_" + @Model.IqOptionAccountId + "').submit();",
-           @class ="js-switch", id=$"IsActiveCheckBox_{@Model.IqOptionAccountId}"
-       })
+                onchange = $"$('#formAccRow_" + @Model.IqOptionAccountId + "').submit();",
+                @class = "js-switch", id = $"IsActiveCheckBox_{@Model.IqOptionAccountId}"
+            })
         </td>
     }
 

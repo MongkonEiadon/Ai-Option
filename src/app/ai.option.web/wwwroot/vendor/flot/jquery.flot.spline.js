@@ -39,7 +39,7 @@
  */
 
 (function($) {
-    'use strict'
+    'use strict';
 
     /**
      * @param {Number} x0, y0, x1, y1: coordinates of the end (knot) points of the segment
@@ -54,7 +54,14 @@
 
         var pow = Math.pow,
             sqrt = Math.sqrt,
-            d01, d12, fa, fb, p1x, p1y, p2x, p2y;
+            d01,
+            d12,
+            fa,
+            fb,
+            p1x,
+            p1y,
+            p2x,
+            p2y;
 
         //  Scaling factors: distances from this knot to the previous and following knots.
         d01 = sqrt(pow(x1 - x0, 2) + pow(y1 - y0, 2));
@@ -123,8 +130,7 @@
             cpoints = cpoints.slice(0, 2).concat(points);
 
             line.push([points[0], points[1], cpoints, type]);
-        }
-        else line.push([points[2], points[3], cpoints.concat(points.slice(2)), type]);
+        } else line.push([points[2], points[3], cpoints.concat(points.slice(2)), type]);
     }
 
     /**
@@ -142,9 +148,12 @@
         }
 
         var cp = [],
-        // array of control points
+            // array of control points
             tension = series.splines.tension || 0.5,
-            idx, x, y, points = series.datapoints.points,
+            idx,
+            x,
+            y,
+            points = series.datapoints.points,
             ps = series.datapoints.pointsize,
             plotOffset = plot.getPlotOffset(),
             len = points.length,
@@ -161,7 +170,11 @@
         for (idx = 0; idx < len; idx += ps) {
             x = points[idx];
             y = points[idx + 1];
-            if (x == null || x < series.xaxis.min || x > series.xaxis.max || y < series.yaxis.min || y > series.yaxis.max) {
+            if (x == null ||
+                x < series.xaxis.min ||
+                x > series.xaxis.max ||
+                y < series.yaxis.min ||
+                y > series.yaxis.max) {
                 continue;
             }
 
@@ -185,7 +198,10 @@
             queue(ctx, 'bezier', pts.slice(idx, idx + 4), cp.slice(2 * idx - 2, 2 * idx + 2));
         }
 
-        queue(ctx, 'quadratic', pts.slice(len - 2, len), [cp[2 * len - 10], cp[2 * len - 9], pts[len - 4], pts[len - 3]]);
+        queue(ctx,
+            'quadratic',
+            pts.slice(len - 2, len),
+            [cp[2 * len - 10], cp[2 * len - 9], pts[len - 4], pts[len - 3]]);
 
         drawLine(line, ctx, plot.height() + 10, series.splines.fill, series.color);
 

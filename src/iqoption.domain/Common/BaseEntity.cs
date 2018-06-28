@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
 
-namespace iqoption.domain.Common
-{
-    public abstract class BaseEntity
-    {
+namespace iqoption.domain.Common {
+    public abstract class BaseEntity {
+        public BaseEntity() {
+            Id = Guid.NewGuid().ToString();
+            CreatedAt = DateTime.UtcNow;
+        }
+
         [JsonProperty("id")]
         public string Id { get; set; }
 
@@ -15,11 +16,5 @@ namespace iqoption.domain.Common
 
         [JsonProperty("createdAt")]
         public DateTime CreatedAt { get; set; }
-
-        public BaseEntity()
-        {
-            Id = Guid.NewGuid().ToString();
-            CreatedAt = DateTime.UtcNow;
-        }
     }
 }

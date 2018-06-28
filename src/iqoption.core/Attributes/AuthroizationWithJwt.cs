@@ -1,9 +1,2 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
-
-namespace iqoption.core.Attributes
-{
-    
+﻿namespace iqoption.core.Attributes {
 }
