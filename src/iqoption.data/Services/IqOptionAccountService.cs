@@ -21,6 +21,7 @@ namespace iqoption.data.Services {
         }
 
         public Task<Guid> CreateAccountTask(IqOptionAccountDto user) {
+            user.Id = Guid.NewGuid();
             user.LastSyned = DateTime.Now;
             user.CreatedOn = DateTime.Now;
 

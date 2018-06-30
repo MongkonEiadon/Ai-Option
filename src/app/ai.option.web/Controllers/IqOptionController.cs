@@ -1,36 +1,39 @@
 ﻿using System;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+using System.Threading;
 using System.Threading.Tasks;
 using ai.option.web.ViewModels;
 using AutoMapper;
-using iqopoption.core;
+using EventFlow;
+using EventFlow.Aggregates.ExecutionResults;
+using EventFlow.Commands;
+using EventFlow.Queries;
 using iqoption.apiservice;
-using iqoption.apiservice.Queries;
+using iqoption.domain.IqOption;
 using iqoption.domain.IqOption.Command;
+using iqoption.domain.IqOption.Commands;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace ai.option.web.Controllers {
+
     [EnableCors("CorsPolicy")]
     public class IqOptionController : Controller {
-        private readonly IGetProfileCommandHandler _getProfileCommandHandler;
         private readonly ILogger<IqOptionController> _logger;
-        private readonly ILoginCommandHandler _loginCommandHandler;
+        private readonly IQueryProcessor _queryProcessor;
+        private readonly ICommandBus _commandBus;
         private readonly IMapper _mapper;
-        private readonly ISession _session;
 
         public IqOptionController(IMapper mapper,
-            ISession session,
             ILogger<IqOptionController> logger,
-            IGetProfileCommandHandler getProfileCommandHandler,
-            ILoginCommandHandler loginCommandHandler) {
+            IQueryProcessor queryProcessor ,ICommandBus commandBus) {
             _mapper = mapper;
-            _session = session;
             _logger = logger;
-            _getProfileCommandHandler = getProfileCommandHandler;
-            _loginCommandHandler = loginCommandHandler;
+            _queryProcessor = queryProcessor;
+            _commandBus = commandBus;
         }
-
 
         public IActionResult Index() {
             return View();
@@ -43,33 +46,36 @@ namespace ai.option.web.Controllers {
 
         [HttpGet]
         public async Task<IActionResult> GetTokenAsync(IqOptionRequestViewModel requestViewModel) {
+
             if (string.IsNullOrEmpty(requestViewModel.EmailAddress) ||
                 string.IsNullOrEmpty(requestViewModel.Password))
                 return Ok();
+            
 
             try {
-                await _session
-                    .Send(new LoginCommand(requestViewModel.EmailAddress, requestViewModel.Password))
-                    .ContinueWith(t => {
-                        if (t.Result.IsSuccess)
-                            return _getProfileCommandHandler.RetreiveProfileQueryAsync(t.Result.Ssid);
+                var loginObs = await _commandBus.PublishAsync(new IqLoginCommand(IqOptionIdentity.New, requestViewModel.EmailAddress, requestViewModel.Password), default(CancellationToken));
+                if (loginObs.IsSuccess) {
 
-                        throw new Exception(t.Result.Message);
-                    })
-                    .Unwrap()
-                    .ContinueWith(t => {
-                        requestViewModel.ProfileResponseViewModel =
-                            _mapper.Map<IqOptionProfileResponseViewModel>(t.Result);
-                        requestViewModel.IsPassed = true;
-                    });
+                    var profile = await _queryProcessor.ProcessAsync(new GetProfileQuery(loginObs.Ssid), CancellationToken.None)
+                        .ContinueWith(t => _mapper.Map<IqOptionProfileResponseViewModel>(t.Result.ProfileResult));
 
+                    requestViewModel.ProfileResponseViewModel = profile;
+                    requestViewModel.IsPassed = true;
+                    requestViewModel.ProfileResponseViewModel.Ssid = loginObs.Ssid;
+                    requestViewModel.ProfileResponseViewModel.SsidUpdated = DateTime.Now;
 
-                return IqOptionProfile(requestViewModel);
+                    return IqOptionProfile(requestViewModel);
+                }
+
+                throw new Exception(loginObs.Message);
+
             }
 
             catch (AggregateException arex) {
                 _logger.LogWarning("GetToken Failed", arex.GetBaseException().Message);
+
                 return BadRequest(arex.GetBaseException().Message);
+
             }
 
             catch (Exception ex) {
@@ -77,5 +83,6 @@ namespace ai.option.web.Controllers {
                 return BadRequest(ex.Message);
             }
         }
+        
     }
 }

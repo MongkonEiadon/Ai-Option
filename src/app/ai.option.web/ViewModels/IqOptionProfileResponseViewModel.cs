@@ -19,5 +19,11 @@ namespace ai.option.web.ViewModels {
         public string City { get; set; }
 
         public DateTime Birthdate { get; set; }
+
+
+        public string Ssid { get; set; }
+        public DateTime SsidUpdated { get; set; }
+
+
     }
 }

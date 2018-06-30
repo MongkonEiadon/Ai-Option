@@ -1,20 +1,31 @@
-﻿using ai.option.web.AutoMapper;
+﻿using System;
+using ai.option.web.AutoMapper;
 using ai.option.web.ViewModels;
 using AutoMapper;
 using iqoption.data.Model;
 using NUnit.Framework;
 using Shouldly;
+using Xunit;
 
 namespace ai.option.web.unit.AutoMapper {
-    [TestFixture]
-    public class IqOptionAccountDtoMappedProfileTest {
-        [OneTimeSetUp]
-        public void Setup() {
-            Mapper.Initialize(c => { c.AddProfile<IqOptionAccountDtoMappedProfile>(); });
+
+
+    public class IqOptionAccountDtoMappedProfileTest : IClassFixture<BaseUnitTest>, IDisposable {
+
+        public IqOptionAccountDtoMappedProfileTest() {
+
+            Mapper.Reset();
+            Mapper.Initialize(c => c.AddProfile<IqOptionAccountDtoMappedProfile>());
+
+            Mapper.AssertConfigurationIsValid();
         }
 
-        [Test]
+        [Fact]
         public void Mapper_WithEmailAndPassword_PropertiesShouldSet() {
+            Mapper.Reset();
+            Mapper.Initialize(c => c.AddProfile<IqOptionAccountDtoMappedProfile>());
+            
+            
             //arrange
             var model = new IqOptionRequestViewModel();
             model.EmailAddress = "m@email.com";
@@ -29,7 +40,7 @@ namespace ai.option.web.unit.AutoMapper {
             result.Password.ShouldBe("password");
         }
 
-        [Test]
+        [Fact]
         public void Mapper_WithUserId_PropertiesShouldSet() {
             //arrange
             var model = new IqOptionRequestViewModel();
@@ -45,6 +56,9 @@ namespace ai.option.web.unit.AutoMapper {
             //assert
             Mapper.AssertConfigurationIsValid();
             result.IqOptionUserId.ShouldBe(1234);
+        }
+
+        public void Dispose() {
         }
     }
 }

@@ -5,9 +5,8 @@ using FluentValidation.AspNetCore;
 using iqoption.apiservice.DependencyModule;
 using iqoption.core.Extensions;
 using iqoption.data;
-using iqoption.data.AutofacModule;
+using iqoption.data.DependencyModule;
 using iqoption.trading.services;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -84,9 +83,7 @@ namespace iqoption.follower.app {
                 .AddSingleton<ILoggerFactory, LoggerFactory>()
                 .AddSingleton<ILogger>(c => c.GetService<ILogger<Startup>>())
                 .AddSingleton(typeof(ILogger<>), typeof(Logger<>)) // Add first my already configured instance
-
-                //mediator
-                .AddMediatR()
+                
                 //trandings services
                 .AddTradingServices();
 

@@ -1,7 +1,7 @@
 using System;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using iqoption.data.AutofacModule;
+using iqoption.data.DependencyModule;
 using iqoption.data.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using iqoption.data;
 
 namespace iqoption.data.Migrations
 {
     [DbContext(typeof(AiOptionContext))]
-    partial class AiOptionContextModelSnapshot : ModelSnapshot
+    [Migration("20180629065236_AddSsidToAccount")]
+    partial class AddSsidToAccount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

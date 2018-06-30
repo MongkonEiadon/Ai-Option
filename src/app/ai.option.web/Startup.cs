@@ -3,13 +3,13 @@ using System.IO;
 using ai.option.web.Configurations;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using iqoption.apiservice;
+using EventFlow.Autofac.Extensions;
+using EventFlow.DependencyInjection.Extensions;
 using iqoption.apiservice.DependencyModule;
 using iqoption.core.Extensions;
 using iqoption.data;
-using iqoption.data.AutofacModule;
+using iqoption.data.DependencyModule;
 using iqoption.data.Services;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,14 +39,6 @@ namespace ai.option.web {
                 .Build();
 
             services
-                //cors
-                .AddCors(options => {
-                    options.AddPolicy("CorsPolicy",
-                        cb => cb.AllowAnyOrigin()
-                            .AllowAnyMethod()
-                            .AllowAnyHeader()
-                            .AllowCredentials());
-                })
                 .AddEntityFrameworkInMemoryDatabase()
                 .AddDbContext<AiOptionContext>(options =>
                     options
@@ -73,18 +65,20 @@ namespace ai.option.web {
                 .AddSingleton(loggerFactory.CreateLogger(nameof(Startup)))
                 .AddSingleton(typeof(ILogger<>), typeof(Logger<>))
                 .AddAutoMapper()
-                .AddMediatR()
+                .AddEventFlow(o => {
+                    o.UseAutofacContainerBuilder(builder);
+                    o.AddEventFlowForData();
+                })
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             builder.RegisterModule<DataAutofacModule>();
             builder.RegisterModule<ApiServiceModule>();
-            builder.Populate(services);
 
+
+            builder.Populate(services);
             var container = builder.Build();
 
-
-            var loginCommandHandler = container.Resolve<ILoginCommandHandler>();
 
             var serviceProvider = container.Resolve<IServiceProvider>();
             return serviceProvider;

@@ -6,12 +6,13 @@ using iqoption.data.Services;
 using NSubstitute;
 using NUnit.Framework;
 using Shouldly;
+using Xunit;
 
 namespace ai.option.web.unit.Controller {
-    [TestFixture]
+
+
     public class PortalControllerTest : BaseUnitTest {
-        [SetUp]
-        public void Setup() {
+        public PortalControllerTest() {
             _UserService = AutoSubstitute.Resolve<IUserService>();
             _iqOptionAccountService = AutoSubstitute.Resolve<IIqOptionAccountService>();
         }
@@ -20,7 +21,7 @@ namespace ai.option.web.unit.Controller {
         private IIqOptionAccountService _iqOptionAccountService;
 
 
-        [Test]
+        [Fact]
         public async Task AddIqOptionAccountAsync_WithExistingAccount_UpdateShouldReceived() {
             //arrange
             var accountDto = new IqOptionAccountDto();
@@ -46,5 +47,31 @@ namespace ai.option.web.unit.Controller {
                 .Received(1)
                 .UpdateAccountTask(Arg.Is<IqOptionAccountDto>(dto => dto != null));
         }
+
+        [Fact]
+        public async Task AddIqOptionAccount_WithNotExistingAccount_NewAccountGenerated() {
+
+            //arrange
+            var accountDto = new IqOptionAccountDto();
+            var model = new IqOptionRequestViewModel {
+                EmailAddress = "m@email.com",
+                Password = "password",
+                ProfileResponseViewModel = new IqOptionProfileResponseViewModel {
+                    UserId = 1234
+                }
+            };
+
+            _iqOptionAccountService.GetAccountByUserIdAsync(Arg.Any<long>()).Returns(Task.FromResult(default(IqOptionAccountDto)));
+            
+            //act
+            var result = await AutoSubstitute.Resolve<PortalController>()
+                .AddIqOptionAccountAsync(model);
+
+
+            result.ShouldNotBeNull();
+            await _iqOptionAccountService.Received().CreateAccountTask(accountDto);
+        }
+
+
     }
 }

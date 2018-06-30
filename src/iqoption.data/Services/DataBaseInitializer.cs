@@ -1,6 +1,7 @@
 ﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using iqopoption.core;
+using EventFlow;
 using iqoption.data.Model;
 using iqoption.domain.Users;
 using iqoption.domain.Users.Commands;
@@ -14,19 +15,18 @@ namespace iqoption.data.Services {
     public class DbSeedingService : IDbSeeding {
         private readonly AiOptionContext _context;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly ISession _session;
+        private readonly ICommandBus _commandBus;
         private readonly UserManager<UserDto> _userManager;
 
 
         public DbSeedingService(
             AiOptionContext context,
-            ISession session,
             UserManager<UserDto> userManager,
-            RoleManager<IdentityRole> roleManager) {
+            RoleManager<IdentityRole> roleManager, ICommandBus commandBus) {
             _context = context;
-            _session = session;
             _userManager = userManager;
             _roleManager = roleManager;
+            _commandBus = commandBus;
         }
 
         public async Task SeedAsync() {
@@ -57,15 +57,15 @@ namespace iqoption.data.Services {
 
         private async Task SeedUserLevel() {
             var levels = new[] {
-                new CreateUserRoleCommand(UserLevel.Administrator),
-                new CreateUserRoleCommand(UserLevel.Baned),
-                new CreateUserRoleCommand(UserLevel.Gold),
-                new CreateUserRoleCommand(UserLevel.Platinum),
-                new CreateUserRoleCommand(UserLevel.Standard),
-                new CreateUserRoleCommand(UserLevel.Silver)
+                new CreateUserRoleCommand(UserIdentity.New, UserLevel.Administrator),
+                new CreateUserRoleCommand(UserIdentity.New, UserLevel.Baned),
+                new CreateUserRoleCommand(UserIdentity.New, UserLevel.Gold),
+                new CreateUserRoleCommand(UserIdentity.New, UserLevel.Platinum),
+                new CreateUserRoleCommand(UserIdentity.New, UserLevel.Standard),
+                new CreateUserRoleCommand(UserIdentity.New, UserLevel.Silver)
             };
 
-            foreach (var command in levels) await _session.Send(command);
+            foreach (var command in levels) await _commandBus.PublishAsync(command, CancellationToken.None);
         }
     }
 }

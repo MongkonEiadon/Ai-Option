@@ -1,15 +1,17 @@
 ﻿using ai.option.web.ViewModels;
-using AutoMapper;
-using iqoption.data.Model;
+using iqoption.domain.IqOption;
+using Profile = AutoMapper.Profile;
 
 namespace ai.option.web.AutoMapper {
-    public class IqOptionAccountDtoMappedProfile : Profile {
-        public IqOptionAccountDtoMappedProfile() {
-            CreateMap<IqOptionRequestViewModel, IqOptionAccountDto>()
+    public class IqAccountMappedProfile : Profile {
+
+        public IqAccountMappedProfile() {
+
+            CreateMap<IqOptionRequestViewModel, IqAccount>()
                 .ForMember(m => m.IqOptionUserName, c => c.MapFrom(s => s.EmailAddress))
                 .ForMember(m => m.Password, c => c.MapFrom(s => s.Password))
-                .ForMember(m => m.User, s => s.Ignore())
-                .ForMember(m => m.Id, s => s.Ignore())
+                //.ForMember(m => m., s => s.Ignore())
+                //.ForMember(m => m.Id, s => s.Ignore())
                 .ForMember(m => m.BalanceId, c => c.MapFrom(s => s.ProfileResponseViewModel.BalanceId))
                 .ForMember(m => m.Balance, c => c.MapFrom(s => s.ProfileResponseViewModel.Balance))
                 .ForMember(m => m.IqOptionUserId, c => c.MapFrom(s => s.ProfileResponseViewModel.UserId))
@@ -19,12 +21,13 @@ namespace ai.option.web.AutoMapper {
                 .ForMember(m => m.City, c => c.MapFrom(s => s.ProfileResponseViewModel.City))
                 .ForMember(m => m.BirthDate, c => c.MapFrom(s => s.ProfileResponseViewModel.Birthdate))
                 .ForMember(m => m.Avartar, c => c.MapFrom(s => s.ProfileResponseViewModel.Avartar))
-                .ForMember(m => m.Ssid, c=> c.MapFrom(s => s.ProfileResponseViewModel.Ssid))
-                .ForMember(m => m.SsidUpdated, c=> c.MapFrom(s => s.ProfileResponseViewModel.SsidUpdated))
-                .ForMember(m => m.CreatedOn, s => s.Ignore())
-                .ForMember(m => m.UpdatedOn, s => s.Ignore())
-                .ForMember(m => m.LastSyned, s => s.Ignore())
-                .ForMember(m => m.IsActive, s => s.Ignore());
+                .ForMember(m => m.Ssid, c => c.MapFrom(s => s.ProfileResponseViewModel.Ssid))
+                .ForMember(m => m.SsidUpdated, c => c.MapFrom(s => s.ProfileResponseViewModel.SsidUpdated))
+                //.ForMember(m => m.CreatedOn, s => s.Ignore())
+                //.ForMember(m => m.UpdatedOn, s => s.Ignore())
+                .ForMember(m => m.LastSyned, s => s.Ignore());
+            //.ForMember(m => m.IsActive, s => s.Ignore());
         }
+
     }
 }

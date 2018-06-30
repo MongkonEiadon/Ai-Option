@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using ai.option.web.ViewModels;
 using AutoMapper;
+using EventFlow;
+using EventFlow.Queries;
 using iqoption.apiservice;
 using iqoption.data.Model;
 using iqoption.data.Services;
+using iqoption.domain.IqOption;
+using iqoption.domain.IqOption.Command;
+using iqoption.domain.IqOption.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,16 +22,21 @@ namespace ai.option.web.Controllers {
     public class PortalController : Controller {
         private readonly IIqOptionAccountService _iqOptionAccountService;
         private readonly ILogger _logger;
+        private readonly IQueryProcessor _queryProcessor;
+        private readonly ICommandBus _commandBus;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
 
         public PortalController(IMapper mapper,
             ILogger logger,
-            ILoginCommandHandler loginCommandHandler,
+            IQueryProcessor queryProcessor,
+            ICommandBus commandBus,
             IUserService userService,
             IIqOptionAccountService iqOptionAccountService) {
             _mapper = mapper;
             _logger = logger;
+            _queryProcessor = queryProcessor;
+            _commandBus = commandBus;
             _userService = userService;
             _iqOptionAccountService = iqOptionAccountService;
         }
@@ -35,6 +46,10 @@ namespace ai.option.web.Controllers {
         }
 
         public async Task<IActionResult> IqOptionAccount() {
+
+            var iqoptionUsers = await _queryProcessor.ProcessAsync(
+                new GetIqOptionAccountByUserIdQuery(HttpContext.User.Identity.Name), default(CancellationToken));
+
             var models = await _iqOptionAccountService
                 .GetIqOptionAccountsByUserIdAsync(HttpContext.User.Identity.Name)
                 .ContinueWith(t => _mapper.Map<List<IqOptionAccountViewModel>>(t.Result));
@@ -79,25 +94,9 @@ namespace ai.option.web.Controllers {
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> AddIqOptionAccountAsync(IqOptionRequestViewModel requestViewModel) {
-            var dto = _mapper.Map<IqOptionAccountDto>(requestViewModel);
-            var existingUser = await _iqOptionAccountService.GetAccountByUserIdAsync(dto.IqOptionUserId);
-
-            if (existingUser == null) {
-                dto.User = await _userService.GetUserByNameAsync(HttpContext.User.Identity.Name);
-                dto.LastSyned = DateTime.Now;
-
-                var result = await _iqOptionAccountService.CreateAccountTask(dto);
-                _logger.LogDebug($"Create User-IqoptionUser Id: {result}");
-            }
-
-            else {
-                existingUser = _mapper.Map(requestViewModel, existingUser);
-                existingUser.LastSyned = DateTime.Now;
-
-                var result = await _iqOptionAccountService.UpdateAccountTask(existingUser);
-                _logger?.LogDebug($"Update accont id:{result?.Id}");
-            }
-
+            var iqoptionAccount = _mapper.Map<IqAccount>(requestViewModel);
+            var result = await _commandBus.PublishAsync(new CreateOrUpdateIqAccountCommand(IqOptionIdentity.New, iqoptionAccount, HttpContext.User.Identity.Name), CancellationToken.None);
+            
             return RedirectToAction("IqOptionAccount", "Portal");
         }
 

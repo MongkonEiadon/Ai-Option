@@ -1,17 +1,11 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using EventFlow.Aggregates.ExecutionResults;
 
-namespace iqoption.data.Model {
-    [Table("IqOptionAccount")]
-    public class IqOptionAccountDto : EntityWithDateTimeStamp {
+namespace iqoption.domain.IqOption {
+    public class IqAccount : IExecutionResult {
         public int IqOptionUserId { get; set; }
-
-        [Required]
-        [EmailAddress]
         public string IqOptionUserName { get; set; }
-
-        [Required]
+        
         public string Password { get; set; }
 
         public DateTime? LastSyned { get; set; }
@@ -30,6 +24,6 @@ namespace iqoption.data.Model {
         public DateTime? SsidUpdated { get; set; }
 
 
-        public virtual UserDto User { get; set; }
+        public bool IsSuccess { get; set; }
     }
 }

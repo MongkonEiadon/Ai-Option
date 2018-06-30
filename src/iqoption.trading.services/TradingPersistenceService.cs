@@ -2,7 +2,6 @@
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using iqopoption.core;
 using Microsoft.Extensions.Logging;
 
 namespace iqoption.trading.services {
@@ -16,15 +15,12 @@ namespace iqoption.trading.services {
         private readonly ILogger _logger;
 
         private readonly IMasterTraderManager _masterTraderManager;
-        private readonly ISession _session;
 
         public TradingPersistenceService(
             IMasterTraderManager masterTraderManager,
-            ISession session,
             IFollowerManager followerManager,
             ILogger<TradingPersistenceService> logger) {
             _masterTraderManager = masterTraderManager;
-            _session = session;
             _followerManager = followerManager;
             _logger = logger;
 
