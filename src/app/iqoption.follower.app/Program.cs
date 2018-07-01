@@ -1,6 +1,8 @@
 ﻿using System;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using EventFlow.Autofac.Extensions;
+using EventFlow.DependencyInjection.Extensions;
 using FluentValidation.AspNetCore;
 using iqoption.apiservice.DependencyModule;
 using iqoption.core.Extensions;
@@ -85,13 +87,17 @@ namespace iqoption.follower.app {
                 .AddSingleton(typeof(ILogger<>), typeof(Logger<>)) // Add first my already configured instance
                 
                 //trandings services
+                .AddEventFlow(o => {
+                    o.UseAutofacContainerBuilder(builder);
+                    o.AddEventFlowForData();
+                })
                 .AddTradingServices();
 
 
-            builder.Populate(services);
             builder
                 .RegisterModule<DataAutofacModule>()
                 .RegisterModule<ApiServiceModule>();
+             builder.Populate(services);
 
             var container = builder.Build();
 

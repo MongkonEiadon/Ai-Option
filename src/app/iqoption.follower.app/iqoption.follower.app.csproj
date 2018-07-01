@@ -23,6 +23,8 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.8.1" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
+    <PackageReference Include="EventFlow.Autofac" Version="0.61.3524" />
+    <PackageReference Include="EventFlow.DependencyInjection" Version="0.61.3524" />
     <PackageReference Include="fluentvalidation" Version="7.6.103" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="7.6.103" />
     <PackageReference Include="jwt" Version="4.0.0" />
