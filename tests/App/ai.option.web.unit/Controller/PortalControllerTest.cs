@@ -1,16 +1,13 @@
 ﻿using System.Threading.Tasks;
 using ai.option.web.Controllers;
 using ai.option.web.ViewModels;
-using iqoption.data.Model;
+using iqoption.data.IqOptionAccount;
 using iqoption.data.Services;
 using NSubstitute;
-using NUnit.Framework;
 using Shouldly;
 using Xunit;
 
 namespace ai.option.web.unit.Controller {
-
-
     public class PortalControllerTest : BaseUnitTest {
         public PortalControllerTest() {
             _UserService = AutoSubstitute.Resolve<IUserService>();
@@ -18,7 +15,31 @@ namespace ai.option.web.unit.Controller {
         }
 
         private IUserService _UserService;
-        private IIqOptionAccountService _iqOptionAccountService;
+        private readonly IIqOptionAccountService _iqOptionAccountService;
+
+        [Fact]
+        public async Task AddIqOptionAccount_WithNotExistingAccount_NewAccountGenerated() {
+            //arrange
+            var accountDto = new IqOptionAccountDto();
+            var model = new IqOptionRequestViewModel {
+                EmailAddress = "m@email.com",
+                Password = "password",
+                ProfileResponseViewModel = new IqOptionProfileResponseViewModel {
+                    UserId = 1234
+                }
+            };
+
+            _iqOptionAccountService.GetAccountByUserIdAsync(Arg.Any<long>())
+                .Returns(Task.FromResult(default(IqOptionAccountDto)));
+
+            //act
+            var result = await AutoSubstitute.Resolve<PortalController>()
+                .AddIqOptionAccountAsync(model);
+
+
+            result.ShouldNotBeNull();
+            await _iqOptionAccountService.Received().CreateAccountTask(accountDto);
+        }
 
 
         [Fact]
@@ -47,31 +68,5 @@ namespace ai.option.web.unit.Controller {
                 .Received(1)
                 .UpdateAccountTask(Arg.Is<IqOptionAccountDto>(dto => dto != null));
         }
-
-        [Fact]
-        public async Task AddIqOptionAccount_WithNotExistingAccount_NewAccountGenerated() {
-
-            //arrange
-            var accountDto = new IqOptionAccountDto();
-            var model = new IqOptionRequestViewModel {
-                EmailAddress = "m@email.com",
-                Password = "password",
-                ProfileResponseViewModel = new IqOptionProfileResponseViewModel {
-                    UserId = 1234
-                }
-            };
-
-            _iqOptionAccountService.GetAccountByUserIdAsync(Arg.Any<long>()).Returns(Task.FromResult(default(IqOptionAccountDto)));
-            
-            //act
-            var result = await AutoSubstitute.Resolve<PortalController>()
-                .AddIqOptionAccountAsync(model);
-
-
-            result.ShouldNotBeNull();
-            await _iqOptionAccountService.Received().CreateAccountTask(accountDto);
-        }
-
-
     }
 }

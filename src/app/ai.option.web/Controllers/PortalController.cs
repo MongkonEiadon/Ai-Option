@@ -6,8 +6,6 @@ using ai.option.web.ViewModels;
 using AutoMapper;
 using EventFlow;
 using EventFlow.Queries;
-using iqoption.apiservice;
-using iqoption.data.Model;
 using iqoption.data.Services;
 using iqoption.domain.IqOption;
 using iqoption.domain.IqOption.Command;
@@ -20,11 +18,11 @@ using RestSharp;
 namespace ai.option.web.Controllers {
     [Authorize]
     public class PortalController : Controller {
+        private readonly ICommandBus _commandBus;
         private readonly IIqOptionAccountService _iqOptionAccountService;
         private readonly ILogger _logger;
-        private readonly IQueryProcessor _queryProcessor;
-        private readonly ICommandBus _commandBus;
         private readonly IMapper _mapper;
+        private readonly IQueryProcessor _queryProcessor;
         private readonly IUserService _userService;
 
         public PortalController(IMapper mapper,
@@ -45,8 +43,15 @@ namespace ai.option.web.Controllers {
             return View();
         }
 
+        [HttpGet]
+        [Authorize]
         public async Task<IActionResult> IqOptionAccount() {
+            return View();
+        }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetIqOptionAccountTask() {
             var iqoptionUsers = await _queryProcessor.ProcessAsync(
                 new GetIqOptionAccountByUserIdQuery(HttpContext.User.Identity.Name), default(CancellationToken));
 
@@ -55,7 +60,7 @@ namespace ai.option.web.Controllers {
                 .ContinueWith(t => _mapper.Map<List<IqOptionAccountViewModel>>(t.Result));
 
 
-            return View(models);
+            return PartialView("Portal/_IqOptionProfileResponsePartial", models);
         }
 
         public async Task<IActionResult> AddIqOptionAccoutToUser(
@@ -95,23 +100,38 @@ namespace ai.option.web.Controllers {
         [Authorize]
         public async Task<IActionResult> AddIqOptionAccountAsync(IqOptionRequestViewModel requestViewModel) {
             var iqoptionAccount = _mapper.Map<IqAccount>(requestViewModel);
-            var result = await _commandBus.PublishAsync(new CreateOrUpdateIqAccountCommand(IqOptionIdentity.New, iqoptionAccount, HttpContext.User.Identity.Name), CancellationToken.None);
-            
-            return RedirectToAction("IqOptionAccount", "Portal");
+            var result = await _commandBus.PublishAsync(
+                new CreateOrUpdateIqAccountCommand(IqOptionIdentity.New, iqoptionAccount,
+                    HttpContext.User.Identity.Name), CancellationToken.None);
+            if (result.IsSuccess)
+                return RedirectToAction("IqOptionAccount", "Portal");
+            return BadRequest("ไม่สามารถเพิ่มบัญชีได้");
+        }
+
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> DeleteIqOptionAccoutAsync(string iqAccountId) {
+            var result = await _commandBus.PublishAsync(
+                new DeleteIqAccountCommand(IqOptionIdentity.New, Guid.Parse(iqAccountId)),
+                CancellationToken.None);
+
+            if (result.IsSuccess) return Ok();
+
+            return BadRequest("ไม่สามารถลบบัญชีได้");
         }
 
 
-        [HttpPost]
+        [HttpPut]
         [Authorize]
-        public async Task<IActionResult> UpdateIsActiveAsync(Guid iqoptionAccountId) {
-            var dto = await _iqOptionAccountService.GetAccountByIdAsync(iqoptionAccountId);
+        public async Task<IActionResult> UpdateIsActiveAsync(string iqAccountId) {
+            var dto = await _iqOptionAccountService.GetAccountByIdAsync(Guid.Parse(iqAccountId));
             if (dto != null) {
                 dto.IsActive = !dto.IsActive;
                 dto.UpdatedOn = DateTime.Now;
                 await _iqOptionAccountService.UpdateAccountTask(dto);
             }
 
-            return RedirectToAction("IqOptionAccount", "Portal");
+            return Ok();
         }
     }
 }

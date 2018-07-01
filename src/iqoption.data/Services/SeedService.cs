@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
+using iqoption.data.IqOptionAccount;
 using iqoption.data.Model;
+using iqoption.data.User;
 using Microsoft.AspNetCore.Identity;
 
 namespace iqoption.data.Services {

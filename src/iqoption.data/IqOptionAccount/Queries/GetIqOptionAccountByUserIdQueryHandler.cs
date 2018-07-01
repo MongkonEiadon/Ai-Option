@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using EventFlow.Queries;
 using iqoption.core.data;
-using iqoption.data.Model;
+using iqoption.data.IqOptionAccount;
 using iqoption.domain.IqOption;
 using iqoption.domain.IqOption.Queries;
 
 namespace iqoption.data.Queries
 {
-
     public class GetIqOptionAccountByUserIdQueryHandler :
         IQueryHandler<GetIqOptionAccountByUserIdQuery, IEnumerable<IqAccount>> {
         private readonly IRepository<IqOptionAccountDto> _iqOptionAccountRepository;
@@ -26,7 +23,7 @@ namespace iqoption.data.Queries
             _mapper = mapper;
         }
 
-        public Task<IEnumerable<IqAccount>> ExecuteQueryAsync(GetIqOptionAccountByUserIdQuery query, CancellationToken cancellationToken) {
+        public Task<IEnumerable<IqAccount>> ExecuteQueryAsync(domain.IqOption.Queries.GetIqOptionAccountByUserIdQuery query, CancellationToken cancellationToken) {
 
             return _iqOptionAccountRepository
                 .GetAllListAsync(t => t.User.Id == query.UserName.ToString())
@@ -34,4 +31,6 @@ namespace iqoption.data.Queries
 
         }
     }
+
+
 }

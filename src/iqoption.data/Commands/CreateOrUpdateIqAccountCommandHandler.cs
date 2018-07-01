@@ -4,24 +4,25 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EventFlow.Commands;
 using iqoption.core.data;
-using iqoption.data.Model;
+using iqoption.data.IqOptionAccount;
 using iqoption.data.Services;
+using iqoption.data.User;
 using iqoption.domain.IqOption;
 using iqoption.domain.IqOption.Command;
 using Microsoft.AspNetCore.Identity;
 
 namespace iqoption.data.Commands {
-    public class CreateOrUpdateIqAccountCommandHandler : ICommandHandler<IqOptionAggregate, IqOptionIdentity, IqAccount, CreateOrUpdateIqAccountCommand>
-    {
-        private readonly IUserService _userService;
+    public class CreateOrUpdateIqAccountCommandHandler : ICommandHandler<IqOptionAggregate, IqOptionIdentity, IqAccount,
+        CreateOrUpdateIqAccountCommand> {
         private readonly IRepository<IqOptionAccountDto> _iqoptionAccountRepository;
-        private readonly UserManager<UserDto> _userRepository;
         private readonly IMapper _mapper;
+        private readonly UserManager<UserDto> _userRepository;
+        private readonly IUserService _userService;
 
 
         public CreateOrUpdateIqAccountCommandHandler(
             IUserService userService,
-            IRepository<IqOptionAccountDto> iqoptionAccountRepository, 
+            IRepository<IqOptionAccountDto> iqoptionAccountRepository,
             UserManager<UserDto> userRepository,
             IMapper mapper) {
             _userService = userService;
@@ -30,9 +31,9 @@ namespace iqoption.data.Commands {
             _mapper = mapper;
         }
 
-        public async Task<IqAccount> ExecuteCommandAsync(IqOptionAggregate aggregate, CreateOrUpdateIqAccountCommand command,
+        public async Task<IqAccount> ExecuteCommandAsync(IqOptionAggregate aggregate,
+            CreateOrUpdateIqAccountCommand command,
             CancellationToken cancellationToken) {
-
             var dto = await _iqoptionAccountRepository.FirstOrDefaultAsync(x =>
                 x.IqOptionUserId == command.AccountDetail.IqOptionUserId);
 
@@ -54,10 +55,9 @@ namespace iqoption.data.Commands {
                 await _iqoptionAccountRepository.InsertAndGetIdAsync(dto);
             }
 
-            return _mapper.Map<IqOptionAccountDto, IqAccount>(dto);
-
-
-
+            var result = _mapper.Map<IqOptionAccountDto, IqAccount>(dto);
+            result.IsSuccess = true;
+            return result;
         }
     }
 }

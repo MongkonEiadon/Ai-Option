@@ -1,4 +1,5 @@
-﻿using iqoption.trading.services.Middleware;
+﻿using iqoption.trading.services.Manager;
+using iqoption.trading.services.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 

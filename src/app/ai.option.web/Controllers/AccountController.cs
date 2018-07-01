@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using ai.option.web.ViewModels;
 using AutoMapper;
-using iqoption.data.Model;
+using iqoption.data.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

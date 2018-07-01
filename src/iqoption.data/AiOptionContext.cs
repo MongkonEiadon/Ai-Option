@@ -1,4 +1,5 @@
-﻿using iqoption.data.Model;
+﻿using iqoption.data.IqOptionAccount;
+using iqoption.data.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

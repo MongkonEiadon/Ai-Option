@@ -101,26 +101,10 @@
                 <p>
                     ยอดเงินคงเหลือในบัญชี อาจจะยังไม่ได้เป็นปัจจุบัน
                 </p>
+                <div id="iq-account-detail-wrapper">
 
-                <div class="table-responsive">
-                    <table class="table table-hover table-striped">
-                        <thead>
-                        <tr>
-                            <th>บัญชีอีเมล์</th>
-                            <th>ยอดเงินในบัญชี</th>
-                            <th>สกุลเงินในบัญชี</th>
-                            <th>วันที่บันทึก</th>
-                            <th>เปิดปิดสถานะอัตโนมัติ</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach (var m in @Model) {
-                            @await Html.PartialAsync("Portal/_IqOptionProfileResponsePartial", m)
-                        }
-                        </tbody>
-                    </table>
+
                 </div>
-
             </div>
         </div>
     </div>
@@ -137,20 +121,60 @@
 
 
         var postActive = function(id) {
-            $('formAccRow_' + id).submit();
+            $('#iq-account-detail-wrapper').html('');
+            $.ajax({
+                type: 'put',
+                url: '@Url.Action("UpdateIsActiveAsync", "Portal")',
+                data: { 'iqAccountId': id },
+                success: function() {
+                    getAccountDetailed();
+                },
+                error: function(e) {
+                    alert(e);
+                }
+            });
 
         };
 
-        $(document).ready(function() {
-
-            var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
-            elems.forEach(function(html) {
-                var switchery = new Switchery(html);
+        var deleteAccount = function(id) {
+            $('#iq-account-detail-wrapper').html('');
+            $.ajax({
+                type: 'delete',
+                url: '@Url.Action("DeleteIqOptionAccoutAsync", "Portal")',
+                data: { 'iqAccountId': id },
+                success: function() {
+                    getAccountDetailed();
+                },
+                error: function(e) {
+                    alert(e);
+                }
             });
+        };
+
+        var getAccountDetailed = function() {
+            $('#iq-account-detail-wrapper').html('');
+            $.ajax({
+                type: 'get',
+                url: '@Url.Action("GetIqOptionAccountTask", "Portal")',
+                success: function(e) {
+                    $('#iq-account-detail-wrapper').html(e);
+
+                    var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+                    elems.forEach(function(html) {
+                        var switchery = new Switchery(html);
+                    });
+
+                }
+            });
+        };
 
 
+        $(document).ready(function() {
+            getAccountDetailed();
             $('#connectButton').on('click',
                 function(e) {
+                    getAccountDetailed();
+
                     e.preventDefault();
                     $('#profilePanel').addClass('ld-loading');
                     $.ajax({

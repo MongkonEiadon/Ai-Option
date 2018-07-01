@@ -1,6 +1,6 @@
 ﻿using System;
 using iqoption.data;
-using iqoption.data.Model;
+using iqoption.data.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 

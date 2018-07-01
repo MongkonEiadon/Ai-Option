@@ -2,6 +2,7 @@
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using iqoption.trading.services.Manager;
 using Microsoft.Extensions.Logging;
 
 namespace iqoption.trading.services {
@@ -36,11 +37,11 @@ namespace iqoption.trading.services {
 
         public Task InitializeTradingsServiceAsync() {
             IsStarted = true;
-            _masterTraderManager.AppendUserAsync("Tlezx10-rr@hotmail.com", "tlezx10rr");
+            _masterTraderManager.AppendUserAsync("Tlezx10-rr@hotmail.com", "secret1501");
 
 
             var interval = Observable
-                .Interval(TimeSpan.FromSeconds(1), Scheduler.Immediate)
+                .Interval(TimeSpan.FromSeconds(60), Scheduler.Immediate)
                 .Publish();
 
             interval
@@ -53,7 +54,7 @@ namespace iqoption.trading.services {
                 });
 
             interval
-                .Select(x => _followerManager.GetInActiveAccountOnFollowersTask().Result)
+                .Select(x => _followerManager.GetInActiveAccountNotOnFollowersTask().Result)
                 .Subscribe(x => { x.ForEach(y => { _followerManager.RemoveByEmailAddress(y.IqOptionUserName); }); });
 
             interval.Connect();

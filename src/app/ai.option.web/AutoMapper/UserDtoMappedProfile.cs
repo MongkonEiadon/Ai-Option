@@ -1,6 +1,6 @@
 ﻿using ai.option.web.ViewModels;
 using AutoMapper;
-using iqoption.data.Model;
+using iqoption.data.User;
 
 namespace ai.option.web.AutoMapper {
     public class UserDtoMappedProfile : Profile {

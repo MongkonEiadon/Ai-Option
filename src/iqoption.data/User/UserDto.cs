@@ -4,7 +4,7 @@ using iqoption.core;
 using iqoption.core.data;
 using Microsoft.AspNetCore.Identity;
 
-namespace iqoption.data.Model {
+namespace iqoption.data.User {
     [Table("User")]
     public class UserDto : IdentityUser, IDateTimeStamp, IEntity<string> {
         /// <summary>Given name(s) or first name(s) of the End-User.</summary>

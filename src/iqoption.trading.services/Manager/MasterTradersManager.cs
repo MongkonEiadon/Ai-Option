@@ -6,23 +6,21 @@ using System.Threading.Tasks;
 using EventFlow;
 using iqoption.core.Collections;
 using iqoption.domain.IqOption;
-using iqoption.domain.IqOption.Command;
 using iqoption.domain.IqOption.Commands;
 using iqoptionapi.models;
 using Microsoft.Extensions.Logging;
 
 namespace iqoption.trading.services {
     public interface IMasterTraderManager {
-        ConcurrencyReactiveCollection<IqOptionApiClient> Traders { get; }
         IObservable<InfoData> MasterTradersInfoDataStream();
         Task AppendUserAsync(string email, string password);
     }
 
     public class MasterTradersManager : IMasterTraderManager {
-        private readonly ILogger _logger;
         private readonly ICommandBus _commandBus;
+        private readonly ILogger _logger;
 
-        private Subject<InfoData> _infoDataSubject = new Subject<InfoData>();
+        private readonly Subject<InfoData> _infoDataSubject = new Subject<InfoData>();
 
         public IqOptionApiClient Trader;
 
@@ -31,29 +29,26 @@ namespace iqoption.trading.services {
             _logger = logger;
             _commandBus = commandBus;
         }
-
-        public ConcurrencyReactiveCollection<IqOptionApiClient> Traders { get; }
+        
 
         public IObservable<InfoData> MasterTradersInfoDataStream() {
             return _infoDataSubject;
         }
 
-        public async Task AppendUserAsync(string email, string password) {
+        public Task AppendUserAsync(string email, string password) {
             Trader?.Dispose();
 
-
-            var result = _commandBus.PublishAsync(new IqLoginCommand(IqOptionIdentity.New, email, password), default(CancellationToken));
-            if (result.IsCompletedSuccessfully) {
-                Trader = new IqOptionApiClient(email, password);
-                if (Trader.ApiClient.ConnectAsync().Result) {
-                    Trader.ApiClient.InfoDatasObservable
-                        .Subscribe(x => {
-                            if (x?.Any() ?? false) {
-                                _infoDataSubject.OnNext(x[0]);
-                            }
-                        });
-                }
-            }
+            return _commandBus.PublishAsync(new IqLoginCommand(IqOptionIdentity.New, email, password), default(CancellationToken))
+                .ContinueWith(t => {
+                    if (t.Result.IsSuccess) {
+                        Trader = new IqOptionApiClient(email, password);
+                        if (Trader.ApiClient.ConnectAsync().Result)
+                            Trader.ApiClient.InfoDatasObservable
+                                .Subscribe(x => {
+                                    if (x?.Any() ?? false) _infoDataSubject.OnNext(x[0]);
+                                });
+                    }
+                });
         }
     }
 }

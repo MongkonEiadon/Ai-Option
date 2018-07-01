@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using EventFlow;
-using iqoption.data.Model;
+using iqoption.data.User;
 using iqoption.domain.Users;
 using iqoption.domain.Users.Commands;
 using Microsoft.AspNetCore.Identity;
@@ -13,9 +13,9 @@ namespace iqoption.data.Services {
     }
 
     public class DbSeedingService : IDbSeeding {
+        private readonly ICommandBus _commandBus;
         private readonly AiOptionContext _context;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly ICommandBus _commandBus;
         private readonly UserManager<UserDto> _userManager;
 
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using iqoption.core.data;
-using iqoption.data.Model;
+using iqoption.data.IqOptionAccount;
 
 namespace iqoption.data.Services {
     public interface IIqOptionAccountService {

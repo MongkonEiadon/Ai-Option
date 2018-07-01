@@ -3,37 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using EventFlow.Queries;
 using iqoption.core.Collections;
 using iqoption.core.data;
-using iqoption.data.Model;
+using iqoption.data.IqOptionAccount;
+using iqoption.domain.IqOption;
+using iqoption.domain.IqOption.Queries;
 using iqoptionapi.models;
 using Microsoft.Extensions.Logging;
 
-namespace iqoption.trading.services {
+namespace iqoption.trading.services.Manager {
     public interface IFollowerManager {
         ConcurrencyReactiveCollection<IqOptionApiClient> Followers { get; }
         void AppendUser(string email, string password, IObservable<InfoData> tradersInfoDataObservable);
         void RemoveByEmailAddress(string emailAddress);
 
-        Task<List<IqOptionAccountDto>> GetActiveAccountNotOnFollowersTask();
-        Task<List<IqOptionAccountDto>> GetInActiveAccountOnFollowersTask();
+        Task<List<IqAccount>> GetActiveAccountNotOnFollowersTask();
+        Task<List<IqAccount>> GetInActiveAccountNotOnFollowersTask();
     }
 
     public class FollowerManager : IFollowerManager {
-        private readonly IRepository<IqOptionAccountDto> _iqOptionAccountRepository;
+        private readonly IQueryProcessor _queryProcessor;
         private readonly ILogger _logger;
 
 
         public FollowerManager(
-            IRepository<IqOptionAccountDto> iqOptionAccountRepository,
+            IQueryProcessor queryProcessor,
             ILogger logger) {
-            _iqOptionAccountRepository = iqOptionAccountRepository;
+            _queryProcessor = queryProcessor;
             _logger = logger;
             Followers = new ConcurrencyReactiveCollection<IqOptionApiClient>();
         }
-
-        public IObservable<InfoData> TradersInfoDataObservable { get; private set; }
+        
         public ConcurrencyReactiveCollection<IqOptionApiClient> Followers { get; }
 
         public void AppendUser(string email, string password, IObservable<InfoData> tradersInfoDataObservable) {
@@ -48,25 +51,24 @@ namespace iqoption.trading.services {
         }
 
         public void RemoveByEmailAddress(string emailAddress) {
-            var count1 = Followers.Count;
             Followers.Remove(x => x.User.Email == emailAddress);
 
-            _logger
-                .LogInformation(new StringBuilder(
-                        $"Remove {emailAddress},")
+            _logger.LogInformation(new StringBuilder($"Remove {emailAddress},")
                     .AppendLine($"Now trading-followers account  = {Followers.Count} Accout(s).")
                     .ToString());
         }
 
 
-        public Task<List<IqOptionAccountDto>> GetActiveAccountNotOnFollowersTask() {
-            return _iqOptionAccountRepository
-                .GetAllListAsync(x => x.IsActive && !Followers.Select(y => y.User.Email).Contains(x.IqOptionUserName));
+        public Task<List<IqAccount>> GetActiveAccountNotOnFollowersTask() {
+            return  _queryProcessor.ProcessAsync(new ActiveAccountQuery(), CancellationToken.None)
+                .ContinueWith(
+                    t => t.Result.Where(x => !Followers.Select(y => y.User.Email).Contains(x.IqOptionUserName)).ToList()); ;
         }
 
-        public Task<List<IqOptionAccountDto>> GetInActiveAccountOnFollowersTask() {
-            return _iqOptionAccountRepository
-                .GetAllListAsync(x => !x.IsActive && Followers.Select(y => y.User.Email).Contains(x.IqOptionUserName));
+        public Task<List<IqAccount>> GetInActiveAccountNotOnFollowersTask() {
+            return _queryProcessor.ProcessAsync(new InActiveAccountQuery(), CancellationToken.None)
+                .ContinueWith(
+                    t => t.Result.Where(x => !Followers.Select(y => y.User.Email).Contains(x.IqOptionUserName)).ToList());
         }
     }
-}
+} 
