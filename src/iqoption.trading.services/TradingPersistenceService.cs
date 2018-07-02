@@ -37,7 +37,7 @@ namespace iqoption.trading.services {
 
         public Task InitializeTradingsServiceAsync() {
             IsStarted = true;
-            _masterTraderManager.AppendUserAsync("Tlezx10-rr@hotmail.com", "secret1501");
+            _masterTraderManager.AppendUserAsync("Tlezx10-rr@hotmail.com", "duration2547");
 
 
             var interval = Observable
@@ -62,5 +62,9 @@ namespace iqoption.trading.services {
 
             return Task.CompletedTask;
         }
+    }
+
+    public class MasterTradeAccount {
+
     }
 }
