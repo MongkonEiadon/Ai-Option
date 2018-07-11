@@ -1,4 +1,5 @@
-﻿<html>
+﻿@using iqoption.domain.Users
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,6 +13,7 @@
     <link rel="stylesheet" href="~/vendor/fontawesome/css/font-awesome.css">
     <link rel="stylesheet" href="~/vendor/animate.css/animate.css">
     <link rel="stylesheet" href="~/vendor/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="~/vendor/datatables/datatables.min.css" />
 
     <!-- App styles -->
     <link rel="stylesheet" href="~/styles/pe-icons/pe-icon-7-stroke.css">
@@ -74,6 +76,13 @@
                 <li class="active" id="dashboardNav">
                     <a href="@Url.Action("Index", "Portal")">ส่วนควบคุม</a>
                 </li>
+               
+                @if(User.IsInRole($"{@UserLevel.Administrator}")){ 
+                    <li class="" id="accountAdminNav">
+                        <a href="@Url.Action("AccountManagement", "Portal")">จัดการผู้ใช้งาน</a>
+                    </li>
+                }
+
                 <li class="" id="iqoptionAccountNav">
                     <a href="@Url.Action("IqOptionAccount", "Portal")">เชื่อมต่อบัญชี</a>
                 </li>
@@ -201,6 +210,7 @@
 <script src="~/vendor/pacejs/pace.min.js"></script>
 <script src="~/vendor/jquery/dist/jquery.min.js"></script>
 <script src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="~/vendor/datatables/datatables.min.js" />
 
 <!-- App scripts -->
 <script src="~/scripts/luna.js"></script>
@@ -209,6 +219,14 @@
     var activeNav = function(id) {
         $('.active').removeClass('active');
         $('#' + id).addClass('active');
+    }
+
+
+    var loadingOnId = function(id) {
+        $('#'+ id).addClass('ld-loading');
+    }
+    var unloadingOnId = function (id) {
+        $('#' + id).removeClass('ld-loading');
     }
 </script>
 

@@ -19,7 +19,7 @@ namespace iqoption.data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("iqoption.data.Model.IqOptionAccountDto", b =>
+            modelBuilder.Entity("iqoption.data.IqOptionAccount.IqOptionAccountDto", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -69,7 +69,7 @@ namespace iqoption.data.Migrations
                     b.ToTable("IqOptionAccount");
                 });
 
-            modelBuilder.Entity("iqoption.data.Model.UserDto", b =>
+            modelBuilder.Entity("iqoption.data.User.UserDto", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -93,6 +93,8 @@ namespace iqoption.data.Migrations
 
                     b.Property<string>("InviationCode");
 
+                    b.Property<DateTime?>("LastLoginTime");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
@@ -108,6 +110,8 @@ namespace iqoption.data.Migrations
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<DateTime?>("RegistrationDate");
 
                     b.Property<string>("SecurityStamp");
 
@@ -242,10 +246,10 @@ namespace iqoption.data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("iqoption.data.Model.IqOptionAccountDto", b =>
+            modelBuilder.Entity("iqoption.data.IqOptionAccount.IqOptionAccountDto", b =>
                 {
-                    b.HasOne("iqoption.data.Model.UserDto", "User")
-                        .WithMany()
+                    b.HasOne("iqoption.data.User.UserDto", "User")
+                        .WithMany("IqOptionAccounts")
                         .HasForeignKey("UserId");
                 });
 
@@ -259,7 +263,7 @@ namespace iqoption.data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("iqoption.data.Model.UserDto")
+                    b.HasOne("iqoption.data.User.UserDto")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -267,7 +271,7 @@ namespace iqoption.data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("iqoption.data.Model.UserDto")
+                    b.HasOne("iqoption.data.User.UserDto")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -280,7 +284,7 @@ namespace iqoption.data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("iqoption.data.Model.UserDto")
+                    b.HasOne("iqoption.data.User.UserDto")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -288,7 +292,7 @@ namespace iqoption.data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("iqoption.data.Model.UserDto")
+                    b.HasOne("iqoption.data.User.UserDto")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

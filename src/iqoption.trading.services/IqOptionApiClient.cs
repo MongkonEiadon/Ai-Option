@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
+using iqoption.domain.IqOption;
 using iqoption.domain.Users;
 using iqoptionapi;
 using iqoptionapi.models;
@@ -13,7 +14,7 @@ namespace iqoption.trading.services {
             _infoDataObservable = infoDataObservable ?? Observable.Empty<InfoData>();
 
 
-            User = new User() {Email = email, Password = password};
+            User = new IqOptionUser() {Email = email, Password = password};
             ApiClient = new IqOptionApi(email, password);
 
             //auto reconnect when time-sync not update
@@ -36,7 +37,7 @@ namespace iqoption.trading.services {
                 });
         }
 
-        public User User { get; }
+        public IqOptionUser User { get; }
 
         public IIqOptionApi ApiClient { get; }
 

@@ -1,4 +1,5 @@
-﻿using iqoption.data.IqOptionAccount;
+﻿using System.Linq;
+using iqoption.data.IqOptionAccount;
 using iqoption.domain.IqOption;
 using Profile = AutoMapper.Profile;
 

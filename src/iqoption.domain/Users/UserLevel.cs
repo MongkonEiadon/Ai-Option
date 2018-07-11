@@ -1,5 +1,6 @@
 ﻿namespace iqoption.domain.Users {
     public struct UserLevel {
+        public const string None = "";
         public const string Baned = nameof(Baned);
         public const string Standard = nameof(Standard);
         public const string Silver = nameof(Silver);

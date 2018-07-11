@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using EventFlow.Aggregates.ExecutionResults;
 
 namespace iqoption.core {
     public interface IDateTimeStamp {
@@ -9,4 +11,5 @@ namespace iqoption.core {
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         DateTime? UpdatedOn { get; set; }
     }
+    
 }

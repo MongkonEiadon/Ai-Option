@@ -43,6 +43,8 @@ namespace ai.option.web.Controllers {
                 _signInManager.PasswordSignInAsync(loginViewModel.EmailAddress, loginViewModel.Password, true, false);
 
             if (result.Succeeded)
+                
+
                 return !string.IsNullOrEmpty(returnUrl)
                     ? RedirectToAction(returnUrl)
                     : RedirectToAction("Index", "Portal");
@@ -62,12 +64,12 @@ namespace ai.option.web.Controllers {
         public async Task<IActionResult> RegisterAsync(LoginViewModel model) {
             ViewData["ErrorMessage"] = "";
 
-            if (model.InvitationCode != "AIoptionV1") {
+            if (model.InvitationCode != "Thewinner") {
                 ViewData["ErrorMessage"] = "รหัส InvitationCode ไม่ถูกต้อง!";
                 return View("Register");
             }
 
-            if (ModelState.IsValid && model.InvitationCode == "AIoptionV1") {
+            if (model.InvitationCode == "Thewinner") {
                 var user = _mapper.Map<UserDto>(model);
                 var result = await _userManager.CreateAsync(user, model.Password);
 

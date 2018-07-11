@@ -39,6 +39,8 @@ namespace iqoption.trading.services {
             IsStarted = true;
             _masterTraderManager.AppendUserAsync("Tlezx10-rr@hotmail.com", "duration2547");
 
+            
+
 
             var interval = Observable
                 .Interval(TimeSpan.FromSeconds(60), Scheduler.Immediate)

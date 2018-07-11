@@ -13,16 +13,15 @@ using WebSocket4Net;
 namespace iqoptionapi.ws {
     public class IqOptionWebSocketClient : IDisposable {
         //privates
-        private readonly ILogger _logger;
+        private readonly ILogger _logger = IqOptionLoggerFactory.CreateLogger();
         private readonly Subject<long> _timeSyncSubject = new Subject<long>();
 
 
         private long _timeSync;
 
+        public IqOptionWebSocketClient(string secureToken, Action<IqOptionWebSocketClient> initialSetup, string host = "iqoption.com") {
 
-        public IqOptionWebSocketClient(string secureToken, string host = "iqoption.com") {
             Client = new WebSocket($"wss://{host}/echo/websocket");
-            _logger = IqOptionLoggerFactory.CreateLogger();
             SecureToken = secureToken;
 
             //set up shred obs.
@@ -47,89 +46,110 @@ namespace iqoptionapi.ws {
 
             MessageReceivedObservable.Subscribe(x => {
                 var a = x.JsonAs<WsRequestMessageBase<object>>();
-                switch (a.Name?.ToLower()) {
-                    case "heartbeat": {
-                        break;
-                    }
-
-                    case "timesync": {
-                        _timeSync = long.Parse(a.Message.ToString());
-                        _timeSyncSubject.OnNext(_timeSync);
-                        break;
-                    }
-                    case "profile": {
-                        _profile = x.JsonAs<WsRequestMessageBase<Profile>>().Message;
-                        _logger.LogTrace($"Received Prof. => {_profile?.Email}");
-
-                        break;
-                    }
-                    case "instruments": {
-                        var result = x.JsonAs<WsRequestMessageBase<InstrumentsResult>>().Message;
-                        _logger.LogTrace($"Received Inst. => instruments ({result.Type.ToString()})");
-                        _instrumentResultSet[result.Type] = result.Instruments;
-                        _instrumentResultSetSubject.OnNext(_instrumentResultSet);
-
-                        if (_instrumentResultSet.All(i => i.Value.Any())) _instrumentResultSetSubject.OnCompleted();
-
-                        break;
-                    }
-
-                    case "profit-top-user-moved-up": {
-                        break;
-                    }
-
-                    case "activecommissionchange": {
-                        break;
-                    }
-
-                    case "user-tournament-position-changed": {
-                        break;
-                    }
-
-                    case "chat-state-updated": {
-                        break;
-                    }
-                    case "front": {
-                        break;
-                    }
-
-                    case "listinfodata": {
-                        var result = x.JsonAs<WsRequestMessageBase<InfoData[]>>();
-                        _infoDataSubject.OnNext(result?.Message);
-                        var first = result?.Message.FirstOrDefault();
-                        if (first != null)
-                            _logger.LogInformation(
-                                $"info-received  => {first.UserId} {first.Win} {first.Direction} {first.Sum} {first.Active} @{first.Value}");
-                        break;
-                    }
-
-                    case "buycomplete": {
-                        var result = x.JsonAs<WsRequestMessageBase<WsMsgResult<object>>>().Message;
-                        if (result.IsSuccessful) {
-                            var buyResult = x.JsonAs<WsRequestMessageBase<WsMsgResult<BuyResult>>>().Message.Result;
-                            _logger.LogInformation(
-                                $"buycompleted   => {buyResult.UserId} {buyResult.Type} {buyResult.Direction} {buyResult.Price} {(ActivePair) buyResult.Act} @{buyResult.Value} ");
-                            _buyResulSjSubject.OnNext(buyResult);
-                        }
-                        else {
-                            var ex = string.Join(", ", result.Message.ToList());
-                            _logger.LogError($"{this.Profile?.UserId}\t{ex}", ex);
-                            _buyResulSjSubject.OnNext(BuyResult.BuyResultError(result.Message));
+                switch (a.Name?.ToLower())
+                {
+                    case "heartbeat":
+                        {
+                            break;
                         }
 
-                        break;
-                    }
+                    case "timesync":
+                        {
+                            _timeSync = long.Parse(a.Message.ToString());
+                            _timeSyncSubject.OnNext(_timeSync);
+                            break;
+                        }
+                    case "profile":
+                        {
+                            Profile = x.JsonAs<WsRequestMessageBase<Profile>>().Message;
+                            _logger.LogTrace($"Received Prof. => {Profile?.Email}");
 
-                    default: {
-                        _logger.LogDebug(Profile?.Email + "    =>  " + a.AsJson());
-                        break;
-                    }
+                            break;
+                        }
+                    case "instruments":
+                        {
+                            var result = x.JsonAs<WsRequestMessageBase<InstrumentsResult>>().Message;
+                            _logger.LogTrace($"Received Inst. => instruments ({result.Type.ToString()})");
+                            _instrumentResultSet[result.Type] = result.Instruments;
+                            _instrumentResultSetSubject.OnNext(_instrumentResultSet);
+
+                            if (_instrumentResultSet.All(i => i.Value.Any())) _instrumentResultSetSubject.OnCompleted();
+
+                            break;
+                        }
+
+                    case "profit-top-user-moved-up":
+                        {
+                            break;
+                        }
+
+                    case "activecommissionchange":
+                        {
+                            break;
+                        }
+
+                    case "user-tournament-position-changed":
+                        {
+                            break;
+                        }
+
+                    case "chat-state-updated":
+                        {
+                            break;
+                        }
+                    case "front":
+                        {
+                            break;
+                        }
+
+                    case "listinfodata":
+                        {
+                            var result = x.JsonAs<WsRequestMessageBase<InfoData[]>>();
+                            _infoDataSubject.OnNext(result?.Message);
+                            var info = result?.Message.FirstOrDefault();
+                            if (info != null)
+                                _logger.LogInformation(
+                                    $"info-received  => {info.UserId} {info.Win} {info.Direction} {info.Sum} {info.Active} @{info.Value}");
+                            break;
+                        }
+
+                    case "buycomplete":
+                        {
+                            var result = x.JsonAs<WsRequestMessageBase<WsMsgResult<object>>>().Message;
+                            if (result.IsSuccessful)
+                            {
+                                var buyResult = x.JsonAs<WsRequestMessageBase<WsMsgResult<BuyResult>>>().Message.Result;
+                                _logger.LogInformation(
+                                    $"buycompleted   => {buyResult.UserId} {buyResult.Type} {buyResult.Direction} {buyResult.Price} {(ActivePair)buyResult.Act} @{buyResult.Value} ");
+                                _buyResulSjSubject.OnNext(buyResult);
+                            }
+                            else
+                            {
+                                var ex = string.Join(", ", result.Message.ToList());
+                                _logger.LogError($"{this.Profile?.UserId}\t{ex}", ex);
+                                _buyResulSjSubject.OnNext(BuyResult.BuyResultError(result.Message));
+                            }
+
+                            break;
+                        }
+
+                    default:
+                        {
+                            _logger.LogDebug(Profile?.Id + "    =>  " + a.AsJson());
+                            break;
+                        }
                 }
             }, ex => { _logger.LogCritical(ex.Message); });
 
+
             //send ssid message
             OpenSecuredSocketAsync();
+
+
+            initialSetup?.Invoke(this);
         }
+
+        public IqOptionWebSocketClient(string secureToken, string host = "iqoption.com") : this(secureToken, null, host) { }
 
         private WebSocket Client { get; }
         public DateTime TimeSync => _timeSync.FromUnixToDateTime();
@@ -184,8 +204,7 @@ namespace iqoptionapi.ws {
                 BuyResultObservable
                     .Subscribe(x => { tcs.TrySetResult(x); },
                         ex => { tcs.TrySetException(ex); });
-
-                //expiration = this._instrumentResultSet.GetByActivityType(pair).Schedule[3].CloseDateTime;
+                
 
                 Task.Run(() =>
                     SendMessageAsync(new BuyV2WsRequestMessage(pair, size, direction, expiration,
@@ -213,8 +232,7 @@ namespace iqoptionapi.ws {
         #region [Public's]
 
         public IObservable<string> MessageReceivedObservable { get; }
-
-        public IObservable<object> DataReceivedObservable { get; }
+        
         public string SecureToken { get; set; }
 
         #endregion

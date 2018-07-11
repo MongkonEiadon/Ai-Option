@@ -8,12 +8,15 @@ using iqoption.core.Collections;
 using iqoption.domain.IqOption;
 using iqoption.domain.IqOption.Commands;
 using iqoptionapi.models;
+using iqoptionapi.ws;
 using Microsoft.Extensions.Logging;
 
 namespace iqoption.trading.services {
     public interface IMasterTraderManager {
         IObservable<InfoData> MasterTradersInfoDataStream();
         Task AppendUserAsync(string email, string password);
+
+        IqOptionWebSocketClient MasterClient { get; }
     }
 
     public class MasterTradersManager : IMasterTraderManager {
@@ -41,14 +44,16 @@ namespace iqoption.trading.services {
             return _commandBus.PublishAsync(new IqLoginCommand(IqOptionIdentity.New, email, password), default(CancellationToken))
                 .ContinueWith(t => {
                     if (t.Result.IsSuccess) {
-                        Trader = new IqOptionApiClient(email, password);
-                        if (Trader.ApiClient.ConnectAsync().Result)
-                            Trader.ApiClient.InfoDatasObservable
-                                .Subscribe(x => {
-                                    if (x?.Any() ?? false) _infoDataSubject.OnNext(x[0]);
-                                });
+                        MasterClient = new IqOptionWebSocketClient(t.Result.Ssid, ws => {
+                            ws.InfoDataObservable.Subscribe(x => {
+                                if(x?.Any() ?? false) _infoDataSubject.OnNext(x[0]);
+                            });
+                        
+                        });
                     }
                 });
         }
+
+        public IqOptionWebSocketClient MasterClient { get; private set; }
     }
 }

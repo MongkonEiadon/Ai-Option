@@ -25,6 +25,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="2.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.SlowCheetah" Version="3.0.61" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>

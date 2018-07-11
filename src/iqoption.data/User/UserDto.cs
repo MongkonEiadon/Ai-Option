@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using iqoption.core;
 using iqoption.core.data;
+using iqoption.data.IqOptionAccount;
 using Microsoft.AspNetCore.Identity;
 
 namespace iqoption.data.User {
@@ -21,5 +24,12 @@ namespace iqoption.data.User {
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? UpdatedOn { get; set; }
+
+        public virtual DateTime? LastLoginTime { get; set; }
+
+        public virtual DateTime? RegistrationDate { get; set; }
+
+        public virtual ICollection<IqOptionAccountDto> IqOptionAccounts { get; set; }
+        
     }
 }

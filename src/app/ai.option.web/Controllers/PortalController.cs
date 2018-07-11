@@ -10,6 +10,9 @@ using iqoption.data.Services;
 using iqoption.domain.IqOption;
 using iqoption.domain.IqOption.Command;
 using iqoption.domain.IqOption.Queries;
+using iqoption.domain.Users;
+using iqoption.domain.Users.Commands;
+using iqoption.domain.Users.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -39,15 +42,11 @@ namespace ai.option.web.Controllers {
             _iqOptionAccountService = iqOptionAccountService;
         }
 
-        public IActionResult Index() {
-            return View();
-        }
+        public IActionResult Index() => View();
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> IqOptionAccount() {
-            return View();
-        }
+        public IActionResult IqOptionAccount() => View();
 
         [HttpGet]
         [Authorize]
@@ -63,11 +62,8 @@ namespace ai.option.web.Controllers {
             return PartialView("Portal/_IqOptionProfileResponsePartial", models);
         }
 
-        public async Task<IActionResult> AddIqOptionAccoutToUser(
-            IqOptionRequestViewModel requestViewModel
-        ) {
-            return View("Index");
-        }
+        public IActionResult AddIqOptionAccoutToUser(IqOptionRequestViewModel requestViewModel) => View("Index");
+        
 
 
         [HttpPost]
@@ -102,7 +98,7 @@ namespace ai.option.web.Controllers {
             var iqoptionAccount = _mapper.Map<IqAccount>(requestViewModel);
             var result = await _commandBus.PublishAsync(
                 new CreateOrUpdateIqAccountCommand(IqOptionIdentity.New, iqoptionAccount,
-                    HttpContext.User.Identity.Name), CancellationToken.None);
+                    HttpContext?.User?.Identity?.Name), CancellationToken.None);
             if (result.IsSuccess)
                 return RedirectToAction("IqOptionAccount", "Portal");
             return BadRequest("ไม่สามารถเพิ่มบัญชีได้");
@@ -129,9 +125,54 @@ namespace ai.option.web.Controllers {
                 dto.IsActive = !dto.IsActive;
                 dto.UpdatedOn = DateTime.Now;
                 await _iqOptionAccountService.UpdateAccountTask(dto);
+            } return Ok(); }
+        
+
+        #region AccountManangement
+
+        public IActionResult AccountManagement() => View();
+
+        [HttpGet]
+        [Authorize(Roles = UserLevel.Administrator)]
+        public async Task<IActionResult> AccountManagementGetAsync() {
+
+            var users = await _queryProcessor.ProcessAsync(
+                new UsersLevelQuery(), CancellationToken.None);
+
+            if (users.IsSuccess) {
+                return PartialView("Portal/_TableRowUserLevel", users.Users);
             }
 
-            return Ok();
+            return BadRequest("Get users not success!");
         }
+
+        [HttpDelete]
+        [Authorize(Roles = UserLevel.Administrator)]
+        public async Task<IActionResult> DeleteAccountAsync(string id) {
+
+            var deleteResult = await _commandBus.PublishAsync(new DeleteUserCommand(UserIdentity.New, id), CancellationToken.None);
+
+            if (deleteResult.IsSuccess) {
+                return Ok();
+            }
+
+            return BadRequest($"Can't delete account with id : {id}!, with {deleteResult.Message}");
+        }
+
+        [HttpPut]
+        [Authorize(Roles = UserLevel.Administrator)]
+        public async Task<IActionResult> ChangeUserLevelAsync(string id, string level) {
+
+            var changeLevelResult =
+                await _commandBus.PublishAsync(new ChangeUserRoleCommand(UserIdentity.New, id, level),
+                    CancellationToken.None);
+
+            if (changeLevelResult.IsSuccess) return Ok();
+            return BadRequest(changeLevelResult.Message);
+
+        }
+
+
+        #endregion
     }
 }

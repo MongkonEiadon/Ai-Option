@@ -1,4 +1,5 @@
-﻿using EventFlow.Aggregates.ExecutionResults;
+﻿using System;
+using EventFlow.Aggregates.ExecutionResults;
 using EventFlow.Commands;
 
 namespace iqoption.domain.Users.Commands {
@@ -13,10 +14,10 @@ namespace iqoption.domain.Users.Commands {
     }
 
     public class DeleteUserCommand : Command<UserAggregrate, UserIdentity, DeleteUserResult> {
-        public DeleteUserCommand(UserIdentity id, string userName) : base(id) {
-            UserName = userName;
+        public DeleteUserCommand(UserIdentity id, string userId) : base(id) {
+            Id = userId;
         }
 
-        public string UserName { get; }
+        public string Id { get; }
     }
 }
