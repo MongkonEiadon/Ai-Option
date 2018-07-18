@@ -134,9 +134,10 @@ namespace iqoptionapi {
             return true;
         }
 
-        public async Task<BuyResult> BuyAsync(ActivePair pair, int size, OrderDirection direction,
+        public Task<BuyResult> BuyAsync(ActivePair pair, int size, OrderDirection direction,
             DateTime expiration = default(DateTime)) {
-            return await WsClient.BuyAsync(pair, size, direction, expiration);
+            
+            return WsClient?.BuyAsync(pair, size, direction, expiration);
         }
 
 
@@ -146,9 +147,7 @@ namespace iqoptionapi {
         }
 
 
-        public Task<InstrumentResultSet> GetInstrumentsAsync() {
-            return WsClient.SendInstrumentsRequestAsync();
-        }
+      
 
 
         private void SubscribeWebSocket() {
@@ -159,8 +158,9 @@ namespace iqoptionapi {
             WsClient.ProfileObservable
                 .Merge(HttpClient.ProfileObservable())
                 .DistinctUntilChanged()
+                .Where(x => x!=null)
                 .Subscribe(x => {
-                    _logger.LogTrace($"Profile Updated : {x?.ToString()}");
+                    _logger.LogTrace($"Profile Updated : {x?.UserId.ToString()}");
                     Profile = x;
                 });
 

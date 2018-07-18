@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -35,34 +36,39 @@ namespace iqoption.trading.services {
         public bool IsStarted { get; private set; }
 
 
-        public Task InitializeTradingsServiceAsync() {
+        public async Task InitializeTradingsServiceAsync() {
             IsStarted = true;
-            _masterTraderManager.AppendUserAsync("Tlezx10-rr@hotmail.com", "duration2547");
+            await _masterTraderManager.AppendUserAsync("Tlezx10-rr@hotmail.com", "natthon2547");
 
+
+            var result = await _followerManager.GetActiveAccountNotOnFollowersTask();
+
+
+            result.ForEach(y => _followerManager.AppendUser(y.IqOptionUserName, y.Password));
+
+            //var interval = Observable
+            //    .Interval(TimeSpan.FromSeconds(60), Scheduler.Immediate)
+            //    .Publish();
+
+            //interval
+            //    .Select(x => _followerManager.GetActiveAccountNotOnFollowersTask().Result)
+            //    .Subscribe(x => {
+            //        x.ForEach(y => {
+            //            _followerManager.AppendUser(y.IqOptionUserName, y.Password);
+            //        });
+            //    });
+
+            //interval
+            //    .Select(x => _followerManager.GetInActiveAccountNotOnFollowersTask().Result)
+            //    .Subscribe(x => { x.ForEach(y => { _followerManager.RemoveByEmailAddress(y.IqOptionUserName); }); });
+
+            //interval.Connect();
+
+        
+            foreach (var client in _followerManager.Followers) {
+                client.SubScribeForTraderStream(_masterTraderManager.MasterOpenOrderStream);
+            }
             
-
-
-            var interval = Observable
-                .Interval(TimeSpan.FromSeconds(60), Scheduler.Immediate)
-                .Publish();
-
-            interval
-                .Select(x => _followerManager.GetActiveAccountNotOnFollowersTask().Result)
-                .Subscribe(x => {
-                    x.ForEach(y => {
-                        _followerManager.AppendUser(y.IqOptionUserName, y.Password,
-                            _masterTraderManager.MasterTradersInfoDataStream());
-                    });
-                });
-
-            interval
-                .Select(x => _followerManager.GetInActiveAccountNotOnFollowersTask().Result)
-                .Subscribe(x => { x.ForEach(y => { _followerManager.RemoveByEmailAddress(y.IqOptionUserName); }); });
-
-            interval.Connect();
-
-
-            return Task.CompletedTask;
         }
     }
 

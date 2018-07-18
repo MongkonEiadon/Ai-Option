@@ -125,9 +125,9 @@ namespace iqoptionapi.ws {
                             }
                             else
                             {
-                                var ex = string.Join(", ", result.Message.ToList());
+                                var ex = string.Join(", ", result.Message?.ToList());
                                 _logger.LogError($"{this.Profile?.UserId}\t{ex}", ex);
-                                _buyResulSjSubject.OnNext(BuyResult.BuyResultError(result.Message));
+                                //_buyResulSjSubject.OnNext(BuyResult.BuyResultError(result.Message));
                             }
 
                             break;
@@ -201,14 +201,20 @@ namespace iqoptionapi.ws {
             DateTime expiration = default(DateTime)) {
             var tcs = new TaskCompletionSource<BuyResult>();
             try {
-                BuyResultObservable
+                var obs = BuyResultObservable
+                    .OnErrorResumeNext(BuyResultObservable)
+                    .Where(x => x != null)
                     .Subscribe(x => { tcs.TrySetResult(x); },
                         ex => { tcs.TrySetException(ex); });
-                
 
-                Task.Run(() =>
-                    SendMessageAsync(new BuyV2WsRequestMessage(pair, size, direction, expiration,
-                        TimeSync.ToLocalTime())));
+                tcs.Task.ContinueWith(t => {
+                    if (t.Result != null) {
+                        obs.Dispose();
+                    }
+                });
+
+                SendMessageAsync(new BuyV2WsRequestMessage(pair, size, direction, expiration,
+                    TimeSync.ToLocalTime())).ConfigureAwait(false);
             }
             catch (Exception ex) {
                 tcs.TrySetException(ex);

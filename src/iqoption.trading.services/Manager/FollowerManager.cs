@@ -17,7 +17,7 @@ using Microsoft.Extensions.Logging;
 namespace iqoption.trading.services.Manager {
     public interface IFollowerManager {
         ConcurrencyReactiveCollection<IqOptionApiClient> Followers { get; }
-        void AppendUser(string email, string password, IObservable<InfoData> tradersInfoDataObservable);
+        void AppendUser(string email, string password);
         void RemoveByEmailAddress(string emailAddress);
 
         Task<List<IqAccount>> GetActiveAccountNotOnFollowersTask();
@@ -39,13 +39,12 @@ namespace iqoption.trading.services.Manager {
         
         public ConcurrencyReactiveCollection<IqOptionApiClient> Followers { get; }
 
-        public void AppendUser(string email, string password, IObservable<InfoData> tradersInfoDataObservable) {
+        public void AppendUser(string email, string password) {
             if (Followers.All(x => x.User.Email != email)) {
                 _logger.LogInformation(new StringBuilder($"Add {email},")
                     .AppendLine($"Now trading-followers account = {Followers.Count} Account(s).").ToString());
 
-                var follower = new IqOptionApiClient(email, password,
-                    tradersInfoDataObservable.Where(x => x.Win.ToLower() == "equal"));
+                var follower = new IqOptionApiClient(email, password);
                 Followers.Add(follower);
             }
         }
