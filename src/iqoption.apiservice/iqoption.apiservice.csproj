@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.8.1" />
-    <PackageReference Include="EventFlow" Version="0.61.3524" />
+    <PackageReference Include="EventFlow" Version="0.62.3569" />
     <PackageReference Include="restsharp" Version="106.3.1" />
   </ItemGroup>
 

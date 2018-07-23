@@ -61,7 +61,6 @@ namespace iqoption.follower.app {
             services.AddSingleton(Configuration);
 
             services
-                .AddEntityFrameworkInMemoryDatabase()
                 .AddDbContext<AiOptionContext>(op => {
                     op.UseLazyLoadingProxies()
                         .UseLoggerFactory(new NullLoggerFactory())
