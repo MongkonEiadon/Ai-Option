@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.data", "src\iqopti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.apiservice", "src\iqoption.apiservice\iqoption.apiservice.csproj", "{2ADC9D94-265E-40D7-B248-8949A2FD738D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ai.option.tradings", "src\App\ai.option.tradings\ai.option.tradings.csproj", "{42CBFA1D-AC8E-499E-8DE4-E57B45127730}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{2ADC9D94-265E-40D7-B248-8949A2FD738D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2ADC9D94-265E-40D7-B248-8949A2FD738D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2ADC9D94-265E-40D7-B248-8949A2FD738D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42CBFA1D-AC8E-499E-8DE4-E57B45127730}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42CBFA1D-AC8E-499E-8DE4-E57B45127730}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42CBFA1D-AC8E-499E-8DE4-E57B45127730}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42CBFA1D-AC8E-499E-8DE4-E57B45127730}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{28F0EBA7-0466-4EF5-82AA-3A2571C78785} = {A4B5BA6F-7505-4F73-A84E-C590A43B5D8B}
 		{B6A80E49-CF39-4B2E-8792-BFC0E2311F91} = {FC2E73E2-132A-4404-AE42-8CF18F5B6A69}
 		{4F23AF62-1BC6-4B69-881C-738683ACB19A} = {FC2E73E2-132A-4404-AE42-8CF18F5B6A69}
+		{42CBFA1D-AC8E-499E-8DE4-E57B45127730} = {A4B5BA6F-7505-4F73-A84E-C590A43B5D8B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {45A6F755-7349-459E-B474-C21814ACC978}

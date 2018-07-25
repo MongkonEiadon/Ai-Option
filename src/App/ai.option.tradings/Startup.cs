@@ -3,11 +3,15 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using EventFlow.Autofac.Extensions;
 using EventFlow.DependencyInjection.Extensions;
+using EventFlow.Extensions;
+using EventFlow.MsSql;
+using EventFlow.MsSql.Extensions;
 using FluentValidation.AspNetCore;
 using iqoption.apiservice.DependencyModule;
 using iqoption.core.Extensions;
 using iqoption.data;
 using iqoption.data.DependencyModule;
+using iqoption.domain;
 using iqoption.trading.services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,35 +20,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
 
-namespace iqoption.follower.app {
-    public class Program {
-        private static void Main(string[] args) {
-            TradingPersistenceService tradingPersistenceService = null;
-
-            try {
-                Console.WriteLine("iqoption-follower-starting");
-
-                var services = new ServiceCollection();
-
-                //    // Startup.cs finally :)
-                var startup = new Startup();
-                var serviceProvider = startup.ConfigureServices(services);
-
-
-                tradingPersistenceService = serviceProvider.GetService<TradingPersistenceService>();
-                tradingPersistenceService.InitializeTradingsServiceAsync().Wait();
-            }
-            catch (Exception ex) {
-                Console.WriteLine(ex.Message);
-            }
-            finally {
-                Console.ReadLine();
-            }
-        }
-    }
-
-    public class Startup {
-        public Startup() {
+namespace ai.option.tradings {
+    public class Startup
+    {
+        public Startup()
+        {
             var configBuilder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json");
 
@@ -53,19 +33,28 @@ namespace iqoption.follower.app {
 
         private IConfigurationRoot Configuration { get; }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services) {
+        public IServiceProvider ConfigureServices(IServiceCollection services)
+        {
             var builder = new ContainerBuilder();
             builder.RegisterModule<DataAutofacModule>();
 
 
             services.AddSingleton(Configuration);
 
+            var config = new DbContextOptionsBuilder()
+                .UseSqlServer(Configuration.GetConnectionString("aioptiondb"))
+                .UseLoggerFactory(new NullLoggerFactory());
+            
             services
                 .AddDbContext<AiOptionContext>(op => {
                     op.UseLazyLoadingProxies()
                         .UseLoggerFactory(new NullLoggerFactory())
                         .UseSqlServer(Configuration.GetConnectionString("aioptiondb"));
                 })
+                
+                .Configure<TraderAccountConfiguration>(Configuration.GetSection(nameof(TraderAccountConfiguration)))
+
+
                 .AddAutoMapper()
                 .AddMvc()
                 .AddJsonOptions(
@@ -84,18 +73,23 @@ namespace iqoption.follower.app {
                 .AddSingleton<ILoggerFactory, LoggerFactory>()
                 .AddSingleton<ILogger>(c => c.GetService<ILogger<Startup>>())
                 .AddSingleton(typeof(ILogger<>), typeof(Logger<>)) // Add first my already configured instance
-                
+
                 //trandings services
                 .AddEventFlow(o => {
-                    o.UseAutofacContainerBuilder(builder);
-                    o.AddEventFlowForData();
+                    o.UseAutofacContainerBuilder(builder)
+                        .Configure(c => { c.IsAsynchronousSubscribersEnabled = true; })
+                        .ConfigureMsSql(MsSqlConfiguration.New.SetConnectionString(Configuration.GetConnectionString("aioptiondb")))
+                        .UseMsSqlSnapshotStore()
+                        .UseMssqlEventStore()
+                        .UseInMemorySnapshotStore()
+                        .AddEventFlowForData()
+                        .UseEventFlowOptionsForApiService()
+                        .UseEventFlowInDomain();
                 })
                 .AddTradingServices();
 
-
-            builder
-                .RegisterModule<DataAutofacModule>()
-             builder.Populate(services);
+            
+            builder.Populate(services);
 
             var container = builder.Build();
 

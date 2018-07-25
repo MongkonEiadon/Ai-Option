@@ -6,8 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace iqoption.trading.services {
     public static class DependencyModuleExtensions {
         public static IServiceCollection AddTradingServices(this IServiceCollection This) {
-            This.AddTransient<IMasterTraderManager, MasterTradersManager>();
-            This.AddTransient<IFollowerManager, FollowerManager>();
+            This.AddSingleton<IMasterTraderManager, MasterTradersManager>();
+            This.AddSingleton<IFollowerManager, FollowerManager>();
             This.AddSingleton<TradingPersistenceService>();
 
             This.AddSingleton<TradingPersistenceServiceMiddleware>();

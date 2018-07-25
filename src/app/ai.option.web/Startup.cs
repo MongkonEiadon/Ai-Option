@@ -73,7 +73,6 @@ namespace ai.option.web {
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             builder.RegisterModule<DataAutofacModule>();
-            builder.RegisterModule<ApiServiceModule>();
 
 
             builder.Populate(services);

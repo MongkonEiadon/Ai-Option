@@ -6,7 +6,7 @@ using System.Reactive.Subjects;
 
 namespace iqoption.core.Collections {
     public class ConcurrencyReactiveCollection<T> : ConcurrentBag<T> {
-        private Subject<T> AddSubject;
+        private Subject<T> AddSubject = new Subject<T>();
 
         [NonSerialized] private bool isDisposed = false;
 

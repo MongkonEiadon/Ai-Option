@@ -9,43 +9,40 @@ using Module = Autofac.Module;
 namespace iqoption.data.DependencyModule {
     public class DataAutofacModule : Module {
         protected override void Load(ContainerBuilder builder) {
-            builder.RegisterType<AiOptionContext>().As<DbContext>()
-                .Named<DbContext>("iqoptioncontext")
-                .InstancePerLifetimeScope();
+            //builder.RegisterType<AiOptionContext>().As<DbContext>()
+            //    .Named<DbContext>("iqoptioncontext")
+            //    .InstancePerLifetimeScope();
 
 
-            builder.RegisterType<UnitOfWork<AiOptionContext>>()
-                .WithParameters
-                (new[] {
-                    new ResolvedParameter(
-                        (p, ctx) => p.ParameterType == typeof(AiOptionContext),
-                        (p, ctx) => ctx.ResolveNamed<DbContext>("iqoptioncontext"))
-                })
-                .As<IUnitOfWork>();
+            //builder.RegisterType<UnitOfWork<AiOptionContext>>()
+            //    .WithParameters
+            //    (new[] {
+            //        new ResolvedParameter(
+            //            (p, ctx) => p.ParameterType == typeof(AiOptionContext),
+            //            (p, ctx) => ctx.ResolveNamed<DbContext>("iqoptioncontext"))
+            //    })
+            //    .As<IUnitOfWork>();
 
-            builder.RegisterType(typeof(EfCoreRepositoryBase<>)).As<IRepositoryWithDbContext>().InstancePerLifetimeScope();
-            builder.RegisterType(typeof(EfCoreRepositoryBase<,>)).As<IRepositoryWithDbContext>().InstancePerLifetimeScope();
+            builder.RegisterType(typeof(EfCoreRepositoryBase<>)).As<IRepositoryWithDbContext>().SingleInstance();
+            builder.RegisterType(typeof(EfCoreRepositoryBase<,>)).As<IRepositoryWithDbContext>().SingleInstance();
 
             builder.RegisterGeneric(typeof(EfCoreRepositoryBase<,>))
                 .As(typeof(IRepository<,>))
-                .WithParameters(new[] {
-                    new ResolvedParameter(
-                        (p, ctx) => p.ParameterType == typeof(AiOptionContext),
-                        (p, ctx) => ctx.ResolveNamed<DbContext>("iqoptioncontext"))
-                }).InstancePerLifetimeScope();
+                //.WithParameters(new[] {
+                //    new ResolvedParameter(
+                //        (p, ctx) => p.ParameterType == typeof(AiOptionContext),
+                //        (p, ctx) => ctx.ResolveNamed<DbContext>("iqoptioncontext"))
+                //})
+                .InstancePerLifetimeScope();
 
             builder.RegisterGeneric(typeof(EfCoreRepositoryBase<>)).As(typeof(IRepository<>))
-                .WithParameters(new[] {
-                    new ResolvedParameter(
-                        (p, ctx) => p.ParameterType == typeof(AiOptionContext),
-                        (p, ctx) => ctx.ResolveNamed<DbContext>("iqoptioncontext"))
-                }).InstancePerLifetimeScope();
-
-
-            builder.RegisterAssemblyTypes(ThisAssembly)
-                .Where(x => x.Name.EndsWith("Service"))
-                .AsImplementedInterfaces()
+                //.WithParameters(new[] {
+                //    new ResolvedParameter(
+                //        (p, ctx) => p.ParameterType == typeof(AiOptionContext),
+                //        (p, ctx) => ctx.ResolveNamed<DbContext>("iqoptioncontext"))
+                //})
                 .InstancePerLifetimeScope();
+
             
 
             base.Load(builder);

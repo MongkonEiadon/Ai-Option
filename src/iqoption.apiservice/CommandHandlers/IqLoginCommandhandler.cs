@@ -3,8 +3,10 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using EventFlow;
 using EventFlow.Commands;
 using iqoption.core;
+using iqoption.core.data;
 using iqoption.core.Extensions;
 using iqoption.domain.IqOption;
 using iqoption.domain.IqOption.Command;
@@ -15,11 +17,16 @@ using RestSharp;
 
 namespace iqoption.apiservice.CommandHandlers {
 
-    public class IqLoginCommandhandler : ICommandHandler<IqOptionAggregate, IqOptionIdentity, IqLoginCommandResult, IqLoginCommand> {
+    public class IqLoginCommandhandler : 
+        
+        ICommandHandler<IqOptionAggregate, IqOptionIdentity, ValidateSecuredTokenCommandResult, ValidateSecureTokenCommand>,
+        ICommandHandler<IqOptionAggregate, IqOptionIdentity, IqLoginCommandResult, IqLoginCommand> {
         private readonly ILogger _logger;
+        private readonly ICommandBus _commandBus;
 
-        public IqLoginCommandhandler(ILogger logger) {
+        public IqLoginCommandhandler(ILogger logger, ICommandBus commandBus) {
             _logger = logger;
+            _commandBus = commandBus;
         }
 
         public Task<IqLoginCommandResult> ExecuteCommandAsync(IqOptionAggregate aggregate, IqLoginCommand command, CancellationToken ct) {
@@ -67,11 +74,64 @@ namespace iqoption.apiservice.CommandHandlers {
                 tcs.TrySetException(ex);
             }
 
+           
+
             return tcs.Task;
+        }
+
+        public Task<ValidateSecuredTokenCommandResult> ExecuteCommandAsync(IqOptionAggregate aggregate, ValidateSecureTokenCommand command,
+            CancellationToken cancellationToken) {
+
+            var tcs = new TaskCompletionSource<ValidateSecuredTokenCommandResult>();
+            try {
+
+                var client = new RestClient("https://iqoption.com/api/getprofile");
+                var request = new RestRequest(Method.GET)
+                    .AddCookie("ssid", command.SecuredToken);
+
+                var result = client.ExecuteTaskAsync(request, cancellationToken)
+                    .ContinueWith(t => {
+                        if (t.Result.IsSuccessful && t.Result.StatusCode == HttpStatusCode.OK) {
+
+                            var httpResult = t.Result.Content.JsonAs<IqHttpResult<dynamic>>();
+
+                            if (httpResult.IsSuccessful) {
+
+                                tcs.TrySetResult(new ValidateSecuredTokenCommandResult(true,
+                                    t.Result.Content.JsonAs<IqHttpResult<Profile>>().Result));
+                            }
+                        }
+
+                        tcs.TrySetResult(new ValidateSecuredTokenCommandResult(false, null));
+                    }, cancellationToken);
+
+            }
+            catch (Exception ex) {
+                tcs.TrySetException(ex);
+            }
+
+            return tcs.Task;
+
         }
     }
 
+
     internal class LoginResultModel : HttpCommandResult<SsidResult> {
+    }
+
+    public class IqHttpResult<T>
+    {
+        [JsonProperty("isSuccessful")]
+        public bool IsSuccessful { get; set; }
+
+        [JsonProperty("message")]
+        public object Message { get; set; }
+
+        [JsonProperty("result")]
+        public T Result { get; set; }
+
+        [JsonProperty("location")]
+        public string Location { get; set; }
     }
 
     internal class HttpCommandResult<T> {

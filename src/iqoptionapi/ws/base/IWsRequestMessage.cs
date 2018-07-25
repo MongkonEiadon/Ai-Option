@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 namespace iqoptionapi.ws.request {
-    public interface IWsRequestMessage<T> : IWsIqOptionMessageCreator where T : class {
+    public interface IWsRequestMessage<T> : IWsIqOptionMessageCreator {
         [JsonProperty("name")]
         string Name { get; set; }
 

@@ -2,8 +2,8 @@
 using EventFlow.Commands;
 
 namespace iqoption.domain.Positions.Commands {
-    public class OrderPlaceResult : IExecutionResult {
-        public OrderPlaceResult(bool isSuccess) {
+    public class MasterPlacedPositionResult : IExecutionResult {
+        public MasterPlacedPositionResult(bool isSuccess) {
             IsSuccess = isSuccess;
         }
 
@@ -11,10 +11,9 @@ namespace iqoption.domain.Positions.Commands {
     }
 
 
-    public class
-        MasterOpenOrderPositionCommand : Command<PositionAggregrate, PositionAggregrateIdentity, OrderPlaceResult> {
-        public MasterOpenOrderPositionCommand(PositionAggregrateIdentity aggregrateIdentity, OpenPosition position) :
-            base(aggregrateIdentity) {
+    public class MasterOpenOrderPositionCommand : Command<PositionAggregrate, PositionId, MasterPlacedPositionResult> {
+        public MasterOpenOrderPositionCommand(PositionId id, OpenPosition position) :
+            base(id) {
             Position = position;
         }
 

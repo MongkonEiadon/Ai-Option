@@ -2,14 +2,14 @@
 using Newtonsoft.Json;
 
 namespace iqoptionapi.ws.request {
-    internal class WsRequestMessageBase<T> : IWsRequestMessage<T>, IWsIqOptionMessageCreator
-        where T : class {
+    public class WsRequestMessageBase<T> : IWsRequestMessage<T>, IWsIqOptionMessageCreator
+         {
         [JsonProperty("name")]
         public virtual string Name { get; set; }
 
 
         [JsonProperty("msg")]
-        public T Message { get; set; }
+        public virtual T Message { get; set; }
 
         public virtual string CreateIqOptionMessage() {
             return this.AsJson();

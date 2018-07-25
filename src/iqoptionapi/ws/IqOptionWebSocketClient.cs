@@ -19,10 +19,10 @@ namespace iqoptionapi.ws {
 
         private long _timeSync;
 
-        public IqOptionWebSocketClient(string secureToken, Action<IqOptionWebSocketClient> initialSetup, string host = "iqoption.com") {
+        public IqOptionWebSocketClient(Action<IqOptionWebSocketClient> initialSetup = null, string host = "iqoption.com") {
 
             Client = new WebSocket($"wss://{host}/echo/websocket");
-            SecureToken = secureToken;
+           
 
             //set up shred obs.
             InstrumentResultSetObservable =
@@ -48,10 +48,11 @@ namespace iqoptionapi.ws {
                 var a = x.JsonAs<WsRequestMessageBase<object>>();
                 switch (a.Name?.ToLower())
                 {
-                    case "heartbeat":
-                        {
-                            break;
-                        }
+                    case "heartbeat": {
+                        var value = x.JsonAs<HeartBeat>();
+                        _heartbeat.OnNext(value.HearBeatDateTime);
+                        break;
+                    }
 
                     case "timesync":
                         {
@@ -61,8 +62,9 @@ namespace iqoptionapi.ws {
                         }
                     case "profile":
                         {
-                            Profile = x.JsonAs<WsRequestMessageBase<Profile>>().Message;
-                            _logger.LogTrace($"Received Prof. => {Profile?.Email}");
+                            if (!a.Message.Equals(false)) {
+                                Profile = x.JsonAs<WsRequestMessageBase<Profile>>().Message;
+                            }
 
                             break;
                         }
@@ -141,15 +143,11 @@ namespace iqoptionapi.ws {
                 }
             }, ex => { _logger.LogCritical(ex.Message); });
 
-
-            //send ssid message
-            OpenSecuredSocketAsync();
-
-
+            
             initialSetup?.Invoke(this);
         }
 
-        public IqOptionWebSocketClient(string secureToken, string host = "iqoption.com") : this(secureToken, null, host) { }
+        public IqOptionWebSocketClient(string secureToken, string host = "iqoption.com") : this(x => x.OpenSecuredSocketAsync(secureToken), host) { }
 
         private WebSocket Client { get; }
         public DateTime TimeSync => _timeSync.FromUnixToDateTime();
@@ -231,8 +229,46 @@ namespace iqoptionapi.ws {
             return await Client.OpenAsync();
         }
 
-        private Task OpenSecuredSocketAsync() {
-            return SendMessageAsync(new SsidWsRequestMessageBase(SecureToken));
+        public Task<bool> OpenSecuredSocketAsync(string ssid) {
+
+            var tcs = new TaskCompletionSource<bool>();
+            try {
+
+                SecureToken = ssid;
+                var count = 0;
+                var sub = ProfileObservable.Select(x => "Profile")
+                    .Merge(HeartbeatObservable.Select(x => "Heartbeat"))
+                    .Subscribe(x => {
+                        if (count >= 2) {
+                            IsConnected = false;
+                            tcs.TrySetResult(false);
+                        }
+
+                        if (x == "Profile") {
+                            tcs.TrySetResult(true);
+                        }
+
+                        count++;
+
+                    });
+
+                SendMessageAsync(new SsidWsRequestMessageBase(ssid)).ConfigureAwait(false);
+
+                tcs.Task.ContinueWith(t => {
+                    this.IsConnected = t.Result;
+                    sub.Dispose();
+                });
+
+            }
+            catch (Exception ex) {
+                IsConnected = false;
+                tcs.TrySetException(ex);
+            }
+
+
+            return tcs.Task;
+
+            
         }
 
         #region [Public's]
@@ -282,5 +318,13 @@ namespace iqoptionapi.ws {
         public IObservable<BuyResult> BuyResultObservable { get; }
 
         #endregion
+
+        #region [HeartBeat]
+        private Subject<DateTimeOffset> _heartbeat = new Subject<DateTimeOffset>();
+        public IObservable<DateTimeOffset> HeartbeatObservable => _heartbeat.Publish().RefCount();
+
+        #endregion
+
+        public bool IsConnected { get; private set; }
     }
 }
