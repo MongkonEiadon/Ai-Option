@@ -1,9 +1,13 @@
-﻿using System.Reflection;
+﻿using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
+using System.Reflection;
 using Autofac;
 using Autofac.Core;
 using EventFlow.Configuration;
 using iqoption.core.data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Module = Autofac.Module;
 
 namespace iqoption.data.DependencyModule {
@@ -43,6 +47,17 @@ namespace iqoption.data.DependencyModule {
                 //})
                 .InstancePerLifetimeScope();
 
+            builder.Register(c => new SqlConnection(c.Resolve<IConfigurationRoot>().GetConnectionString("aioptiondb")))
+                .As<IDbConnection>().InstancePerDependency();
+
+
+            builder.RegisterGeneric(typeof(QueryReadModel<>)).As(typeof(IQueryReadModel<>)).InstancePerLifetimeScope();
+
+
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .Where(x => x.IsClass && x.FullName.EndsWith("Service"))
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope();
             
 
             base.Load(builder);

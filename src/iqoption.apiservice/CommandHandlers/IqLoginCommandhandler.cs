@@ -17,10 +17,11 @@ using RestSharp;
 
 namespace iqoption.apiservice.CommandHandlers {
 
-    public class IqLoginCommandhandler : 
-        
+    public class IqLoginCommandhandler :
         ICommandHandler<IqOptionAggregate, IqOptionIdentity, ValidateSecuredTokenCommandResult, ValidateSecureTokenCommand>,
         ICommandHandler<IqOptionAggregate, IqOptionIdentity, IqLoginCommandResult, IqLoginCommand> {
+
+
         private readonly ILogger _logger;
         private readonly ICommandBus _commandBus;
 
@@ -79,7 +80,9 @@ namespace iqoption.apiservice.CommandHandlers {
             return tcs.Task;
         }
 
-        public Task<ValidateSecuredTokenCommandResult> ExecuteCommandAsync(IqOptionAggregate aggregate, ValidateSecureTokenCommand command,
+        public Task<ValidateSecuredTokenCommandResult> ExecuteCommandAsync(
+            IqOptionAggregate aggregate, 
+            ValidateSecureTokenCommand command,
             CancellationToken cancellationToken) {
 
             var tcs = new TaskCompletionSource<ValidateSecuredTokenCommandResult>();

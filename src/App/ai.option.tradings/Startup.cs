@@ -46,7 +46,7 @@ namespace ai.option.tradings {
                 .UseLoggerFactory(new NullLoggerFactory());
             
             services
-                .AddDbContext<AiOptionContext>(op => {
+                .AddDbContext<DbContext, AiOptionContext>(op => {
                     op.UseLazyLoadingProxies()
                         .UseLoggerFactory(new NullLoggerFactory())
                         .UseSqlServer(Configuration.GetConnectionString("aioptiondb"));

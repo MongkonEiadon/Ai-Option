@@ -21,7 +21,7 @@ namespace iqoption.domain.IqOption.Command {
         public ValidateSecureTokenCommand(IqOptionIdentity aggregateId, string securedToken) : base(aggregateId) {
             SecuredToken = securedToken;
         }
-
+        
 
 
        

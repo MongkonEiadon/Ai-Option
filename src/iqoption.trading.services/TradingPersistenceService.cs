@@ -49,6 +49,13 @@ namespace iqoption.trading.services {
 
             result.ForEach(y => _followerManager.AppendUser(y, _masterTraderManager.MasterOpenOrderStream));
 
+
+
+            var interval = Observable.Interval(TimeSpan.FromSeconds(60), Scheduler.Immediate)
+                .Publish().RefCount();
+
+            
+
             ////var interval = Observable
             ////    .Interval(TimeSpan.FromSeconds(60), Scheduler.Immediate)
             ////    .Publish();
@@ -67,10 +74,10 @@ namespace iqoption.trading.services {
 
             ////interval.Connect();
 
-        
+
             ////foreach (var client in _followerManager.Followers) {
             ////    client.SubScribeForTraderStream(_masterTraderManager.MasterOpenOrderStream);
-            
+
         }
 
         public void GetListOfSubscribe() {

@@ -18,5 +18,7 @@ namespace iqoption.domain.IqOption {
         public string Ssid { get; set; }
         public DateTime? SsidUpdated { get; set; }
         public bool IsSuccess { get; set; }
+
+        public string Level { get; set; }
     }
 }

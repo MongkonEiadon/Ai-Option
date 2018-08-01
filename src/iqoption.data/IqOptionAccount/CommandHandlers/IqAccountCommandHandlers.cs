@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
 using EventFlow.Commands;
 using iqoption.core.data;
 using iqoption.domain.IqOption;
@@ -12,14 +14,14 @@ namespace iqoption.data.IqOptionAccount.CommandHandlers {
     public class IqAccountCommandHandlers : 
         ICommandHandler<IqOptionAggregate, IqOptionIdentity, StoreSsidResult, StoreSsidCommand>,
         ICommandHandler<IqOptionAggregate, IqOptionIdentity, DeleteIqAccountResult, DeleteIqAccountCommand> {
-
-
+        private readonly Func<IDbConnection> _connection;
         private readonly IRepository<IqOptionAccountDto> _iqAccountRepository;
         private readonly ILogger _logger;
 
         public IqAccountCommandHandlers(
-            
+            Func<IDbConnection> connection, 
             IRepository<IqOptionAccountDto> iqAccountRepository, ILogger<IqAccountCommandHandlers> logger) {
+            _connection = connection;
             _iqAccountRepository = iqAccountRepository;
             _logger = logger;
         }
@@ -37,24 +39,17 @@ namespace iqoption.data.IqOptionAccount.CommandHandlers {
             return new DeleteIqAccountResult(false);
         }
 
-        public async Task<StoreSsidResult> ExecuteCommandAsync(IqOptionAggregate aggregate, StoreSsidCommand command, CancellationToken cancellationToken) {
+        public async Task<StoreSsidResult> ExecuteCommandAsync(IqOptionAggregate aggregate, StoreSsidCommand command, CancellationToken cancellationToken)
+        {
 
-            var dto = _iqAccountRepository.FirstOrDefault(x =>
-                x.IqOptionUserName.ToLower().Equals(command.EmailAddress.ToLower()));
+            var query = $@"UPDATE IqOptionAccount
+                          SET ssid = '{command.Ssid}',
+                                    UpdatedOn = getdate(),
+                                    SsidUpdated = getdate()
+                           WHERE IqOptionAccount.IqOptionUserName = '{command.EmailAddress}'";
 
-            if (dto != null) {
-                dto.Ssid = command.Ssid;
-                dto.SsidUpdated = DateTime.Now;
-                dto.UpdatedOn = DateTime.Now;
-
-                _iqAccountRepository.Update(dto);
-
-                _logger.LogDebug($"Update ssid for {command.EmailAddress} success!");
-
-                return new StoreSsidResult(true);
-            }
-
-            return new StoreSsidResult(false);
+            var result = await _connection().ExecuteAsync(query);
+            return new StoreSsidResult((int)result > 0);
         }
     }
 }
