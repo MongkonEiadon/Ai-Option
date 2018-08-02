@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 namespace iqoption.data.IqOptionAccount.CommandHandlers {
     public class IqAccountCommandHandlers : 
         ICommandHandler<IqOptionAggregate, IqOptionIdentity, StoreSsidResult, StoreSsidCommand>,
+        ICommandHandler<IqOptionAggregate, IqOptionIdentity, SetActiveAccountResult, SetActiveAccountcommand>,
         ICommandHandler<IqOptionAggregate, IqOptionIdentity, DeleteIqAccountResult, DeleteIqAccountCommand> {
         private readonly Func<IDbConnection> _connection;
         private readonly IRepository<IqOptionAccountDto> _iqAccountRepository;
@@ -41,7 +42,6 @@ namespace iqoption.data.IqOptionAccount.CommandHandlers {
 
         public async Task<StoreSsidResult> ExecuteCommandAsync(IqOptionAggregate aggregate, StoreSsidCommand command, CancellationToken cancellationToken)
         {
-
             var query = $@"UPDATE IqOptionAccount
                           SET ssid = '{command.Ssid}',
                                     UpdatedOn = getdate(),
@@ -50,6 +50,20 @@ namespace iqoption.data.IqOptionAccount.CommandHandlers {
 
             var result = await _connection().ExecuteAsync(query);
             return new StoreSsidResult((int)result > 0);
+        }
+
+        public async Task<SetActiveAccountResult> ExecuteCommandAsync(IqOptionAggregate aggregate,
+            SetActiveAccountcommand command,
+            CancellationToken cancellationToken) {
+
+            var query = $@"UPDATE IqOptionAccount
+                          SET IsActive = {command.IsActive},
+                                    UpdatedOn = getdate()
+                           WHERE IqOptionAccount.IqOptionUserId = '{command.UserId}'";
+
+            var result = await _connection().ExecuteAsync(query);
+            return new SetActiveAccountResult((int) result == 1);
+
         }
     }
 }

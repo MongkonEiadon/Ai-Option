@@ -77,7 +77,10 @@ namespace ai.option.tradings {
                 //trandings services
                 .AddEventFlow(o => {
                     o.UseAutofacContainerBuilder(builder)
-                        .Configure(c => { c.IsAsynchronousSubscribersEnabled = true; })
+                        .Configure(c =>
+                        {
+                            c.IsAsynchronousSubscribersEnabled = true;
+                        })
                         .ConfigureMsSql(MsSqlConfiguration.New.SetConnectionString(Configuration.GetConnectionString("aioptiondb")))
                         .UseMsSqlSnapshotStore()
                         .UseMssqlEventStore()

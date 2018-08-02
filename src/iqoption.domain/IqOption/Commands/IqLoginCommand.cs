@@ -31,8 +31,6 @@ namespace iqoption.domain.IqOption.Commands {
     }
 
 
-
-
     #region Errors
 
     public class LoginErrorCommandResult {

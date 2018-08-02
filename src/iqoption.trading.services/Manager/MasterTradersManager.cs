@@ -47,6 +47,8 @@ namespace iqoption.trading.services.Manager {
 
             if (result.IsSuccess) {
 
+                _logger.LogInformation($"Traders Loged in with email {email}, succeed!");
+
                 await _commandBus.PublishAsync(new StoreSsidCommand(IqOptionIdentity.New, email, result.Ssid), default(CancellationToken));
 
                 MasterClient = new IqOptionWebSocketClient(ws => {

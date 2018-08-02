@@ -41,6 +41,7 @@ namespace iqoption.trading.services {
 
         public async Task InitializeTradingsServiceAsync() {
             IsStarted = true;
+
             await _masterTraderManager.AppendUserAsync(_traderAccount.EmailAddress, _traderAccount.Password);
 
 
@@ -54,23 +55,23 @@ namespace iqoption.trading.services {
             var interval = Observable.Interval(TimeSpan.FromSeconds(60), Scheduler.Immediate)
                 .Publish().RefCount();
 
-            
+
 
             ////var interval = Observable
             ////    .Interval(TimeSpan.FromSeconds(60), Scheduler.Immediate)
             ////    .Publish();
 
-            ////interval
-            ////    .Select(x => _followerManager.GetActiveAccountNotOnFollowersTask().Result)
-            ////    .Subscribe(x => {
-            ////        x.ForEach(y => {
-            ////            _followerManager.AppendUser(y.IqOptionUserName, y.Password);
-            ////        });
-            ////    });
+            interval
+                .Select(x => _followerManager.GetActiveAccountNotOnFollowersTask().Result)
+                .Subscribe(x => {
+                    x.ForEach(y => {
+                        _followerManager.AppendUser(y, _masterTraderManager.MasterOpenOrderStream);
+                    });
+                });
 
-            ////interval
-            ////    .Select(x => _followerManager.GetInActiveAccountNotOnFollowersTask().Result)
-            ////    .Subscribe(x => { x.ForEach(y => { _followerManager.RemoveByEmailAddress(y.IqOptionUserName); }); });
+            interval
+                .Select(x => _followerManager.GetInActiveAccountNotOnFollowersTask().Result)
+                .Subscribe(x => { x.ForEach(y => { _followerManager.RemoveByEmailAddress(y.IqOptionUserName); }); });
 
             ////interval.Connect();
 

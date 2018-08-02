@@ -54,10 +54,11 @@ namespace iqoption.trading.services.Manager {
                         new IqLoginCommand(IqOptionIdentity.New, account.IqOptionUserName, account.Password), ct);
 
                     if (!loginResult.IsSuccess) {
-                        _logger.LogWarning(new StringBuilder(
-                                $"Skipped {account.IqOptionUserName} due can't not loggin {loginResult.Message}")
+                        _logger.LogWarning(new StringBuilder($"Skipped {account.IqOptionUserName} due can't not loggin {loginResult.Message}")
                             .ToString());
                         client.Dispose();
+
+                        await _commandBus.PublishAsync(new SetActiveAccountcommand(IqOptionIdentity.New, false, account.IqOptionUserId), ct);
                         return;
                     }
 
