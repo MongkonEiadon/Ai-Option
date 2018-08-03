@@ -1,60 +1,64 @@
 ﻿@model ai.option.web.ViewModels.IqOptionRequestViewModel
 
 <div class="panel panel-filled">
-    <div class="panel-heading">
-    </div>
-    <div class="panel panel-body">
+<div class="panel-heading">
+</div>
+<div class="panel panel-body">
+    <div class="table-responsive">
         <div class="table-responsive">
-            <div class="table-responsive">
-                <table class="table table-hover table-striped">
-                    <thead>
-                    <tr>
-                        <th>รายการ</th>
-                        <th>รายละเอียดของบัญชีซื้อขาย</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>ชื่อที่ลงทะเบียน</td>
-                        <td>@Model.ProfileResponseViewModel.FirstName  @Model.ProfileResponseViewModel.LastName</td>
-                    </tr>
-                    <tr>
-                        <td>รหัสประจำตัวซื้อขาย</td>
-                        <td><code class="text-accent">@Model.ProfileResponseViewModel.UserId</code></td>
-                    </tr>
-                    <tr>
-                        <td>อีเมล์ที่ใช้ยืนยันตน</td>
-                        <td>@Model.EmailAddress</td>
-                    </tr>
-                    <tr>
-                        <td>ยอดคงเหลือในบัญชี</td>
-                        <td>@Model.ProfileResponseViewModel.Balance @Model.ProfileResponseViewModel.CurrencyChar</td>
-                        
-                    </tr>
-                    <tr>
-                        <td>สกุลเงิน</td>
-                        <td>@Model.ProfileResponseViewModel.Currency (@Model.ProfileResponseViewModel.CurrencyChar)</td>
-                    </tr>
-                    <tr>
-                        <td>สถานที่ติดต่อ</td>
-                        <td>@Model.ProfileResponseViewModel.Address @Model.ProfileResponseViewModel.City</td>
-                    </tr>
-                    <tr>
-                        <td>วันเดือนปีเกิด</td>
-                        <td>@{
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr>
+                    <th>รายการ</th>
+                    <th>รายละเอียดของบัญชีซื้อขาย</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>ชื่อที่ลงทะเบียน</td>
+                    <td>@Model.ProfileResponseViewModel.FirstName @Model.ProfileResponseViewModel.LastName</td>
+                </tr>
+                <tr>
+                    <td>รหัสประจำตัวซื้อขาย</td>
+                    <td>
+                        <code class="text-accent">@Model.ProfileResponseViewModel.UserId</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td>อีเมล์ที่ใช้ยืนยันตน</td>
+                    <td>@Model.EmailAddress</td>
+                </tr>
+                <tr>
+                    <td>ยอดคงเหลือในบัญชี</td>
+                    <td>@Model.ProfileResponseViewModel.Balance @Model.ProfileResponseViewModel.CurrencyChar</td>
 
-                                var text = "";
-                                if (Model.ProfileResponseViewModel.Birthdate == DateTime.MinValue) {
-                                    text = "ยังไม่ได้ระบุ";
-                                }
-                                else {
-                                    text = Model.ProfileResponseViewModel.Birthdate.ToShortDateString();
-                                }
-                            }@text</td>
-                    </tr>
+                </tr>
+                <tr>
+                    <td>สกุลเงิน</td>
+                    <td>@Model.ProfileResponseViewModel.Currency (@Model.ProfileResponseViewModel.CurrencyChar)</td>
+                </tr>
+                <tr>
+                    <td>สถานที่ติดต่อ</td>
+                    <td>@Model.ProfileResponseViewModel.Address @Model.ProfileResponseViewModel.City</td>
+                </tr>
+                <tr>
+                    <td>วันเดือนปีเกิด</td>
+                    <td>
+                        @{
 
-                    </tbody>
-                </table>
+                            var text = "";
+                            if (Model.ProfileResponseViewModel.Birthdate == DateTime.MinValue) {
+                                text = "ยังไม่ได้ระบุ";
+                            }
+                            else {
+                                text = Model.ProfileResponseViewModel.Birthdate.ToShortDateString();
+                            }
+                        }
+                        @text</td>
+                </tr>
+
+                </tbody>
+            </table>
         </div>
 
 
@@ -74,18 +78,31 @@
             @Html.HiddenFor(m => m.ProfileResponseViewModel.Avartar)
             @Html.HiddenFor(m => m.ProfileResponseViewModel.Birthdate)
             @Html.HiddenFor(m => m.ProfileResponseViewModel.City)
+            @Html.HiddenFor(m => m.ProfileResponseViewModel.Ssid)
+            @Html.HiddenFor(m => m.ProfileResponseViewModel.SsidUpdated)
+
+            <small>@Model.Temp</small>
 
 
             <div class="btn-group m-t-sm bottom-right  panel-tools">
-                <small class="btn">
-                    กดยืนยันเพื่อใช้งานด้วย บัญชี <code class="text-accent">(@Model.EmailAddress)</code>
-                </small>
-                <button id="confirmAddButton" class="btn btn-default btn-sm " type="submit">
-                    <i class="fa fa-check"></i>
-                    ยืนยัน
-                </button>
+                @if (Model.IsPassed) {
+                    <small class="btn">
+                        กดยืนยันเพื่อใช้งานด้วย บัญชี <code class="text-accent">(@Model.EmailAddress)</code>
+                    </small>
+                    <button id="confirmAddButton" class="btn btn-default btn-sm " type="submit">
+                        <i class="fa fa-check"></i>
+                        ยืนยัน
+                    </button>
+                }
+                else {
+                    <small>
+                        <small class="btn">
+                            ไม่สามารถตรวจสอบบัญชีซื้อขาย <code class="text-accent">(@Model.EmailAddress)</code> ได้
+                        </small>
+                    </small>
+                }
             </div>
         }
-    
+
     </div>
 </div>

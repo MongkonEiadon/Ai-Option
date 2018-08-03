@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using iqoption.core.Converters.JsonConverters;
 using Newtonsoft.Json;
 
 namespace ai.option.web.ViewModels {
@@ -15,6 +16,15 @@ namespace ai.option.web.ViewModels {
         public string Password { get; set; }
 
         public IqOptionProfileResponseViewModel ProfileResponseViewModel { get; set; }
+
+        public string Temp { get; set; }
+        public bool IsPassed { get; set; }
+
+
+        public string[] ErrorEmail { get; set; }
+
+        public string[] ErrorPassword { get; set; }
+
     }
 
     public class LoginViewModel {

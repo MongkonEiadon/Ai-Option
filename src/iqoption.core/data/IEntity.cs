@@ -1,22 +1,19 @@
 ﻿using System;
 
-namespace iqoption.core.data
-{
+namespace iqoption.core.data {
     /// <summary>
-    /// A shortcut of <see cref="IEntity{TPrimaryKey}"/> for most used primary key type (<see cref="int"/>).
+    ///     A shortcut of <see cref="IEntity{TPrimaryKey}" /> for most used primary key type (<see cref="int" />).
     /// </summary>
-    public interface IEntity : IEntity<Guid>
-    {
-
+    public interface IEntity : IEntity<Guid> {
     }
+
     /// <summary>
-    /// Defines interface for base entity type. All entities in the system must implement this interface.
+    ///     Defines interface for base entity type. All entities in the system must implement this interface.
     /// </summary>
     /// <typeparam name="TPrimaryKey">Type of the primary key of the entity</typeparam>
-    public interface IEntity<TPrimaryKey>
-    {
+    public interface IEntity<TPrimaryKey> {
         /// <summary>
-        /// Unique identifier for this entity.
+        ///     Unique identifier for this entity.
         /// </summary>
         TPrimaryKey Id { get; set; }
     }

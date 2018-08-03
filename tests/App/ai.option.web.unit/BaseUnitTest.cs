@@ -1,43 +1,42 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using Autofac;
+using ai.option.web.AutoMapper;
 using AutofacContrib.NSubstitute;
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using Module = Autofac.Module;
-using ServiceCollectionExtensions = iqoption.core.Extensions.ServiceCollectionExtensions;
+using Map = AutoMapper.Mapper;
 
 namespace ai.option.web.unit {
-    [TestFixture]
-    public abstract class BaseUnitTest {
-        
+    public class BaseUnitTest : IDisposable {
         public AutoSubstitute AutoSubstitute { get; private set; }
         public IServiceCollection ServiceCollection { get; set; }
         public IServiceProvider ServiceProvider { get; private set; }
 
-        [OneTimeSetUp]
-        public void OneTimeSetup() {
+ 
+        public BaseUnitTest(){
 
-            Mapper.Reset();
-            Mapper.Initialize(c => {
-
-
+            var mapper = new MapperConfiguration(c => {
                 var all = Assembly.GetExecutingAssembly().GetReferencedAssemblies().Select(Assembly.Load)
                     .SelectMany(x => x.DefinedTypes)
                     .Where(t => typeof(Profile).IsAssignableFrom(t) && !t.IsAbstract && t.IsPublic);
 
 
-                foreach (var tinfo in all) {
-                    c.AddProfile(tinfo.AsType());
-                }
+                foreach (var tinfo in all) c.AddProfile(tinfo.AsType());
+                
             });
 
             AutoSubstitute = new AutoSubstitute();
-            var imapper = AutoSubstitute.Provide<IMapper>(Mapper.Instance);
+            AutoSubstitute.Provide<IMapper>(mapper.CreateMapper());
 
+            
         }
+        
 
+        public void Dispose() {
+            AutoSubstitute?.Dispose();
+            Map.Reset();
+        }
     }
 }

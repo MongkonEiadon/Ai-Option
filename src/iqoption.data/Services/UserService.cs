@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 using iqoption.core.data;
-using iqoption.data.Model;
+using iqoption.data.User;
 
 namespace iqoption.data.Services {
-
     public interface IUserService {
         Task<UserDto> GetUserByNameAsync(string name);
     }

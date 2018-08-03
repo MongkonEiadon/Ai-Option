@@ -1,0 +1,172 @@
+﻿@using iqoption.domain.Users
+@{
+    Layout = "Portal/_LayoutPortal";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-filled">
+            <div class="panel-heading">
+                <div class="panel-tools">
+                    <a class="panel-toggle"><i class="fa fa-chevron-up"></i></a>
+                    <a class="panel-close"><i class="fa fa-times"></i></a>
+                </div>
+                    รายละเอียดยูสเซอร์ที่ใช้งานเข้าระบบ AiOption
+                </div>
+            <div class="panel-body panel">
+                <p>
+                    หน้าต่างนี้ สำหรับกำหนดเลเวล ให้กำผู้ใช้งาน เพื่อใช้ในการออกออเดอร์ โดยสิทธิที่จะได้เห็นหน้าต่างนี้เฉพาะสิทธิ <b>@UserLevel.Administrator</b> เท่านั้น ดังนั้นเวลาเลือกสิทธิ์ให้ผู้ใช้งานระบบ ไม่ควรเลือกกำหนดให้เป็น <b>@UserLevel.Administrator</b>
+                </p>
+                <div id="tableAccount" class="table-responsive ld-loading">
+                    <div class="loader">
+                        <div class="loader-bar"></div>
+                    </div>
+
+                    <table id="tableExample3" class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>อีเมล์</th>
+                            <th>InvitationCode</th>
+                            <th>เวเวลของบัญชี</th>
+                            <th>ดำเนินการ</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn-rounded"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section Scripts {
+    <script>
+
+        activeNav('accountAdminNav');
+
+        var onSelectChange = function(id, level) {
+            var selectVal = $('#select_' + id).val();
+            var savebtn = $('#saveChangeLevel_' + id);
+            if (selectVal !== level) {
+                savebtn.show();
+                return;
+            }
+            savebtn.hide();
+            return;
+        };
+
+        var getUsers = function() {
+
+            $('#tableAccount').addClass('ld-loading');
+            $.ajax({
+                type: 'get',
+                url: '@Url.Action("AccountManagementGetAsync", "Portal")',
+                success: function(body) {
+                    $('#tableExample3 > tbody ').append(body);
+                    $('#tableAccount').removeClass('ld-loading');
+                    buildTable();
+                },
+                error: function(ex) {
+                    alert(ex);
+                },
+                complete: function() {
+                    $('#tableAccount').removeClass('ld-loading');
+                }
+            });
+        }
+
+        var changeUserLevel = function(id, level) {
+            $.ajax({
+                type: 'put',
+                url: '@Url.Action("ChangeUserLevelAsync", "Portal")',
+                data: { 'id': id, 'level': level },
+                success: function(i) {
+                    window.location.reload();
+                },
+                error: function(ex) {
+                    console.error(ex);
+                },
+                complete: function(i) {
+                    console.log('change userlevel complete!');
+                }
+            });
+        }
+
+        var deleteAccount = function(id) {
+            $('#tableAccount').addClass('ld-loading');
+            $.ajax({
+                type: 'delete',
+                url: '@Url.Action("DeleteAccountAsync", "Portal")',
+                data: { 'id': id },
+                success: function(i) {
+                    console.log(i);
+                    window.location.reload();
+                },
+                error: function(e) {
+                    console.error(e);
+                },
+                complete: function() {
+                    console.log('delete complete!');
+                    $('#tableAccount').removeClass('ld-loading');
+                }
+            });
+        }
+
+
+        var buildTable = function() {
+
+
+            var table = $('#tableExample3').DataTable({
+                dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>tp",
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                buttons: [
+                    {
+                        text: 'ไม่มีเลเวล',
+                        className: 'btn-light btn-accent btn-no-level',
+                        action: function() { table.columns(2).search('').draw(); }
+                    },
+                    {
+                        text: 'Standard',
+                        className: 'btn-light btn-accent btn-standard',
+                        action: function() { table.columns(2).search('@UserLevel.Standard').draw(); }
+                    },
+                    {
+                        text: 'Silver',
+                        className: 'btn-light',
+                        id: 'btn-silver',
+                        action: function() { table.columns(2).search('@UserLevel.Silver').draw(); }
+                    },
+                    {
+                        text: 'Gold',
+                        className: 'btn-light',
+                        id: 'btn-gold',
+                        action: function() { table.columns(2).search('@UserLevel.Gold').draw(); }
+                    },
+                    {
+                        text: 'Platinum',
+                        className: 'btn-light',
+                        id: 'btn-platinum',
+                        action: function() { table.columns(2).search('@UserLevel.Platinum').draw(); }
+                    },
+                    {
+                        text: 'Administrator',
+                        className: 'btn-light',
+                        id: 'btn-administrator',
+                        action: function() { table.columns(2).search('@UserLevel.Administrator').draw(); }
+                    }
+                ]
+            });
+        };
+        $(document).ready(function() {
+            getUsers();
+
+           
+        });
+
+
+    </script>
+}

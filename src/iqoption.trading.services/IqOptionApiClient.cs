@@ -1,52 +1,50 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
+using iqoption.domain.IqOption;
 using iqoption.domain.Users;
 using iqoptionapi;
 using iqoptionapi.models;
+using iqoptionapi.ws;
 using Microsoft.Extensions.Logging;
+using RestSharp.Validation;
 
 namespace iqoption.trading.services {
-    public class IqOptionApiClient : IDisposable
-    {
-        private readonly IObservable<InfoData> _infoDataObservable;
+    public class IqOptionApiClient : IDisposable {
+        public IqAccount Account { get; }
+        public IqOptionWebSocketClient Client { get; }
 
-        public User User { get; }
+        public IqOptionApiClient([NotNull] IqAccount account) {
+            Account = account;
+            Client = new IqOptionWebSocketClient();
+        }
 
-        public IIqOptionApi ApiClient { get; }
+        public Task UpdateSsidTask(string ssid) {
+           return Client.OpenSecuredSocketAsync(ssid);
+        }
 
-        private ILogger _logger => new LoggerFactory().CreateLogger(nameof(IqOptionApi));
-
-        public IqOptionApiClient(string email, string password, IObservable<InfoData> infoDataObservable = null) {
-
-            _infoDataObservable = infoDataObservable ?? Observable.Empty<InfoData>();
+        
 
 
-            User = new User() { Email = email, Password = password };
-            ApiClient = new IqOptionApi(email, password);
+        public IDisposable SubScription { get; private set; }
 
-            //auto reconnect when time-sync not update
-            Observable.Interval(TimeSpan.FromMinutes(1))
-                .Where(x => Math.Abs(ApiClient?.WsClient?.TimeSync.Subtract(DateTime.Now).TotalMinutes ?? 0) > 1)
-                .Subscribe(x => {
-                    _logger.LogWarning("Seem like client disconnect from server try to connect again!");
-                    ApiClient.ConnectAsync();
-                });
-                
-            
+        public void SubScribeForTraderStream(IObservable<InfoData> traderStream) {
+            SubScription = traderStream.Subscribe(x =>
+            {
+                var sum = (int)x.Sum;
+                if (Account.Level == UserLevel.Silver) {
+                    sum = sum * 2;
+                    Console.WriteLine($"=========================Silver Account *2 Order Placed {sum}==========================");
+                }
 
-            //auto setup user-id
-            ApiClient
-                .ProfileObservable
-                .Subscribe(x => User.UserId = x.UserId);
-
-            _infoDataObservable
-                .Subscribe(async x => {
-                    var result = await ApiClient.BuyAsync(x.ActiveId, (int)x.Sum, x.Direction, x.Expired);
-                });
+                Client.BuyAsync(x.ActiveId, sum, x.Direction, x.Expired);
+            });
         }
 
         public void Dispose() {
-            ApiClient?.Dispose();
+            SubScription?.Dispose();
+            Client?.Dispose();
         }
     }
 }

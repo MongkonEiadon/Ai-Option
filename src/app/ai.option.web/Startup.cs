@@ -3,9 +3,12 @@ using System.IO;
 using ai.option.web.Configurations;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using EventFlow.Autofac.Extensions;
+using EventFlow.DependencyInjection.Extensions;
+using iqoption.apiservice.DependencyModule;
 using iqoption.core.Extensions;
 using iqoption.data;
-using iqoption.data.AutofacModule;
+using iqoption.data.DependencyModule;
 using iqoption.data.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -37,7 +40,6 @@ namespace ai.option.web {
 
             services
                 .AddEntityFrameworkInMemoryDatabase()
-                //.AddEntityFrameworkSqlServer()
                 .AddDbContext<AiOptionContext>(options =>
                     options
                         .UseLazyLoadingProxies()
@@ -53,23 +55,32 @@ namespace ai.option.web {
             });
 
             //logging
-            services
-                .AddSingleton<ILoggerFactory, LoggerFactory>()
-                .AddSingleton<ILogger>(c => c.GetService<ILogger<Startup>>())
-                .AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+            var loggerFactory = new LoggerFactory()
+                .AddDebug()
+                .AddConsole()
+                .AddAzureWebAppDiagnostics();
 
-
             services
+                .AddSingleton(loggerFactory)
+                .AddSingleton(loggerFactory.CreateLogger(nameof(Startup)))
+                .AddSingleton(typeof(ILogger<>), typeof(Logger<>))
                 .AddAutoMapper()
+                .AddEventFlow(o => {
+                    o.UseAutofacContainerBuilder(builder);
+                    o.AddEventFlowForData();
+                })
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             builder.RegisterModule<DataAutofacModule>();
-            builder.Populate(services);
 
+
+            builder.Populate(services);
             var container = builder.Build();
 
-            return container.Resolve<IServiceProvider>();
+
+            var serviceProvider = container.Resolve<IServiceProvider>();
+            return serviceProvider;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,18 +95,18 @@ namespace ai.option.web {
 
             seed.SeedAsync().Wait();
 
-            app.UseStaticFiles(new StaticFileOptions());
-
-            app.UseHttpsRedirection()
+            app
+                .UseCors("CorsPolicy")
+                .UseStaticFiles(new StaticFileOptions())
+                .UseHttpsRedirection()
                 .UseAuthentication()
                 .UseStaticFiles()
-                .UseCookiePolicy();
-
-            app.UseMvc(routes => {
-                routes.MapRoute(
-                    "default",
-                    "{controller=Home}/{action=Index}/{id?}");
-            });
+                .UseCookiePolicy()
+                .UseMvc(routes => {
+                    routes.MapRoute(
+                        "default",
+                        "{controller=Home}/{action=Index}/{id?}");
+                });
         }
     }
 }

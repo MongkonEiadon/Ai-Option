@@ -1,7 +1,6 @@
-﻿using System;
-using ai.option.web.ViewModels;
+﻿using ai.option.web.ViewModels;
 using AutoMapper;
-using iqoption.data.Model;
+using iqoption.data.IqOptionAccount;
 
 namespace ai.option.web.AutoMapper {
     public class IqOptionAccountDtoMappedProfile : Profile {
@@ -20,13 +19,12 @@ namespace ai.option.web.AutoMapper {
                 .ForMember(m => m.City, c => c.MapFrom(s => s.ProfileResponseViewModel.City))
                 .ForMember(m => m.BirthDate, c => c.MapFrom(s => s.ProfileResponseViewModel.Birthdate))
                 .ForMember(m => m.Avartar, c => c.MapFrom(s => s.ProfileResponseViewModel.Avartar))
+                .ForMember(m => m.Ssid, c => c.MapFrom(s => s.ProfileResponseViewModel.Ssid))
+                .ForMember(m => m.SsidUpdated, c => c.MapFrom(s => s.ProfileResponseViewModel.SsidUpdated))
                 .ForMember(m => m.CreatedOn, s => s.Ignore())
                 .ForMember(m => m.UpdatedOn, s => s.Ignore())
                 .ForMember(m => m.LastSyned, s => s.Ignore())
                 .ForMember(m => m.IsActive, s => s.Ignore());
-
-
         }
-
     }
 }

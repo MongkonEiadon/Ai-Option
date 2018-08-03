@@ -1,27 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using ai.option.web.AutoMapper;
 using ai.option.web.ViewModels;
 using AutoMapper;
-using iqoption.data.Model;
-using NUnit.Framework;
+using iqoption.data.IqOptionAccount;
 using Shouldly;
+using Xunit;
 
-namespace ai.option.web.unit.AutoMapper
-{
-    [TestFixture]
-    public class IqOptionAccountDtoMappedProfileTest
-    {
-        [OneTimeSetUp]
-        public void Setup() {
+namespace ai.option.web.unit.AutoMapper {
+    public class IqOptionAccountDtoMappedProfileTest : IClassFixture<BaseUnitTest>, IDisposable {
+        public IqOptionAccountDtoMappedProfileTest() {
+            Mapper.Reset();
+            Mapper.Initialize(c => c.AddProfile<IqOptionAccountDtoMappedProfile>());
 
-            Mapper.Initialize(c => { c.AddProfile<IqOptionAccountDtoMappedProfile>(); });
-
+            Mapper.AssertConfigurationIsValid();
         }
 
-        [Test]
+        public void Dispose() {
+        }
+
+        [Fact]
         public void Mapper_WithEmailAndPassword_PropertiesShouldSet() {
+            Mapper.Reset();
+            Mapper.Initialize(c => c.AddProfile<IqOptionAccountDtoMappedProfile>());
+
+
             //arrange
             var model = new IqOptionRequestViewModel();
             model.EmailAddress = "m@email.com";
@@ -29,30 +31,29 @@ namespace ai.option.web.unit.AutoMapper
 
             //act
             var result = Mapper.Map<IqOptionAccountDto>(model);
-            
+
             //assert
             Mapper.AssertConfigurationIsValid();
             result.IqOptionUserName.ShouldBe("m@email.com");
             result.Password.ShouldBe("password");
-
         }
-        [Test]
+
+        [Fact]
         public void Mapper_WithUserId_PropertiesShouldSet() {
             //arrange
             var model = new IqOptionRequestViewModel();
             model.EmailAddress = "m@email.com";
             model.Password = "password";
-            model.ProfileResponseViewModel = new IqOptionProfileResponseViewModel() {
+            model.ProfileResponseViewModel = new IqOptionProfileResponseViewModel {
                 UserId = 1234
             };
 
             //act
             var result = Mapper.Map<IqOptionAccountDto>(model);
-            
+
             //assert
             Mapper.AssertConfigurationIsValid();
             result.IqOptionUserId.ShouldBe(1234);
-
         }
     }
 }

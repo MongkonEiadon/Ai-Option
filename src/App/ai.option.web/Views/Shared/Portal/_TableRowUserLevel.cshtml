@@ -1,0 +1,33 @@
+﻿
+@{
+    var userLevels = new SelectListItem[] {
+new SelectListItem(){Text = "ไม่ได้กำหนด", Value = UserLevel.None},
+new SelectListItem(){Text = UserLevel.Administrator, Value = UserLevel.Administrator},
+new SelectListItem(){Text = UserLevel.Standard, Value = UserLevel.Standard},
+new SelectListItem(){Text = UserLevel.Silver, Value = UserLevel.Silver},
+new SelectListItem(){Text = UserLevel.Gold, Value =UserLevel.Gold},
+new SelectListItem(){Text = UserLevel.Platinum, Value = UserLevel.Platinum}
+};
+}
+
+@using System.Linq
+@using iqoption.domain.Users
+@model List<User>
+
+
+@foreach(var u in @Model){
+    <tr>
+        @Html.Hidden(u.Id)
+        <td>@u.Email</td>
+        <td>@u.InvitationCode</td>
+        <td>@u.Level</td>
+        <td>
+                @{
+                    var level = string.IsNullOrEmpty(@u.Level) ? "" : @u.Level;
+                }
+                <select id="select_@u.Id" class="form-control" asp-items="@userLevels" asp-for="@u.Level" onchange="onSelectChange('@u.Id', '@level');"></select>
+                <button id="saveChangeLevel_@u.Id" style="display: none" class="btn btn-w-md btn-warning btn-rounded" onclick="changeUserLevel('@u.Id', $('#select_@u.Id').val())">บันทึก</button>
+                <button class="btn btn-w-md btn-danger btn-rounded" onclick="deleteAccount('@u.Id')">ลบผู้ใช้งานนี้</button>
+            </td>
+    </tr>
+}

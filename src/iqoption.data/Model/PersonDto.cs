@@ -1,20 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using iqoption.core.data;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace iqoption.data.Model
-{
+namespace iqoption.data.Model {
     [Table("Person")]
-    public class PersonDto : EntityWithDateTimeStamp<string>
-    {
+    public class PersonDto : EntityWithDateTimeStamp<string> {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
-
     }
 }

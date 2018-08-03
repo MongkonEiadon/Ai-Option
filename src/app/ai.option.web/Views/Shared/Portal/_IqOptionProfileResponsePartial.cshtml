@@ -1,21 +1,38 @@
-﻿@model ai.option.web.ViewModels.IqOptionAccountViewModel
+﻿@model IEnumerable<ai.option.web.ViewModels.IqOptionAccountViewModel>
 
 
-<tr>
-    
-    @using (Html.BeginForm("UpdateIsActiveAsync", "Portal", FormMethod.Post, new {id =$"formAccRow_{@Model.IqOptionAccountId}"})) {
+<div class="table-responsive">
+    <table class="table table-hover table-striped">
+        <thead>
+        <tr>
+            <th>บัญชีอีเมล์</th>
+            <th>ยอดเงินในบัญชี</th>
+            <th>สกุลเงินในบัญชี</th>
+            <th>วันที่บันทึก</th>
+            <th>เปิดปิดสถานะอัตโนมัติ</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var _m in Model) {
+            <tr>
+                @Html.HiddenFor(m => _m.IqOptionAccountId)
+                <td>@_m.EmailAddress</td>
+                <td>@_m.Balance</td>
+                <td>@_m.Currency (@_m.CurrencyChar)</td>
+                <td>@_m.CreatedOn.ToShortDateString()</td>
+                <td>
+                    @Html.CheckBoxFor(m => _m.IsActive, new {
+                        onchange = $"postActive('{_m.IqOptionAccountId}')",
+                        @class = "js-switch", id = $"IsActiveCheckBox_{_m.IqOptionAccountId}"
+                    })
+                </td>
 
-        @Html.HiddenFor(m => m.IqOptionAccountId)
-        <td>@Model.EmailAddress</td>
-        <td>@Model.Balance</td>
-        <td>@Model.Currency (@Model.CurrencyChar)</td>
-        <td>@Model.CreatedOn.ToShortDateString()</td>
-        <td>
-            @Html.CheckBoxFor(m => m.IsActive, new {
-           onchange = $"$('#formAccRow_" + @Model.IqOptionAccountId + "').submit();",
-           @class ="js-switch", id=$"IsActiveCheckBox_{@Model.IqOptionAccountId}"
-       })
-        </td>
-    }
+                <td>
+                    <button id="btnDelete_@_m.IqOptionAccountId" type="button" class="btn btn-default" onclick="deleteAccount('@_m.IqOptionAccountId')">ลบบัญชี</button>
+                </td>
 
-</tr>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

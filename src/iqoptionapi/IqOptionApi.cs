@@ -13,37 +13,13 @@ using iqoptionapi.ws;
 using Microsoft.Extensions.Logging;
 
 namespace iqoptionapi {
-    public interface IIqOptionApi : IDisposable {
-        IqOptionWebSocketClient WsClient { get; }
-        IqOptionHttpClient HttpClient { get; }
-
-        IObservable<Profile> ProfileObservable { get; }
-        IObservable<InfoData[]> InfoDatasObservable { get; }
-
-        Profile Profile { get; }
-
-        bool IsConnected { get; }
-
-        IObservable<bool> IsConnectedObservable { get; }
-
-        Task<string> GetTokenAsync();
-        Task<bool> ConnectAsync();
-        Task<Profile> GetProfileAsync();
-        Task<bool> ChangeBalanceAsync(long balanceId);
-
-        Task<BuyResult> BuyAsync(ActivePair pair, int size, OrderDirection direction,
-            DateTime expiration = default(DateTime));
-    }
-
-
     public class IqOptionApi : IIqOptionApi {
         private readonly IqOptionConfiguration _configuration;
         private readonly ILogger _logger;
-
         private readonly Subject<Profile> _profileSubject = new Subject<Profile>();
-        private Profile _profile;
 
         private readonly Subject<bool> connectedSubject = new Subject<bool>();
+        private Profile _profile;
 
         public IDictionary<InstrumentType, Instrument[]> Instruments { get; private set; }
 
@@ -64,11 +40,24 @@ namespace iqoptionapi {
 
         public IObservable<bool> IsConnectedObservable => connectedSubject;
 
-        public Task<string> GetTokenAsync() {
-            return HttpClient.LoginAsync().ContinueWith(async t => {
-                await t;
-                return HttpClient.SecuredToken;
-            }).Unwrap();
+
+        public Task<Profile> LoginAsync() {
+            var tcs = new TaskCompletionSource<Profile>();
+
+            try {
+                var t = HttpClient.LoginAsync();
+
+
+                tcs.TrySetResult(HttpClient.Profile);
+            }
+            catch (AggregateException aggregateException) {
+                tcs.TrySetException(aggregateException.Flatten());
+            }
+            catch (Exception ex) {
+                tcs.TrySetException(ex);
+            }
+
+            return tcs.Task;
         }
 
         public Task<bool> ConnectAsync() {
@@ -77,14 +66,16 @@ namespace iqoptionapi {
 
             var tcs = new TaskCompletionSource<bool>();
             try {
-                HttpClient.LoginAsync()
+                HttpClient
+                    .LoginAsync()
                     .ContinueWith(async t => {
                         if ((await t).StatusCode == HttpStatusCode.OK) {
                             _logger.LogInformation(
                                 $"{_configuration.Email} logged in to {_configuration.Host} success!");
                             WsClient = new IqOptionWebSocketClient(HttpClient.SecuredToken, _configuration.Host);
 
-                            if (await WsClient.OpenWebSocketAsync()) SubscribeWebSocket();
+                            if (await WsClient.OpenWebSocketAsync())
+                                SubscribeWebSocket();
 
                             var profile = await GetProfileAsync();
 
@@ -105,12 +96,31 @@ namespace iqoptionapi {
             return tcs.Task;
         }
 
-        public async Task<Profile> GetProfileAsync() {
-            var result = await HttpClient.GetProfileAsync();
-            var profile = result.Content.JsonAs<IqHttpResult<Profile>>()?.Result;
-            _logger.LogTrace($"Get Profile!: \t{profile.Email}");
+        public Task<Profile> GetProfileAsync() {
+            var tcs = new TaskCompletionSource<Profile>();
 
-            return profile;
+            try {
+                HttpClient
+                    .GetProfileAsync()
+                    .ContinueWith(async t => {
+                        if ((await t).StatusCode == HttpStatusCode.OK) {
+                            if ((await t).Content.TryParseJson(out IqHttpResult<Profile> content)) {
+                                tcs.TrySetResult(content.Result);
+                            }
+                        }
+
+                        tcs.TrySetException(
+                            new IqOptionApiGetProfileFailedException($"token = '' & content = '{(await t).Content}'"));
+
+                        return tcs.Task;
+                    });
+            }
+            catch (Exception ex) {
+                _logger.LogCritical(ex, nameof(GetProfileAsync));
+                tcs.TrySetException(ex);
+            }
+
+            return tcs.Task;
         }
 
         public async Task<bool> ChangeBalanceAsync(long balanceId) {
@@ -124,9 +134,10 @@ namespace iqoptionapi {
             return true;
         }
 
-        public async Task<BuyResult> BuyAsync(ActivePair pair, int size, OrderDirection direction,
+        public Task<BuyResult> BuyAsync(ActivePair pair, int size, OrderDirection direction,
             DateTime expiration = default(DateTime)) {
-            return await WsClient.BuyAsync(pair, size, direction, expiration);
+            
+            return WsClient?.BuyAsync(pair, size, direction, expiration);
         }
 
 
@@ -136,9 +147,7 @@ namespace iqoptionapi {
         }
 
 
-        public Task<InstrumentResultSet> GetInstrumentsAsync() {
-            return WsClient.SendInstrumentsRequestAsync();
-        }
+      
 
 
         private void SubscribeWebSocket() {
@@ -149,8 +158,9 @@ namespace iqoptionapi {
             WsClient.ProfileObservable
                 .Merge(HttpClient.ProfileObservable())
                 .DistinctUntilChanged()
+                .Where(x => x!=null)
                 .Subscribe(x => {
-                    _logger.LogTrace($"Profile Updated : {x?.ToString()}");
+                    _logger.LogTrace($"Profile Updated : {x?.UserId.ToString()}");
                     Profile = x;
                 });
 
@@ -186,5 +196,12 @@ namespace iqoptionapi {
         [EnumMember(Value = "put")] Put = 1,
 
         [EnumMember(Value = "call")] Call = 2
+    }
+
+
+    public class IqOptionApiGetProfileFailedException : Exception {
+        public IqOptionApiGetProfileFailedException(object receivedContent) : base(
+            $"received incorrect content : {receivedContent}") {
+        }
     }
 }
