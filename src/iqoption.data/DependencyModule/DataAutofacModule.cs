@@ -6,6 +6,7 @@ using Autofac;
 using Autofac.Core;
 using EventFlow.Configuration;
 using iqoption.core.data;
+using iqoption.data.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Module = Autofac.Module;
@@ -30,6 +31,7 @@ namespace iqoption.data.DependencyModule {
             builder.RegisterType(typeof(EfCoreRepositoryBase<>)).As<IRepositoryWithDbContext>().SingleInstance();
             builder.RegisterType(typeof(EfCoreRepositoryBase<,>)).As<IRepositoryWithDbContext>().SingleInstance();
 
+
             builder.RegisterGeneric(typeof(EfCoreRepositoryBase<,>))
                 .As(typeof(IRepository<,>))
                 //.WithParameters(new[] {
@@ -49,7 +51,7 @@ namespace iqoption.data.DependencyModule {
 
             builder.Register(c => new SqlConnection(c.Resolve<IConfigurationRoot>().GetConnectionString("aioptiondb")))
                 .As<IDbConnection>().InstancePerDependency();
-
+            builder.RegisterType<SqlWrapper>().As<ISqlWrapper>().InstancePerDependency();
 
             builder.RegisterGeneric(typeof(QueryReadModel<>)).As(typeof(IQueryReadModel<>)).InstancePerLifetimeScope();
 

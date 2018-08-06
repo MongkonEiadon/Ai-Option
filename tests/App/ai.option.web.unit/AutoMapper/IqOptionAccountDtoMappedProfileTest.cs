@@ -7,10 +7,14 @@ using Shouldly;
 using Xunit;
 
 namespace ai.option.web.unit.AutoMapper {
-    public class IqOptionAccountDtoMappedProfileTest : IClassFixture<BaseUnitTest>, IDisposable {
+
+    public class IqOptionAccountDtoMappedProfileTest : IDisposable {
+
         public IqOptionAccountDtoMappedProfileTest() {
+
             Mapper.Reset();
-            Mapper.Initialize(c => c.AddProfile<IqOptionAccountDtoMappedProfile>());
+            Mapper.Initialize(
+                c => c.AddProfile<IqOptionAccountDtoMappedProfile>());
 
             Mapper.AssertConfigurationIsValid();
         }
@@ -44,6 +48,7 @@ namespace ai.option.web.unit.AutoMapper {
             var model = new IqOptionRequestViewModel();
             model.EmailAddress = "m@email.com";
             model.Password = "password";
+
             model.ProfileResponseViewModel = new IqOptionProfileResponseViewModel {
                 UserId = 1234
             };
@@ -55,5 +60,7 @@ namespace ai.option.web.unit.AutoMapper {
             Mapper.AssertConfigurationIsValid();
             result.IqOptionUserId.ShouldBe(1234);
         }
+
     }
+
 }

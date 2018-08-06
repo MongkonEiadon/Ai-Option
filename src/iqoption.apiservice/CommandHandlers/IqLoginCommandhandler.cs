@@ -66,6 +66,14 @@ namespace iqoption.apiservice.CommandHandlers {
 
                                 break;
                             }
+
+                            case HttpStatusCode.Moved: {
+                                var error = t.Result.Content.JsonAs<LoginErrorCommandResult>();
+                                tcs.TrySetResult(new IqLoginCommandResult(null, false, string.Join(",",
+                                    error.Errors?.Select(x => x.Title)?.ToList())));
+
+                                break;
+                            }
                         }
 
                         tcs.TrySetException(new Exception($"Error when get token with {t.Result.Content}"));
