@@ -21,7 +21,7 @@
     <PackageReference Include="EventFlow.Autofac" Version="0.62.3569" />
     <PackageReference Include="EventFlow.DependencyInjection" Version="0.62.3569" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.3.0" />
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.2"/>
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.SlowCheetah" Version="3.1.66" />
@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\iqoption.apiservice\iqoption.apiservice.csproj" />
+    <ProjectReference Include="..\..\iqoption.bus\iqoption.bus.csproj" />
     <ProjectReference Include="..\..\iqoption.core\iqoption.core.csproj" />
     <ProjectReference Include="..\..\iqoption.data\iqoption.data.csproj" />
     <ProjectReference Include="..\..\iqoption.domain\iqoption.domain.csproj" />

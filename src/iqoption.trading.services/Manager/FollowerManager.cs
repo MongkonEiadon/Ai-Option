@@ -58,7 +58,7 @@ namespace iqoption.trading.services.Manager {
                             .ToString());
                         client.Dispose();
 
-                        await _commandBus.PublishAsync(new SetActiveAccountcommand(IqOptionIdentity.New, false, account.IqOptionUserId), ct);
+                        await _commandBus.PublishAsync(new SetActiveAccountcommand(IqOptionIdentity.New, new ActiveAccountItem(false, account.IqOptionUserId)), ct);
                         return;
                     }
 

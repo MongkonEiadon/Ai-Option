@@ -16,13 +16,11 @@ namespace iqoption.domain.IqOption.Commands
     }
 
     public class SetActiveAccountcommand : Command<IqOptionAggregate, IqOptionIdentity, SetActiveAccountResult> {
-        public bool IsActive { get; }
-        public long UserId { get; }
 
-        public SetActiveAccountcommand(IqOptionIdentity aggregateId, bool IsActive, long userId) : base(aggregateId)
-        {
-            this.IsActive = IsActive;
-            UserId = userId;
+        public ActiveAccountItem Item { get; }
+
+        public SetActiveAccountcommand(IqOptionIdentity aggregateId, ActiveAccountItem item) : base(aggregateId) {
+            Item = item;
         }
 
        

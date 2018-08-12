@@ -94,7 +94,7 @@ namespace iqoption.follower.app {
 
 
             builder
-                .RegisterModule<DataAutofacModule>()
+                .RegisterModule<DataAutofacModule>();
              builder.Populate(services);
 
             var container = builder.Build();

@@ -6,6 +6,7 @@ using Autofac.Extensions.DependencyInjection;
 using EventFlow.Autofac.Extensions;
 using EventFlow.DependencyInjection.Extensions;
 using iqoption.apiservice.DependencyModule;
+using iqoption.bus.Azure;
 using iqoption.core.Extensions;
 using iqoption.data;
 using iqoption.data.DependencyModule;
@@ -45,6 +46,8 @@ namespace ai.option.web {
                         .UseLazyLoadingProxies()
                         .UseSqlServer(Configuration.GetConnectionString("aioptiondb")))
                 .AddIqOptionIdentity()
+                .AddAzureServiceBus()
+
                 .AddAuthentication()
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
 

@@ -66,8 +66,8 @@ namespace iqoption.data.IqOptionAccount.CommandHandlers {
                            WHERE IqOptionAccount.IqOptionUserId = @UserId";
 
             var result = await _sqlWrapper.ExecuteAsync(query, new {
-                IsActive = command.IsActive,
-                UserId = command.UserId
+                IsActive = command.Item.IsActive,
+                UserId = command.Item.UserId
             });
 
             return new SetActiveAccountResult(result == 1);

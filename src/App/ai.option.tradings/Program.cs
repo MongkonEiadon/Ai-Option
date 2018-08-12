@@ -4,8 +4,12 @@ using System.Threading.Tasks;
 using EventFlow.MsSql;
 using EventFlow.MsSql.EventStores;
 using EventFlow.MsSql.SnapshotStores;
+using iqoption.bus;
+using iqoption.bus.Queues;
+using iqoption.core.Extensions;
 using iqoption.data;
 using iqoption.data.IqOptionAccount;
+using iqoption.domain.IqOption;
 using iqoption.trading.services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,18 +34,19 @@ namespace ai.option.tradings
                 var startup = new Startup();
                 var provider = startup.ConfigureServices(services);
 
-                
+
                 //migrate
-                //Task.Run(() => {
-                //    var sql = provider.GetService<IMsSqlDatabaseMigrator>();
-                //    EventFlowEventStoresMsSql.MigrateDatabase(sql);
-                //    EventFlowSnapshotStoresMsSql.MigrateDatabase(sql);
-                //});
+                Task.Run(() =>
+                {
+                    var sql = provider.GetService<IMsSqlDatabaseMigrator>();
+                    EventFlowEventStoresMsSql.MigrateDatabase(sql);
+                    EventFlowSnapshotStoresMsSql.MigrateDatabase(sql);
+                });
 
 
                 tradingPersistenceService = provider.GetService<TradingPersistenceService>();
                 tradingPersistenceService.InitializeTradingsServiceAsync().Wait();
-
+                
 
                 while (true)
                 {
