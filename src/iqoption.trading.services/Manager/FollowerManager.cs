@@ -17,7 +17,7 @@ namespace iqoption.trading.services.Manager {
     public interface IFollowerManager {
         ConcurrencyReactiveCollection<IqOptionApiClient> Followers { get; }
         Task AppendUser(IqAccount account, IObservable<InfoData> infObservable);
-        void RemoveByEmailAddress(string emailAddress);
+        void RemoveByUserId(int userId);
 
         Task<List<IqAccount>> GetActiveAccountNotOnFollowersTask();
         Task<List<IqAccount>> GetInActiveAccountNotOnFollowersTask();
@@ -51,19 +51,19 @@ namespace iqoption.trading.services.Manager {
                 if (!isConnect) {
                     //if ssid not working -re get ssid
                     var loginResult = await _commandBus.PublishAsync(
-                        new IqLoginCommand(IqOptionIdentity.New, account.IqOptionUserName, account.Password), ct);
+                        new IqLoginCommand(IqIdentity.New, account.IqOptionUserName, account.Password), ct);
 
                     if (!loginResult.IsSuccess) {
                         _logger.LogWarning(new StringBuilder($"Skipped {account.IqOptionUserName} due can't not loggin {loginResult.Message}")
                             .ToString());
                         client.Dispose();
 
-                        await _commandBus.PublishAsync(new SetActiveAccountcommand(IqOptionIdentity.New, new ActiveAccountItem(false, account.IqOptionUserId)), ct);
+                        await _commandBus.PublishAsync(new SetActiveAccountcommand(IqIdentity.New, new ActiveAccountItem(false, account.IqOptionUserId)), ct);
                         return;
                     }
 
                     await _commandBus.PublishAsync(
-                        new StoreSsidCommand(IqOptionIdentity.New, account.IqOptionUserName, loginResult.Ssid), ct);
+                        new StoreSsidCommand(IqIdentity.New, account.IqOptionUserName, loginResult.Ssid), ct);
                 }
 
                 client.SubScribeForTraderStream(openedPositionObservable);
@@ -81,6 +81,13 @@ namespace iqoption.trading.services.Manager {
             Followers.Remove(x => x.Account.IqOptionUserName == emailAddress);
 
             _logger.LogInformation(new StringBuilder($"Remove {emailAddress},")
+                .AppendLine($"Now trading-followers account  = {Followers.Count} Accout(s).")
+                .ToString());
+        }
+
+        public void RemoveByUserId(int userId) {
+            Followers.Remove(x => x.Account.IqOptionUserId == userId);
+            _logger.LogInformation(new StringBuilder($"Remove userId : {userId},")
                 .AppendLine($"Now trading-followers account  = {Followers.Count} Accout(s).")
                 .ToString());
         }

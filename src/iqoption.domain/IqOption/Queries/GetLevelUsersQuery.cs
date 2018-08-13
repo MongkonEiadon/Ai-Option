@@ -22,11 +22,11 @@ namespace iqoption.domain.IqOption.Queries
         }
     }
 
-    public class GetLevelUsersQuery : Command<IqOptionAggregate, IqOptionIdentity, GetLevelUsersQueryResult>
+    public class GetLevelUsersQuery : Command<IqAggregate, IqIdentity, GetLevelUsersQueryResult>
     {
         public UserLevel Level { get; }
 
-        public GetLevelUsersQuery(IqOptionIdentity aggregateId, UserLevel level) : base(aggregateId) {
+        public GetLevelUsersQuery(IqIdentity aggregateId, UserLevel level) : base(aggregateId) {
             Level = level;
         }
         

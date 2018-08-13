@@ -18,8 +18,14 @@ namespace iqoption.data.Services
 
         #endregion
 
-        Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql);
+        #region [ReadModel]
 
+        
+        Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql);
+        Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, object parameters);
+
+
+        #endregion
     }
 
     public class SqlWrapper : ISqlWrapper {
@@ -41,6 +47,10 @@ namespace iqoption.data.Services
 
         public Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql) {
             return _connFunc().QueryAsync<TResult>(sql);
+        }
+
+        public Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, object parameters) {
+            return _connFunc().QueryAsync<TResult>(sql, parameters);
         }
 
     }

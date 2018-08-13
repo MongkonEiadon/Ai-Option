@@ -13,6 +13,7 @@ using iqoption.apiservice;
 using iqoption.domain.IqOption;
 using iqoption.domain.IqOption.Command;
 using iqoption.domain.IqOption.Commands;
+using iqoption.domain.IqOption.Queries;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -53,7 +54,7 @@ namespace ai.option.web.Controllers {
             
 
             try {
-                var loginObs = await _commandBus.PublishAsync(new IqLoginCommand(IqOptionIdentity.New, requestViewModel.EmailAddress, requestViewModel.Password), default(CancellationToken));
+                var loginObs = await _commandBus.PublishAsync(new IqLoginCommand(IqIdentity.New, requestViewModel.EmailAddress, requestViewModel.Password), default(CancellationToken));
                 if (loginObs.IsSuccess) {
 
                     var profile = await _queryProcessor.ProcessAsync(new GetProfileQuery(loginObs.Ssid), CancellationToken.None)

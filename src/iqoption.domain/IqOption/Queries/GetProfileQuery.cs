@@ -1,8 +1,6 @@
-﻿using EventFlow.Commands;
-using EventFlow.Queries;
-using iqoption.core;
+﻿using EventFlow.Queries;
 
-namespace iqoption.domain.IqOption.Command {
+namespace iqoption.domain.IqOption.Queries {
 
     public class GetProfileResult {
         public Profile ProfileResult { get; }

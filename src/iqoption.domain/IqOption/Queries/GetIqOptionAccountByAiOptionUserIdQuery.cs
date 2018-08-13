@@ -2,8 +2,8 @@
 using EventFlow.Queries;
 
 namespace iqoption.domain.IqOption.Queries {
-    public class GetIqOptionAccountByUserIdQuery : IQuery<IEnumerable<IqAccount>> {
-        public GetIqOptionAccountByUserIdQuery(string userName) {
+    public class GetIqOptionAccountByAiOptionUserIdQuery : IQuery<IEnumerable<IqAccount>> {
+        public GetIqOptionAccountByAiOptionUserIdQuery(string userName) {
             UserName = userName;
         }
 

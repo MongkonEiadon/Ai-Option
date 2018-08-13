@@ -5,14 +5,13 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EventFlow.Queries;
 using iqoption.core.data;
-using iqoption.data.IqOptionAccount;
 using iqoption.domain.IqOption;
 using iqoption.domain.IqOption.Queries;
 
-namespace iqoption.data.Queries
+namespace iqoption.data.IqOptionAccount.Queries
 {
     public class GetIqOptionAccountByUserIdQueryHandler :
-        IQueryHandler<GetIqOptionAccountByUserIdQuery, IEnumerable<IqAccount>> {
+        IQueryHandler<GetIqOptionAccountByAiOptionUserIdQuery, IEnumerable<IqAccount>> {
         private readonly IRepository<IqOptionAccountDto> _iqOptionAccountRepository;
         private readonly IMapper _mapper;
 
@@ -23,7 +22,7 @@ namespace iqoption.data.Queries
             _mapper = mapper;
         }
 
-        public Task<IEnumerable<IqAccount>> ExecuteQueryAsync(domain.IqOption.Queries.GetIqOptionAccountByUserIdQuery query, CancellationToken cancellationToken) {
+        public Task<IEnumerable<IqAccount>> ExecuteQueryAsync(domain.IqOption.Queries.GetIqOptionAccountByAiOptionUserIdQuery query, CancellationToken cancellationToken) {
 
             return _iqOptionAccountRepository
                 .GetAllListAsync(t => t.User.Id == query.UserName.ToString())

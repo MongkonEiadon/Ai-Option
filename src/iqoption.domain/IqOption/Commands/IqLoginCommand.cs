@@ -5,15 +5,15 @@ using EventFlow.Core;
 using Newtonsoft.Json;
 
 namespace iqoption.domain.IqOption.Commands {
-    public class IqLoginCommand : Command<IqOptionAggregate, IqOptionIdentity, IqLoginCommandResult> {
+    public class IqLoginCommand : Command<IqAggregate, IqIdentity, IqLoginCommandResult> {
     
 
-        public IqLoginCommand(IqOptionIdentity identity, string email,  string password): base(identity) {
+        public IqLoginCommand(IqIdentity identity, string email,  string password): base(identity) {
             Email = email;
             Password = password;
             Id = identity;
         }
-        public IqOptionIdentity Id { get; }
+        public IqIdentity Id { get; }
         public string Email { get; }
         public string Password { get; }
     }

@@ -1,8 +1,11 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Commands;
+using iqoption.bus;
+using iqoption.bus.Queues;
 using iqoption.core.data;
 using iqoption.data.Services;
+using iqoption.domain;
 using iqoption.domain.IqOption;
 using iqoption.domain.IqOption.Command;
 using iqoption.domain.IqOption.Commands;
@@ -11,23 +14,26 @@ using Microsoft.Extensions.Logging;
 namespace iqoption.data.IqOptionAccount.CommandHandlers {
 
     public class IqAccountCommandHandlers :
-        ICommandHandler<IqOptionAggregate, IqOptionIdentity, StoreSsidResult, StoreSsidCommand>,
-        ICommandHandler<IqOptionAggregate, IqOptionIdentity, SetActiveAccountResult, SetActiveAccountcommand>,
-        ICommandHandler<IqOptionAggregate, IqOptionIdentity, DeleteIqAccountResult, DeleteIqAccountCommand> {
+        ICommandHandler<IqAggregate, IqIdentity, CommandResult, StoreSsidCommand>,
+        ICommandHandler<IqAggregate, IqIdentity, CommandResult, SetActiveAccountcommand>,
+        ICommandHandler<IqAggregate, IqIdentity, CommandResult, DeleteIqAccountCommand> {
 
         private readonly ISqlWrapper _sqlWrapper;
+        private readonly IBusSender<ActiveAccountQueue, ActiveAccountItem> _activeAccountBusSender;
         private readonly IRepository<IqOptionAccountDto> _iqAccountRepository;
         private readonly ILogger _logger;
 
         public IqAccountCommandHandlers(
             ISqlWrapper sqlWrapper,
+            IBusSender<ActiveAccountQueue, ActiveAccountItem> activeAccountBusSender,
             IRepository<IqOptionAccountDto> iqAccountRepository, ILogger<IqAccountCommandHandlers> logger) {
             _sqlWrapper = sqlWrapper;
+            _activeAccountBusSender = activeAccountBusSender;
             _iqAccountRepository = iqAccountRepository;
             _logger = logger;
         }
 
-        public async Task<DeleteIqAccountResult> ExecuteCommandAsync(IqOptionAggregate aggregate,
+        public async Task<CommandResult> ExecuteCommandAsync(IqAggregate aggregate,
             DeleteIqAccountCommand command,
             CancellationToken cancellationToken) {
             var dto = await _iqAccountRepository.FirstOrDefaultAsync(x => x.Id == command.IqAccountId);
@@ -35,14 +41,17 @@ namespace iqoption.data.IqOptionAccount.CommandHandlers {
             if (dto != null) {
                 await _iqAccountRepository.DeleteAsync(dto);
 
-                return new DeleteIqAccountResult(true);
+                //publish to bus
+                await _activeAccountBusSender.SendAsync(new ActiveAccountItem(false, dto.IqOptionUserId), cancellationToken);
+
+                return SuccessResult.New;
             }
 
-            return new DeleteIqAccountResult(false);
+            return NotSuccessResult.New;
         }
 
-        public async Task<StoreSsidResult> ExecuteCommandAsync(IqOptionAggregate aggregate, StoreSsidCommand command,
-            CancellationToken cancellationToken) {
+        public async Task<CommandResult> ExecuteCommandAsync(IqAggregate aggregate, 
+            StoreSsidCommand command, CancellationToken cancellationToken) {
             var query = $@"UPDATE IqOptionAccount
                           SET ssid = '{command.Ssid}',
                                     UpdatedOn = getdate(),
@@ -51,13 +60,12 @@ namespace iqoption.data.IqOptionAccount.CommandHandlers {
 
             var result = await _sqlWrapper.ExecuteAsync(query);
 
-            return new StoreSsidResult(result > 0);
+            return new CommandResult(result > 0);
         }
 
-        public async Task<SetActiveAccountResult> ExecuteCommandAsync(IqOptionAggregate aggregate,
+        public async Task<CommandResult> ExecuteCommandAsync(IqAggregate aggregate,
             SetActiveAccountcommand command,
             CancellationToken cancellationToken) {
-
 
             var query = $@"UPDATE IqOptionAccount
                            SET 
@@ -70,7 +78,10 @@ namespace iqoption.data.IqOptionAccount.CommandHandlers {
                 UserId = command.Item.UserId
             });
 
-            return new SetActiveAccountResult(result == 1);
+            //publish to bus
+            await _activeAccountBusSender.SendAsync(command.Item, cancellationToken);
+
+            return new CommandResult(result == 1);
         }
 
     }

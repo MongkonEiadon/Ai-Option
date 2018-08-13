@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\iqoption.bus\iqoption.bus.csproj" />
     <ProjectReference Include="..\iqoption.core\iqoption.core.csproj" />
     <ProjectReference Include="..\iqoption.domain\iqoption.domain.csproj" />
   </ItemGroup>

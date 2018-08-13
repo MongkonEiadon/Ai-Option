@@ -9,6 +9,7 @@ using EventFlow.Queries;
 using iqoption.data.Services;
 using iqoption.domain.IqOption;
 using iqoption.domain.IqOption.Command;
+using iqoption.domain.IqOption.Commands;
 using iqoption.domain.IqOption.Queries;
 using iqoption.domain.Users;
 using iqoption.domain.Users.Commands;
@@ -23,10 +24,8 @@ namespace ai.option.web.Controllers {
     public class PortalController : Controller {
         private readonly ICommandBus _commandBus;
         private readonly IIqOptionAccountService _iqOptionAccountService;
-        private readonly ILogger _logger;
         private readonly IMapper _mapper;
         private readonly IQueryProcessor _queryProcessor;
-        private readonly IUserService _userService;
 
         public PortalController(IMapper mapper,
             ILogger logger,
@@ -35,10 +34,8 @@ namespace ai.option.web.Controllers {
             IUserService userService,
             IIqOptionAccountService iqOptionAccountService) {
             _mapper = mapper;
-            _logger = logger;
             _queryProcessor = queryProcessor;
             _commandBus = commandBus;
-            _userService = userService;
             _iqOptionAccountService = iqOptionAccountService;
         }
 
@@ -52,7 +49,7 @@ namespace ai.option.web.Controllers {
         [Authorize]
         public async Task<IActionResult> GetIqOptionAccountTask() {
             var iqoptionUsers = await _queryProcessor.ProcessAsync(
-                new GetIqOptionAccountByUserIdQuery(HttpContext.User.Identity.Name), default(CancellationToken));
+                new GetIqOptionAccountByAiOptionUserIdQuery(HttpContext.User.Identity.Name), default(CancellationToken));
 
             var models = await _iqOptionAccountService
                 .GetIqOptionAccountsByUserIdAsync(HttpContext.User.Identity.Name)
@@ -97,10 +94,19 @@ namespace ai.option.web.Controllers {
         public async Task<IActionResult> AddIqOptionAccountAsync(IqOptionRequestViewModel requestViewModel) {
             var iqoptionAccount = _mapper.Map<IqAccount>(requestViewModel);
             var result = await _commandBus.PublishAsync(
-                new CreateOrUpdateIqAccountCommand(IqOptionIdentity.New, iqoptionAccount,
+                new CreateOrUpdateIqAccountCommand(IqIdentity.New, iqoptionAccount,
                     HttpContext?.User?.Identity?.Name), CancellationToken.None);
-            if (result.IsSuccess)
+            if (result.IsSuccess) {
+
+                //use command to update
+                await _commandBus.PublishAsync(
+                    new SetActiveAccountcommand(IqIdentity.New,
+                        new ActiveAccountItem(true, (int) requestViewModel.ProfileResponseViewModel.UserId)),
+                    CancellationToken.None);
+
                 return RedirectToAction("IqOptionAccount", "Portal");
+            }
+
             return BadRequest("ไม่สามารถเพิ่มบัญชีได้");
         }
 
@@ -108,7 +114,7 @@ namespace ai.option.web.Controllers {
         [Authorize]
         public async Task<IActionResult> DeleteIqOptionAccoutAsync(string iqAccountId) {
             var result = await _commandBus.PublishAsync(
-                new DeleteIqAccountCommand(IqOptionIdentity.New, Guid.Parse(iqAccountId)),
+                new DeleteIqAccountCommand(IqIdentity.New, Guid.Parse(iqAccountId)),
                 CancellationToken.None);
 
             if (result.IsSuccess) return Ok();
@@ -120,12 +126,16 @@ namespace ai.option.web.Controllers {
         [HttpPut]
         [Authorize]
         public async Task<IActionResult> UpdateIsActiveAsync(string iqAccountId) {
+
+
             var dto = await _iqOptionAccountService.GetAccountByIdAsync(Guid.Parse(iqAccountId));
             if (dto != null) {
-                dto.IsActive = !dto.IsActive;
-                dto.UpdatedOn = DateTime.Now;
-                await _iqOptionAccountService.UpdateAccountTask(dto);
-            } return Ok(); }
+
+                await _commandBus.PublishAsync(
+                    new SetActiveAccountcommand(IqIdentity.New, new ActiveAccountItem(!dto.IsActive, dto.IqOptionUserId)), CancellationToken.None);
+                
+            } return Ok();
+        }
         
 
         #region AccountManangement

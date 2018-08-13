@@ -39,7 +39,7 @@ namespace iq.option.data.unit.IqAccount.CommandHandlers
 
                 // act
                 var result = await moq.Create<IqAccountCommandHandlers>().ExecuteCommandAsync(
-                    default(IqOptionAggregate), new StoreSsidCommand(IqOptionIdentity.New, "", ""),
+                    default(IqAggregate), new StoreSsidCommand(IqIdentity.New, "", ""),
                     default(CancellationToken));
 
                 // assert
@@ -61,7 +61,7 @@ namespace iq.option.data.unit.IqAccount.CommandHandlers
                 // act
                 var result = await moq.Create<IqAccountCommandHandlers>()
                     .ExecuteCommandAsync(
-                        default(IqOptionAggregate), new StoreSsidCommand(IqOptionIdentity.New, "", ""), default(CancellationToken));
+                        default(IqAggregate), new StoreSsidCommand(IqIdentity.New, "", ""), default(CancellationToken));
 
                 // assert
                 result.IsSuccess.ShouldBe(false);
