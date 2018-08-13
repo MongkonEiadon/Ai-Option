@@ -20,7 +20,6 @@ namespace iqoption.trading.services.Manager {
         void RemoveByUserId(int userId);
 
         Task<List<IqAccount>> GetActiveAccountNotOnFollowersTask();
-        Task<List<IqAccount>> GetInActiveAccountNotOnFollowersTask();
     }
 
     public class FollowerManager : IFollowerManager {
@@ -58,7 +57,7 @@ namespace iqoption.trading.services.Manager {
                             .ToString());
                         client.Dispose();
 
-                        await _commandBus.PublishAsync(new SetActiveAccountcommand(IqIdentity.New, new ActiveAccountItem(false, account.IqOptionUserId)), ct);
+                        await _commandBus.PublishAsync(new SetActiveAccountcommand(IqIdentity.New, new SetActiveAccountStatusItem(false, account.IqOptionUserId)), ct);
                         return;
                     }
 
@@ -99,13 +98,6 @@ namespace iqoption.trading.services.Manager {
                     t => t.Result.Where(x =>
                         !Followers.Select(y => y.Account.IqOptionUserName).Contains(x.IqOptionUserName)).ToList());
             
-        }
-
-        public Task<List<IqAccount>> GetInActiveAccountNotOnFollowersTask() {
-            return _queryProcessor.ProcessAsync(new InActiveAccountQuery(), CancellationToken.None)
-                .ContinueWith(
-                    t => t.Result.Where(x =>
-                        !Followers.Select(y => y.Account.IqOptionUserName).Contains(x.IqOptionUserName)).ToList());
         }
     }
 }

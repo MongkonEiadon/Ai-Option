@@ -10,9 +10,6 @@ namespace iqoption.domain.IqOption.Queries {
         public string UserName { get; }
     }
 
-    public class InActiveAccountQuery : IQuery<IEnumerable<IqAccount>> {
-    }
-
     public class ActiveAccountQuery : IQuery<IEnumerable<IqAccount>> {
     }
 }

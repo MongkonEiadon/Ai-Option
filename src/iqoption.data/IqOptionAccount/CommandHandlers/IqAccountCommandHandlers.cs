@@ -19,13 +19,13 @@ namespace iqoption.data.IqOptionAccount.CommandHandlers {
         ICommandHandler<IqAggregate, IqIdentity, CommandResult, DeleteIqAccountCommand> {
 
         private readonly ISqlWrapper _sqlWrapper;
-        private readonly IBusSender<ActiveAccountQueue, ActiveAccountItem> _activeAccountBusSender;
+        private readonly IBusSender<ActiveAccountQueue, SetActiveAccountStatusItem> _activeAccountBusSender;
         private readonly IRepository<IqOptionAccountDto> _iqAccountRepository;
         private readonly ILogger _logger;
 
         public IqAccountCommandHandlers(
             ISqlWrapper sqlWrapper,
-            IBusSender<ActiveAccountQueue, ActiveAccountItem> activeAccountBusSender,
+            IBusSender<ActiveAccountQueue, SetActiveAccountStatusItem> activeAccountBusSender,
             IRepository<IqOptionAccountDto> iqAccountRepository, ILogger<IqAccountCommandHandlers> logger) {
             _sqlWrapper = sqlWrapper;
             _activeAccountBusSender = activeAccountBusSender;
@@ -42,7 +42,7 @@ namespace iqoption.data.IqOptionAccount.CommandHandlers {
                 await _iqAccountRepository.DeleteAsync(dto);
 
                 //publish to bus
-                await _activeAccountBusSender.SendAsync(new ActiveAccountItem(false, dto.IqOptionUserId), cancellationToken);
+                await _activeAccountBusSender.SendAsync(new SetActiveAccountStatusItem(false, dto.IqOptionUserId), cancellationToken);
 
                 return SuccessResult.New;
             }
@@ -74,12 +74,12 @@ namespace iqoption.data.IqOptionAccount.CommandHandlers {
                            WHERE IqOptionAccount.IqOptionUserId = @UserId";
 
             var result = await _sqlWrapper.ExecuteAsync(query, new {
-                IsActive = command.Item.IsActive,
-                UserId = command.Item.UserId
+                IsActive = command.StatusItem.IsActive,
+                UserId = command.StatusItem.UserId
             });
 
             //publish to bus
-            await _activeAccountBusSender.SendAsync(command.Item, cancellationToken);
+            await _activeAccountBusSender.SendAsync(command.StatusItem, cancellationToken);
 
             return new CommandResult(result == 1);
         }

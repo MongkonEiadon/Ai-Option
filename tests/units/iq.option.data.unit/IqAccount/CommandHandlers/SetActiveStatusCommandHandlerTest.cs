@@ -28,7 +28,7 @@ namespace iq.option.data.unit.IqAccount.CommandHandlers {
                 // act
                 var result = await moq.Create<IqAccountCommandHandlers>()
                     .ExecuteCommandAsync(default(IqAggregate),
-                        new SetActiveAccountcommand(IqIdentity.New, new ActiveAccountItem(true, 1)), default(CancellationToken));
+                        new SetActiveAccountcommand(IqIdentity.New, new SetActiveAccountStatusItem(true, 1)), default(CancellationToken));
 
                 // assert
                 mocker.Verify(sql => sql.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>()), Times.Once);

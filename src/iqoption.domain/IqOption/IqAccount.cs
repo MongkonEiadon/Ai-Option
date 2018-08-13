@@ -2,17 +2,6 @@
 using EventFlow.Aggregates.ExecutionResults;
 
 namespace iqoption.domain.IqOption {
-
-    public class ActiveAccountItem {
-        public int UserId { get; set; }
-        public bool IsActive { get; set; }
-
-        public ActiveAccountItem(bool isActive, int userId) {
-            IsActive = isActive;
-            UserId = userId;
-        }
-    }
-
     public class IqAccount : IExecutionResult {
         public int IqOptionUserId { get; set; }
         public string IqOptionUserName { get; set; }

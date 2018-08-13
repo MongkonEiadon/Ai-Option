@@ -29,13 +29,13 @@ namespace iqoption.trading.services {
         private readonly ILogger _logger;
 
         private readonly IMasterTraderManager _masterTraderManager;
-        private readonly IBusReceiver<ActiveAccountQueue, ActiveAccountItem> _activeAccountBusReceiver;
+        private readonly IBusReceiver<ActiveAccountQueue, SetActiveAccountStatusItem> _activeAccountBusReceiver;
         private readonly TraderAccountConfiguration _traderAccount;
 
         public TradingPersistenceService(
             IMasterTraderManager masterTraderManager,
             IOptions<TraderAccountConfiguration> traderAccount,
-            IBusReceiver<ActiveAccountQueue, ActiveAccountItem> activeAccountBusReceiver,
+            IBusReceiver<ActiveAccountQueue, SetActiveAccountStatusItem> activeAccountBusReceiver,
             IFollowerManager followerManager,
             EventFlow.Queries.IQueryProcessor queryProcessor,
             ILogger<TradingPersistenceService> logger) {
@@ -59,8 +59,7 @@ namespace iqoption.trading.services {
             var result = await _followerManager.GetActiveAccountNotOnFollowersTask();
             result.ForEach(y => _followerManager.AppendUser(y, _masterTraderManager.MasterOpenOrderStream));
 
-
-
+            //auto subscribe to azure-bus
             _activeAccountBusReceiver
                 .MessageObservable
                 .Subscribe(x => {

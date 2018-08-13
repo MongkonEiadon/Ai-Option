@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 
 namespace iqoption.domain.IqOption.Commands {
     public class IqLoginCommand : Command<IqAggregate, IqIdentity, IqLoginCommandResult> {
-    
 
         public IqLoginCommand(IqIdentity identity, string email,  string password): base(identity) {
             Email = email;

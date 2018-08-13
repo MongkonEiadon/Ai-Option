@@ -101,7 +101,7 @@ namespace ai.option.web.Controllers {
                 //use command to update
                 await _commandBus.PublishAsync(
                     new SetActiveAccountcommand(IqIdentity.New,
-                        new ActiveAccountItem(true, (int) requestViewModel.ProfileResponseViewModel.UserId)),
+                        new SetActiveAccountStatusItem(true, (int) requestViewModel.ProfileResponseViewModel.UserId)),
                     CancellationToken.None);
 
                 return RedirectToAction("IqOptionAccount", "Portal");
@@ -132,7 +132,7 @@ namespace ai.option.web.Controllers {
             if (dto != null) {
 
                 await _commandBus.PublishAsync(
-                    new SetActiveAccountcommand(IqIdentity.New, new ActiveAccountItem(!dto.IsActive, dto.IqOptionUserId)), CancellationToken.None);
+                    new SetActiveAccountcommand(IqIdentity.New, new SetActiveAccountStatusItem(!dto.IsActive, dto.IqOptionUserId)), CancellationToken.None);
                 
             } return Ok();
         }
