@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="IqOption\Events\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EventFlow" Version="0.63.3581" />
+  </ItemGroup>
+
+</Project>

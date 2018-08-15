@@ -1,4 +1,7 @@
 ﻿using System;
+
+using AiOption.Infrastructure.Bus.Azure;
+
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using EventFlow.Autofac.Extensions;
@@ -8,7 +11,6 @@ using EventFlow.MsSql;
 using EventFlow.MsSql.Extensions;
 using FluentValidation.AspNetCore;
 using iqoption.apiservice.DependencyModule;
-using iqoption.bus.Azure;
 using iqoption.core.Extensions;
 using iqoption.data;
 using iqoption.data.DependencyModule;

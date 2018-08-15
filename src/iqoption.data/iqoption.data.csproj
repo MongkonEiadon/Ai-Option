@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="autofac" Version="4.8.1" />
-    <PackageReference Include="EventFlow" Version="0.62.3569" />
+    <PackageReference Include="EventFlow" Version="0.63.3581" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.1" />
@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\iqoption.bus\iqoption.bus.csproj" />
+    <ProjectReference Include="..\AiOption.Infrastructure\AiOption.Infrastructure.csproj" />
     <ProjectReference Include="..\iqoption.core\iqoption.core.csproj" />
     <ProjectReference Include="..\iqoption.domain\iqoption.domain.csproj" />
   </ItemGroup>

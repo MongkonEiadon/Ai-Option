@@ -23,11 +23,11 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.8.1" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
-    <PackageReference Include="EventFlow.Autofac" Version="0.62.3569" />
-    <PackageReference Include="EventFlow.DependencyInjection" Version="0.62.3569" />
-    <PackageReference Include="eventflow.mssql" Version="0.62.3569" />
-    <PackageReference Include="fluentvalidation" Version="7.6.104" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="7.6.104" />
+    <PackageReference Include="EventFlow.Autofac" Version="0.63.3581" />
+    <PackageReference Include="EventFlow.DependencyInjection" Version="0.63.3581" />
+    <PackageReference Include="eventflow.mssql" Version="0.63.3581" />
+    <PackageReference Include="fluentvalidation" Version="7.6.105" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="7.6.105" />
     <PackageReference Include="jwt" Version="4.0.0" />
     <PackageReference Include="Microsoft.NETCore.App" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.2" />
@@ -39,12 +39,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\AiOption.Domain\AiOption.Domain.csproj" />
+    <ProjectReference Include="..\..\AiOption.Infrastructure\AiOption.Infrastructure.csproj" />
     <ProjectReference Include="..\..\iqoption.apiservice\iqoption.apiservice.csproj" />
-    <ProjectReference Include="..\..\iqoption.bus\iqoption.bus.csproj" />
     <ProjectReference Include="..\..\iqoption.core\iqoption.core.csproj" />
     <ProjectReference Include="..\..\iqoption.data\iqoption.data.csproj" />
     <ProjectReference Include="..\..\iqoption.domain\iqoption.domain.csproj" />
     <ProjectReference Include="..\..\iqoption.trading.services\iqoption.trading.services.csproj" />
+  
     <ProjectReference Include="..\..\iqoptionapi\iqoptionapi.csproj" />
   </ItemGroup>
 

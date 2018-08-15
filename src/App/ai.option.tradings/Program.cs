@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using EventFlow.MsSql;
 using EventFlow.MsSql.EventStores;
 using EventFlow.MsSql.SnapshotStores;
-using iqoption.bus;
-using iqoption.bus.Queues;
 using iqoption.core.Extensions;
 using iqoption.data;
 using iqoption.data.IqOptionAccount;

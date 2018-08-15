@@ -5,9 +5,11 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
+using AiOption.Domain.IqOptionAccount;
+using AiOption.Infrastructure.Bus;
+
 using EventFlow.Queries;
-using iqoption.bus;
-using iqoption.bus.Queues;
 using iqoption.domain;
 using iqoption.domain.IqOption;
 using iqoption.domain.IqOption.Queries;

@@ -1,8 +1,10 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+
+using AiOption.Domain.IqOptionAccount;
+using AiOption.Infrastructure.Bus;
+
 using EventFlow.Commands;
-using iqoption.bus;
-using iqoption.bus.Queues;
 using iqoption.core.data;
 using iqoption.data.Services;
 using iqoption.domain;
@@ -10,6 +12,8 @@ using iqoption.domain.IqOption;
 using iqoption.domain.IqOption.Command;
 using iqoption.domain.IqOption.Commands;
 using Microsoft.Extensions.Logging;
+
+using IqIdentity = iqoption.domain.IqOption.IqIdentity;
 
 namespace iqoption.data.IqOptionAccount.CommandHandlers {
 

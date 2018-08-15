@@ -2,12 +2,14 @@
 using System.IO;
 using ai.option.web.Configurations;
 using ai.option.web.Controllers;
+
+using AiOption.Infrastructure.Bus.Azure;
+
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using EventFlow.Autofac.Extensions;
 using EventFlow.DependencyInjection.Extensions;
 using iqoption.apiservice.DependencyModule;
-using iqoption.bus.Azure;
 using iqoption.core.data;
 using iqoption.core.Extensions;
 using iqoption.data;
