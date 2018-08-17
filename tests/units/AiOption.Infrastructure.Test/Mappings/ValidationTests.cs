@@ -15,7 +15,7 @@ namespace AiOption.Infrastructure.Test.Mappings
 
             Mapper.Initialize(c => {
                 c.AddProfile<Infrastructure.Mappings.CustomersProfile>();
-
+                c.AddProfile<Infrastructure.Mappings.IqAccountsMappingProfile>();
             });
 
             Mapper.AssertConfigurationIsValid();

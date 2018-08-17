@@ -8,7 +8,8 @@ namespace AiOption.Infrastructure.Mappings {
     public class CustomersProfile : Profile {
 
         public CustomersProfile() {
-            CreateMap<CustomerDto, Customer>();
+            CreateMap<CustomerDto, Customer>()
+                .ForMember(c => c.EmailAddress, d => d.MapFrom(dto => dto.UserName));
         }
 
     }

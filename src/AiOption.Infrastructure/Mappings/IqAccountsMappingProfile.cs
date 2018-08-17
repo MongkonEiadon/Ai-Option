@@ -14,7 +14,8 @@ namespace AiOption.Infrastructure.Mappings {
             CreateMap<Account, IqAccountDto>();
 
 
-            CreateMap<IqAccountDto, Account>();
+            CreateMap<IqAccountDto, Account>()
+                .ForMember(a => a.Level, c => c.Ignore());
         }
 
     }
