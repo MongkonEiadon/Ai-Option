@@ -1,4 +1,11 @@
-﻿using Autofac;
+﻿using System.Reflection;
+
+using Autofac;
+
+using EventFlow.MsSql;
+using EventFlow.MsSql.Extensions;
+
+using Module = Autofac.Module;
 
 namespace AiOption.Infrastructure.Modules {
 
@@ -6,8 +13,9 @@ namespace AiOption.Infrastructure.Modules {
 
         protected override void Load(ContainerBuilder builder) {
 
-
-
+            builder.RegisterAssemblyTypes(typeof(InfrastructureModule).Assembly)
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope();
         }
 
     }

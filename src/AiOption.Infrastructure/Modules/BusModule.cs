@@ -26,8 +26,7 @@ namespace AiOption.Infrastructure.Modules {
                 };
             });
 
-            builder.RegisterGeneric(typeof(AzureQueueReceiver<,>)).As(typeof(IBusReceiver<,>))
-                .InstancePerLifetimeScope();
+            builder.RegisterGeneric(typeof(AzureQueueReceiver<,>)).As(typeof(IBusReceiver<,>)).InstancePerLifetimeScope();
             builder.RegisterGeneric(typeof(AzureQueueSender<,>)).As(typeof(IBusSender<,>)).InstancePerLifetimeScope();
 
         }

@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 using AiOption.Application.Repositories;
 using AiOption.Application.Repositories.ReadOnly;
 using AiOption.Application.Repositories.WriteOnly;
-using AiOption.Domain.IqOptionAccount;
-
+using AiOption.Domain.IqOption;
 using AutoMapper;
 
 using Dapper;
@@ -47,32 +46,32 @@ namespace AiOption.Infrastructure.DataAccess.Repositories
 
         #region ReadAccess
 
-        public async Task<IEnumerable<IqOptionAccount>> GetAllTask() {
+        public async Task<IEnumerable<Account>> GetAllTask() {
 
-            var sql = "SELECT * FROM IqOptionAccount";
+            var sql = "SELECT * FROM Account";
             var result = await _connection.QueryAsync<IqAccountDto>(sql);
 
-            return _mapper.Map<IEnumerable<IqOptionAccount>>(result);
+            return _mapper.Map<IEnumerable<Account>>(result);
         }
 
-        public async Task<IqOptionAccount> GetByUserIdTask(int userId)
+        public async Task<Account> GetByUserIdTask(int userId)
         {
-            var sql = "SELECT * FROM IqOptionAccount WHERE IqOptionUserId = @userId";
+            var sql = "SELECT * FROM Account WHERE IqOptionUserId = @userId";
             var dynamicParams = new DynamicParameters();
             dynamicParams.Add("@userId", userId);
             var result = await _connection.QueryAsync<IqAccountDto>(sql, dynamicParams);
 
             var iqAccountDtos = result as IqAccountDto[] ?? result.ToArray();
             if (iqAccountDtos.Any()) {
-                return _mapper.Map<IqAccountDto, IqOptionAccount>(iqAccountDtos.FirstOrDefault());
+                return _mapper.Map<IqAccountDto, Account>(iqAccountDtos.FirstOrDefault());
             }
 
             return null;
         }
 
-        public async Task<IqOptionAccount> GetByUserNameTask(string userName)
+        public async Task<Account> GetByUserNameTask(string userName)
         {
-            var sql = "SELECT * FROM IqOptionAccount WHERE IqOptionUserName = @IqUserName";
+            var sql = "SELECT * FROM Account WHERE IqOptionUserName = @IqUserName";
             var dynamicParams = new DynamicParameters();
             dynamicParams.Add("@IqUserName", userName);
             var result = await _connection.QueryAsync<IqAccountDto>(sql, dynamicParams);
@@ -80,7 +79,7 @@ namespace AiOption.Infrastructure.DataAccess.Repositories
             var iqAccountDtos = result as IqAccountDto[] ?? result.ToArray();
             if (iqAccountDtos.Any())
             {
-                return _mapper.Map<IqAccountDto, IqOptionAccount>(iqAccountDtos.FirstOrDefault());
+                return _mapper.Map<IqAccountDto, Account>(iqAccountDtos.FirstOrDefault());
             }
 
             return null;

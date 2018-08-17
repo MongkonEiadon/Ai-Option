@@ -5,7 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Customer\Queries\" />
+    <Folder Include="Customer\Commands\" />
+    <Folder Include="IqOption\Commands\" />
     <Folder Include="IqOption\Events\" />
+    <Folder Include="IqOption\Results\" />
   </ItemGroup>
 
   <ItemGroup>

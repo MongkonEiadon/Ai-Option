@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+
+using Microsoft.AspNetCore.Identity;
 
 namespace AiOption.Infrastructure.DataAccess {
 
-    public class CustomerDto : IdentityUser {
+    public class CustomerDto : IdentityUser<Guid> {
 
         public string InviationCode { get; set; }
     }
