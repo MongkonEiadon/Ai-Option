@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
 using System.Text;
 
 using Microsoft.EntityFrameworkCore;
@@ -14,17 +17,22 @@ namespace AiOption.Infrastructure.DataAccess
 
         public static IServiceCollection AddEfConfigurationDomain(this IServiceCollection This, IConfigurationRoot config) {
 
+            var constring = config.GetConnectionString("aioptiondb");
+
             This
                 .AddSingleton<IConfigurationRoot>(config)
                 .AddEntityFrameworkSqlServer()
-                //.AddDbContextPool<AiOptionDbContext>(c => 
+                .AddScoped<AiOptionDbContext>(c => new AiOptionDbContext())
+                .AddScoped<IDbConnection>(c => new SqlConnection(constring))
+
+                //.AddDbContextPool<AiOptionDbContext>(c =>
                 //    c.UseSqlServer(config.GetConnectionString("aioptiondb")))
-                .AddDbContext<AiOptionDbContext>(c =>
-                {
+                .AddDbContext<AiOptionDbContext>(c => {
                     c.UseLoggerFactory(new NullLoggerFactory());
-                    c.UseSqlServer(config.GetConnectionString("aioptiondb"));
+                    c.UseSqlServer(constring);
                 })
                 .AddIdentity<CustomerDto, CustomerLevelDto>();
+                
 
 
             return This;

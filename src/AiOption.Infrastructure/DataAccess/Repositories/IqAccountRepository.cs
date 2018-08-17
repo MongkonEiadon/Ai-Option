@@ -19,10 +19,12 @@ namespace AiOption.Infrastructure.DataAccess.Repositories
 
         private readonly IDbConnection _connection;
         private readonly IMapper _mapper;
+        private readonly AiOptionDbContext _context;
 
-        public IqAccountRepository(IDbConnection connection, IMapper mapper) {
+        public IqAccountRepository(IDbConnection connection, IMapper mapper, AiOptionDbContext context) {
             _connection = connection;
             _mapper = mapper;
+            _context = context;
         }
 
 

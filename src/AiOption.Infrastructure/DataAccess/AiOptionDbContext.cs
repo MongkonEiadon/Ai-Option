@@ -18,6 +18,8 @@ namespace AiOption.Infrastructure.DataAccess
         public DbSet<CustomerDto> Customers { get; set; }
         public DbSet<CustomerLevelDto> CustomerLevels { get; set; }
 
+        public AiOptionDbContext() { }
+        public AiOptionDbContext(DbContextOptions<AiOptionDbContext> options) : base(options) { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")

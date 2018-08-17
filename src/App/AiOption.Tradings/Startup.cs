@@ -8,6 +8,8 @@ using Autofac;
 using Autofac.Configuration;
 using Autofac.Extensions.DependencyInjection;
 
+using AutoMapper;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -35,17 +37,19 @@ namespace AiOption.Tradings {
             // Populate to bring those registrations into Autofac. This is
             // just like a foreach over the list of things in the collection
             // to add them to Autofac.
-            builder.Populate(services);
             ConfigureContainer(builder);
 
 
-            //eventflows
-            services.AddEventFlowModule(builder, Configuration);
+            //infra-configuration
+            services.AddMvc();
+            services.AddInfrastructureConfiguration(builder, Configuration);
 
             //efs
             services.AddEfConfigurationDomain(Configuration);
 
 
+
+            builder.Populate(services);
             var container = builder.Build();
             return new AutofacServiceProvider(container);
         }
@@ -57,15 +61,14 @@ namespace AiOption.Tradings {
             var logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(Configuration)
                 .CreateLogger();
-
+            
             builder.RegisterModule(new ConfigurationModule(Configuration));
             builder.RegisterModule<BusModule>();
             builder.RegisterModule<InfrastructureModule>();
+            builder.RegisterModule<DomainModule>();
 
 
             builder.Register(c => logger).As<ILogger>().SingleInstance();
-
-
 
         }
 

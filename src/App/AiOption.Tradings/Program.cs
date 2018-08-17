@@ -1,4 +1,14 @@
 ﻿using System;
+using System.Threading.Tasks;
+
+using AiOption.Application.Repositories.ReadOnly;
+using AiOption.Infrastructure.DataAccess.Repositories;
+
+using AutoMapper;
+
+using EventFlow.MsSql;
+using EventFlow.MsSql.EventStores;
+using EventFlow.MsSql.SnapshotStores;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,7 +35,13 @@ namespace AiOption.Tradings {
                 var container = new Startup().ConfigureServices();
                 var logger = container.GetService<ILogger>();
 
-                logger.Debug("Debug");
+                //Validate mapper
+                logger.Debug("Validate Mappers");
+                var mapper = container.GetService<IMapper>();
+                mapper.ConfigurationProvider.AssertConfigurationIsValid();
+
+
+
                 logger.Verbose("Verbose");
                 logger.Information("info");
                 logger.Error("Error");
@@ -37,12 +53,12 @@ namespace AiOption.Tradings {
 
 
                 ////migrate
-                //Task.Run(() =>
-                //{
-                //    var sql = provider.GetService<IMsSqlDatabaseMigrator>();
-                //    EventFlowEventStoresMsSql.MigrateDatabase(sql);
-                //    EventFlowSnapshotStoresMsSql.MigrateDatabase(sql);
-                //});
+                Task.Run(() =>
+                {
+                    var sql = container.GetService<IMsSqlDatabaseMigrator>();
+                    EventFlowEventStoresMsSql.MigrateDatabase(sql);
+                    EventFlowSnapshotStoresMsSql.MigrateDatabase(sql);
+                });
 
 
                 //tradingPersistenceService = provider.GetService<TradingPersistenceService>();
