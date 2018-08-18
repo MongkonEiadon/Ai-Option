@@ -14,19 +14,29 @@ namespace AiOption.Infrastructure.Modules {
 
     public static class InfrastructureConfigurationExtensions {
 
-        public static IServiceCollection AddInfrastructureConfiguration(this IServiceCollection services, ContainerBuilder builer, IConfigurationRoot configuration) {
+        public static IServiceCollection AddInfrastructureConfiguration(this IServiceCollection services) {
 
             //
             services.AddAutoMapper();
 
-            //
+            return services;
+        }
+
+        public static IServiceCollection AddEventFlowInfrastructure(
+            this IServiceCollection services, 
+            IConfigurationRoot configuration,
+            ContainerBuilder builder) {
+
+            
+
             services.AddEventFlow(config => {
-                config.UseAutofacContainerBuilder(builer)
+                config.UseAutofacContainerBuilder(builder)
                     .Configure(c => c.IsAsynchronousSubscribersEnabled = true)
                     .ConfigureMsSql(MsSqlConfiguration.New.SetConnectionString(configuration.GetConnectionString("aioptiondb")));
             });
 
             return services;
+
         }
 
     }

@@ -10,10 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace AiOption.Infrastructure.DataAccess
-{
-    public static class EfConfigurations
-    {
+namespace AiOption.Infrastructure.DataAccess {
+
+    public static class EfConfigurations {
 
         public static IServiceCollection AddEfConfigurationDomain(this IServiceCollection This, IConfigurationRoot config) {
 

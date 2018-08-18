@@ -42,7 +42,8 @@ namespace AiOption.Tradings {
 
             //infra-configuration
             services.AddMvc();
-            services.AddInfrastructureConfiguration(builder, Configuration);
+            services.AddInfrastructureConfiguration();
+            services.AddEventFlowInfrastructure(Configuration, builder);
 
             //efs
             services.AddEfConfigurationDomain(Configuration);
