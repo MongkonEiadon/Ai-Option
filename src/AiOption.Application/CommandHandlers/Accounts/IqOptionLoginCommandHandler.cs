@@ -11,7 +11,7 @@ using AiOption.Domain.Accounts.Results;
 
 using EventFlow.Commands;
 
-namespace AiOption.Application.CommandHandlers.IqOptions
+namespace AiOption.Application.CommandHandlers.Accounts
 {
     public class IqOptionLoginCommandHandler : ICommandHandler<IqAggregateRoot, IqIdentity, LoginCommandResult, LoginCommand> {
 
