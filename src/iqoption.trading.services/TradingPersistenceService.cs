@@ -3,8 +3,14 @@ using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using EventFlow.Queries;
+using iqoption.bus;
+using iqoption.bus.Queues;
 using iqoption.domain;
+using iqoption.domain.IqOption;
+using iqoption.domain.IqOption.Queries;
 using iqoption.trading.services.Manager;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -19,19 +25,26 @@ namespace iqoption.trading.services {
 
     public class TradingPersistenceService : ITradingPersistenceService {
         private readonly IFollowerManager _followerManager;
+        private readonly IQueryProcessor _queryProcessor;
         private readonly ILogger _logger;
 
         private readonly IMasterTraderManager _masterTraderManager;
+        private readonly IBusReceiver<ActiveAccountQueue, SetActiveAccountStatusItem> _activeAccountBusReceiver;
         private readonly TraderAccountConfiguration _traderAccount;
 
         public TradingPersistenceService(
             IMasterTraderManager masterTraderManager,
             IOptions<TraderAccountConfiguration> traderAccount,
+            IBusReceiver<ActiveAccountQueue, SetActiveAccountStatusItem> activeAccountBusReceiver,
             IFollowerManager followerManager,
+            EventFlow.Queries.IQueryProcessor queryProcessor,
             ILogger<TradingPersistenceService> logger) {
             _masterTraderManager = masterTraderManager;
+            _activeAccountBusReceiver = activeAccountBusReceiver;
+
             _traderAccount = traderAccount.Value;
             _followerManager = followerManager;
+            _queryProcessor = queryProcessor;
             _logger = logger;
             
         }
@@ -43,42 +56,28 @@ namespace iqoption.trading.services {
             IsStarted = true;
 
             await _masterTraderManager.AppendUserAsync(_traderAccount.EmailAddress, _traderAccount.Password);
-
-
             var result = await _followerManager.GetActiveAccountNotOnFollowersTask();
-
-
             result.ForEach(y => _followerManager.AppendUser(y, _masterTraderManager.MasterOpenOrderStream));
 
-
-
-            var interval = Observable.Interval(TimeSpan.FromSeconds(60), Scheduler.Immediate)
-                .Publish().RefCount();
-
-
-
-            ////var interval = Observable
-            ////    .Interval(TimeSpan.FromSeconds(60), Scheduler.Immediate)
-            ////    .Publish();
-
-            interval
-                .Select(x => _followerManager.GetActiveAccountNotOnFollowersTask().Result)
+            //auto subscribe to azure-bus
+            _activeAccountBusReceiver
+                .MessageObservable
                 .Subscribe(x => {
-                    x.ForEach(y => {
-                        _followerManager.AppendUser(y, _masterTraderManager.MasterOpenOrderStream);
-                    });
+                    if (x.IsActive) {
+                        var iqAccount = _queryProcessor
+                            .ProcessAsync(new GetIqAccountByIqUserIdQuery(x.UserId), CancellationToken.None)
+                            .Result;
+
+                        _logger.LogInformation($"Bus Received new Active account is {x.UserId}");
+                        _followerManager.AppendUser(iqAccount, _masterTraderManager.MasterOpenOrderStream);
+                    }
+                    else
+                    {
+                        _logger.LogInformation($"Bus Received new InActive account is {x.UserId}");
+                        _followerManager.RemoveByUserId(x.UserId);
+
+                    }
                 });
-
-            interval
-                .Select(x => _followerManager.GetInActiveAccountNotOnFollowersTask().Result)
-                .Subscribe(x => { x.ForEach(y => { _followerManager.RemoveByEmailAddress(y.IqOptionUserName); }); });
-
-            ////interval.Connect();
-
-
-            ////foreach (var client in _followerManager.Followers) {
-            ////    client.SubScribeForTraderStream(_masterTraderManager.MasterOpenOrderStream);
-
         }
 
         public void GetListOfSubscribe() {

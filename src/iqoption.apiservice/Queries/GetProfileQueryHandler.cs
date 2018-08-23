@@ -8,11 +8,11 @@ using iqoption.core;
 using iqoption.core.Extensions;
 using iqoption.domain.IqOption;
 using iqoption.domain.IqOption.Command;
+using iqoption.domain.IqOption.Queries;
 using RestSharp;
 using Profile = iqoption.domain.IqOption.Profile;
 
 namespace iqoption.apiservice.Queries {
-
     public class GetProfileQueryHandler : IQueryHandler<GetProfileQuery, GetProfileResult> {
 
         private readonly IMapper _mapper;

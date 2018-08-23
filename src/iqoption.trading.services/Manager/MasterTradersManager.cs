@@ -43,13 +43,13 @@ namespace iqoption.trading.services.Manager {
         public async Task AppendUserAsync(string email, string password) {
             Trader?.Dispose();
 
-            var result = await _commandBus.PublishAsync(new IqLoginCommand(IqOptionIdentity.New, email, password), default(CancellationToken));
+            var result = await _commandBus.PublishAsync(new IqLoginCommand(IqIdentity.New, email, password), default(CancellationToken));
 
             if (result.IsSuccess) {
 
                 _logger.LogInformation($"Traders Loged in with email {email}, succeed!");
 
-                await _commandBus.PublishAsync(new StoreSsidCommand(IqOptionIdentity.New, email, result.Ssid), default(CancellationToken));
+                await _commandBus.PublishAsync(new StoreSsidCommand(IqIdentity.New, email, result.Ssid), default(CancellationToken));
 
                 MasterClient = new IqOptionWebSocketClient(ws => {
                     ws.OpenSecuredSocketAsync(result.Ssid);

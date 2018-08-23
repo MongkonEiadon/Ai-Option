@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\iqoption.bus\iqoption.bus.csproj" />
     <ProjectReference Include="..\iqoption.core\iqoption.core.csproj" />
     <ProjectReference Include="..\iqoption.domain\iqoption.domain.csproj" />
   </ItemGroup>
@@ -33,6 +34,10 @@
       <IsTransformFile>true</IsTransformFile>
       <DependentUpon>appsettings.json</DependentUpon>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\WriteModelServices\" />
   </ItemGroup>
 
 

@@ -3,9 +3,9 @@ using EventFlow.ValueObjects;
 using Newtonsoft.Json;
 
 namespace iqoption.domain.IqOption {
-    public class IqOptionIdentity : Identity<IqOptionIdentity> {
+    public class IqIdentity : Identity<IqIdentity> {
         
-        public IqOptionIdentity(string value) : base(value) {
+        public IqIdentity(string value) : base(value) {
         }
     }
 }

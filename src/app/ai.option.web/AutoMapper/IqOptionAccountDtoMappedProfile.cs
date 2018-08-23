@@ -4,7 +4,8 @@ using iqoption.data.IqOptionAccount;
 
 namespace ai.option.web.AutoMapper {
     public class IqOptionAccountDtoMappedProfile : Profile {
-        public IqOptionAccountDtoMappedProfile() {
+        public IqOptionAccountDtoMappedProfile()
+        {
             CreateMap<IqOptionRequestViewModel, IqOptionAccountDto>()
                 .ForMember(m => m.IqOptionUserName, c => c.MapFrom(s => s.EmailAddress))
                 .ForMember(m => m.Password, c => c.MapFrom(s => s.Password))

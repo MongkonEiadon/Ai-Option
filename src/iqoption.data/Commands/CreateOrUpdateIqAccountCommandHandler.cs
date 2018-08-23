@@ -12,7 +12,7 @@ using iqoption.domain.IqOption.Command;
 using Microsoft.AspNetCore.Identity;
 
 namespace iqoption.data.Commands {
-    public class CreateOrUpdateIqAccountCommandHandler : ICommandHandler<IqOptionAggregate, IqOptionIdentity, IqAccount,
+    public class CreateOrUpdateIqAccountCommandHandler : ICommandHandler<IqAggregate, IqIdentity, IqAccount,
         CreateOrUpdateIqAccountCommand> {
         private readonly IRepository<IqOptionAccountDto> _iqoptionAccountRepository;
         private readonly IMapper _mapper;
@@ -31,7 +31,7 @@ namespace iqoption.data.Commands {
             _mapper = mapper;
         }
 
-        public async Task<IqAccount> ExecuteCommandAsync(IqOptionAggregate aggregate,
+        public async Task<IqAccount> ExecuteCommandAsync(IqAggregate aggregate,
             CreateOrUpdateIqAccountCommand command,
             CancellationToken cancellationToken) {
             var dto = await _iqoptionAccountRepository.FirstOrDefaultAsync(x =>

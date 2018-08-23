@@ -8,6 +8,7 @@ using EventFlow.MsSql;
 using EventFlow.MsSql.Extensions;
 using FluentValidation.AspNetCore;
 using iqoption.apiservice.DependencyModule;
+using iqoption.bus.Azure;
 using iqoption.core.Extensions;
 using iqoption.data;
 using iqoption.data.DependencyModule;
@@ -51,9 +52,10 @@ namespace ai.option.tradings {
                         .UseLoggerFactory(new NullLoggerFactory())
                         .UseSqlServer(Configuration.GetConnectionString("aioptiondb"));
                 })
-                
+                .AddAzureServiceBus()
                 .Configure<TraderAccountConfiguration>(Configuration.GetSection(nameof(TraderAccountConfiguration)))
 
+                
 
                 .AddAutoMapper()
                 .AddMvc()

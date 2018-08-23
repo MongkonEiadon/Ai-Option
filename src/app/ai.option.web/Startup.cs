@@ -1,15 +1,19 @@
 ﻿using System;
 using System.IO;
 using ai.option.web.Configurations;
+using ai.option.web.Controllers;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using EventFlow.Autofac.Extensions;
 using EventFlow.DependencyInjection.Extensions;
 using iqoption.apiservice.DependencyModule;
+using iqoption.bus.Azure;
+using iqoption.core.data;
 using iqoption.core.Extensions;
 using iqoption.data;
 using iqoption.data.DependencyModule;
 using iqoption.data.Services;
+using iqoption.data.User;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,12 +43,14 @@ namespace ai.option.web {
                 .Build();
 
             services
+                .AddTransient<IConfigurationRoot>(c => configuration)
                 .AddEntityFrameworkInMemoryDatabase()
                 .AddDbContext<AiOptionContext>(options =>
                     options
                         .UseLazyLoadingProxies()
                         .UseSqlServer(Configuration.GetConnectionString("aioptiondb")))
                 .AddIqOptionIdentity()
+                .AddAzureServiceBus()
                 .AddAuthentication()
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -67,6 +73,7 @@ namespace ai.option.web {
                 .AddAutoMapper()
                 .AddEventFlow(o => {
                     o.UseAutofacContainerBuilder(builder);
+                    o.UseEventFlowOptionsForApiService();
                     o.AddEventFlowForData();
                 })
                 .AddMvc()

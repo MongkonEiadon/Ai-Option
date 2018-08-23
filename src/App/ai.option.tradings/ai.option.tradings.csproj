@@ -40,6 +40,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\iqoption.apiservice\iqoption.apiservice.csproj" />
+    <ProjectReference Include="..\..\iqoption.bus\iqoption.bus.csproj" />
     <ProjectReference Include="..\..\iqoption.core\iqoption.core.csproj" />
     <ProjectReference Include="..\..\iqoption.data\iqoption.data.csproj" />
     <ProjectReference Include="..\..\iqoption.domain\iqoption.domain.csproj" />

@@ -18,8 +18,8 @@ using RestSharp;
 namespace iqoption.apiservice.CommandHandlers {
 
     public class IqLoginCommandhandler :
-        ICommandHandler<IqOptionAggregate, IqOptionIdentity, ValidateSecuredTokenCommandResult, ValidateSecureTokenCommand>,
-        ICommandHandler<IqOptionAggregate, IqOptionIdentity, IqLoginCommandResult, IqLoginCommand> {
+        ICommandHandler<IqAggregate, IqIdentity, ValidateSecuredTokenCommandResult, ValidateSecureTokenCommand>,
+        ICommandHandler<IqAggregate, IqIdentity, IqLoginCommandResult, IqLoginCommand> {
 
 
         private readonly ILogger _logger;
@@ -30,7 +30,7 @@ namespace iqoption.apiservice.CommandHandlers {
             _commandBus = commandBus;
         }
 
-        public Task<IqLoginCommandResult> ExecuteCommandAsync(IqOptionAggregate aggregate, IqLoginCommand command, CancellationToken ct) {
+        public Task<IqLoginCommandResult> ExecuteCommandAsync(IqAggregate aggregate, IqLoginCommand command, CancellationToken ct) {
             
             var tcs = new TaskCompletionSource<IqLoginCommandResult>();
             try {
@@ -66,6 +66,14 @@ namespace iqoption.apiservice.CommandHandlers {
 
                                 break;
                             }
+
+                            case HttpStatusCode.Moved: {
+                                var error = t.Result.Content.JsonAs<LoginErrorCommandResult>();
+                                tcs.TrySetResult(new IqLoginCommandResult(null, false, string.Join(",",
+                                    error.Errors?.Select(x => x.Title)?.ToList())));
+
+                                break;
+                            }
                         }
 
                         tcs.TrySetException(new Exception($"Error when get token with {t.Result.Content}"));
@@ -81,7 +89,7 @@ namespace iqoption.apiservice.CommandHandlers {
         }
 
         public Task<ValidateSecuredTokenCommandResult> ExecuteCommandAsync(
-            IqOptionAggregate aggregate, 
+            IqAggregate aggregate, 
             ValidateSecureTokenCommand command,
             CancellationToken cancellationToken) {
 

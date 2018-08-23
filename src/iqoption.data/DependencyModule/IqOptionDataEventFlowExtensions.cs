@@ -2,7 +2,6 @@
 using System.Reflection;
 using EventFlow;
 using EventFlow.Extensions;
-using iqoption.data.Queries;
 using iqoption.domain.IqOption;
 using iqoption.domain.IqOption.Queries;
 

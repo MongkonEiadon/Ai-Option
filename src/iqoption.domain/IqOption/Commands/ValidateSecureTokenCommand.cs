@@ -1,9 +1,7 @@
 ﻿using EventFlow.Aggregates.ExecutionResults;
 using EventFlow.Commands;
-using EventFlow.Core;
 
-namespace iqoption.domain.IqOption.Command {
-
+namespace iqoption.domain.IqOption.Commands {
 
     public class ValidateSecuredTokenCommandResult : IExecutionResult {
         public Profile Profile { get; }
@@ -15,10 +13,10 @@ namespace iqoption.domain.IqOption.Command {
         }
     }
 
-    public class ValidateSecureTokenCommand : Command<IqOptionAggregate, IqOptionIdentity, ValidateSecuredTokenCommandResult> {
+    public class ValidateSecureTokenCommand : Command<IqAggregate, IqIdentity, ValidateSecuredTokenCommandResult> {
         public string SecuredToken { get; }
 
-        public ValidateSecureTokenCommand(IqOptionIdentity aggregateId, string securedToken) : base(aggregateId) {
+        public ValidateSecureTokenCommand(IqIdentity aggregateId, string securedToken) : base(aggregateId) {
             SecuredToken = securedToken;
         }
         

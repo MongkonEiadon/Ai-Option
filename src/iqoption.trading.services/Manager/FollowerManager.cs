@@ -17,10 +17,9 @@ namespace iqoption.trading.services.Manager {
     public interface IFollowerManager {
         ConcurrencyReactiveCollection<IqOptionApiClient> Followers { get; }
         Task AppendUser(IqAccount account, IObservable<InfoData> infObservable);
-        void RemoveByEmailAddress(string emailAddress);
+        void RemoveByUserId(int userId);
 
         Task<List<IqAccount>> GetActiveAccountNotOnFollowersTask();
-        Task<List<IqAccount>> GetInActiveAccountNotOnFollowersTask();
     }
 
     public class FollowerManager : IFollowerManager {
@@ -51,19 +50,19 @@ namespace iqoption.trading.services.Manager {
                 if (!isConnect) {
                     //if ssid not working -re get ssid
                     var loginResult = await _commandBus.PublishAsync(
-                        new IqLoginCommand(IqOptionIdentity.New, account.IqOptionUserName, account.Password), ct);
+                        new IqLoginCommand(IqIdentity.New, account.IqOptionUserName, account.Password), ct);
 
                     if (!loginResult.IsSuccess) {
                         _logger.LogWarning(new StringBuilder($"Skipped {account.IqOptionUserName} due can't not loggin {loginResult.Message}")
                             .ToString());
                         client.Dispose();
 
-                        await _commandBus.PublishAsync(new SetActiveAccountcommand(IqOptionIdentity.New, false, account.IqOptionUserId), ct);
+                        await _commandBus.PublishAsync(new SetActiveAccountcommand(IqIdentity.New, new SetActiveAccountStatusItem(false, account.IqOptionUserId)), ct);
                         return;
                     }
 
                     await _commandBus.PublishAsync(
-                        new StoreSsidCommand(IqOptionIdentity.New, account.IqOptionUserName, loginResult.Ssid), ct);
+                        new StoreSsidCommand(IqIdentity.New, account.IqOptionUserName, loginResult.Ssid), ct);
                 }
 
                 client.SubScribeForTraderStream(openedPositionObservable);
@@ -85,6 +84,13 @@ namespace iqoption.trading.services.Manager {
                 .ToString());
         }
 
+        public void RemoveByUserId(int userId) {
+            Followers.Remove(x => x.Account.IqOptionUserId == userId);
+            _logger.LogInformation(new StringBuilder($"Remove userId : {userId},")
+                .AppendLine($"Now trading-followers account  = {Followers.Count} Accout(s).")
+                .ToString());
+        }
+
 
         public Task<List<IqAccount>> GetActiveAccountNotOnFollowersTask() {
             return _queryProcessor.ProcessAsync(new ActiveAccountQuery(), CancellationToken.None)
@@ -92,13 +98,6 @@ namespace iqoption.trading.services.Manager {
                     t => t.Result.Where(x =>
                         !Followers.Select(y => y.Account.IqOptionUserName).Contains(x.IqOptionUserName)).ToList());
             
-        }
-
-        public Task<List<IqAccount>> GetInActiveAccountNotOnFollowersTask() {
-            return _queryProcessor.ProcessAsync(new InActiveAccountQuery(), CancellationToken.None)
-                .ContinueWith(
-                    t => t.Result.Where(x =>
-                        !Followers.Select(y => y.Account.IqOptionUserName).Contains(x.IqOptionUserName)).ToList());
         }
     }
 }

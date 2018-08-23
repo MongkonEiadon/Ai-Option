@@ -7,6 +7,7 @@ namespace iqoption.data.AutoMapper {
     public class IqAccountMappedProfile : Profile {
         public IqAccountMappedProfile() {
             CreateMap<IqOptionAccountDto, IqAccount>()
+                .ForMember(m=>m.Level, x => x.Ignore())
                 .ForMember(m => m.IsSuccess, x => x.Ignore());
         }
     }
@@ -14,6 +15,8 @@ namespace iqoption.data.AutoMapper {
     public class IqOptionAccountDtoMappedProfile : Profile {
         public IqOptionAccountDtoMappedProfile() {
             CreateMap<IqAccount, IqOptionAccountDto>()
+                .ForMember(m => m.User, x => x.Ignore())
+                .ForMember(m => m.IsActive, x => x.Ignore())
                 .ForMember(m => m.Id, x => x.Ignore())
                 .ForMember(m => m.CreatedOn, x => x.Ignore())
                 .ForMember(x => x.UpdatedOn, x => x.Ignore());

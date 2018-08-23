@@ -6,8 +6,8 @@ using EventFlow.Core;
 
 namespace iqoption.domain.IqOption {
 
-    public class IqOptionAggregate : AggregateRoot<IqOptionAggregate, IqOptionIdentity> {
-        public IqOptionAggregate(IqOptionIdentity identity) : base(identity) {
+    public class IqAggregate : AggregateRoot<IqAggregate, IqIdentity> {
+        public IqAggregate(IqIdentity identity) : base(identity) {
         }
 
        
