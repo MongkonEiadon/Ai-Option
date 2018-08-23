@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-using AiOption.Domain.Customer;
+using AiOption.Domain.Customers;
 
 using Microsoft.AspNetCore.Identity;
 

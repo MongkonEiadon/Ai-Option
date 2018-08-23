@@ -1,6 +1,6 @@
-﻿using AiOption.Domain.Customer;
+﻿using AiOption.Domain.Customers;
 
-namespace AiOption.Domain.IqOption {
+namespace AiOption.Domain.Accounts {
 
     public class Account {
 

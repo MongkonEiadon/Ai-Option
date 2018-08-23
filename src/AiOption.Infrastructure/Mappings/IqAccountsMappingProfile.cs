@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using AiOption.Domain.IqOption;
+using AiOption.Domain.Accounts;
 using AiOption.Infrastructure.DataAccess;
 
 using AutoMapper;

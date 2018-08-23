@@ -4,12 +4,14 @@ namespace AiOption.Domain {
 
     public class BaseResult : IExecutionResult {
 
-        private readonly bool _isSuccess;
 
         public bool IsSuccess { get; }
+        public string Message { get; protected set; }
 
-        public BaseResult(bool isSuccess) {
-            _isSuccess = isSuccess;
+
+        public BaseResult(bool isSuccess, string message = null) {
+            IsSuccess = isSuccess;
+            Message = message;
         }
 
     }

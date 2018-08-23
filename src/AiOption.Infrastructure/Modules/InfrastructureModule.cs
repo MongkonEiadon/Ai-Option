@@ -21,10 +21,14 @@ namespace AiOption.Infrastructure.Modules {
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
 
-
             builder.RegisterType<AiOptionDbContext>()
                 .As<DbContext>()
                 .InstancePerLifetimeScope();
+
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .Where(x => x.FullName.EndsWith("Persistance"))
+                .AsSelf()
+                .SingleInstance();
         }
 
     }

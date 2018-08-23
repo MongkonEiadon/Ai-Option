@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-using AiOption.Domain.Customer;
+using AiOption.Domain.Customers;
 
 namespace AiOption.Infrastructure.DataAccess {
 

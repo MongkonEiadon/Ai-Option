@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using AiOption.Application.Repositories;
 using AiOption.Application.Repositories.ReadOnly;
 using AiOption.Application.Repositories.WriteOnly;
-using AiOption.Domain.IqOption;
+using AiOption.Domain.Accounts;
 using AutoMapper;
 
 using Dapper;

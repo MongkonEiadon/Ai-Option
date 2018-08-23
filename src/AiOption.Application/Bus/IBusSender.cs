@@ -7,4 +7,6 @@ namespace AiOption.Application.Bus
         Task SendAsync(TMessage item, CancellationToken ctx = default(CancellationToken));
     }
 
+    public interface IBusReceiver<>
+
 }

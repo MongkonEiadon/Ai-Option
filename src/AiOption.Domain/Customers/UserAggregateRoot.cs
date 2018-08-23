@@ -4,7 +4,7 @@ using EventFlow.Core;
 using EventFlow.Snapshots;
 using EventFlow.Snapshots.Strategies;
 
-namespace AiOption.Domain.Customer
+namespace AiOption.Domain.Customers
 {
 
     public class CustomerSnapshot : ISnapshot { }

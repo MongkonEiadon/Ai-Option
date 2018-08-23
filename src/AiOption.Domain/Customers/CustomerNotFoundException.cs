@@ -1,4 +1,4 @@
-﻿namespace AiOption.Domain.Customer {
+﻿namespace AiOption.Domain.Customers {
 
     public class CustomerNotFoundException : DomainException {
 

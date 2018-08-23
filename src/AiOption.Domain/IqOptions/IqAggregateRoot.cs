@@ -5,7 +5,7 @@ using EventFlow.Core;
 using EventFlow.Snapshots;
 using EventFlow.Snapshots.Strategies;
 
-namespace AiOption.Domain.IqOption
+namespace AiOption.Domain.Accounts
 {
 
     #region [Aggregate Component]

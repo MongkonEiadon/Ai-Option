@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AiOption.Domain.Customer
+namespace AiOption.Domain.Customers
 {
     public class Customer {
 

@@ -4,8 +4,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AiOption.Application.Repositories.ReadOnly;
-using AiOption.Domain.IqOption;
-using AiOption.Domain.IqOption.Queries;
+using AiOption.Domain.Accounts;
+using AiOption.Domain.Accounts.Queries;
 using EventFlow.Queries;
 
 namespace AiOption.Application.QueryHandlers
@@ -23,9 +23,8 @@ namespace AiOption.Application.QueryHandlers
         }
 
 
-        public Task<IEnumerable<Account>> ExecuteQueryAsync(GetCustomerAccountsForTradingQuery query, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
+        public Task<IEnumerable<Account>> ExecuteQueryAsync(GetCustomerAccountsForTradingQuery query, CancellationToken cancellationToken) {
+            return _readonlyAccountRepo.GetActiveAccountForOpenTradingsAsync();
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Text;
 using EventFlow.Aggregates;
 
-namespace AiOption.Domain.Customer.Events
+namespace AiOption.Domain.Customers.Events
 {
     public class RegisteredDomainEvent : AggregateEvent<CustomerAggregateRoot, CustomerIdentity> {
 

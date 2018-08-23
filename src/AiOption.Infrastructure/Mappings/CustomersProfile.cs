@@ -1,4 +1,4 @@
-﻿using AiOption.Domain.Customer;
+﻿using AiOption.Domain.Customers;
 using AiOption.Infrastructure.DataAccess;
 
 using AutoMapper;

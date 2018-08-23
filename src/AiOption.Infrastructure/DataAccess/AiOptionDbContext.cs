@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-using AiOption.Domain.Customer;
+using AiOption.Domain.Customers;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

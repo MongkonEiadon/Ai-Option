@@ -4,7 +4,7 @@ using System.Text;
 
 using EventFlow.Queries;
 
-namespace AiOption.Domain.IqOption.Queries
+namespace AiOption.Domain.Accounts.Queries
 {
     public class GetCustomerAccountsForTradingQuery : IQuery<IEnumerable<Account>> { }
 }

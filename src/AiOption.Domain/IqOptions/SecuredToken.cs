@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AiOption.Domain.IqOption {
+namespace AiOption.Domain.Accounts {
 
     public class SecuredToken {
 
