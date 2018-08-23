@@ -62,7 +62,8 @@ namespace iqoption.data.Services {
                 new CreateUserRoleCommand(UserIdentity.New, UserLevel.Gold),
                 new CreateUserRoleCommand(UserIdentity.New, UserLevel.Platinum),
                 new CreateUserRoleCommand(UserIdentity.New, UserLevel.Standard),
-                new CreateUserRoleCommand(UserIdentity.New, UserLevel.Silver)
+                new CreateUserRoleCommand(UserIdentity.New, UserLevel.Silver),
+                new CreateUserRoleCommand(UserIdentity.New, UserLevel.Vip)
             };
 
             foreach (var command in levels) await _commandBus.PublishAsync(command, CancellationToken.None);

@@ -7,5 +7,6 @@
         public const string Gold = nameof(Gold);
         public const string Platinum = nameof(Platinum);
         public const string Administrator = nameof(Administrator);
+        public const string Vip = nameof(Vip);
     }
 }

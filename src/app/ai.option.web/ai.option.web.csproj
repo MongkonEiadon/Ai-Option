@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <ApplicationInsightsResourceId>/subscriptions/0e286d20-e024-4558-acbf-dc44a2974151/resourcegroups/iqoption-devtest/providers/microsoft.insights/components/aioption-appinsights</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/0e286d20-e024-4558-acbf-dc44a2974151/resourcegroups/iqoption-devtest/providers/microsoft.insights/components/aioption-appinsights</ApplicationInsightsAnnotationResourceId>
+    <UserSecretsId>9a464b4f-ac90-42ef-8614-c95209fc75c8</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

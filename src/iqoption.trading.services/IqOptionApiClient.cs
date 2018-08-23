@@ -29,13 +29,30 @@ namespace iqoption.trading.services {
 
         public IDisposable SubScription { get; private set; }
 
-        public void SubScribeForTraderStream(IObservable<InfoData> traderStream) {
+        public void SubScribeForTraderStream(IObservable<InfoData> traderStream)
+        {
             SubScription = traderStream.Subscribe(x =>
             {
-                var sum = (int)x.Sum;
-                if (Account.Level == UserLevel.Silver) {
-                    sum = sum * 2;
-                    Console.WriteLine($"=========================Silver Account *2 Order Placed {sum}==========================");
+                var sum = (int) x.Sum;
+
+                switch (Account.Level)
+                {
+                    case UserLevel.Silver:
+                    {
+
+                        sum = sum * 2;
+                        break;
+                    }
+                    case UserLevel.Vip:
+                    {
+                        sum = sum * 5;
+                        break;
+                    }
+                }
+
+                if (Account.Level != UserLevel.Standard || Account.Level != UserLevel.None)
+                {
+                    Console.WriteLine($"========================= User Level = {Account.Level} Order Placed {sum} size ==========================");
                 }
 
                 Client.BuyAsync(x.ActiveId, sum, x.Direction, x.Expired);

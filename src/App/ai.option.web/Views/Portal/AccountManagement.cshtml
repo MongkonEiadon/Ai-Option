@@ -157,6 +157,12 @@
                         className: 'btn-light',
                         id: 'btn-administrator',
                         action: function() { table.columns(2).search('@UserLevel.Administrator').draw(); }
+                    },
+                    {
+                        text: 'VIP',
+                        className: 'btn-light',
+                        id: 'btn-vip',
+                        action: function() { table.columns(2).search('@UserLevel.Vip').draw(); }
                     }
                 ]
             });
