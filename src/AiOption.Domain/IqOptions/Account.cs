@@ -2,7 +2,7 @@
 
 namespace AiOption.Domain.Accounts {
 
-    public class Account {
+    public class Account : System.IEquatable<Account>  {
 
         public int UserId { get; set; }
 
@@ -15,6 +15,11 @@ namespace AiOption.Domain.Accounts {
         public SecuredToken SecuredToken { get; set; }
 
         public bool IsActive { get; set; }
+
+        public bool Equals(Account other)
+        {
+            return other.UserId == this.UserId;
+        }
     }
 
 }
