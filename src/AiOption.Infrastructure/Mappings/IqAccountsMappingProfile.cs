@@ -11,11 +11,17 @@ namespace AiOption.Infrastructure.Mappings {
     public class IqAccountsMappingProfile : Profile {
 
         public IqAccountsMappingProfile() {
-            CreateMap<Account, IqAccountDto>();
+            CreateMap<Account, IqAccountDto>()
+                .ForMember(a => a.SecuredToken, c => c.MapFrom(u => u.SecuredToken))
+                .ForMember(a => a.Id, c => c.MapFrom(u => u.UserId))
+                .ForMember(a => a.CustomerLevel, c => c.MapFrom(u => u.Level))
+                .ForMember(a => a.SecuredUpdated, c => c.Ignore());
 
 
             CreateMap<IqAccountDto, Account>()
-                .ForMember(a => a.Level, c => c.Ignore());
+                .ForMember(a => a.UserId, c => c.MapFrom(u => u.Id))
+                .ForMember(a => a.SecuredToken, c => c.MapFrom(u => u.SecuredToken))
+                .ForMember(a => a.Level, c => c.MapFrom(u => u.CustomerLevel));
         }
 
     }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AiOption.Infrastructure.Migrations
 {
     [DbContext(typeof(AiOptionDbContext))]
-    [Migration("20180817112543_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20180821124113_Initials")]
+    partial class Initials
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -102,19 +102,52 @@ namespace AiOption.Infrastructure.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
+            modelBuilder.Entity("AiOption.Infrastructure.DataAccess.IqAccountDetailDto", b =>
+                {
+                    b.Property<int>("Id");
+
+                    b.Property<string>("Address");
+
+                    b.Property<string>("Avartar");
+
+                    b.Property<long>("Balance");
+
+                    b.Property<long>("BalanceId");
+
+                    b.Property<DateTime>("BirthDate");
+
+                    b.Property<string>("City");
+
+                    b.Property<string>("Currency");
+
+                    b.Property<string>("CurrencyChar");
+
+                    b.Property<DateTimeOffset?>("LastSyned");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IqOptionAccountDetails");
+                });
+
             modelBuilder.Entity("AiOption.Infrastructure.DataAccess.IqAccountDto", b =>
                 {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("Id");
+
+                    b.Property<int>("CustomerLevel");
 
                     b.Property<string>("EmailAddress");
 
+                    b.Property<bool>("IsActive");
+
                     b.Property<string>("Password");
 
-                    b.HasKey("UserId");
+                    b.Property<string>("SecuredToken");
 
-                    b.ToTable("IqAccounts");
+                    b.Property<DateTimeOffset>("SecuredUpdated");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IqOptionAccounts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

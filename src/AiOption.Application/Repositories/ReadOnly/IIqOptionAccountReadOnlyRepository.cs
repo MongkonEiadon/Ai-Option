@@ -13,6 +13,8 @@ namespace AiOption.Application.Repositories.ReadOnly
         Task<Account> GetByUserIdTask(int userId);
         Task<Account> GetByUserNameTask(string userName);
 
+        Task<IEnumerable<Account>> GetActiveAccountForOpenTradingsAsync();
+
     }
 
 

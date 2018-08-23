@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AiOption.Infrastructure.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initials : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -51,17 +51,40 @@ namespace AiOption.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "IqAccounts",
+                name: "IqOptionAccountDetails",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    EmailAddress = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(nullable: false),
+                    Balance = table.Column<long>(nullable: false),
+                    BalanceId = table.Column<long>(nullable: false),
+                    Currency = table.Column<string>(nullable: true),
+                    CurrencyChar = table.Column<string>(nullable: true),
+                    BirthDate = table.Column<DateTime>(nullable: false),
+                    Address = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    Avartar = table.Column<string>(nullable: true),
+                    LastSyned = table.Column<DateTimeOffset>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IqAccounts", x => x.UserId);
+                    table.PrimaryKey("PK_IqOptionAccountDetails", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "IqOptionAccounts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false),
+                    EmailAddress = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true),
+                    SecuredToken = table.Column<string>(nullable: true),
+                    SecuredUpdated = table.Column<DateTimeOffset>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false),
+                    CustomerLevel = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IqOptionAccounts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -228,7 +251,10 @@ namespace AiOption.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "IqAccounts");
+                name: "IqOptionAccountDetails");
+
+            migrationBuilder.DropTable(
+                name: "IqOptionAccounts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -13,6 +13,8 @@ namespace AiOption.Domain.IqOption {
         public CustomerLevel Level { get; set; }
 
         public SecuredToken SecuredToken { get; set; }
+
+        public bool IsActive { get; set; }
     }
 
 }

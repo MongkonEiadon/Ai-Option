@@ -85,6 +85,23 @@ namespace AiOption.Infrastructure.DataAccess.Repositories
             return null;
         }
 
+
+        public async Task<IEnumerable<Account>> GetActiveAccountForOpenTradingsAsync() {
+            var sql = $"SELECT * FROM IqOptionAccounts Where IsActive = @IsActive";
+            var param = new DynamicParameters();
+            param.Add("@IsActive", true);
+
+            var result = await _connection.QueryAsync<IqAccountDto>(sql, param);
+
+            if (result != null && result.Any()) {
+                return _mapper.Map<IEnumerable<Account>>(result);
+            }
+
+            return Enumerable.Empty<Account>();
+        }
+
+
+
         #endregion
 
 

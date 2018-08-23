@@ -52,7 +52,8 @@ namespace AiOption.WebPortal
 
 
             //eventflows
-            services.AddEventFlowModule(builder, Configuration);
+            services.AddInfrastructureConfiguration();
+            services.AddEventFlowInfrastructure(Configuration, builder);
 
             //efs
             services.AddEfConfigurationDomain(Configuration);

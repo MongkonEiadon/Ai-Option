@@ -8,6 +8,7 @@
         Silver = 200,
         Gold = 300,
         Platinum = 400,
+        Vip = 500,
 
         /// <summary>
         /// Administrator who can manage all 
