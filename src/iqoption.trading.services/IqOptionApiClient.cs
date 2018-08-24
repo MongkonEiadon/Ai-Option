@@ -4,9 +4,8 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using iqoption.domain.IqOption;
 using iqoption.domain.Users;
-using iqoptionapi;
-using iqoptionapi.models;
-using iqoptionapi.ws;
+using IqOptionApi.Models;
+using IqOptionApi.ws;
 using Microsoft.Extensions.Logging;
 using RestSharp.Validation;
 
@@ -15,7 +14,7 @@ namespace iqoption.trading.services {
         public IqAccount Account { get; }
         public IqOptionWebSocketClient Client { get; }
 
-        public IqOptionApiClient([NotNull] IqAccount account) {
+        public IqOptionApiClient(IqAccount account) {
             Account = account;
             Client = new IqOptionWebSocketClient();
         }

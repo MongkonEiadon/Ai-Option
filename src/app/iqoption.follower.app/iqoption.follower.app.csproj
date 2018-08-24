@@ -27,6 +27,7 @@
     <PackageReference Include="EventFlow.DependencyInjection" Version="0.62.3569" />
     <PackageReference Include="fluentvalidation" Version="7.6.104" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="7.6.104" />
+    <PackageReference Include="iqoptionapi" Version="1.1.0" />
     <PackageReference Include="jwt" Version="4.0.0" />
     <PackageReference Include="Microsoft.NETCore.App" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.2" />
@@ -43,7 +44,6 @@
     <ProjectReference Include="..\..\iqoption.data\iqoption.data.csproj" />
     <ProjectReference Include="..\..\iqoption.domain\iqoption.domain.csproj" />
     <ProjectReference Include="..\..\iqoption.trading.services\iqoption.trading.services.csproj" />
-    <ProjectReference Include="..\..\iqoptionapi\iqoptionapi.csproj" />
   </ItemGroup>
 
   <ItemGroup>

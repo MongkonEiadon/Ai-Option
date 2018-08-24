@@ -10,7 +10,7 @@ using iqoption.core.Collections;
 using iqoption.domain.IqOption;
 using iqoption.domain.IqOption.Commands;
 using iqoption.domain.IqOption.Queries;
-using iqoptionapi.models;
+using IqOptionApi.Models;
 using Microsoft.Extensions.Logging;
 
 namespace iqoption.trading.services.Manager {

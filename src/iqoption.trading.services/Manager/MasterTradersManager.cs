@@ -8,8 +8,8 @@ using EventFlow;
 using iqoption.domain.IqOption;
 using iqoption.domain.IqOption.Command;
 using iqoption.domain.IqOption.Commands;
-using iqoptionapi.models;
-using iqoptionapi.ws;
+using IqOptionApi.Models;
+using IqOptionApi.ws;
 using Microsoft.Extensions.Logging;
 
 namespace iqoption.trading.services.Manager {

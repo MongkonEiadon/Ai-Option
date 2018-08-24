@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{A4B5BA6F-750
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.trading.services", "src\iqoption.trading.services\iqoption.trading.services.csproj", "{B6263D17-137E-47FD-8D7C-98072CB483BD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoptionapi", "src\iqoptionapi\iqoptionapi.csproj", "{48C78110-591C-4494-8BF9-2BCBA0C64962}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.follower.app", "src\app\iqoption.follower.app\iqoption.follower.app.csproj", "{B7E25417-A04F-4EF1-8CCE-A39D0E646426}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.core", "src\iqoption.core\iqoption.core.csproj", "{C572FA46-851F-4634-BB6C-F63FB1764E17}"
@@ -63,10 +61,6 @@ Global
 		{B6263D17-137E-47FD-8D7C-98072CB483BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6263D17-137E-47FD-8D7C-98072CB483BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6263D17-137E-47FD-8D7C-98072CB483BD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{48C78110-591C-4494-8BF9-2BCBA0C64962}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48C78110-591C-4494-8BF9-2BCBA0C64962}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48C78110-591C-4494-8BF9-2BCBA0C64962}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48C78110-591C-4494-8BF9-2BCBA0C64962}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B7E25417-A04F-4EF1-8CCE-A39D0E646426}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B7E25417-A04F-4EF1-8CCE-A39D0E646426}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7E25417-A04F-4EF1-8CCE-A39D0E646426}.Release|Any CPU.ActiveCfg = Release|Any CPU
