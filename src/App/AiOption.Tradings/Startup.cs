@@ -57,8 +57,6 @@ namespace AiOption.Tradings {
 
         public void ConfigureContainer(ContainerBuilder builder) {
 
-            
-
             var logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(Configuration)
                 .CreateLogger();

@@ -16,10 +16,10 @@ namespace AiOption.Infrastructure.DataAccess
 
         private readonly DbContextOptions<AiOptionDbContext> _options;
 
-        public DbSet<IqAccountDto> IqAccounts { get; set; }
+        public DbSet<IqUserAccountDto> IqAccounts { get; set; }
         public DbSet<CustomerDto> Customers { get; set; }
         public DbSet<CustomerLevelDto> CustomerLevels { get; set; }
-        public DbSet<IqAccountDetailDto> IqAccountDetails { get; set; }
+        public DbSet<AccountDetailedDto> IqAccountDetails { get; set; }
 
         public AiOptionDbContext() { }
         public AiOptionDbContext(DbContextOptions<AiOptionDbContext> options) : base(options) {

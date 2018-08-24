@@ -11,8 +11,8 @@ using AiOption.Domain.Accounts;
 using AiOption.Domain.Accounts.Events;
 using AiOption.Infrastructure.Bus.Azure;
 
-using iqoptionapi.models;
-using iqoptionapi.ws;
+using IqOptionApi.Models;
+using IqOptionApi.ws;
 
 namespace AiOption.Infrastructure.PersistanceServices {
 

@@ -7,6 +7,7 @@
   <ItemGroup>
     <Compile Remove="Migrations\20180821022142_Initial.cs" />
     <Compile Remove="Migrations\20180821024307_Initial.cs" />
+    <Compile Remove="Migrations\20180821124113_Initials.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,14 +17,14 @@
     <PackageReference Include="EventFlow.Autofac" Version="0.63.3581" />
     <PackageReference Include="EventFlow.DependencyInjection" Version="0.63.3581" />
     <PackageReference Include="EventFlow.MsSql" Version="0.63.3581" />
-    <PackageReference Include="iqoptionapi" Version="1.0.0" />
+    <PackageReference Include="iqoptionapi" Version="1.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Microsoft.Azure.ServiceBus" Version="3.1.0" />
     <PackageReference Include="System.Reactive" Version="4.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.1.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.3" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.0" />
     <PackageReference Include="Microsoft.VisualStudio.SlowCheetah" Version="3.1.66" />
     <PackageReference Include="Dapper" Version="1.50.5" />
@@ -32,6 +33,10 @@
   <ItemGroup>
     <ProjectReference Include="..\AiOption.Application\AiOption.Application.csproj" />
     <ProjectReference Include="..\AiOption.Domain\AiOption.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 
