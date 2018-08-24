@@ -67,7 +67,7 @@ namespace AiOption.Infrastructure.DataAccess.Repositories
 
         public async Task<Account> GetByUserIdTask(int userId)
         {
-            var sql = "SELECT * FROM Account WHERE IqOptionUserId = @userId";
+            var sql = "SELECT * FROM Account WHERE Id = @userId";
             var dynamicParams = new DynamicParameters();
             dynamicParams.Add("@userId", userId);
             var result = await _connection.QueryAsync<IqUserAccountDto>(sql, dynamicParams);
