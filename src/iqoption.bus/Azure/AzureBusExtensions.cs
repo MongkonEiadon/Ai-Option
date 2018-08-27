@@ -12,7 +12,7 @@ namespace iqoption.bus.Azure
             services.AddSingleton(c => {
                 var config = c.GetService<IConfigurationRoot>();
                 return new AzureBusConfiguration() {
-                    ConnectionString = config?.GetSection(typeof(AzureBusConfiguration).Name)?["ConnectionString"]
+                    ConnectionString = config?.GetConnectionString("azurebus")
                 };
             });
 
