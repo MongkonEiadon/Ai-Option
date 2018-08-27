@@ -1,46 +1,36 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+
+using Dapper;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace AiOption.TestCore.FixtureSetups {
 
-    public class DataContextSetupCleaner<T> : IDisposable
-        where T : DbContext, new()
-    {
-
-        public  T DataContext { get; }
-        public IDbConnection DbConnection { get; private set; }
-
-        public DataContextSetupCleaner()
-        {
+    public class DataContextSetupCleaner<T> 
+        where T : DbContext, new() {
+        
+        public DataContextSetupCleaner() {
 
             //setup db
-            DataContext = SetupDbContext();
+            SetupDbContext();
         }
 
 
-        public T SetupDbContext(T db = null) 
-        {
+        public void SetupDbContext() {
 
-            if (db == null)
-            {
-                db = new T();
+            using (var db = new T()) {
+                db.Database.EnsureDeleted();
+                db.Database.EnsureCreated();
+                db.Database.Migrate();
+
             }
-
-            db.Database.EnsureDeleted();
-            db.Database.Migrate();
-            db.Database.EnsureCreated();
-
-            DbConnection = db.Database.GetDbConnection();
-
-            return db;
         }
 
-        public void Dispose()
-        {
-            DataContext.Dispose();
-        }
     }
 
 }

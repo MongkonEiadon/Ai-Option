@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using AiOption.Application.Repositories;
@@ -20,10 +20,16 @@ namespace AiOption.Infrastructure.DataAccess.Repositories
 
         private readonly IDbConnection _connection;
         private readonly IMapper _mapper;
+        private readonly IWriteOnlyRepository<IqUserAccountDto, int> _iqUserAccountRepository;
 
-        public IqUserAccountRepository(IDbConnection connection, IMapper mapper) {
+        public IqUserAccountRepository(
+            IDbConnection connection, 
+            IMapper mapper, 
+            IWriteOnlyRepository<IqUserAccountDto, int> iqUserAccountRepository) {
+
             _connection = connection;
             _mapper = mapper;
+            _iqUserAccountRepository = iqUserAccountRepository;
         }
 
 
@@ -117,4 +123,5 @@ namespace AiOption.Infrastructure.DataAccess.Repositories
 
 
     }
+
 }

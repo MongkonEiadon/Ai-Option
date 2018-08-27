@@ -15,12 +15,10 @@ namespace AiOption.Infrastructure.Test.Mappings
 
             Mapper.Initialize(c => {
                 c.AddProfile<Infrastructure.Mappings.CustomersProfile>();
-                c.AddProfile<Infrastructure.Mappings.IqAccountsMappingProfile>();
+                c.AddProfile<Infrastructure.Mappings.IqAccountsProfile>();
             });
 
             Mapper.AssertConfigurationIsValid();
-
-
         }
     }
 }

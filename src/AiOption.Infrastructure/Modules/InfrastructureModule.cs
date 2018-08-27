@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 
+using AiOption.Application.Repositories;
 using AiOption.Infrastructure.DataAccess;
+using AiOption.Infrastructure.DataAccess.Repositories;
 
 using Autofac;
 
@@ -25,8 +27,11 @@ namespace AiOption.Infrastructure.Modules {
                 .As<DbContext>()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterGeneric(typeof(EfCoreRepositoryBase<,>)).As(typeof(IWriteOnlyRepository<,>))
+                .InstancePerLifetimeScope();
+
             builder.RegisterAssemblyTypes(ThisAssembly)
-                .Where(x => x.FullName.EndsWith("Persistance"))
+                .Where(x => x.FullName.EndsWith("Persistence"))
                 .AsSelf()
                 .SingleInstance();
         }

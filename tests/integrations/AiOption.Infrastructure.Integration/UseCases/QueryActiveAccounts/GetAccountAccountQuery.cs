@@ -23,7 +23,6 @@ namespace AiOption.Infrastructure.Integration.UseCases.QueryActiveAccounts
             _setup = setup;
             _dbCleaner = dbCleaner;
 
-            _dbCleaner.SetupDbContext(_setup.Resolve<AiOptionDbContext>());
         }
 
 

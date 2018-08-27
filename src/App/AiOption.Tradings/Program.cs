@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using AiOption.Application.Repositories.ReadOnly;
 using AiOption.Infrastructure.DataAccess.Repositories;
+using AiOption.Infrastructure.PersistanceServices;
 
 using AutoMapper;
 
@@ -39,19 +40,7 @@ namespace AiOption.Tradings {
                 logger.Debug("Validate Mappers");
                 var mapper = container.GetService<IMapper>();
                 mapper.ConfigurationProvider.AssertConfigurationIsValid();
-
-
-
-                logger.Verbose("Verbose");
-                logger.Information("info");
-                logger.Error("Error");
-                logger.Warning("Warning");
-
-
-
-                //var provider = startup.ConfigureServices(services);
-
-
+                
                 ////migrate
                 Task.Run(() =>
                 {
@@ -59,10 +48,10 @@ namespace AiOption.Tradings {
                     EventFlowEventStoresMsSql.MigrateDatabase(sql);
                     EventFlowSnapshotStoresMsSql.MigrateDatabase(sql);
                 });
+                
+                var follower = container.GetService<FollowerPersistence>();
 
 
-                //tradingPersistenceService = provider.GetService<TradingPersistenceService>();
-                //tradingPersistenceService.InitializeTradingsServiceAsync().Wait();
 
 
                 while (true)

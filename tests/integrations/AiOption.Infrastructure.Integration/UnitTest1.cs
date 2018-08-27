@@ -28,7 +28,6 @@ namespace AiOption.Infrastructure.Integration {
         private readonly DataContextSetupCleaner<AiOptionDbContext> _aioptiondbContextSetupCleaner;
         private readonly BaseSetup _baseSetup;
 
-        private AiOptionDbContext AiDb => _aioptiondbContextSetupCleaner.DataContext;
 
         public AccountRepositoryTest(DataContextSetupCleaner<AiOptionDbContext> aioptiondbContextSetupCleaner, BaseSetup baseSetup) {
             _aioptiondbContextSetupCleaner = aioptiondbContextSetupCleaner;

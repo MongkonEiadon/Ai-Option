@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace AiOption.Domain.Accounts.Events
+namespace AiOption.Domain.IqOptions.Events
 {
     public class StatusChangeEventItem
     {
@@ -18,4 +16,5 @@ namespace AiOption.Domain.Accounts.Events
             ChangedDateTime = DateTimeOffset.Now;
         }
     }
+
 }

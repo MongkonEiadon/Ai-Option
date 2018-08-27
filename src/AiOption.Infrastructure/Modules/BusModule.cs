@@ -17,9 +17,7 @@ namespace AiOption.Infrastructure.Modules {
 
             builder.Register<AzureBusConfiguration>(c => {
                 var configuration = c.Resolve<IConfigurationRoot>();
-                var connstring =
-                    configuration.GetSection(typeof(AzureBusConfiguration).Name)[
-                        nameof(AzureBusConfiguration.ConnectionString)];
+                var connstring = configuration.GetConnectionString(nameof(AzureBusConfiguration));
 
                 return new AzureBusConfiguration() {
                     ConnectionString = connstring

@@ -3,6 +3,7 @@
 using AutoMapper;
 
 using EventFlow.Autofac.Extensions;
+using EventFlow.Configuration;
 using EventFlow.DependencyInjection.Extensions;
 using EventFlow.MsSql;
 using EventFlow.MsSql.Extensions;
@@ -29,7 +30,7 @@ namespace AiOption.Infrastructure.Modules {
 
             
 
-            services.AddEventFlow(config => {
+            services.AddEventFlow(config => { 
                 config.UseAutofacContainerBuilder(builder)
                     .Configure(c => c.IsAsynchronousSubscribersEnabled = true)
                     .ConfigureMsSql(MsSqlConfiguration.New.SetConnectionString(configuration.GetConnectionString("aioptiondb")));

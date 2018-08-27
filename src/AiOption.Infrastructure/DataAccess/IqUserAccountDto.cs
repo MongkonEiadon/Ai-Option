@@ -8,7 +8,7 @@ using AiOption.Domain.Customers;
 namespace AiOption.Infrastructure.DataAccess {
 
     [Table("IqUserAccount")]
-    public class IqUserAccountDto : IActivable {
+    public class IqUserAccountDto : IActivable, IDbEntity<int> {
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]

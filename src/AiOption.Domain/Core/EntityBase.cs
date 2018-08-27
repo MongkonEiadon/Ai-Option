@@ -5,6 +5,12 @@ using AiOption.Domain.Accounts.Queries;
 
 namespace AiOption.Infrastructure.DataAccess {
 
+    public interface IDbEntity<TKey> {
+        [Key]
+        TKey Id { get; set; }
+
+    }
+
     public abstract class EntityBase<TKey> : IEntityTrackable {
 
         [Key]
