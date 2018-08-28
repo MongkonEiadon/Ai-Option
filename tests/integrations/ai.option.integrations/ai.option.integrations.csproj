@@ -7,15 +7,15 @@
   </PropertyGroup>
   <ItemGroup>
 
-    <PackageReference Include="SpecFlow" Version="2.3.2" />
+    <PackageReference Include="SpecFlow" Version="2.4.0" />
     <PackageReference Include="automapper" Version="7.0.1" />
     <PackageReference Include="JetBrains.DotMemoryUnit" Version="3.0.20171219.105559" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.2" />
     <PackageReference Include="shouldly" Version="3.0.0" />
     <PackageReference Include="nunit" Version="3.10.1" />
-    <PackageReference Include="SpecFlow.NUnit" Version="2.3.2" />
-    <PackageReference Include="SpecFlow.xUnit" Version="2.3.2" />
+    <PackageReference Include="SpecFlow.NUnit" Version="2.4.0" />
+    <PackageReference Include="SpecFlow.xUnit" Version="2.4.0" />
     <PackageReference Include="xunit" Version="2.4.0" />
   </ItemGroup>
 
