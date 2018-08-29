@@ -97,6 +97,4 @@ namespace iqoption.trading.services {
             Console.Write(sb.ToString());
         }
     }
-
-   
 }
