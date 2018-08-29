@@ -3,18 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.domain", "src\iqoption.domain\iqoption.domain.csproj", "{9E300221-9FDA-41A7-AA2A-0EC20A682C02}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.trading.services", "src\iqoption.trading.services\iqoption.trading.services.csproj", "{B6263D17-137E-47FD-8D7C-98072CB483BD}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoptionapi", "src\iqoptionapi\iqoptionapi.csproj", "{48C78110-591C-4494-8BF9-2BCBA0C64962}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.core", "src\iqoption.core\iqoption.core.csproj", "{C572FA46-851F-4634-BB6C-F63FB1764E17}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.data", "src\iqoption.data\iqoption.data.csproj", "{4213CA71-A52D-4F1B-A061-4DD500C222EB}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iqoption.apiservice", "src\iqoption.apiservice\iqoption.apiservice.csproj", "{2ADC9D94-265E-40D7-B248-8949A2FD738D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.Infrastructure", "src\AiOption.Infrastructure\AiOption.Infrastructure.csproj", "{B0C840D8-282C-49EF-93E6-E0E348737075}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.Domain", "src\AiOption.Domain\AiOption.Domain.csproj", "{ABFF54EE-7316-4C7A-9E0D-DB8E7C8DD9E3}"
@@ -37,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.Infrastructure.Int
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutofacContrib.Nsubstitute", "tests\AutofacContrib.Nsubstitute\AutofacContrib.Nsubstitute.csproj", "{B290A31A-DB09-4153-B009-74D843DAA69F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AiOption.TestCore", "tests\AiOption.TestCore\AiOption.TestCore.csproj", "{08C310D2-3CAF-4E26-835E-39BCBA68E3C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.TestCore", "tests\AiOption.TestCore\AiOption.TestCore.csproj", "{08C310D2-3CAF-4E26-835E-39BCBA68E3C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,30 +33,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9E300221-9FDA-41A7-AA2A-0EC20A682C02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9E300221-9FDA-41A7-AA2A-0EC20A682C02}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9E300221-9FDA-41A7-AA2A-0EC20A682C02}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9E300221-9FDA-41A7-AA2A-0EC20A682C02}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B6263D17-137E-47FD-8D7C-98072CB483BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6263D17-137E-47FD-8D7C-98072CB483BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B6263D17-137E-47FD-8D7C-98072CB483BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6263D17-137E-47FD-8D7C-98072CB483BD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{48C78110-591C-4494-8BF9-2BCBA0C64962}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48C78110-591C-4494-8BF9-2BCBA0C64962}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48C78110-591C-4494-8BF9-2BCBA0C64962}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48C78110-591C-4494-8BF9-2BCBA0C64962}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C572FA46-851F-4634-BB6C-F63FB1764E17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C572FA46-851F-4634-BB6C-F63FB1764E17}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C572FA46-851F-4634-BB6C-F63FB1764E17}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C572FA46-851F-4634-BB6C-F63FB1764E17}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4213CA71-A52D-4F1B-A061-4DD500C222EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4213CA71-A52D-4F1B-A061-4DD500C222EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4213CA71-A52D-4F1B-A061-4DD500C222EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4213CA71-A52D-4F1B-A061-4DD500C222EB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2ADC9D94-265E-40D7-B248-8949A2FD738D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2ADC9D94-265E-40D7-B248-8949A2FD738D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2ADC9D94-265E-40D7-B248-8949A2FD738D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2ADC9D94-265E-40D7-B248-8949A2FD738D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B0C840D8-282C-49EF-93E6-E0E348737075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B0C840D8-282C-49EF-93E6-E0E348737075}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0C840D8-282C-49EF-93E6-E0E348737075}.Release|Any CPU.ActiveCfg = Release|Any CPU

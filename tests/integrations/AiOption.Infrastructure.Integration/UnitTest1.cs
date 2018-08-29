@@ -35,13 +35,6 @@ namespace AiOption.Infrastructure.Integration {
         }
 
 
-        [Fact]
-        public async Task GetActiveAccountTest() {
-
-           
-
-        }
-
 
     }
 

@@ -20,20 +20,6 @@ namespace AiOption.Infrastructure.Integration.UseCases.CreateIqAccount
             
         }
 
-        [Fact]
-        public async Task CreateNewIqAccountWithDetail_IqAccountWithDetail_ShouldCreated() {
-            
-            //arrange
-           
-
-
-
-            //act
-
-            
-            //assert
-
-
-        }
+      
     }
 }

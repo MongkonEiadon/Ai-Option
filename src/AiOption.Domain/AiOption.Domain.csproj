@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EventFlow" Version="0.63.3581" />
+    <PackageReference Include="EventFlow" Version="0.64.3598" />
   </ItemGroup>
 
 </Project>

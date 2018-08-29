@@ -6,12 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.8.1" />
-    <PackageReference Include="EventFlow" Version="0.63.3581" />
+    <PackageReference Include="EventFlow" Version="0.64.3598" />
     <PackageReference Include="restsharp" Version="106.3.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\iqoption.domain\iqoption.domain.csproj" />
   </ItemGroup>
 
 </Project>

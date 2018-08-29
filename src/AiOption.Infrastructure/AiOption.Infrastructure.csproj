@@ -14,10 +14,10 @@
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="Autofac" Version="4.8.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
-    <PackageReference Include="EventFlow.Autofac" Version="0.63.3581" />
-    <PackageReference Include="EventFlow.DependencyInjection" Version="0.63.3581" />
-    <PackageReference Include="EventFlow.MsSql" Version="0.63.3581" />
-    <PackageReference Include="iqoptionapi" Version="1.1.0" />
+    <PackageReference Include="EventFlow.Autofac" Version="0.64.3598" />
+    <PackageReference Include="EventFlow.DependencyInjection" Version="0.64.3598" />
+    <PackageReference Include="EventFlow.MsSql" Version="0.64.3598" />
+    <PackageReference Include="iqoptionapi" Version="1.1.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Microsoft.Azure.ServiceBus" Version="3.1.0" />
     <PackageReference Include="System.Reactive" Version="4.1.0" />
