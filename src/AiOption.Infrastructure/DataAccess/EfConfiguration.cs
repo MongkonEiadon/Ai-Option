@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
+﻿using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,14 +10,15 @@ namespace AiOption.Infrastructure.DataAccess {
 
     public static class EfConfigurations {
 
-        public static IServiceCollection AddEfConfigurationDomain(this IServiceCollection This, IConfigurationRoot config) {
+        public static IServiceCollection AddEfConfigurationDomain(this IServiceCollection This,
+            IConfigurationRoot config) {
 
             var constring = config.GetConnectionString("aioptiondb");
 
             This
-                .AddSingleton<IConfigurationRoot>(config)
+                .AddSingleton(config)
                 .AddEntityFrameworkSqlServer()
-                .AddScoped<AiOptionDbContext>(c => new AiOptionDbContext())
+                .AddScoped(c => new AiOptionDbContext())
                 .AddScoped<IDbConnection>(c => new SqlConnection(constring))
 
                 //.AddDbContextPool<AiOptionDbContext>(c =>
@@ -31,10 +28,11 @@ namespace AiOption.Infrastructure.DataAccess {
                     c.UseSqlServer(constring);
                 })
                 .AddIdentity<CustomerDto, CustomerLevelDto>();
-                
 
 
             return This;
         }
+
     }
+
 }

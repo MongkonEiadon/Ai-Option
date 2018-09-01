@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AiOption.Infrastructure.DataAccess;
 
 namespace AiOption.Application.Repositories {
-    
+
     public interface IWriteOnlyRepository<TEntity, TPrimaryKey> where TEntity : class, IDbEntity<TPrimaryKey> {
 
         TEntity Insert(TEntity entity);

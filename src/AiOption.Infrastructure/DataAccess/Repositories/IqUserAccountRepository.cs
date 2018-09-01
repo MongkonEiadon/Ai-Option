@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 using AiOption.Application.Repositories;
@@ -10,21 +8,22 @@ using AiOption.Application.Repositories.ReadOnly;
 using AiOption.Application.Repositories.WriteOnly;
 using AiOption.Domain.Accounts;
 using AiOption.Infrastructure.DataAccess.Extensions;
+
 using AutoMapper;
 
 using Dapper;
 
-namespace AiOption.Infrastructure.DataAccess.Repositories
-{
+namespace AiOption.Infrastructure.DataAccess.Repositories {
+
     public class IqUserAccountRepository : IIqOptionAccountReadOnlyRepository, IIqOptionWriteOnlyRepository {
 
         private readonly IDbConnection _connection;
-        private readonly IMapper _mapper;
         private readonly IWriteOnlyRepository<IqUserAccountDto, int> _iqUserAccountRepository;
+        private readonly IMapper _mapper;
 
         public IqUserAccountRepository(
-            IDbConnection connection, 
-            IMapper mapper, 
+            IDbConnection connection,
+            IMapper mapper,
             IWriteOnlyRepository<IqUserAccountDto, int> iqUserAccountRepository) {
 
             _connection = connection;
@@ -49,7 +48,8 @@ namespace AiOption.Infrastructure.DataAccess.Repositories
 
         public async Task<bool> UpdateIsActiveAsync(int userId, bool isActive) {
 
-            var sql = $"UPDATE iQOptionAccount SET isActive = @isActive, updatedDate = Getdate() WHERE IqUserId = @userId ";
+            var sql =
+                $"UPDATE iQOptionAccount SET isActive = @isActive, updatedDate = Getdate() WHERE IqUserId = @userId ";
             var dynamicParams = new DynamicParameters()
                 .AddParameters("@isActive", isActive)
                 .AddParameters("@userId", userId);
@@ -71,33 +71,28 @@ namespace AiOption.Infrastructure.DataAccess.Repositories
             return _mapper.Map<IEnumerable<Account>>(result);
         }
 
-        public async Task<Account> GetByUserIdTask(int userId)
-        {
+        public async Task<Account> GetByUserIdTask(int userId) {
             var sql = "SELECT * FROM Account WHERE Id = @userId";
             var dynamicParams = new DynamicParameters();
             dynamicParams.Add("@userId", userId);
             var result = await _connection.QueryAsync<IqUserAccountDto>(sql, dynamicParams);
 
             var iqAccountDtos = result as IqUserAccountDto[] ?? result.ToArray();
-            if (iqAccountDtos.Any()) {
-                return _mapper.Map<IqUserAccountDto, Account>(iqAccountDtos.FirstOrDefault());
-            }
+
+            if (iqAccountDtos.Any()) return _mapper.Map<IqUserAccountDto, Account>(iqAccountDtos.FirstOrDefault());
 
             return null;
         }
 
-        public async Task<Account> GetByUserNameTask(string userName)
-        {
+        public async Task<Account> GetByUserNameTask(string userName) {
             var sql = "SELECT * FROM Account WHERE IqOptionUserName = @IqUserName";
             var dynamicParams = new DynamicParameters();
             dynamicParams.Add("@IqUserName", userName);
             var result = await _connection.QueryAsync<IqUserAccountDto>(sql, dynamicParams);
 
             var iqAccountDtos = result as IqUserAccountDto[] ?? result.ToArray();
-            if (iqAccountDtos.Any())
-            {
-                return _mapper.Map<IqUserAccountDto, Account>(iqAccountDtos.FirstOrDefault());
-            }
+
+            if (iqAccountDtos.Any()) return _mapper.Map<IqUserAccountDto, Account>(iqAccountDtos.FirstOrDefault());
 
             return null;
         }
@@ -110,17 +105,12 @@ namespace AiOption.Infrastructure.DataAccess.Repositories
 
             var result = await _connection.QueryAsync<IqUserAccountDto>(sql, param);
 
-            if (result != null && result.Any()) {
-                return _mapper.Map<IEnumerable<Account>>(result);
-            }
+            if (result != null && result.Any()) return _mapper.Map<IEnumerable<Account>>(result);
 
             return Enumerable.Empty<Account>();
         }
 
-
-
         #endregion
-
 
     }
 

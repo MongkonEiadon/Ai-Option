@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 using AiOption.Infrastructure.DataAccess;
 
-namespace AiOption.Application.Repositories
-{
+namespace AiOption.Application.Repositories {
 
     public interface IRepository<TEntity, TPrimaryKey> : IWriteOnlyRepository<TEntity, TPrimaryKey>
-        where TEntity : class, IDbEntity<TPrimaryKey>
-    {
+        where TEntity : class, IDbEntity<TPrimaryKey> {
+
         IQueryable<TEntity> GetAll();
 
         TEntity Get(TPrimaryKey id);
@@ -52,6 +51,7 @@ namespace AiOption.Application.Repositories
         long LongCount(Expression<Func<TEntity, bool>> predicate);
 
         Task<long> LongCountAsync(Expression<Func<TEntity, bool>> predicate);
+
     }
 
 }

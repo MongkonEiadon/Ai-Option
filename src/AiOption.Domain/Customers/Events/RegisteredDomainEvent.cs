@@ -1,15 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using EventFlow.Aggregates;
+﻿using EventFlow.Aggregates;
 
-namespace AiOption.Domain.Customers.Events
-{
+namespace AiOption.Domain.Customers.Events {
+
     public class RegisteredDomainEvent : AggregateEvent<CustomerAggregateRoot, CustomerIdentity> {
 
-        protected RegisteredDomainEvent()
-        {
+        protected RegisteredDomainEvent() {
         }
+
     }
 
 }
-

@@ -8,6 +8,7 @@ namespace AiOption.Infrastructure.DataAccess {
     public class CustomerDto : IdentityUser<Guid> {
 
         public string InviationCode { get; set; }
+
     }
 
 }

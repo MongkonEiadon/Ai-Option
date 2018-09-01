@@ -13,7 +13,8 @@ namespace AiOption.Infrastructure.Bus.Azure {
             services.AddTransient(typeof(IBusReceiver<,>), typeof(AzureQueueReceiver<,>));
             services.AddSingleton(c => {
                 var config = c.GetService<IConfigurationRoot>();
-                return new AzureBusConfiguration() {
+
+                return new AzureBusConfiguration {
                     ConnectionString = config?.GetSection(typeof(AzureBusConfiguration).Name)?["ConnectionString"]
                 };
             });

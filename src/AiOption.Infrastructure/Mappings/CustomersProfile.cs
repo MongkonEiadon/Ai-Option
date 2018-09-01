@@ -14,7 +14,5 @@ namespace AiOption.Infrastructure.Mappings {
 
     }
 
-  
-
 
 }

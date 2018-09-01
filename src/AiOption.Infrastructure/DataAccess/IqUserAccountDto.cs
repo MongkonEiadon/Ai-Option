@@ -10,16 +10,11 @@ namespace AiOption.Infrastructure.DataAccess {
     [Table("IqUserAccount")]
     public class IqUserAccountDto : IActivable, IDbEntity<int> {
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; set; }
         public string EmailAddress { get; set; }
         public string Password { get; set; }
 
         public string SecuredToken { get; set; }
         public DateTimeOffset SecuredUpdated { get; set; }
-
-        public bool IsActive { get; set; }
 
         public TradeMode TradeMode { get; set; } = TradeMode.Follower;
 
@@ -28,12 +23,20 @@ namespace AiOption.Infrastructure.DataAccess {
         [Required]
         public Guid CustomerId { get; set; }
 
+        public bool IsActive { get; set; }
+
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int Id { get; set; }
+
     }
+
 
     public enum TradeMode {
 
         Follower = 1,
         Traders = 2
+
     }
 
 }

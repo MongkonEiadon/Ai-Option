@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AiOption.Domain.Accounts;
+﻿using AiOption.Domain.Accounts;
 using AiOption.Infrastructure.DataAccess;
 
 using AutoMapper;
@@ -25,7 +22,6 @@ namespace AiOption.Infrastructure.Mappings {
                 .ForMember(a => a.SecuredToken, c => c.MapFrom(u => u.SecuredToken))
                 .ForMember(a => a.Level, c => c.MapFrom(u => u.CustomerLevel));
         }
-
 
     }
 

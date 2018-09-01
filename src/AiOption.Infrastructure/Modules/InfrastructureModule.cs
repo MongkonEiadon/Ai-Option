@@ -1,17 +1,11 @@
-﻿using System.Reflection;
-
-using AiOption.Application.Repositories;
+﻿using AiOption.Application.Repositories;
 using AiOption.Infrastructure.DataAccess;
 using AiOption.Infrastructure.DataAccess.Repositories;
+using AiOption.Infrastructure.PersistanceServices;
 
 using Autofac;
 
-using EventFlow.MsSql;
-using EventFlow.MsSql.Extensions;
-
 using Microsoft.EntityFrameworkCore;
-
-using Module = Autofac.Module;
 
 namespace AiOption.Infrastructure.Modules {
 
@@ -30,9 +24,14 @@ namespace AiOption.Infrastructure.Modules {
             builder.RegisterGeneric(typeof(EfCoreRepositoryBase<,>)).As(typeof(IWriteOnlyRepository<,>))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterAssemblyTypes(ThisAssembly)
-                .Where(x => x.FullName.EndsWith("Persistence"))
-                .AsSelf()
+            //builder.RegisterAssemblyTypes(ThisAssembly)
+            //    .Where(x => x.FullName.EndsWith("PersistenceService"))
+            //    .AsSelf()
+            //    .AsImplementedInterfaces()
+            //    .SingleInstance();
+
+            builder.RegisterType<TraderPersistenceService>().AsSelf().As<ITraderPersistenceService>().SingleInstance();
+            builder.RegisterType<FollowerPersistenceService>().AsSelf().As<IFollowerPersistenceService>()
                 .SingleInstance();
         }
 

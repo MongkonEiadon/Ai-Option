@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using AiOption.Application.Repositories.ReadOnly;
-using AiOption.Infrastructure.DataAccess.Repositories;
+using AiOption.Domain.Accounts;
 using AiOption.Infrastructure.PersistanceServices;
 
 using AutoMapper;
@@ -17,14 +16,12 @@ using Serilog;
 
 namespace AiOption.Tradings {
 
-    public class Program
-    {
-        private static void Main(string[] args)
-        {
+    public class Program {
+
+        private static void Main(string[] args) {
             //TradingPersistenceService tradingPersistenceService = null;
 
-            try
-            {
+            try {
                 Console.WriteLine(@"
                                      █████╗ ██╗       ██████╗ ██████╗ ████████╗██╗ ██████╗ ███╗   ██╗
                                     ██╔══██╗██║      ██╔═══██╗██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
@@ -37,30 +34,36 @@ namespace AiOption.Tradings {
                 var logger = container.GetService<ILogger>();
 
                 //Validate mapper
-                logger.Debug("Validate Mappers");
                 var mapper = container.GetService<IMapper>();
                 mapper.ConfigurationProvider.AssertConfigurationIsValid();
-                
+
                 ////migrate
-                Task.Run(() =>
-                {
+                Task.Run(() => {
                     var sql = container.GetService<IMsSqlDatabaseMigrator>();
                     EventFlowEventStoresMsSql.MigrateDatabase(sql);
                     EventFlowSnapshotStoresMsSql.MigrateDatabase(sql);
                 });
-                
-                var follower = container.GetService<FollowerPersistence>();
 
 
+                var trader = container.GetService<TraderPersistenceService>();
+                trader.AppendAccountTask(new Account {
+                    EmailAddress = "mongkon.eiadon@gmail.com",
+                    Password = "Code11054"
+                }).ConfigureAwait(false);
 
 
-                while (true)
-                {
+                var follower = container.GetService<FollowerPersistenceService>();
+                follower.AppendAccountTask(new Account {
+                    EmailAddress = "liie.m@excelbangkok.com",
+                    Password = "Code11054"
+                }).ConfigureAwait(false);
+
+
+                while (true) {
                     var input = Console.ReadLine();
-                    switch (input)
-                    {
-                        case "-l":
-                        {
+
+                    switch (input) {
+                        case "-l": {
                             //tradingPersistenceService.GetListOfSubscribe();
                             break;
                         }
@@ -71,13 +74,13 @@ namespace AiOption.Tradings {
 
 
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Console.WriteLine(ex.Message);
                 Console.ReadLine();
             }
 
         }
+
     }
 
 }

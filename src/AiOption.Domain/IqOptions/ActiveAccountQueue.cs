@@ -1,8 +1,13 @@
 ﻿namespace AiOption.Domain.Accounts {
 
-    public class ActiveAccountQueue { }
+    public class ActiveAccountQueue {
 
-    public class ActiveTradersQueue { }
-    
+    }
+
+
+    public class ActiveTradersQueue {
+
+    }
+
 
 }

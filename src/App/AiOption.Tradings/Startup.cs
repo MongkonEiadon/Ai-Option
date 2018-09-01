@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 using AiOption.Infrastructure.DataAccess;
 using AiOption.Infrastructure.Modules;
@@ -8,18 +7,17 @@ using Autofac;
 using Autofac.Configuration;
 using Autofac.Extensions.DependencyInjection;
 
-using AutoMapper;
-
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using Serilog;
-using Serilog.Core;
+
+using ILogger = Serilog.ILogger;
 
 namespace AiOption.Tradings {
 
     public class Startup {
-        public IConfigurationRoot Configuration { get; }
 
         public Startup() {
 
@@ -28,8 +26,9 @@ namespace AiOption.Tradings {
                 .Build();
         }
 
-        public IServiceProvider ConfigureServices()
-        {
+        public IConfigurationRoot Configuration { get; }
+
+        public IServiceProvider ConfigureServices() {
             var services = new ServiceCollection();
             var builder = new ContainerBuilder();
 
@@ -43,24 +42,27 @@ namespace AiOption.Tradings {
             //infra-configuration
             services.AddMvc();
             services.AddInfrastructureConfiguration();
+            services.AddLogging(c => c.AddConsole());
             services.AddEventFlowInfrastructure(Configuration, builder);
 
             //efs
             services.AddEfConfigurationDomain(Configuration);
 
 
-
             builder.Populate(services);
             var container = builder.Build();
+
             return new AutofacServiceProvider(container);
         }
 
         public void ConfigureContainer(ContainerBuilder builder) {
 
             var logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(Configuration)
+
+                //.ReadFrom.Configuration(Configuration)
+                .WriteTo.ColoredConsole()
                 .CreateLogger();
-            
+
             builder.RegisterModule(new ConfigurationModule(Configuration));
             builder.RegisterModule<BusModule>();
             builder.RegisterModule<InfrastructureModule>();

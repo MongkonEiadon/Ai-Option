@@ -1,6 +1,6 @@
-﻿namespace AiOption.Domain.Customers
-{
-    public enum CustomerLevel  {
+﻿namespace AiOption.Domain.Customers {
+
+    public enum CustomerLevel {
 
         None = 0,
         Baned = -100,
@@ -11,14 +11,15 @@
         Vip = 500,
 
         /// <summary>
-        /// Administrator who can manage all 
+        ///     Administrator who can manage all
         /// </summary>
         Administrator = 99,
 
         /// <summary>
-        /// For traders only, no need to buy position
+        ///     For traders only, no need to buy position
         /// </summary>
         Traders = 9999
+
     }
 
 

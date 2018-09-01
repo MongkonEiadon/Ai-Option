@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using AiOption.Domain.Accounts;
 
-namespace AiOption.Application.Repositories.ReadOnly
-{
+namespace AiOption.Application.Repositories.ReadOnly {
 
     public interface IIqOptionAccountReadOnlyRepository {
 
