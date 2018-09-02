@@ -3,16 +3,16 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using AiOption.Domain.Accounts;
-using AiOption.Domain.Accounts.Commands;
-using AiOption.Domain.Accounts.Results;
 using AiOption.Domain.API;
+using AiOption.Domain.IqAccounts;
+using AiOption.Domain.IqAccounts.Commands;
+using AiOption.Domain.IqAccounts.Results;
 
 using EventFlow.Commands;
 
 namespace AiOption.Application.CommandHandlers.Accounts {
 
-    public class
-        IqOptionLoginCommandHandler : ICommandHandler<IqAggregateRoot, IqIdentity, LoginCommandResult, LoginCommand> {
+    public class IqOptionLoginCommandHandler : ICommandHandler<IqAggregate, IqIdentity, LoginCommandResult, LoginCommand> {
 
         private readonly IIqOptionApiWrapper _apiWrapper;
 
@@ -20,7 +20,7 @@ namespace AiOption.Application.CommandHandlers.Accounts {
             _apiWrapper = apiWrapper;
         }
 
-        public Task<LoginCommandResult> ExecuteCommandAsync(IqAggregateRoot aggregate, LoginCommand command,
+        public Task<LoginCommandResult> ExecuteCommandAsync(IqAggregate aggregate, LoginCommand command,
             CancellationToken cancellationToken) {
 
             var tcs = new TaskCompletionSource<LoginCommandResult>();
@@ -29,9 +29,14 @@ namespace AiOption.Application.CommandHandlers.Accounts {
                 _apiWrapper.LoginToIqOptionAsync(command.EmailAddress, command.Password)
                     .ContinueWith(t => {
 
-                        if (t.Result.Item1) tcs.TrySetResult(new LoginCommandResult(true, t.Result.Item2));
+                        if (t.Result.Item1)
+                            tcs.TrySetResult(new LoginCommandResult(true, t.Result.Item2));
 
-                        tcs.TrySetResult(new LoginCommandResult(false, t.Result.Item2));
+                        else {
+                            aggregate.LoginFailed(command.EmailAddress, t.Result.Item2);
+
+                            tcs.TrySetResult(new LoginCommandResult(false, t.Result.Item2));
+                        }
 
                     }, cancellationToken);
             }

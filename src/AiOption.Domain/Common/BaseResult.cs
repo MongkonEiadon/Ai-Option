@@ -1,6 +1,6 @@
 ﻿using EventFlow.Aggregates.ExecutionResults;
 
-namespace AiOption.Domain {
+namespace AiOption.Domain.Common {
 
     public class BaseResult : IExecutionResult {
 

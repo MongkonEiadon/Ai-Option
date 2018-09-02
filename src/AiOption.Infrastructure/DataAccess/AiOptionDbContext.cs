@@ -17,7 +17,7 @@ namespace AiOption.Infrastructure.DataAccess {
             _options = options;
         }
 
-        public DbSet<IqUserAccountDto> IqAccounts { get; set; }
+        public DbSet<IqAccountDto> IqAccounts { get; set; }
         public DbSet<CustomerDto> Customers { get; set; }
         public DbSet<CustomerLevelDto> CustomerLevels { get; set; }
         public DbSet<AccountDetailedDto> IqAccountDetails { get; set; }

@@ -2,15 +2,18 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+using AiOption.Domain.Common;
+
 namespace AiOption.Infrastructure.DataAccess {
 
 
-    [Table("AccountDetailed")]
+    [Table("IqAccountDetails")]
     public class AccountDetailedDto : EntityBase<int> {
 
         [Key]
+        [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public override int Id { get; set; }
+        public new int Id { get; set; }
 
         public long Balance { get; set; }
         public long BalanceId { get; set; }

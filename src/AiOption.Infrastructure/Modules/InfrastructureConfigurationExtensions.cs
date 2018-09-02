@@ -1,5 +1,7 @@
 ﻿using AiOption.Application;
 using AiOption.Domain;
+using AiOption.Domain.Common;
+using AiOption.Domain.IqAccounts.ReadModels;
 
 using Autofac;
 
@@ -35,9 +37,11 @@ namespace AiOption.Infrastructure.Modules {
             services.AddEventFlow(config => {
                 config.UseAutofacContainerBuilder(builder)
                     .Configure(c => c.IsAsynchronousSubscribersEnabled = true)
-                    .ConfigureMsSql(
-                        MsSqlConfiguration.New.SetConnectionString(configuration.GetConnectionString("aioptiondb")));
+                    .ConfigureMsSql(MsSqlConfiguration.New.SetConnectionString(configuration.GetConnectionString("aioptiondb")));
 
+                config.UseMssqlEventStore();
+                config.UseMsSqlSnapshotStore();
+                config.UseMssqlReadModel<IqAccountReadModel>();
                 config.AddDefaults(typeof(BaseResult).Assembly);
                 config.AddDefaults(AiAssembly.ApplicationAssembly);
                 config.RegisterServices(c => { c.Register(ct => SnapshotEveryFewVersionsStrategy.With(100)); });

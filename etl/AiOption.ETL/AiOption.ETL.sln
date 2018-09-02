@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2016
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "AiOption.ETL", "AiOption.ETL\AiOption.ETL.dtproj", "{5EF5A258-C6A2-42EF-8BCB-719A62B63DC4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5EF5A258-C6A2-42EF-8BCB-719A62B63DC4}.Development|Default.ActiveCfg = Development
+		{5EF5A258-C6A2-42EF-8BCB-719A62B63DC4}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {05B10B66-C542-48D7-BF5E-DEE773C90713}
+	EndGlobalSection
+EndGlobal

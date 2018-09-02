@@ -3,12 +3,18 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using AiOption.Domain;
+using AiOption.Domain.Common;
 using AiOption.Domain.Customers;
 
 namespace AiOption.Infrastructure.DataAccess {
 
-    [Table("IqUserAccount")]
-    public class IqUserAccountDto : IActivable, IDbEntity<int> {
+    [Table("IqAccounts")]
+    public class IqAccountDto : EntityBase<int>, IActivable {
+
+        [Key]
+        [Column(Order = 1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public new int Id { get; set; }
 
         public string EmailAddress { get; set; }
         public string Password { get; set; }
@@ -24,10 +30,6 @@ namespace AiOption.Infrastructure.DataAccess {
         public Guid CustomerId { get; set; }
 
         public bool IsActive { get; set; }
-
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; set; }
 
     }
 

@@ -1,4 +1,4 @@
-﻿namespace AiOption.Domain {
+﻿namespace AiOption.Domain.Common {
 
     public interface IActivable {
 

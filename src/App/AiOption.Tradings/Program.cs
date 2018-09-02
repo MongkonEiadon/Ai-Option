@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 
 using AiOption.Domain.Accounts;
+using AiOption.Domain.IqAccounts;
 using AiOption.Infrastructure.PersistanceServices;
 
 using AutoMapper;
@@ -46,17 +47,21 @@ namespace AiOption.Tradings {
 
 
                 var trader = container.GetService<TraderPersistenceService>();
-                trader.AppendAccountTask(new Account {
-                    EmailAddress = "mongkon.eiadon@gmail.com",
-                    Password = "Code11054"
-                }).ConfigureAwait(false);
-
-
                 var follower = container.GetService<FollowerPersistenceService>();
-                follower.AppendAccountTask(new Account {
-                    EmailAddress = "liie.m@excelbangkok.com",
+
+                trader.AppendAccountTask(new Account
+                {
+                    EmailAddress = "mongkon.eiadon@gmail.com2",
                     Password = "Code11054"
                 }).ConfigureAwait(false);
+
+
+                //follower.AppendAccountTask(new Account {
+                //    EmailAddress = "liie.m@excelbangkok.com",
+                //    Password = "Code11054"
+                //}).ConfigureAwait(false);
+
+                //Task.WhenAll(trader.InitialAccount(), follower.InitialAccount());
 
 
                 while (true) {

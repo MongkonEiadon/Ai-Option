@@ -1,4 +1,6 @@
-﻿namespace AiOption.Domain.Accounts.Results {
+﻿using AiOption.Domain.Common;
+
+namespace AiOption.Domain.IqAccounts.Results {
 
     public class LoginCommandResult : BaseResult {
 

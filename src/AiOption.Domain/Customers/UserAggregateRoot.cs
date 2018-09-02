@@ -21,10 +21,9 @@ namespace AiOption.Domain.Customers {
     }
 
 
-    public class
-        CustomerAggregateRoot : SnapshotAggregateRoot<CustomerAggregateRoot, CustomerIdentity, CustomerSnapshot> {
+    public class CustomersAggregate : SnapshotAggregateRoot<CustomersAggregate, CustomerIdentity, CustomerSnapshot> {
 
-        public CustomerAggregateRoot(CustomerIdentity id, ISnapshotStrategy snapshotStrategy) : base(id,
+        public CustomersAggregate(CustomerIdentity id, ISnapshotStrategy snapshotStrategy) : base(id,
             snapshotStrategy) {
         }
 

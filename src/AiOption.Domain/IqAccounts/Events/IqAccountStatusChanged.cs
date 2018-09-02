@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace AiOption.Domain.IqOptions.Events {
+namespace AiOption.Domain.IqAccounts.Events {
 
-    public class StatusChangeEventItem {
+    public class IqAccountStatusChanged {
 
-        public StatusChangeEventItem(bool isActive, int userId) {
+        public IqAccountStatusChanged(bool isActive, int userId) {
             IsActive = isActive;
             UserId = userId;
             ChangedDateTime = DateTimeOffset.Now;
@@ -16,5 +16,6 @@ namespace AiOption.Domain.IqOptions.Events {
         public DateTimeOffset ChangedDateTime { get; set; }
 
     }
+
 
 }

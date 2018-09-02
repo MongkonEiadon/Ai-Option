@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AiOption.Infrastructure.DataAccess {
+namespace AiOption.Domain.Common {
 
     public interface IEntityTrackable {
 

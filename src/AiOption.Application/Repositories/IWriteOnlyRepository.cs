@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using AiOption.Infrastructure.DataAccess;
+using AiOption.Domain.Common;
 
 namespace AiOption.Application.Repositories {
 

@@ -34,10 +34,10 @@ namespace AiOption.Infrastructure.Integration.UseCases.QueryActiveAccounts
             //arrange
             using (var db = _setup.Resolve<AiOptionDbContext>()) {
                 var accounts = new[] {
-                    new IqUserAccountDto(){ Id = 1, IsActive = true},
-                    new IqUserAccountDto(){ Id = 2, IsActive = true},
-                    new IqUserAccountDto(){ Id = 3, IsActive = false},
-                    new IqUserAccountDto(){ Id = 4, IsActive = false},
+                    new IqAccountDto(){ Id = 1, IsActive = true},
+                    new IqAccountDto(){ Id = 2, IsActive = true},
+                    new IqAccountDto(){ Id = 3, IsActive = false},
+                    new IqAccountDto(){ Id = 4, IsActive = false},
                 };
 
 

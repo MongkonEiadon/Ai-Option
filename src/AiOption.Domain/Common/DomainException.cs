@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AiOption.Domain {
+namespace AiOption.Domain.Common {
 
     public class DomainException : Exception {
 

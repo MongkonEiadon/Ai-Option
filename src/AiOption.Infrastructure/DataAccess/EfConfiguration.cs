@@ -19,7 +19,7 @@ namespace AiOption.Infrastructure.DataAccess {
                 .AddSingleton(config)
                 .AddEntityFrameworkSqlServer()
                 .AddScoped(c => new AiOptionDbContext())
-                .AddScoped<IDbConnection>(c => new SqlConnection(constring))
+                .AddTransient<IDbConnection>(c => new SqlConnection(constring))
 
                 //.AddDbContextPool<AiOptionDbContext>(c =>
                 //    c.UseSqlServer(config.GetConnectionString("aioptiondb")))
