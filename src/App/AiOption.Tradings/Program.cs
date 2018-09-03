@@ -49,17 +49,18 @@ namespace AiOption.Tradings {
                 var trader = container.GetService<TraderPersistenceService>();
                 var follower = container.GetService<FollowerPersistenceService>();
 
-                trader.AppendAccountTask(new Account
-                {
-                    EmailAddress = "mongkon.eiadon@gmail.com2",
-                    Password = "Code11054"
-                }).ConfigureAwait(false);
-
-
-                //follower.AppendAccountTask(new Account {
-                //    EmailAddress = "liie.m@excelbangkok.com",
+                //trader.AppendAccountTask(new Account
+                //{
+                //    EmailAddress = "mongkon.eiadon@gmail.com2",
                 //    Password = "Code11054"
                 //}).ConfigureAwait(false);
+
+
+                follower.AppendAccountTask(new Account
+                {
+                    EmailAddress = "liie.m@excelbangkok.com",
+                    Password = "Code11054"
+                }).ConfigureAwait(false);
 
                 //Task.WhenAll(trader.InitialAccount(), follower.InitialAccount());
 

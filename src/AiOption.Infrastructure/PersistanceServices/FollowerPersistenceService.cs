@@ -11,7 +11,6 @@ using AiOption.Domain.IqAccounts;
 using AiOption.Domain.IqAccounts.Queries;
 
 using EventFlow;
-using EventFlow.Core;
 using EventFlow.Queries;
 
 using IqOptionApi.ws;
@@ -52,7 +51,6 @@ namespace AiOption.Infrastructure.PersistanceServices {
                         });
                 }
             });
-
         }
 
         public override Task<IDisposable> Handle(Account account) {

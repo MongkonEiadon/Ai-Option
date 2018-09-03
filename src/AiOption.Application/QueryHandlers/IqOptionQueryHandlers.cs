@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using AiOption.Application.Repositories.ReadOnly;
-using AiOption.Domain.Accounts;
 using AiOption.Domain.Customers;
 using AiOption.Domain.IqAccounts;
 using AiOption.Domain.IqAccounts.Queries;
@@ -26,6 +25,10 @@ namespace AiOption.Application.QueryHandlers {
             this._readonlyAccountRepo = _readonlyAccountRepo;
         }
 
+        public Task<Account> ExecuteQueryAsync(GetAccountByAccoutIdQuery query, CancellationToken cancellationToken) {
+            return _readonlyAccountRepo.GetByUserIdTask(query.UserId);
+        }
+
 
         public async Task<IEnumerable<Account>> ExecuteQueryAsync(GetFollowerAccountToOpenTradingsQuery query,
             CancellationToken cancellationToken) {
@@ -36,16 +39,14 @@ namespace AiOption.Application.QueryHandlers {
                 .Where(x => !invalidFollowerLevels.Contains(x.Level));
         }
 
-        public async Task<IEnumerable<Account>> ExecuteQueryAsync(GetTraderAccountToOpenTradingsQuery query, CancellationToken cancellationToken) {
+        public async Task<IEnumerable<Account>> ExecuteQueryAsync(GetTraderAccountToOpenTradingsQuery query,
+            CancellationToken cancellationToken) {
             return (await _readonlyAccountRepo.GetActiveAccountForOpenTradingsAsync())
                 .Where(x => x.Level == CustomerLevel.Traders);
 
 
         }
 
-        public Task<Account> ExecuteQueryAsync(GetAccountByAccoutIdQuery query, CancellationToken cancellationToken) {
-            return _readonlyAccountRepo.GetByUserIdTask(query.UserId);
-        }
     }
 
 }
