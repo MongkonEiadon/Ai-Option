@@ -4,7 +4,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import "./index.css";
-import "./c3jscustom.css";
+import "./css/c3jscustom.css";
 
 import App from "./App.react";
 

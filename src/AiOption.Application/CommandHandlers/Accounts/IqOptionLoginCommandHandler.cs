@@ -29,12 +29,12 @@ namespace AiOption.Application.CommandHandlers.Accounts {
                 _apiWrapper.LoginToIqOptionAsync(command.EmailAddress, command.Password)
                     .ContinueWith(t => {
 
-                        if (t.Result.Item1)
+                        if (t.Result.Item1) {
                             tcs.TrySetResult(new LoginCommandResult(true, t.Result.Item2));
+                        }
 
                         else {
                             aggregate.LoginFailed(command.EmailAddress, t.Result.Item2);
-
                             tcs.TrySetResult(new LoginCommandResult(false, t.Result.Item2));
                         }
 

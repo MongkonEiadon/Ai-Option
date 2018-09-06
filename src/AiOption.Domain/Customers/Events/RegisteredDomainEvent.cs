@@ -2,7 +2,7 @@
 
 namespace AiOption.Domain.Customers.Events {
 
-    public class RegisteredDomainEvent : AggregateEvent<CustomersAggregate, CustomerIdentity> {
+    public class RegisteredDomainEvent : AggregateEvent<CustomerAggregate, CustomerId> {
 
         protected RegisteredDomainEvent() {
         }
