@@ -25,7 +25,29 @@ import C3Chart from "react-c3js";
 
 import SiteWrapper from "./SiteWrapper.react";
 
-function Home() {
+function Home(){
+  return (<div>
+    <SiteWrapper>
+      <Page.Content tilte="Dashboard">
+        <Grid.Row cards={true}>
+          <Grid.Col width={6} sm={4} lg={2}>
+              <StatsCard layout={1} movement={6} total="43" label="New Tickets" />
+            </Grid.Col>
+            <Grid.Col width={6} sm={4} lg={2}>
+              <StatsCard
+                layout={1}
+                movement={-3}
+                total="17"
+                label="Closed Today"
+              />
+            </Grid.Col>
+        </Grid.Row>
+      </Page.Content>
+    </SiteWrapper>
+  </div>);
+}
+
+function Home2() {
   return (
     <SiteWrapper>
       <Page.Content title="Dashboard">

@@ -1,8 +1,8 @@
-// @flow
-
 import * as React from "react";
 import { Formik } from "formik";
 import { LoginPage as TablerLoginPage } from "tabler-react";
+
+
 
 type Props = {||};
 
@@ -11,7 +11,7 @@ function LoginPage(props: Props): React.Node {
     <Formik
       initialValues={{
         email: "",
-        password: "",
+        password: ""
       }}
       validate={values => {
         // same as above, but feel free to move this into a class method now.
@@ -38,7 +38,7 @@ function LoginPage(props: Props): React.Node {
         handleChange,
         handleBlur,
         handleSubmit,
-        isSubmitting,
+        isSubmitting
       }) => (
         <TablerLoginPage
           onSubmit={handleSubmit}
