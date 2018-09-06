@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { LoginPage } from './pages';
-
 import HomePage from "./HomePage.react";
 
 import "tabler-react/dist/Tabler.css";

@@ -3,7 +3,7 @@ import * as React from 'react';
 
 
 
-function HomePage(): React.ReactNode{
+function HomePage() : React.ReactNode{
     return (
         <div></div>
     );
