@@ -1,5 +1,6 @@
 ﻿using System;
 
+using AiOption.Application;
 using AiOption.Infrastructure.DataAccess;
 using AiOption.Infrastructure.Modules;
 
@@ -26,7 +27,7 @@ namespace AiOption.Tradings {
                 .Build();
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         public IServiceProvider ConfigureServices() {
             var services = new ServiceCollection();
@@ -67,6 +68,7 @@ namespace AiOption.Tradings {
             builder.RegisterModule<BusModule>();
             builder.RegisterModule<InfrastructureModule>();
             builder.RegisterModule<DomainModule>();
+            builder.RegisterModule<ApplicationModule>();
 
 
             builder.Register(c => logger).As<ILogger>().SingleInstance();

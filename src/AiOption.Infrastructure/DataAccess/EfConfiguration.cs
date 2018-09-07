@@ -11,7 +11,7 @@ namespace AiOption.Infrastructure.DataAccess {
     public static class EfConfigurations {
 
         public static IServiceCollection AddEfConfigurationDomain(this IServiceCollection This,
-            IConfigurationRoot config) {
+            IConfiguration config) {
 
             var constring = config.GetConnectionString("aioptiondb");
 

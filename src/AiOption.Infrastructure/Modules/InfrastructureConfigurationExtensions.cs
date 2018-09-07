@@ -31,7 +31,7 @@ namespace AiOption.Infrastructure.Modules {
 
         public static IServiceCollection AddEventFlowInfrastructure(
             this IServiceCollection services,
-            IConfigurationRoot configuration,
+            IConfiguration configuration,
             ContainerBuilder builder) {
 
             services.AddEventFlow(config => {

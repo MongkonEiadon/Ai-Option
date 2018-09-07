@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Customers\Queries\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="EventFlow" Version="0.64.3598" />
   </ItemGroup>
 
