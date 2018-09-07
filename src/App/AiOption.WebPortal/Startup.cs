@@ -44,7 +44,7 @@ namespace AiOption.WebPortal
             services
                 .AddCors()
                 .AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services
                 .AddInfrastructureConfiguration()

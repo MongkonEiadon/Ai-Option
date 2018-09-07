@@ -33,8 +33,7 @@ namespace AiOption.Application.Services
         public async Task<AuthorizedCustomer> LoginAsync(string email, string password) {
 
             var account = await _queryProcessor.ProcessAsync(new GetAuthorizeCustomerQuery(email), CancellationToken.None);
-
-            VerifyPasswordHash(password, account.Token)
+            
 
             return default(AuthorizedCustomer);
         }
