@@ -25,8 +25,4 @@
     <ProjectReference Include="..\AiOption.Domain\AiOption.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CommandHandlers\Customers\" />
-  </ItemGroup>
-
 </Project>

@@ -2,6 +2,7 @@
 using AiOption.Domain;
 using AiOption.Domain.Common;
 using AiOption.Domain.IqAccounts.ReadModels;
+using AiOption.Infrastructure.DataAccess;
 
 using Autofac;
 
@@ -25,6 +26,13 @@ namespace AiOption.Infrastructure.Modules {
 
             //
             services.AddAutoMapper();
+            services.AddIdentity<CustomerDto, CustomerLevelDto>(identity => {
+                identity.Password.RequireDigit = true;
+                identity.Password.RequireLowercase = false;
+                identity.Password.RequireNonAlphanumeric = false;
+                identity.Password.RequiredLength = 6;
+                identity.Password.RequiredUniqueChars = 0;
+            });
 
             return services;
         }

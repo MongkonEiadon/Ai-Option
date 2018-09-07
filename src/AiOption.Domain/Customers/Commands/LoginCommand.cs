@@ -8,7 +8,7 @@ using EventFlow.Commands;
 
 namespace AiOption.Domain.Customers.Commands
 {
-    public class LoginCommand : Command<CustomerAggregate, CustomerId, BaseResult> { 
+    public class LoginCommand : Command<CustomerAggregate, CustomerId, CustomerLoginCommandResult> { 
 
         public string UserName { get; }
         public string PasswordHash { get; }
@@ -16,6 +16,18 @@ namespace AiOption.Domain.Customers.Commands
         public LoginCommand(CustomerId aggregateId, string userName, string passwordHash) : base(aggregateId) {
             UserName = userName;
             PasswordHash = passwordHash;
+        }
+
+    }
+
+
+    public class CustomerLoginCommandResult : BaseResult {
+
+        public string Message { get; }
+
+        public CustomerLoginCommandResult(bool isSuccess, string message): base(isSuccess) {
+            Message = message;
+
         }
 
     }

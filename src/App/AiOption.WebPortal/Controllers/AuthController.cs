@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using AiOption.Application.Services;
+using AiOption.Application.ApplicationServices;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +15,13 @@ namespace AiOption.WebPortal.Controllers
     [Route("[controller]")]
     public class AuthController : Controller {
 
-        private readonly ICustomerAccountServices _customerAccountServices;
+        private readonly IApplicationAuthorizationServices _applicationAuthorizationServices;
 
         private readonly AppSettings _appSettings;
 
         public AuthController(IOptions<AppSettings> appSettings, 
-            ICustomerAccountServices customerAccountServices) {
-            _customerAccountServices = customerAccountServices;
+            IApplicationAuthorizationServices applicationAuthorizationServices) {
+            _applicationAuthorizationServices = applicationAuthorizationServices;
             _appSettings = appSettings.Value;
         }
 
@@ -29,7 +29,9 @@ namespace AiOption.WebPortal.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> AuthenticateAsync(string emailAddress, string password) {
 
-            var customer = await _customerAccountServices.LoginAsync(emailAddress, password);
+
+            var secret = _appSettings.Secret;
+
 
             return Ok();
         }

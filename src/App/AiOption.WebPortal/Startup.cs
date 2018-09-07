@@ -59,7 +59,7 @@ namespace AiOption.WebPortal
                     x.SaveToken = true;
                     x.TokenValidationParameters = new TokenValidationParameters() {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("TheWinner")),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("AiOptionJwtSecret")),
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };

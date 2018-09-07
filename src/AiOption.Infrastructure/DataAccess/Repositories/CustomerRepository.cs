@@ -14,19 +14,21 @@ namespace AiOption.Infrastructure.DataAccess.Repositories {
     public class CustomerRepository : EfCoreRepositoryBase<CustomerDto, Guid>, IReadCustomerRepository {
 
         private readonly IMapper _mapper;
+        private readonly UserManager<CustomerDto> _userManager;
         private readonly UserManager<CustomerDto> _customerManager;
 
 
-        public CustomerRepository(Func<DbContext> db, IMapper mapper) : base(db) {
+        public CustomerRepository(Func<DbContext> db, IMapper mapper, UserManager<CustomerDto> userManager) : base(db) {
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         public async Task<AuthorizedCustomer> GetAuthorizedCustomerAsync(string emailAddress) {
 
-            var user = await this.FirstOrDefaultAsync(x => x.NormalizedEmail == emailAddress.ToUpper());
+            var dto = _customerManager.FindByEmailAsync(emailAddress);
 
-            if (user != null) {
-                return _mapper.Map<AuthorizedCustomer>(user);
+            if (dto != null) {
+                return _mapper.Map<AuthorizedCustomer>(dto);
             }
 
             return null;
