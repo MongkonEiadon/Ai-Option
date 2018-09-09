@@ -41,5 +41,11 @@
     <ProjectReference Include="..\AiOption.Domain\AiOption.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Authentication.JwtBearer">
+      <HintPath>..\..\..\..\Users\mongk\.nuget\packages\microsoft.aspnetcore.authentication.jwtbearer\2.1.2\lib\netstandard2.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 
 </Project>

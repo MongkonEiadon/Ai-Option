@@ -43,7 +43,13 @@ namespace AiOption.Infrastructure.Integration
             services.AddEventFlowInfrastructure(config, containerBuilder);
 
             containerBuilder.Populate(services);
-            Container = new AutofacServiceProvider(containerBuilder.Build());
+
+            var build = containerBuilder.Build();
+            Container = new AutofacServiceProvider(build);
+
+            //ensure database
+            var db = build.Resolve<AiOptionDbContext>();
+            db.Database.EnsureCreated();
         }
 
 

@@ -4,7 +4,7 @@ using EventFlow.Commands;
 
 namespace AiOption.Domain.Customers.Commands {
 
-    public class RegisterCommand : Command<CustomerAggregate, CustomerId, BaseResult> {
+    public class RegisterCommand : Command<CustomerAggregate, CustomerId, ResultOf<Customer>> {
 
         public string UserName { get; }
         public string PasswordHash { get; }
@@ -14,7 +14,8 @@ namespace AiOption.Domain.Customers.Commands {
             UserName = userName;
             PasswordHash = passwordHash;
         }
-
     }
+
+    
 
 }

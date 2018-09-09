@@ -1,4 +1,6 @@
-﻿using AiOption.Application;
+﻿using System.Text;
+
+using AiOption.Application;
 using AiOption.Domain;
 using AiOption.Domain.Common;
 using AiOption.Domain.IqAccounts.ReadModels;
@@ -15,8 +17,11 @@ using EventFlow.MsSql;
 using EventFlow.MsSql.Extensions;
 using EventFlow.Snapshots.Strategies;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AiOption.Infrastructure.Modules {
 
@@ -26,13 +31,17 @@ namespace AiOption.Infrastructure.Modules {
 
             //
             services.AddAutoMapper();
+            services.AddIdentityCore<CustomerDto>();
             services.AddIdentity<CustomerDto, CustomerLevelDto>(identity => {
-                identity.Password.RequireDigit = true;
-                identity.Password.RequireLowercase = false;
-                identity.Password.RequireNonAlphanumeric = false;
-                identity.Password.RequiredLength = 6;
-                identity.Password.RequiredUniqueChars = 0;
-            });
+                    identity.Password.RequireDigit = true;
+                    identity.Password.RequireLowercase = false;
+                    identity.Password.RequireNonAlphanumeric = false;
+                    identity.Password.RequiredLength = 6;
+                    identity.Password.RequiredUniqueChars = 0;
+                })
+                .AddEntityFrameworkStores<AiOptionDbContext>()
+                .AddDefaultTokenProviders();
+
 
             return services;
         }

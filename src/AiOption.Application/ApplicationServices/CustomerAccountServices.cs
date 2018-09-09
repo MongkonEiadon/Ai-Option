@@ -24,7 +24,10 @@ namespace AiOption.Application.ApplicationServices
         private readonly ICommandBus _commandBus;
         private readonly IReadCustomerRepository _customerRepository;
 
-        public ApplicationAuthorizationServices(IQueryProcessor queryProcessor, ICommandBus commandBus, IReadCustomerRepository customerRepository) {
+        public ApplicationAuthorizationServices(
+            IQueryProcessor queryProcessor, 
+            ICommandBus commandBus,
+            IReadCustomerRepository customerRepository) {
             _queryProcessor = queryProcessor;
             _commandBus = commandBus;
             _customerRepository = customerRepository;
