@@ -2,6 +2,7 @@ using System;
 using System.Text;
 
 using AiOption.Application;
+using AiOption.Application.ApplicationServices;
 using AiOption.Infrastructure.DataAccess;
 using AiOption.Infrastructure.DataAccess.Identities;
 using AiOption.Infrastructure.Modules;
@@ -80,7 +81,6 @@ namespace AiOption.WebPortal
 
             container.Populate(services);
             var build = container.Build();
-            var ser = build.Resolve<ICustomerIdentityRepository>();
 
             return new AutofacServiceProvider(build);
         }

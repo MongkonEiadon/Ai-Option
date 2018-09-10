@@ -29,11 +29,26 @@ namespace AiOption.Infrastructure.Integration.EventFlows {
 
             var bus = _baseSetup.Resolve<ICommandBus>();
             var id = CustomerId.New;
-            var result = await bus.PublishAsync(new LoginCommand(id, "email", "password"), CancellationToken.None);
+            var result = await bus.PublishAsync(new CustomerLoginCommand(id, "email", "password"), CancellationToken.None);
 
 
 
             var query = _baseSetup.Resolve<IQueryProcessor>();
+        }
+
+        [Fact]
+        public async Task CustomerRegister_WithValidInvitationCode_NewCustomerRegistered() {
+
+            var bus = _baseSetup.Resolve<ICommandBus>();
+            var id = CustomerId.New;
+            var result = await bus.PublishAsync(new CustomerRegisterCommand(id, new NewCustomer() {
+                EmailAddress = "m@email.com",
+                Password = "Code11054",
+                InvitationCode = "Invitation"
+            }), CancellationToken.None);
+
+            
+
         }
 
     }

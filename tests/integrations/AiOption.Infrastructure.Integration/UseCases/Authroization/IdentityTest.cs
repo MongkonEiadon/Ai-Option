@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
+using AiOption.Application.ApplicationServices;
+using AiOption.Domain.Customers.DomainServices;
 using AiOption.Infrastructure.DataAccess.Identities;
 
 using Xunit;
@@ -23,7 +25,7 @@ namespace AiOption.Infrastructure.Integration.UseCases.Authroization
         public async  Task Test() {
 
 
-            var result = await _baseSetup.Resolve<ICustomerIdentityRepository>()
+            var result = await _baseSetup.Resolve<ICustomerAuthorizeDomainService>()
                 .SigninWithPasswordAsync("m@email.com", "Code11054");
 
         }

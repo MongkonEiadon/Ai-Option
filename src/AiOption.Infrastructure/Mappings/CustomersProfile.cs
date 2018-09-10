@@ -15,6 +15,12 @@ namespace AiOption.Infrastructure.Mappings {
             CreateMap<CustomerDto, AuthorizedCustomer>()
                 .ForMember(x => x.EmailAddress, c => c.MapFrom(x => x.UserName))
                 .ForMember(x => x.Token, c => c.MapFrom(x => x.PasswordHash));
+
+            CreateMap<NewCustomer, CustomerDto>()
+                .ForMember(x => x.UserName, c => c.MapFrom(x => x.EmailAddress))
+                .ForMember(x => x.Email, c => c.MapFrom(x => x.EmailAddress))
+                .ForMember(x => x.InviationCode, c => c.MapFrom(x => x.InvitationCode))
+                .ForMember(x => x.Id, c => c.MapFrom(x => x.Id));
         }
 
     }

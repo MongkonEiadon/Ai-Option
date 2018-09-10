@@ -4,6 +4,16 @@ using Newtonsoft.Json;
 
 namespace AiOption.Domain.Customers {
 
+    public class NewCustomer : Customer {
+
+        [JsonProperty("invitation")]
+        public string InvitationCode { get; set; }
+
+        [JsonProperty("password")]
+        public string Password { get; set; }
+
+    }
+
     public class Customer {
 
         [JsonProperty("id")]

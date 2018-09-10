@@ -1,4 +1,9 @@
-﻿namespace AiOption.Domain.Common {
+﻿using AiOption.Domain.Customers;
+using AiOption.Domain.Customers.Commands;
+
+using EventFlow.Commands;
+
+namespace AiOption.Domain.Common {
 
     public class ResultOf<T> : BaseResult {
 
@@ -6,6 +11,12 @@
             Result = result;
         }
 
+        public ResultOf(bool isSuccess, string message, T result = default(T)) : this(isSuccess, result) {
+            Message = message;
+        }
+
+
+        public string Message { get; }
         public T Result { get; }
 
     }
