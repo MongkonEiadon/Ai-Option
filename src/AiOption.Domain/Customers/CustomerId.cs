@@ -1,4 +1,5 @@
 ﻿using EventFlow.Core;
+using EventFlow.Extensions;
 
 namespace AiOption.Domain.Customers {
 

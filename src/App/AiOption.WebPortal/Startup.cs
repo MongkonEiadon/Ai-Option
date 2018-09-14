@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Threading.Tasks;
 
 using AiOption.Application;
 using AiOption.Application.ApplicationServices;
@@ -11,12 +12,17 @@ using Autofac;
 using Autofac.Configuration;
 using Autofac.Extensions.DependencyInjection;
 
+using EventFlow.MsSql;
+using EventFlow.MsSql.EventStores;
+using EventFlow.MsSql.SnapshotStores;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -50,6 +56,7 @@ namespace AiOption.WebPortal
 
             services
                 .AddInfrastructureConfiguration()
+                .AddEfConfigurationDomain(Configuration)
                 .AddEventFlowInfrastructure(Configuration, container)
                 .Configure<AppSettings>(Configuration.GetSection("AppSettings"))
                 .AddAuthentication(x => {
@@ -74,13 +81,18 @@ namespace AiOption.WebPortal
             });
 
             // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
-            });
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" }));
 
             container.Populate(services);
             var build = container.Build();
+
+
+            //migrate
+            Task.Run(() => {
+                var sql = build.Resolve<IMsSqlDatabaseMigrator>();
+                EventFlowEventStoresMsSql.MigrateDatabase(sql);
+                EventFlowSnapshotStoresMsSql.MigrateDatabase(sql);
+            });
 
             return new AutofacServiceProvider(build);
         }

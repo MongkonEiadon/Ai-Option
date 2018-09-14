@@ -9,9 +9,10 @@ namespace AiOption.Infrastructure.Modules {
 
         protected override void Load(ContainerBuilder builder) {
 
-            builder.RegisterAssemblyTypes(typeof(BaseResult).Assembly)
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
+            //builder.RegisterAssemblyTypes(typeof(BaseResult).Assembly)
+            //    .AsImplementedInterfaces()
+            //    .InstancePerLifetimeScope();
+
         }
 
     }

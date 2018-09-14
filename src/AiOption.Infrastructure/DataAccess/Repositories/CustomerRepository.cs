@@ -23,12 +23,12 @@ namespace AiOption.Infrastructure.DataAccess.Repositories {
             _userManager = userManager;
         }
 
-        public async Task<AuthorizedCustomer> GetAuthorizedCustomerAsync(string emailAddress) {
+        public async Task<CustomerState> GetAuthorizedCustomerAsync(string emailAddress) {
 
             var dto = _customerManager.FindByEmailAsync(emailAddress);
 
             if (dto != null) {
-                return _mapper.Map<AuthorizedCustomer>(dto);
+                return _mapper.Map<CustomerState>(dto);
             }
 
             return null;

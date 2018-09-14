@@ -25,7 +25,7 @@ namespace AiOption.Infrastructure.Integration.UseCases.Authroization
         public async  Task Test() {
 
 
-            var result = await _baseSetup.Resolve<ICustomerAuthorizeDomainService>()
+            var result = await _baseSetup.Resolve<IAuthorizationDomainService>()
                 .SigninWithPasswordAsync("m@email.com", "Code11054");
 
         }

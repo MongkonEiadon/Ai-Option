@@ -22,7 +22,7 @@ namespace AiOption.Infrastructure.Integration.Steps.Autorization
 
         }
 
-        //public async Task<Customer> SeedDefaultCustomers() {
+        //public async Task<CustomerState> SeedDefaultCustomers() {
 
         //    var userManager = _baseSetup.Resolve<UserManager<CustomerDto>>();
         //    var result = await userManager.CreateAsync(new CustomerDto() {

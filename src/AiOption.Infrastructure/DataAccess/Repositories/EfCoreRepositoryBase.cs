@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 
 using AiOption.Application.Repositories;
-using AiOption.Domain.Common;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace AiOption.Infrastructure.DataAccess.Repositories {
 
     public class EfCoreRepositoryBase<TEntity, TPrimaryKey> : GenericRepositoryBase<TEntity, TPrimaryKey>
-        where TEntity : class, IDbEntity<TPrimaryKey> {
+        where TEntity : class, AiOption.Domain.Common.IDbEntity<TPrimaryKey> {
 
         private readonly Func<DbContext> _dbDbContext;
 

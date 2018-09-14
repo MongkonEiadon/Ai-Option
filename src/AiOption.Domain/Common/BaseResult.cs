@@ -10,7 +10,7 @@ namespace AiOption.Domain.Common {
             Message = message;
         }
 
-        public string Message { get; protected set; }
+        public virtual string Message { get; protected set; }
 
 
         public bool IsSuccess { get; }

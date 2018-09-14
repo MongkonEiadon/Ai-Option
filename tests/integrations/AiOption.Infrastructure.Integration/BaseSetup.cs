@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 using AiOption.Application;
 using AiOption.Infrastructure.DataAccess;
@@ -13,6 +14,9 @@ using Autofac.Extensions.DependencyInjection;
 using AutofacContrib.NSubstitute;
 
 using EventFlow;
+using EventFlow.MsSql;
+using EventFlow.MsSql.EventStores;
+using EventFlow.MsSql.SnapshotStores;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +33,6 @@ namespace AiOption.Infrastructure.Integration
 
             var services = new ServiceCollection();
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-
 
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterModule<DomainModule>();
@@ -50,6 +53,11 @@ namespace AiOption.Infrastructure.Integration
             //ensure database
             var db = build.Resolve<AiOptionDbContext>();
             db.Database.EnsureCreated();
+
+            var msSqlDatabaseMigrator = build.Resolve<IMsSqlDatabaseMigrator>();
+            EventFlowEventStoresMsSql.MigrateDatabase(msSqlDatabaseMigrator);
+            EventFlowSnapshotStoresMsSql.MigrateDatabase(msSqlDatabaseMigrator);
+
         }
 
 

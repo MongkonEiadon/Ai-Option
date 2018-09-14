@@ -11,7 +11,7 @@ using EventFlow.Queries;
 namespace AiOption.Application.QueryHandlers {
 
     public class CustomerQueryHandlers
-        : IQueryHandler<GetAuthorizeCustomerQuery, AuthorizedCustomer> {
+        : IQueryHandler<GetAuthorizeCustomerQuery, CustomerState> {
 
         private readonly IReadCustomerRepository _customerReadRepository;
 
@@ -21,7 +21,7 @@ namespace AiOption.Application.QueryHandlers {
         }
 
 
-        public Task<AuthorizedCustomer> ExecuteQueryAsync(GetAuthorizeCustomerQuery query, CancellationToken cancellationToken) {
+        public Task<CustomerState> ExecuteQueryAsync(GetAuthorizeCustomerQuery query, CancellationToken cancellationToken) {
             return _customerReadRepository.GetAuthorizedCustomerAsync(query.EmailAddress);
         }
 

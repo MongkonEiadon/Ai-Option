@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+using AiOption.Application.Repositories;
 using AiOption.Domain.Customers;
 using AiOption.Domain.Customers.Commands;
+using AiOption.Infrastructure.DataAccess;
 
 using EventFlow;
 using EventFlow.Queries;
+using EventFlow.ReadStores;
 
 using Xunit;
 
@@ -24,30 +28,20 @@ namespace AiOption.Infrastructure.Integration.EventFlows {
 
 
         [Fact]
-        public async Task Test() {
-
-
-            var bus = _baseSetup.Resolve<ICommandBus>();
-            var id = CustomerId.New;
-            var result = await bus.PublishAsync(new CustomerLoginCommand(id, "email", "password"), CancellationToken.None);
-
-
-
-            var query = _baseSetup.Resolve<IQueryProcessor>();
-        }
-
-        [Fact]
         public async Task CustomerRegister_WithValidInvitationCode_NewCustomerRegistered() {
 
             var bus = _baseSetup.Resolve<ICommandBus>();
             var id = CustomerId.New;
-            var result = await bus.PublishAsync(new CustomerRegisterCommand(id, new NewCustomer() {
+            await bus.PublishAsync(new CustomerRegisterCommand(id, new CustomerState() {
                 EmailAddress = "m@email.com",
                 Password = "Code11054",
                 InvitationCode = "Invitation"
             }), CancellationToken.None);
 
-            
+
+
+            var query = _baseSetup.Resolve<IQueryProcessor>();
+            var resultModel = await query.ProcessAsync(new ReadModelByIdQuery<CustomerState>(id), CancellationToken.None); 
 
         }
 

@@ -13,9 +13,9 @@ namespace AiOption.Application.ApplicationServices {
 
     public interface IApplicationAuthorizationServices {
 
-        Task<Customer> RegisterCustomerAsync(string userName, string password, string invitationCode);
+        Task<CustomerState> RegisterCustomerAsync(string userName, string password, string invitationCode);
 
-        Task<AuthorizedCustomer> LoginAsync(string userName, string password);
+        Task<CustomerState> LoginAsync(string userName, string password);
 
     }
     public class ApplicationAuthorizationServices : IApplicationAuthorizationServices
@@ -36,7 +36,7 @@ namespace AiOption.Application.ApplicationServices {
         }
 
 
-        public async Task<Customer> RegisterCustomerAsync(string userName, string password, string invitationCode) {
+        public async Task<CustomerState> RegisterCustomerAsync(string userName, string password, string invitationCode) {
             var ct = new CancellationToken();
 
             var existing = await _queryProcessor.ProcessAsync(new GetAuthorizeCustomerQuery(userName), ct);
@@ -50,22 +50,18 @@ namespace AiOption.Application.ApplicationServices {
             }
 
             var id = CustomerId.New;
-            var customer = await _commandBus.PublishAsync(new CustomerRegisterCommand(id, new NewCustomer() {
+            var customer = await _commandBus.PublishAsync(new CustomerRegisterCommand(id, new CustomerState() {
                 EmailAddress = userName,
                 Password = password,
                 InvitationCode = invitationCode,
                 Id = id.GetGuid()
             }), ct);
 
-            if (customer.IsSuccess) {
-                return customer.Result;
-            }
-
             return null;
 
         }
 
-        public async Task<AuthorizedCustomer> LoginAsync(string email, string password) {
+        public async Task<CustomerState> LoginAsync(string email, string password) {
 
             var user = await _customerRepository.GetAuthorizedCustomerAsync(email);
 
@@ -76,7 +72,7 @@ namespace AiOption.Application.ApplicationServices {
             var account = await _commandBus.PublishAsync(new CustomerLoginCommand(CustomerId.New, email, password), CancellationToken.None);
             
 
-            return default(AuthorizedCustomer);
+            return default(CustomerState);
         }
         
     }

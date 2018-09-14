@@ -6,7 +6,7 @@ using EventFlow.Queries;
 
 namespace AiOption.Domain.Customers.Queries
 {
-    public class GetAuthorizeCustomerQuery : IQuery<AuthorizedCustomer> {
+    public class GetAuthorizeCustomerQuery : IQuery<CustomerState> {
 
         public string EmailAddress { get; }
 

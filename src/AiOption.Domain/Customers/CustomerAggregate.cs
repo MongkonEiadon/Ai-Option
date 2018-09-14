@@ -12,48 +12,39 @@ namespace AiOption.Domain.Customers {
     
     public class CustomerAggregate : SnapshotAggregateRoot<CustomerAggregate, CustomerId, CustomerAggregateSnapshot> {
 
-        private readonly ICustomerAuthorizeDomainService _customerAuthorizeDomainService;
 
-        public CustomerAggregate(
-            CustomerId id, 
-            ISnapshotStrategy snapshotStrategy,
-            ICustomerAuthorizeDomainService customerAuthorizeDomainService) : base(id,
-            snapshotStrategy) {
-            _customerAuthorizeDomainService = customerAuthorizeDomainService;
-        }
+        public CustomerState CustomerState { get; } = new CustomerState();
 
-
-        public async Task<Customer> RegisterNewCustomerAsync(NewCustomer newCustomer) {
-            try {
-                var result = await _customerAuthorizeDomainService.RegisterCustomerAsync(newCustomer);
-
-
-            }
-            catch (Exception ex) {
-
-            }
-
-
-            return result;
+        public CustomerAggregate(CustomerId id, ISnapshotStrategy snapshotStrategy) : base(id, snapshotStrategy) {
+            
+            // register customer applier
+            Register(CustomerState);
         }
 
 
         #region [Emits]
-        
+
+        public void CustomerRegisterRequested(CustomerState newCustomer) => Emit(new CustomerRegisterRequested(newCustomer));
+
 
         #endregion
 
 
 
+        #region [Snapshots]
+
         protected override Task<CustomerAggregateSnapshot> CreateSnapshotAsync(CancellationToken cancellationToken) {
-            throw new NotImplementedException();
+            return Task.FromResult(new CustomerAggregateSnapshot(CustomerState));
         }
 
         protected override Task LoadSnapshotAsync(CustomerAggregateSnapshot aggregateSnapshot, ISnapshotMetadata metadata,
             CancellationToken cancellationToken) {
 
-            throw new NotImplementedException();
+            CustomerState.Load(aggregateSnapshot.CustomerState);
+            return Task.CompletedTask;
         }
+
+        #endregion
 
     }
 

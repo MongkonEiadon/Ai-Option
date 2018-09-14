@@ -4,7 +4,7 @@ using Autofac;
 
 namespace AiOption.Application {
 
-    public class AiAssembly {
+    public partial class AiAssembly {
 
         public static Assembly ApplicationAssembly => typeof(AiAssembly).Assembly;
 

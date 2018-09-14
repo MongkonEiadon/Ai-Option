@@ -10,7 +10,8 @@ namespace AiOption.Infrastructure.DataAccess {
 
         private readonly DbContextOptions<AiOptionDbContext> _options;
 
-        public AiOptionDbContext() {
+        public AiOptionDbContext()
+        {
         }
 
         public AiOptionDbContext(DbContextOptions<AiOptionDbContext> options) : base(options) {

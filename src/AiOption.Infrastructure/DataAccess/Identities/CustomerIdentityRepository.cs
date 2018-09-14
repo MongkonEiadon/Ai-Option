@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Identity;
 namespace AiOption.Infrastructure.DataAccess.Identities
 {
 
-    public class CustomerAuthorizeDomainService  : ICustomerAuthorizeDomainService {
+    public class AuthorizationDomainService  : IAuthorizationDomainService {
 
         private readonly UserManager<CustomerDto> _customerManager;
         private readonly IRepository<CustomerDto, Guid> _customerRepository;
@@ -25,7 +25,7 @@ namespace AiOption.Infrastructure.DataAccess.Identities
         private readonly IMapper _mapper;
         private readonly UserManager<CustomerDto> _userManager;
 
-        public CustomerAuthorizeDomainService(
+        public AuthorizationDomainService(
             IRepository<CustomerDto, Guid> customerRepository, 
             SignInManager<CustomerDto> signInManager, 
             IMapper mapper, 
@@ -37,7 +37,7 @@ namespace AiOption.Infrastructure.DataAccess.Identities
             _userManager = userManager;
         }
 
-        public async Task<Customer> SigninWithPasswordAsync(string email, string password) {
+        public async Task<CustomerState> SigninWithPasswordAsync(string email, string password) {
 
             var user = _customerRepository.FirstOrDefault(x => x.NormalizedEmail == email.ToUpper());
 
@@ -45,10 +45,10 @@ namespace AiOption.Infrastructure.DataAccess.Identities
 
             var sigin = await _signInManager.PasswordSignInAsync(user, password, true, false);
 
-            return _mapper.Map<Customer>(user);
+            return _mapper.Map<CustomerState>(user);
         }
 
-        public async Task<Customer> RegisterCustomerAsync(NewCustomer newCustomer) {
+        public async Task<CustomerState> RegisterCustomerAsync(CustomerState newCustomer) {
 
             var userDto = _mapper.Map<CustomerDto>(newCustomer);
             var result = await _userManager.CreateAsync(userDto, newCustomer.Password);

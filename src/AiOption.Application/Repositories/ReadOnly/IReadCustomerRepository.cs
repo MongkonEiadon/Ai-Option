@@ -9,7 +9,7 @@ namespace AiOption.Application.Repositories.ReadOnly
 {
     public interface IReadCustomerRepository {
 
-        Task<AuthorizedCustomer> GetAuthorizedCustomerAsync(string emailAddress);
+        Task<CustomerState> GetAuthorizedCustomerAsync(string emailAddress);
 
     }
 }

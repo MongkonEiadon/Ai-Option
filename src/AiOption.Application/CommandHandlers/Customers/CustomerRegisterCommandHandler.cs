@@ -15,25 +15,19 @@ using AutoMapper;
 
 using EventFlow.Commands;
 
-namespace AiOption.Application.CommandHandlers.Customers
-{
+namespace AiOption.Application.CommandHandlers.Customers {
 
     public class CustomerRegisterCommandHandler :
         CommandHandler<CustomerAggregate, CustomerId, CustomerRegisterCommand> {
 
-        private readonly ICustomerAuthorizeDomainService _authorizeDomainService;
-
-        public CustomerRegisterCommandHandler(ICustomerAuthorizeDomainService authorizeDomainService) {
-            _authorizeDomainService = authorizeDomainService;
-        }
-
-
         public override Task ExecuteAsync(CustomerAggregate aggregate, CustomerRegisterCommand command, CancellationToken cancellationToken) {
 
-            var newCusotomer = command.NewCustomer;
-            newCusotomer.Id = aggregate.Id.GetGuid();
+            var newCustomer = command.NewCustomer;
+            newCustomer.Id = aggregate.Id.GetGuid();
 
-            return aggregate.RegisterNewCustomerAsync(newCusotomer);
+            aggregate.CustomerRegisterRequested(newCustomer);
+
+            return Task.CompletedTask;
         }
 
     }

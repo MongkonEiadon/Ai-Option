@@ -15,8 +15,6 @@ namespace AiOption.Domain.Common {
             Message = message;
         }
 
-
-        public string Message { get; }
         public T Result { get; }
 
     }

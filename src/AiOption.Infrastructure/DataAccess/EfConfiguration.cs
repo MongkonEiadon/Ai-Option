@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,14 +21,21 @@ namespace AiOption.Infrastructure.DataAccess {
                 .AddEntityFrameworkSqlServer()
                 .AddScoped(c => new AiOptionDbContext())
                 .AddTransient<IDbConnection>(c => new SqlConnection(constring))
-
-                //.AddDbContextPool<AiOptionDbContext>(c =>
-                //    c.UseSqlServer(config.GetConnectionString("aioptiondb")))
                 .AddDbContext<AiOptionDbContext>(c => {
                     c.UseLoggerFactory(new NullLoggerFactory());
                     c.UseSqlServer(constring);
+                });
+
+            This.AddIdentityCore<CustomerDto>();
+            This.AddIdentity<CustomerDto, CustomerLevelDto>(identity => {
+                    identity.Password.RequireDigit = true;
+                    identity.Password.RequireLowercase = false;
+                    identity.Password.RequireNonAlphanumeric = false;
+                    identity.Password.RequiredLength = 6;
+                    identity.Password.RequiredUniqueChars = 0;
                 })
-                .AddIdentity<CustomerDto, CustomerLevelDto>();
+                .AddEntityFrameworkStores<AiOptionDbContext>()
+                .AddDefaultTokenProviders();
 
 
             return This;
