@@ -41,7 +41,8 @@ namespace AiOption.Infrastructure.Integration.EventFlows {
 
 
             var query = _baseSetup.Resolve<IQueryProcessor>();
-            var resultModel = await query.ProcessAsync(new ReadModelByIdQuery<CustomerState>(id), CancellationToken.None); 
+            var resultModel = await query.ProcessAsync(new ReadModelByIdQuery<CustomerState>(id), CancellationToken.None);
+ 
 
         }
 
