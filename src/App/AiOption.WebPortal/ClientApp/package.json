@@ -23,7 +23,7 @@
     "tabler-ui-react": "^0.1.3",
     "yarn": "^1.9.4"
   },
-  "name": "AiOption.WebPortal",
+  "name": "Web Portal",
   "private": true,
   "scripts": {
     "start": "rimraf ./build && react-scripts start",

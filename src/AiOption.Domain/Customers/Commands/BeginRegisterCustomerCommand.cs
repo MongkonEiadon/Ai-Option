@@ -27,8 +27,8 @@ namespace AiOption.Domain.Customers.Commands {
 
         private readonly IAuthorizationDomainService _authorizationDomainService;
 
-        public BeginRegisterCustomerCommandHandler(IAuthorizationDomainService authorizationDomainService) {
-            _authorizationDomainService = authorizationDomainService;
+        public BeginRegisterCustomerCommandHandler() {
+            _authorizationDomainService = default(IAuthorizationDomainService);
         }
 
         public async Task<BaseResult> ExecuteCommandAsync(CustomerAggregate aggregate,

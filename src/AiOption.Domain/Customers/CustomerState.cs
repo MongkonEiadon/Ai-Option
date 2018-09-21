@@ -12,7 +12,7 @@ namespace AiOption.Domain.Customers {
 
     public class CustomerState : AggregateState<CustomerAggregate, CustomerId, CustomerState>,
         IReadModel,
-        IAmReadModelFor<CustomerAggregate, CustomerId, CustomerRegisterRequested> {
+        IAmReadModelFor<CustomerAggregate, CustomerId, RegisterRequested> {
 
         [JsonProperty("invitation")]
         public string InvitationCode { get; set; }
@@ -30,7 +30,7 @@ namespace AiOption.Domain.Customers {
         public string Token { get; set; }
 
 
-        public void Apply(CustomerRegisterRequested aggregateEvent) {
+        private void Apply(RegisterRequested aggregateEvent) {
 
             InvitationCode = aggregateEvent.NewCustomer.InvitationCode;
             EmailAddress = aggregateEvent.NewCustomer.EmailAddress;
@@ -46,7 +46,7 @@ namespace AiOption.Domain.Customers {
             Token = load.Token;
         }
 
-        public void Apply(IReadModelContext context, IDomainEvent<CustomerAggregate, CustomerId, CustomerRegisterRequested> domainEvent) {
+        public void Apply(IReadModelContext context, IDomainEvent<CustomerAggregate, CustomerId, RegisterRequested> domainEvent) {
             Apply(domainEvent.AggregateEvent);
         }
 

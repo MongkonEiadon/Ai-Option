@@ -4,7 +4,6 @@ using AiOption.Application;
 using AiOption.Domain;
 using AiOption.Domain.Common;
 using AiOption.Domain.Customers;
-using AiOption.Domain.Customers.Saga;
 using AiOption.Domain.IqAccounts.ReadModels;
 using AiOption.Infrastructure.DataAccess;
 

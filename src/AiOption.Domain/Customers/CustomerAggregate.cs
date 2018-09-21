@@ -24,8 +24,7 @@ namespace AiOption.Domain.Customers {
 
         #region [Emits]
 
-        public void CustomerRegisterRequested(CustomerState newCustomer) => Emit(new CustomerRegisterRequested(newCustomer));
-
+        public void CustomerRegisterRequested(CustomerState newCustomer) => Emit(new RegisterRequested(newCustomer));
 
         #endregion
 

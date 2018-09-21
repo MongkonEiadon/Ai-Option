@@ -1,6 +1,11 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=53E106EE3E706B40B3B4D82E05637757/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=53E106EE3E706B40B3B4D82E05637757/AbsolutePath/@EntryValue">C:\git\AiOption\AiOption.V2.sln.DotSettings</s:String>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=53E106EE3E706B40B3B4D82E05637757/RelativePath/@EntryValue"></s:String>
 	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=F01E60194426D042A95434E76AF729C1/AbsolutePath/@EntryValue">C:\git\AiOption\AiOption.V2.DotSettings</s:String>
 	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=F01E60194426D042A95434E76AF729C1/RelativePath/@EntryValue">..\AiOption.V2.DotSettings</s:String>
 	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=F01E60194426D042A95434E76AF729C1/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File53E106EE3E706B40B3B4D82E05637757/@KeyIndexDefined">True</s:Boolean>
+	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File53E106EE3E706B40B3B4D82E05637757/RelativePriority/@EntryValue">2</s:Double>
 	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=FileF01E60194426D042A95434E76AF729C1/@KeyIndexDefined">True</s:Boolean>
 	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=FileF01E60194426D042A95434E76AF729C1/RelativePriority/@EntryValue">1</s:Double></wpf:ResourceDictionary>
