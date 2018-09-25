@@ -1,2 +1,0 @@
-﻿namespace iqoption.core.Securities {
-}
