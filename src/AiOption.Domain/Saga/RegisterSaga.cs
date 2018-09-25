@@ -21,7 +21,7 @@ namespace AiOption.Domain.Saga {
     }
 
     public class RegisterSagaLocator : BaseIdSagaLocator  {
-        public RegisterSagaLocator() : base("aggregate_id", id => new RegisterSagaId($"customersaga-{id}")) { }
+        public RegisterSagaLocator() : base("aggregate_id", id => new RegisterSagaId($"registersaga-{id}")) { }
 
     }
 
@@ -29,8 +29,6 @@ namespace AiOption.Domain.Saga {
         ISagaIsStartedBy<CustomerAggregate, CustomerId, RegisterRequested> {
 
         public RegisterSaga(RegisterSagaId id) : base(id) { }
-
-
 
         public Task HandleAsync(IDomainEvent<CustomerAggregate, CustomerId, RegisterRequested> domainEvent, ISagaContext sagaContext, CancellationToken cancellationToken) {
 

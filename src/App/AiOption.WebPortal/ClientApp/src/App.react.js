@@ -7,17 +7,25 @@ import "tabler-react/dist/Tabler.css";
 
 class App extends React.Component {
 
-    
-  render() {
-    return (
-      <Router>
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/login" component={LoginPage} />
-        </Switch>
-      </Router>
+
+    render() {
+        return (
+                  <
+            Router >
+             <
+            Switch >
+             <
+            Route;
+        exact;
+        path = "/";
+        component = { HomePage } /  >  < Route;
+        exact;
+        path = "/login";
+        component = { LoginPage } /  >  < /;
+        Switch >  < /;
+        Router > ;
     );
-  }
+}
 }
 
 export default App;

@@ -3,10 +3,11 @@
 using EventFlow.Aggregates;
 
 namespace AiOption.Domain.IqAccounts {
+
     public class IqAggregateState : AggregateState<IqAggregate, IqIdentity, IqAggregateState>,
-        IApply<IqAccountLoginFailed>
-    {
-        public string EmailAddress { get;  set; }
+        IApply<IqAccountLoginFailed> {
+
+        public string EmailAddress { get; set; }
         public string Message { get; set; }
         public bool IsSuccess { get; set; }
 
@@ -15,6 +16,7 @@ namespace AiOption.Domain.IqAccounts {
             Message = aggregateEvent.Message;
             IsSuccess = false;
         }
+
     }
 
 }

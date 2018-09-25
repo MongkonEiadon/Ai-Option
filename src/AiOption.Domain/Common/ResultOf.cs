@@ -1,9 +1,4 @@
-﻿using AiOption.Domain.Customers;
-using AiOption.Domain.Customers.Commands;
-
-using EventFlow.Commands;
-
-namespace AiOption.Domain.Common {
+﻿namespace AiOption.Domain.Common {
 
     public class ResultOf<T> : BaseResult {
 

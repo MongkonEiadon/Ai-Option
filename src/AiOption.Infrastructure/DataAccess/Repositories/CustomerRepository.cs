@@ -13,9 +13,10 @@ namespace AiOption.Infrastructure.DataAccess.Repositories {
 
     public class CustomerRepository : EfCoreRepositoryBase<CustomerDto, Guid>, IReadCustomerRepository {
 
+        private readonly UserManager<CustomerDto> _customerManager;
+
         private readonly IMapper _mapper;
         private readonly UserManager<CustomerDto> _userManager;
-        private readonly UserManager<CustomerDto> _customerManager;
 
 
         public CustomerRepository(Func<DbContext> db, IMapper mapper, UserManager<CustomerDto> userManager) : base(db) {
@@ -23,13 +24,11 @@ namespace AiOption.Infrastructure.DataAccess.Repositories {
             _userManager = userManager;
         }
 
-        public async Task<CustomerState> GetAuthorizedCustomerAsync(string emailAddress) {
+        public async Task<CustomerReadModel> GetAuthorizedCustomerAsync(string emailAddress) {
 
             var dto = _customerManager.FindByEmailAsync(emailAddress);
 
-            if (dto != null) {
-                return _mapper.Map<CustomerState>(dto);
-            }
+            if (dto != null) return _mapper.Map<CustomerReadModel>(dto);
 
             return null;
         }

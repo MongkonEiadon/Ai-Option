@@ -5,8 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using AiOption.Application.Bus;
-using AiOption.Domain.Accounts;
 using AiOption.Domain.IqAccounts;
 using AiOption.Domain.IqAccounts.Commands;
 
@@ -15,11 +13,11 @@ using EventFlow;
 namespace AiOption.Application.Persistences {
 
     public abstract class ApplicationTradingPersistence {
-        
+
         private readonly ICommandBus _commandBus;
 
         public ApplicationTradingPersistence(ICommandBus commandBus) {
-            
+
             _commandBus = commandBus;
 
             OpenAccountTradingsStream = new ConcurrentDictionary<Account, IDisposable>();

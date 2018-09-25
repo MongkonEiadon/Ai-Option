@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Threading;
 
-using AiOption.Domain.Accounts;
-using AiOption.Domain.IqAccounts;
-using AiOption.Infrastructure.PersistanceServices;
+using AiOption.Domain.Customers;
+using AiOption.Domain.Customers.Commands;
 
-using AutoMapper;
-
-using EventFlow.MsSql;
-using EventFlow.MsSql.EventStores;
-using EventFlow.MsSql.SnapshotStores;
+using EventFlow;
+using EventFlow.Queries;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -34,20 +30,34 @@ namespace AiOption.Tradings {
                 var container = new Startup().ConfigureServices();
                 var logger = container.GetService<ILogger>();
 
+
+                var bus = container.GetService<ICommandBus>();
+                var id = CustomerId.New;
+                bus.PublishAsync(new CustomerRegisterCommand(id, new CustomerReadModel {
+                    EmailAddress = "m223@email.com",
+                    //Password = "Code11054",
+                    //InvitationCode = "Invitation"
+                }), CancellationToken.None).Wait();
+
+
+                var query = container.GetService<IQueryProcessor>();
+                var resultModel = query.ProcessAsync(new ReadModelByIdQuery<CustomerReadModel>(id), CancellationToken.None)
+                    .Result;
+
                 //Validate mapper
-                var mapper = container.GetService<IMapper>();
-                mapper.ConfigurationProvider.AssertConfigurationIsValid();
+                //var mapper = container.GetService<IMapper>();
+                //mapper.ConfigurationProvider.AssertConfigurationIsValid();
 
-                ////migrate
-                Task.Run(() => {
-                    var sql = container.GetService<IMsSqlDatabaseMigrator>();
-                    EventFlowEventStoresMsSql.MigrateDatabase(sql);
-                    EventFlowSnapshotStoresMsSql.MigrateDatabase(sql);
-                });
+                //////migrate
+                //Task.Run(() => {
+                //    var sql = container.GetService<IMsSqlDatabaseMigrator>();
+                //    EventFlowEventStoresMsSql.MigrateDatabase(sql);
+                //    EventFlowSnapshotStoresMsSql.MigrateDatabase(sql);
+                //});
 
 
-                var trader = container.GetService<TraderPersistenceService>();
-                var follower = container.GetService<FollowerPersistenceService>();
+                //var trader = container.GetService<TraderPersistenceService>();
+                //var follower = container.GetService<FollowerPersistenceService>();
 
                 //trader.AppendAccountTask(new Account
                 //{
@@ -56,11 +66,11 @@ namespace AiOption.Tradings {
                 //}).ConfigureAwait(false);
 
 
-                follower.AppendAccountTask(new Account
-                {
-                    EmailAddress = "liie.m@excelbangkok.com",
-                    Password = "Code11054"
-                }).ConfigureAwait(false);
+                //follower.AppendAccountTask(new Account
+                //{
+                //    EmailAddress = "liie.m@excelbangkok.com",
+                //    Password = "Code11054"
+                //}).ConfigureAwait(false);
 
                 //Task.WhenAll(trader.InitialAccount(), follower.InitialAccount());
 

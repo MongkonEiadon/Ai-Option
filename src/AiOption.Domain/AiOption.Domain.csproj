@@ -28,10 +28,28 @@
   <PropertyGroup Condition="'$(TargetFramework)'=='net46'">
     <DefineConstants>net46</DefineConstants>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Saga\Events\RegisterCompleted.cs" />
+    <Compile Remove="Saga\RegisterSaga.cs" />
+  </ItemGroup>
 
   
   <ItemGroup>
-    <PackageReference Include="EventFlow" Version="0.64.3598" />
+    <PackageReference Include="EventFlow" Version="0.65.3664" />
+    <PackageReference Include="EventFlow.MsSql" Version="0.65.3664" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <Folder Include="Saga\" />
+    <Folder Include="Saga\Events\" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.Annotations">
+      <HintPath>..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.netcore.app\2.1.0\ref\netcoreapp2.1\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

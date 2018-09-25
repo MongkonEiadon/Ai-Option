@@ -21,7 +21,7 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="EventFlow.Autofac" Version="0.64.3598" />
     <PackageReference Include="EventFlow.DependencyInjection" Version="0.64.3598" />
-    <PackageReference Include="EventFlow.MsSql" Version="0.64.3598" />
+    <PackageReference Include="EventFlow.MsSql" Version="0.65.3664" />
     <PackageReference Include="iqoptionapi" Version="1.1.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />

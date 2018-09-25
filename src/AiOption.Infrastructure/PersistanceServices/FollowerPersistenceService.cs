@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,8 +20,9 @@ namespace AiOption.Infrastructure.PersistanceServices {
 
     public class FollowerPersistenceService : ApplicationTradingPersistence, IFollowerPersistenceService {
 
-        private readonly ILogger _logger;
         private readonly IBusReceiver<ActiveAccountQueue, Account> _activeAccountQueue;
+
+        private readonly ILogger _logger;
         private readonly IQueryProcessor _queryProcessor;
         private readonly ITraderPersistenceService _tradersPersistenceService;
 
@@ -41,15 +41,13 @@ namespace AiOption.Infrastructure.PersistanceServices {
 
             _activeAccountQueue.MessageObservable.Subscribe(x => {
 
-                if (!x.IsActive) {
-                    RemoveAccountTask(x); 
-                }
-                else {
+                if (!x.IsActive)
+                    RemoveAccountTask(x);
+                else
                     _queryProcessor.ProcessAsync(new GetAccountByAccoutIdQuery(x.UserId), CancellationToken.None)
                         .ContinueWith(t => {
                             if (t.Result != null) AppendAccountTask(t.Result).ConfigureAwait(false);
                         });
-                }
             });
         }
 

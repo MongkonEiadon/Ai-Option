@@ -2,14 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
 using Autofac;
 using Autofac.Builder;
 using Autofac.Core;
+
 using NSubstitute;
 
 namespace AutofacContrib.NSubstitute {
+
     /// <summary> Resolves unknown interfaces and Mocks using the <see cref="Substitute" />. </summary>
     internal class NSubstituteRegistrationHandler : IRegistrationSource {
+
         private static readonly IReadOnlyCollection<Type> GenericCollectionTypes = new List<Type> {
             typeof(IEnumerable<>),
             typeof(IList<>),
@@ -56,5 +60,7 @@ namespace AutofacContrib.NSubstitute {
             return serviceType.GetTypeInfo().IsGenericType &&
                    GenericCollectionTypes.Contains(serviceType.GetGenericTypeDefinition());
         }
+
     }
+
 }

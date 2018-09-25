@@ -31,7 +31,8 @@ namespace AiOption.Infrastructure.PersistanceServices {
         private readonly IBusReceiver<ActiveTradersQueue, IqAccountStatusChanged> _tradersBusReceiver;
         private readonly Subject<InfoData> _tradersOpenPositionSubject = new Subject<InfoData>();
 
-        public TraderPersistenceService(ICommandBus commandBus, ILogger logger, IQueryProcessor queryProcessor) : base(commandBus) {
+        public TraderPersistenceService(ICommandBus commandBus, ILogger logger, IQueryProcessor queryProcessor) :
+            base(commandBus) {
             _commandBus = commandBus;
             _logger = logger;
             _queryProcessor = queryProcessor;

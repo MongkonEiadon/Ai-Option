@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-using AiOption.Application.Repositories;
 using AiOption.Application.Repositories.ReadOnly;
 using AiOption.Domain.Customers;
 using AiOption.Domain.Customers.Queries;
@@ -11,7 +10,7 @@ using EventFlow.Queries;
 namespace AiOption.Application.QueryHandlers {
 
     public class CustomerQueryHandlers
-        : IQueryHandler<GetAuthorizeCustomerQuery, CustomerState> {
+        : IQueryHandler<GetAuthorizeCustomerQuery, CustomerReadModel> {
 
         private readonly IReadCustomerRepository _customerReadRepository;
 
@@ -21,7 +20,8 @@ namespace AiOption.Application.QueryHandlers {
         }
 
 
-        public Task<CustomerState> ExecuteQueryAsync(GetAuthorizeCustomerQuery query, CancellationToken cancellationToken) {
+        public Task<CustomerReadModel> ExecuteQueryAsync(GetAuthorizeCustomerQuery query,
+            CancellationToken cancellationToken) {
             return _customerReadRepository.GetAuthorizedCustomerAsync(query.EmailAddress);
         }
 

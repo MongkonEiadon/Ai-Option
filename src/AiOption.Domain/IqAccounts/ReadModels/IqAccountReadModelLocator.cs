@@ -12,9 +12,8 @@ namespace AiOption.Domain.IqAccounts.ReadModels {
         public IEnumerable<string> GetReadModelIds(IDomainEvent domainEvent) {
 
             var readModel = domainEvent as IqAccountLoginFailed;
-            if (readModel != null) {
-                yield break;
-            }
+
+            if (readModel != null) yield break;
 
             yield return readModel.EmailAddress;
         }

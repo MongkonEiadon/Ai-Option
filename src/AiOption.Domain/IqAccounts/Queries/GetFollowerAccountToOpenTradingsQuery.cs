@@ -4,6 +4,8 @@ using EventFlow.Queries;
 
 namespace AiOption.Domain.IqAccounts.Queries {
 
-    public class GetFollowerAccountToOpenTradingsQuery : IQuery<IEnumerable<Account>> { }
+    public class GetFollowerAccountToOpenTradingsQuery : IQuery<IEnumerable<Account>> {
+
+    }
 
 }

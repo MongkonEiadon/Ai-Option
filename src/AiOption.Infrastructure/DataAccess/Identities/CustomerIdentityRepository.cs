@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
-using AiOption.Application.ApplicationServices;
 using AiOption.Application.Repositories;
 using AiOption.Domain.Customers;
 using AiOption.Domain.Customers.DomainServices;
@@ -14,21 +10,20 @@ using AutoMapper;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace AiOption.Infrastructure.DataAccess.Identities
-{
+namespace AiOption.Infrastructure.DataAccess.Identities {
 
-    public class AuthorizationDomainService  : IAuthorizationDomainService {
+    public class AuthorizationDomainService : IAuthorizationDomainService {
 
         private readonly UserManager<CustomerDto> _customerManager;
         private readonly IRepository<CustomerDto, Guid> _customerRepository;
-        private readonly SignInManager<CustomerDto> _signInManager;
         private readonly IMapper _mapper;
+        private readonly SignInManager<CustomerDto> _signInManager;
         private readonly UserManager<CustomerDto> _userManager;
 
         public AuthorizationDomainService(
-            IRepository<CustomerDto, Guid> customerRepository, 
-            SignInManager<CustomerDto> signInManager, 
-            IMapper mapper, 
+            IRepository<CustomerDto, Guid> customerRepository,
+            SignInManager<CustomerDto> signInManager,
+            IMapper mapper,
             UserManager<CustomerDto> userManager) {
 
             _customerRepository = customerRepository;
@@ -37,7 +32,7 @@ namespace AiOption.Infrastructure.DataAccess.Identities
             _userManager = userManager;
         }
 
-        public async Task<CustomerState> SigninWithPasswordAsync(string email, string password) {
+        public async Task<CustomerReadModel> SigninWithPasswordAsync(string email, string password) {
 
             var user = _customerRepository.FirstOrDefault(x => x.NormalizedEmail == email.ToUpper());
 
@@ -45,21 +40,22 @@ namespace AiOption.Infrastructure.DataAccess.Identities
 
             var sigin = await _signInManager.PasswordSignInAsync(user, password, true, false);
 
-            return _mapper.Map<CustomerState>(user);
+            return _mapper.Map<CustomerReadModel>(user);
         }
 
-        public async Task<CustomerState> RegisterCustomerAsync(CustomerState newCustomer) {
+        public async Task<CustomerReadModel> RegisterCustomerAsync(CustomerReadModel newCustomer) {
 
             var userDto = _mapper.Map<CustomerDto>(newCustomer);
-            var result = await _userManager.CreateAsync(userDto, newCustomer.Password);
+            return newCustomer;
 
-            if (result.Succeeded) {
-                return newCustomer;
-            }
-            
-            throw new CustomerException(newCustomer.Id, string.Join(", ", result.Errors.Select(x => x.Description)));
+
+            //var result = await _userManager.CreateAsync(userDto, newCustomer.Password);
+
+            //if (result.Succeeded) return newCustomer;
+
+            //throw new CustomerException(newCustomer.Id, string.Join(", ", result.Errors.Select(x => x.Description)));
         }
 
-
     }
+
 }

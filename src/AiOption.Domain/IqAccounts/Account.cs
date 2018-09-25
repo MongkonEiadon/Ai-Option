@@ -30,16 +30,16 @@ namespace AiOption.Domain.IqAccounts {
         public static int GetMultipler(this Account This) {
             switch (This.Level) {
 
-                case CustomerLevel.None:return 1;
+                case CustomerLevel.None: return 1;
                 case CustomerLevel.Baned: return 0;
                 case CustomerLevel.Standard: return 1;
-                case CustomerLevel.Silver:return 2;
-                case CustomerLevel.Gold:return 3;
-                case CustomerLevel.Platinum:return 4;
-                case CustomerLevel.Vip:return 5;
-                case CustomerLevel.Administrator:return 1;
-                case CustomerLevel.Traders:return 1;
-                default:throw new ArgumentOutOfRangeException();
+                case CustomerLevel.Silver: return 2;
+                case CustomerLevel.Gold: return 3;
+                case CustomerLevel.Platinum: return 4;
+                case CustomerLevel.Vip: return 5;
+                case CustomerLevel.Administrator: return 1;
+                case CustomerLevel.Traders: return 1;
+                default: throw new ArgumentOutOfRangeException();
             }
         }
 

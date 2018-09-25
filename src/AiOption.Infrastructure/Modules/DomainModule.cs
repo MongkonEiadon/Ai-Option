@@ -1,7 +1,4 @@
-﻿using AiOption.Domain;
-using AiOption.Domain.Common;
-
-using Autofac;
+﻿using Autofac;
 
 namespace AiOption.Infrastructure.Modules {
 

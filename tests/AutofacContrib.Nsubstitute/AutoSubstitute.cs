@@ -1,15 +1,19 @@
 using System;
+
 using Autofac;
 using Autofac.Builder;
 using Autofac.Core;
 using Autofac.Features.ResolveAnything;
+
 using NSubstitute;
 
 namespace AutofacContrib.NSubstitute {
+
     /// <summary>
     ///     Auto mocking container using <see cref="Autofac" /> and <see cref="NSubstitute" />.
     /// </summary>
     public class AutoSubstitute : IDisposable {
+
         /// <summary>
         ///     Create an AutoSubstitute.
         /// </summary>
@@ -120,6 +124,7 @@ namespace AutofacContrib.NSubstitute {
         /// <returns>The instance resolved from the container</returns>
         public TService SubstituteFor<TService>(params object[] parameters) where TService : class {
             var substitute = Substitute.For<TService>(parameters);
+
             return Provide(substitute);
         }
 
@@ -136,7 +141,10 @@ namespace AutofacContrib.NSubstitute {
         /// <returns>The instance resolved from the container</returns>
         public TService ResolveAndSubstituteFor<TService>(params Parameter[] parameters) where TService : class {
             var substitute = Resolve<TService>(parameters);
+
             return Provide(substitute);
         }
+
     }
+
 }

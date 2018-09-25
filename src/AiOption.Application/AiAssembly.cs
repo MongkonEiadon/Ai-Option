@@ -2,17 +2,18 @@
 
 using Autofac;
 
+using Module = Autofac.Module;
+
 namespace AiOption.Application {
 
-    public partial class AiAssembly {
+    public class AiAssembly {
 
         public static Assembly ApplicationAssembly => typeof(AiAssembly).Assembly;
 
     }
 
 
-    public class ApplicationModule : Autofac.Module
-    {
+    public class ApplicationModule : Module {
 
         protected override void Load(ContainerBuilder builder) {
 

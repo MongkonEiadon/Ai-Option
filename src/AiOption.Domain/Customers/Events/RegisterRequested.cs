@@ -4,11 +4,12 @@ namespace AiOption.Domain.Customers.Events {
 
     public class RegisterRequested : AggregateEvent<CustomerAggregate, CustomerId> {
 
-        public CustomerState NewCustomer { get; }
-
-        public RegisterRequested(CustomerState newCustomer) {
+        public RegisterRequested(CustomerReadModel newCustomer) {
             NewCustomer = newCustomer;
         }
+
+        public CustomerReadModel NewCustomer { get; }
+
     }
 
 }

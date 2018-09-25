@@ -14,7 +14,7 @@ namespace AiOption.Domain.Common {
         public TKey Id { get; set; }
 
         public DateTimeOffset CreatedDate { get; set; }
-        
+
         public DateTimeOffset UpdatedDate { get; set; }
 
     }

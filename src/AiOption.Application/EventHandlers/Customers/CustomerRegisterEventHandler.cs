@@ -1,9 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace AiOption.Application.EventHandlers.Customers {
 
-using EventFlow.Subscribers;
-
-namespace AiOption.Application.EventHandlers.Customers
-{
 }

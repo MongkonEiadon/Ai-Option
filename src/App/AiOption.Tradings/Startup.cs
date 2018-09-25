@@ -2,14 +2,11 @@
 
 using AiOption.Application;
 using AiOption.Infrastructure.DataAccess;
-using AiOption.Infrastructure.DataAccess.Identities;
 using AiOption.Infrastructure.Modules;
 
 using Autofac;
 using Autofac.Configuration;
 using Autofac.Extensions.DependencyInjection;
-
-using EventFlow.Aggregates;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

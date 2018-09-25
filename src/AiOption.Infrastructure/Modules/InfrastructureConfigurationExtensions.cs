@@ -1,11 +1,7 @@
-﻿using System.Text;
-
-using AiOption.Application;
-using AiOption.Domain;
+﻿using AiOption.Application;
 using AiOption.Domain.Common;
 using AiOption.Domain.Customers;
 using AiOption.Domain.IqAccounts.ReadModels;
-using AiOption.Infrastructure.DataAccess;
 
 using Autofac;
 
@@ -18,10 +14,8 @@ using EventFlow.MsSql;
 using EventFlow.MsSql.Extensions;
 using EventFlow.Snapshots.Strategies;
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AiOption.Infrastructure.Modules {
 
@@ -46,13 +40,13 @@ namespace AiOption.Infrastructure.Modules {
                         c.IsAsynchronousSubscribersEnabled = true;
                         c.ThrowSubscriberExceptions = true;
                     })
-                    .ConfigureMsSql(MsSqlConfiguration.New.SetConnectionString(configuration.GetConnectionString("aioptiondb")));
+                    .ConfigureMsSql(
+                        MsSqlConfiguration.New.SetConnectionString(configuration.GetConnectionString("aioptiondb")));
 
                 config.UseMssqlEventStore();
                 config.UseMsSqlSnapshotStore();
-                config.UseInMemoryReadStoreFor<CustomerState>();
                 config.UseInMemorySnapshotStore();
-                config.UseMssqlReadModel<IqAccountReadModel>();
+                config.UseMssqlReadModel<CustomerReadModel>();
                 config.AddDefaults(typeof(BaseResult).Assembly);
                 config.AddDefaults(AiAssembly.ApplicationAssembly);
                 config.RegisterServices(c => { c.Register(ct => SnapshotEveryFewVersionsStrategy.With(100)); });

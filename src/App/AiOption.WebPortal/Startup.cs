@@ -3,9 +3,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using AiOption.Application;
-using AiOption.Application.ApplicationServices;
 using AiOption.Infrastructure.DataAccess;
-using AiOption.Infrastructure.DataAccess.Identities;
 using AiOption.Infrastructure.Modules;
 
 using Autofac;
@@ -19,25 +17,21 @@ using EventFlow.MsSql.SnapshotStores;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 using Serilog;
 
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace AiOption.WebPortal
-{
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
+namespace AiOption.WebPortal {
+
+    public class Startup {
+
+        public Startup(IConfiguration configuration) {
             Configuration = configuration;
         }
 
@@ -66,7 +60,7 @@ namespace AiOption.WebPortal
                 .AddJwtBearer(x => {
                     x.RequireHttpsMetadata = false;
                     x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters() {
+                    x.TokenValidationParameters = new TokenValidationParameters {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("AiOptionJwtSecret")),
                         ValidateIssuer = false,
@@ -75,13 +69,10 @@ namespace AiOption.WebPortal
                 });
 
             // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/build";
-            });
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
 
             // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" }));
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info {Title = "My API", Version = "v1"}));
 
             container.Populate(services);
             var build = container.Build();
@@ -98,48 +89,40 @@ namespace AiOption.WebPortal
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+            if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
-            else
-            {
+            }
+            else {
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseCors(x => { x.AllowAnyOrigin().AllowAnyMethod().AllowCredentials(); })
-               .UseAuthentication();
+                .UseAuthentication();
 
-            app.UseMvc(routes =>
-            {
+            app.UseMvc(routes => {
                 routes.MapRoute(
-                    name: "default",
-                    template: "v1/{controller}/{action=Index}/{id?}");
+                    "default",
+                    "v1/{controller}/{action=Index}/{id?}");
             });
 
-            app.UseSpa(spa =>
-            {
+            app.UseSpa(spa => {
                 spa.Options.SourcePath = "ClientApp";
 
-                if (env.IsDevelopment())
-                {
-                    spa.UseReactDevelopmentServer(npmScript: "start");
-                }
+                if (env.IsDevelopment()) spa.UseReactDevelopmentServer("start");
             });
         }
 
-        public void ConfigureContainer(ContainerBuilder builder)
-        {
+        public void ConfigureContainer(ContainerBuilder builder) {
 
             var logger = new LoggerConfiguration()
+
                 //.ReadFrom.Configuration(Configuration)
                 .WriteTo.Console()
                 .CreateLogger();
@@ -154,6 +137,7 @@ namespace AiOption.WebPortal
             builder.Register(c => logger).As<ILogger>().SingleInstance();
 
         }
+
     }
 
 

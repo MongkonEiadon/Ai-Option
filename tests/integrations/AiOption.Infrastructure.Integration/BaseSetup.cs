@@ -1,8 +1,6 @@
 using System;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Threading.Tasks;
 
 using AiOption.Application;
 using AiOption.Infrastructure.DataAccess;
@@ -11,9 +9,6 @@ using AiOption.Infrastructure.Modules;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 
-using AutofacContrib.NSubstitute;
-
-using EventFlow;
 using EventFlow.MsSql;
 using EventFlow.MsSql.EventStores;
 using EventFlow.MsSql.SnapshotStores;
@@ -21,14 +16,11 @@ using EventFlow.MsSql.SnapshotStores;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AiOption.Infrastructure.Integration
-{
-    public class BaseSetup
-    {
-        public IServiceProvider Container { get; }
+namespace AiOption.Infrastructure.Integration {
 
-        public BaseSetup()
-        {
+    public class BaseSetup {
+
+        public BaseSetup() {
 
             var services = new ServiceCollection();
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
@@ -39,7 +31,7 @@ namespace AiOption.Infrastructure.Integration
             containerBuilder.RegisterModule<ApplicationModule>();
             containerBuilder.RegisterModule<BusModule>();
 
-            services.AddSingleton<AiOptionDbContext>(new AiOptionDbContext());
+            services.AddSingleton(new AiOptionDbContext());
             services.AddTransient<IDbConnection>(x => new SqlConnection(config.GetConnectionString("aioptiondb")));
             services.AddEntityFrameworkSqlServer();
             services.AddInfrastructureConfiguration();
@@ -60,9 +52,10 @@ namespace AiOption.Infrastructure.Integration
 
         }
 
+        public IServiceProvider Container { get; }
 
-        public TService Resolve<TService>()
-        {
+
+        public TService Resolve<TService>() {
             return Container.GetService<TService>();
         }
 

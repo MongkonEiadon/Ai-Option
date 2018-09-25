@@ -4,12 +4,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
-using AiOption.Application.Repositories;
 using AiOption.Application.Repositories.ReadOnly;
-using AiOption.Application.Repositories.WriteOnly;
-using AiOption.Domain.Accounts;
 using AiOption.Domain.IqAccounts;
-using AiOption.Infrastructure.DataAccess.Extensions;
 
 using AutoMapper;
 
@@ -98,7 +94,7 @@ namespace AiOption.Infrastructure.DataAccess.Repositories {
 
 
         public async Task<IEnumerable<Account>> GetActiveAccountForOpenTradingsAsync() {
-            var sql = $"SELECT * FROM IqAccounts Where IsActive = @IsActive";
+            var sql = "SELECT * FROM IqAccounts Where IsActive = @IsActive";
             var param = new DynamicParameters();
             param.Add("@IsActive", true);
 

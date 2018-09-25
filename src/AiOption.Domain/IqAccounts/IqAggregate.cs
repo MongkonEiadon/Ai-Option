@@ -8,19 +8,18 @@ using EventFlow.Core;
 using EventFlow.Snapshots;
 using EventFlow.Snapshots.Strategies;
 
-namespace AiOption.Domain.IqAccounts
-{
+namespace AiOption.Domain.IqAccounts {
 
     #region [Aggregate Component]
 
-    public class IqSnapShot : ISnapshot
-    {
-        public IqAggregateState IqAggregateState { get; }
+    public class IqSnapShot : ISnapshot {
 
-        public IqSnapShot(IqAggregateState iqAggregateState)
-        {
+        public IqSnapShot(IqAggregateState iqAggregateState) {
             IqAggregateState = iqAggregateState;
         }
+
+        public IqAggregateState IqAggregateState { get; }
+
     }
 
 
@@ -31,13 +30,10 @@ namespace AiOption.Domain.IqAccounts
 
     }
 
-
     #endregion
 
 
     public class IqAggregate : SnapshotAggregateRoot<IqAggregate, IqIdentity, IqSnapShot> {
-
-        public IqAggregateState IqAggregateState { get; set; } = new IqAggregateState();
 
         public IqAggregate(IqIdentity id, ISnapshotStrategy snapshotStrategy) : base(id,
             snapshotStrategy ?? SnapshotEveryFewVersionsStrategy.With(100)) {
@@ -45,6 +41,8 @@ namespace AiOption.Domain.IqAccounts
             Register(IqAggregateState);
 
         }
+
+        public IqAggregateState IqAggregateState { get; set; } = new IqAggregateState();
 
         public void LoginFailed(string email, string message) {
             Emit(new IqAccountLoginFailed(email, message));

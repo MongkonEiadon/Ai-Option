@@ -13,20 +13,22 @@ namespace AiOption.Application.ApplicationServices {
 
     public interface IApplicationAuthorizationServices {
 
-        Task<CustomerState> RegisterCustomerAsync(string userName, string password, string invitationCode);
+        Task<CustomerReadModel> RegisterCustomerAsync(string userName, string password, string invitationCode);
 
-        Task<CustomerState> LoginAsync(string userName, string password);
+        Task<CustomerReadModel> LoginAsync(string userName, string password);
 
     }
-    public class ApplicationAuthorizationServices : IApplicationAuthorizationServices
-    {
 
-        private readonly IQueryProcessor _queryProcessor;
+
+    public class ApplicationAuthorizationServices : IApplicationAuthorizationServices {
+
         private readonly ICommandBus _commandBus;
         private readonly IReadCustomerRepository _customerRepository;
 
+        private readonly IQueryProcessor _queryProcessor;
+
         public ApplicationAuthorizationServices(
-            IQueryProcessor queryProcessor, 
+            IQueryProcessor queryProcessor,
             ICommandBus commandBus,
             IReadCustomerRepository customerRepository) {
             _queryProcessor = queryProcessor;
@@ -36,45 +38,41 @@ namespace AiOption.Application.ApplicationServices {
         }
 
 
-        public async Task<CustomerState> RegisterCustomerAsync(string userName, string password, string invitationCode) {
+        public async Task<CustomerReadModel>
+            RegisterCustomerAsync(string userName, string password, string invitationCode) {
             var ct = new CancellationToken();
 
             var existing = await _queryProcessor.ProcessAsync(new GetAuthorizeCustomerQuery(userName), ct);
 
-            if (existing != null) {
-                return null;
-            }
+            if (existing != null) return null;
 
-            if (invitationCode != "TheWinner") {
-                return null;
-            }
+            if (invitationCode != "TheWinner") return null;
 
             var id = CustomerId.New;
-            var customer = await _commandBus.PublishAsync(new CustomerRegisterCommand(id, new CustomerState() {
+            var customer = await _commandBus.PublishAsync(new CustomerRegisterCommand(id, new CustomerReadModel {
                 EmailAddress = userName,
-                Password = password,
-                InvitationCode = invitationCode,
-                Id = id.GetGuid()
+                //Password = password,
+                //InvitationCode = invitationCode,
+                //Id = id.GetGuid()
             }), ct);
 
             return null;
 
         }
 
-        public async Task<CustomerState> LoginAsync(string email, string password) {
+        public async Task<CustomerReadModel> LoginAsync(string email, string password) {
 
             var user = await _customerRepository.GetAuthorizedCustomerAsync(email);
 
-            if (user == null) {
-                return null;
-            }
+            if (user == null) return null;
 
-            var account = await _commandBus.PublishAsync(new CustomerLoginCommand(CustomerId.New, email, password), CancellationToken.None);
-            
+            var account = await _commandBus.PublishAsync(new CustomerLoginCommand(CustomerId.New, email, password),
+                CancellationToken.None);
 
-            return default(CustomerState);
+
+            return default(CustomerReadModel);
         }
-        
+
     }
 
 }

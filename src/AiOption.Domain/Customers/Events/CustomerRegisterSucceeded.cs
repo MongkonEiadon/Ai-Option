@@ -4,11 +4,11 @@ namespace AiOption.Domain.Customers.Events {
 
     public class CustomerRegisterSucceeded : AggregateEvent<CustomerAggregate, CustomerId> {
 
-        public CustomerState NewCustomer { get; }
-
-        protected CustomerRegisterSucceeded(CustomerState newCustomer) {
+        public CustomerRegisterSucceeded(CustomerReadModel newCustomer) {
             NewCustomer = newCustomer;
         }
+
+        public CustomerReadModel NewCustomer { get; }
 
     }
 

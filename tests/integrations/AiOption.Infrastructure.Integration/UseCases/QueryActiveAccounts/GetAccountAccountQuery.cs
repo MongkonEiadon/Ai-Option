@@ -1,23 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
 
 using AiOption.Application.Repositories.ReadOnly;
 using AiOption.Infrastructure.DataAccess;
-using AiOption.Infrastructure.DataAccess.Repositories;
 using AiOption.TestCore.FixtureSetups;
 
 using Xunit;
 
-namespace AiOption.Infrastructure.Integration.UseCases.QueryActiveAccounts
-{
-    public class GetAccountAccountQuery : IClassFixture<BaseSetup>, IClassFixture<DataContextSetupCleaner<AiOptionDbContext>>
-    {
+namespace AiOption.Infrastructure.Integration.UseCases.QueryActiveAccounts {
 
-        private readonly BaseSetup _setup;
-        private readonly DataContextSetupCleaner<AiOptionDbContext> _dbCleaner;
+    public class GetAccountAccountQuery : IClassFixture<BaseSetup>,
+        IClassFixture<DataContextSetupCleaner<AiOptionDbContext>> {
 
         public GetAccountAccountQuery(BaseSetup setup, DataContextSetupCleaner<AiOptionDbContext> dbCleaner) {
             _setup = setup;
@@ -25,19 +18,20 @@ namespace AiOption.Infrastructure.Integration.UseCases.QueryActiveAccounts
 
         }
 
+        private readonly BaseSetup _setup;
+        private readonly DataContextSetupCleaner<AiOptionDbContext> _dbCleaner;
 
 
         [Fact]
-        public async Task GetActiveAccount_With2ExsitingAnd2NotActive_ActiveAccountWith2RecordsReturned()
-        {
+        public async Task GetActiveAccount_With2ExsitingAnd2NotActive_ActiveAccountWith2RecordsReturned() {
 
             //arrange
             using (var db = _setup.Resolve<AiOptionDbContext>()) {
                 var accounts = new[] {
-                    new IqAccountDto(){ Id = 1, IsActive = true},
-                    new IqAccountDto(){ Id = 2, IsActive = true},
-                    new IqAccountDto(){ Id = 3, IsActive = false},
-                    new IqAccountDto(){ Id = 4, IsActive = false},
+                    new IqAccountDto {Id = 1, IsActive = true},
+                    new IqAccountDto {Id = 2, IsActive = true},
+                    new IqAccountDto {Id = 3, IsActive = false},
+                    new IqAccountDto {Id = 4, IsActive = false}
                 };
 
 
@@ -67,12 +61,12 @@ namespace AiOption.Infrastructure.Integration.UseCases.QueryActiveAccounts
             var result = await _setup.Resolve<IIqOptionAccountReadOnlyRepository>()
                 .GetActiveAccountForOpenTradingsAsync();
 
-            
+
             //arrange
             Assert.NotNull(result);
             Assert.Empty(result);
         }
 
-
     }
+
 }

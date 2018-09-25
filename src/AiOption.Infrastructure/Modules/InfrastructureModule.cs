@@ -1,6 +1,5 @@
 ﻿using AiOption.Application.Repositories;
 using AiOption.Infrastructure.DataAccess;
-using AiOption.Infrastructure.DataAccess.Identities;
 using AiOption.Infrastructure.DataAccess.Repositories;
 using AiOption.Infrastructure.PersistanceServices;
 
@@ -30,7 +29,7 @@ namespace AiOption.Infrastructure.Modules {
             //    .AsSelf()
             //    .AsImplementedInterfaces()
             //    .SingleInstance();
-            
+
             builder.RegisterType<TraderPersistenceService>().AsSelf().As<ITraderPersistenceService>().SingleInstance();
             builder.RegisterType<FollowerPersistenceService>().AsSelf().As<IFollowerPersistenceService>()
                 .SingleInstance();

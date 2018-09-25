@@ -1,5 +1,4 @@
-﻿using AiOption.Domain.Accounts;
-using AiOption.Domain.IqAccounts;
+﻿using AiOption.Domain.IqAccounts;
 using AiOption.Infrastructure.DataAccess;
 
 using AutoMapper;
@@ -17,7 +16,7 @@ namespace AiOption.Infrastructure.Mappings {
                 .ForMember(a => a.CustomerId, c => c.Ignore())
                 .ForMember(a => a.TradeMode, c => c.Ignore())
                 .ForMember(a => a.CreatedDate, c => c.Ignore())
-                .ForMember(a => a.UpdatedDate, c=> c.Ignore())
+                .ForMember(a => a.UpdatedDate, c => c.Ignore())
                 .ForMember(a => a.SecuredUpdated, c => c.Ignore());
 
             CreateMap<IqAccountDto, Account>()

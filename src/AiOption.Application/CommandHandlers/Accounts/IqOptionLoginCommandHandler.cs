@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using AiOption.Domain.Accounts;
 using AiOption.Domain.API;
 using AiOption.Domain.IqAccounts;
 using AiOption.Domain.IqAccounts.Commands;
@@ -12,7 +11,8 @@ using EventFlow.Commands;
 
 namespace AiOption.Application.CommandHandlers.Accounts {
 
-    public class IqOptionLoginCommandHandler : ICommandHandler<IqAggregate, IqIdentity, LoginCommandResult, LoginCommand> {
+    public class
+        IqOptionLoginCommandHandler : ICommandHandler<IqAggregate, IqIdentity, LoginCommandResult, LoginCommand> {
 
         private readonly IIqOptionApiWrapper _apiWrapper;
 
