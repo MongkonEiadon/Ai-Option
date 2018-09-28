@@ -50,6 +50,7 @@
     <ProjectReference Include="..\..\AiOption.Application\AiOption.Application.csproj" />
     <ProjectReference Include="..\..\AiOption.Domain\AiOption.Domain.csproj" />
     <ProjectReference Include="..\..\AiOption.Infrastructure\AiOption.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\AiOption\AiOption.csproj" />
   </ItemGroup>
 
   <ItemGroup>

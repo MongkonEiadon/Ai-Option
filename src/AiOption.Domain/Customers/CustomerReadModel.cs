@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using AiOption.Domain.Customers.Events;
 
 using EventFlow.Aggregates;
@@ -17,7 +16,6 @@ namespace AiOption.Domain.Customers {
         Failed = -10
     }
     
-    [Table("ReadModel-CustomerReadModel")]
     public class CustomerReadModel : 
         IReadModel, //AggregateState<CustomerAggregate, CustomerId, CustomerReadModel>,
         IAmReadModelFor<CustomerAggregate, CustomerId, RegisterRequested>

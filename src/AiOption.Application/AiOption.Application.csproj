@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AiOption.Domain\AiOption.Domain.csproj" />
+    <ProjectReference Include="..\AiOption\AiOption.csproj" />
   </ItemGroup>
 
 </Project>

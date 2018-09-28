@@ -1,7 +1,10 @@
 ﻿using System;
-
+using AiOption.Infrastructure.ReadStores.ReadModels;
+using EventFlow.EntityFramework.EventStores;
+using EventFlow.EntityFramework.Extensions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
 using Microsoft.Extensions.Configuration;
 
 namespace AiOption.Infrastructure.DataAccess {
@@ -20,7 +23,9 @@ namespace AiOption.Infrastructure.DataAccess {
         public DbSet<IqAccountDto> IqAccounts { get; set; }
         public DbSet<CustomerDto> Customers { get; set; }
         public DbSet<CustomerLevelDto> CustomerLevels { get; set; }
-        public DbSet<AccountDetailedDto> IqAccountDetails { get; set; }
+
+        //read models
+        public DbSet<AccountReadModel> AccountReadModels { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
 
@@ -29,13 +34,18 @@ namespace AiOption.Infrastructure.DataAccess {
                     .AddJsonFile("appsettings.json")
                     .Build();
 
-
                 optionsBuilder.UseSqlServer(config.GetConnectionString("aioptiondb"));
             }
         }
 
-        protected override void OnModelCreating(ModelBuilder builder) {
-            base.OnModelCreating(builder);
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .AddEventFlowEvents()
+                .AddEventFlowSnapshots();
+
+            base.OnModelCreating(modelBuilder);
+
         }
 
     }
