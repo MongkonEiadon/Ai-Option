@@ -24,6 +24,7 @@ namespace AiOption.Infrastructure.DataAccess {
                 .AddDbContext<AiOptionDbContext>(c => {
                     c.UseLoggerFactory(new NullLoggerFactory());
                     c.UseSqlServer(constring);
+                   
                 });
 
             This.AddIdentityCore<CustomerDto>();

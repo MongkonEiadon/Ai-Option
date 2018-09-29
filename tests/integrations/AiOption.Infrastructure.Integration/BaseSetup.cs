@@ -8,11 +8,6 @@ using AiOption.Infrastructure.Modules;
 
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-
-using EventFlow.MsSql;
-using EventFlow.MsSql.EventStores;
-using EventFlow.MsSql.SnapshotStores;
-
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -41,14 +36,6 @@ namespace AiOption.Infrastructure.Integration {
 
             var build = containerBuilder.Build();
             Container = new AutofacServiceProvider(build);
-
-            //ensure database
-            var db = build.Resolve<AiOptionDbContext>();
-            db.Database.EnsureCreated();
-
-            var msSqlDatabaseMigrator = build.Resolve<IMsSqlDatabaseMigrator>();
-            EventFlowEventStoresMsSql.MigrateDatabase(msSqlDatabaseMigrator);
-            EventFlowSnapshotStoresMsSql.MigrateDatabase(msSqlDatabaseMigrator);
 
         }
 

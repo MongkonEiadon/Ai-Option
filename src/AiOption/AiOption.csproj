@@ -10,8 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Query\" />
+    <Folder Include="Domain\Account\EventHandlers\" />
   </ItemGroup>
+
+
   
 
 </Project>

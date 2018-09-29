@@ -19,9 +19,9 @@
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="Autofac" Version="4.8.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
-    <PackageReference Include="EventFlow.Autofac" Version="0.64.3598" />
-    <PackageReference Include="EventFlow.DependencyInjection" Version="0.64.3598" />
-    <PackageReference Include="EventFlow.MsSql" Version="0.65.3664" />
+    <PackageReference Include="EventFlow.Autofac" Version="0.65.3664" />
+    <PackageReference Include="EventFlow.DependencyInjection" Version="0.65.3664" />
+    <PackageReference Include="EventFlow.EntityFramework" Version="0.65.3664" />
     <PackageReference Include="iqoptionapi" Version="1.1.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
@@ -39,6 +39,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AiOption.Application\AiOption.Application.csproj" />
     <ProjectReference Include="..\AiOption.Domain\AiOption.Domain.csproj" />
+    <ProjectReference Include="..\AiOption\AiOption.csproj" />
   </ItemGroup>
 
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
-
+using AiOption.Domain.Account;
+using AiOption.Domain.Account.Commands;
 using AiOption.Domain.Customers;
 using AiOption.Domain.Customers.Commands;
 
@@ -30,30 +31,26 @@ namespace AiOption.Tradings {
                 var container = new Startup().ConfigureServices();
                 var logger = container.GetService<ILogger>();
 
+                ////migrate
+
 
                 var bus = container.GetService<ICommandBus>();
-                var id = CustomerId.New;
-                bus.PublishAsync(new CustomerRegisterCommand(id, new CustomerReadModel {
-                    EmailAddress = "m223@email.com",
-                    //Password = "Code11054",
-                    //InvitationCode = "Invitation"
-                }), CancellationToken.None).Wait();
+                var id = AccountId.New;
+                bus.PublishAsync(new AccountRegisterCommand(
+                    "m223@email.com",
+                    "Code11054",
+                    "Invitation"), CancellationToken.None).Wait();
 
 
-                var query = container.GetService<IQueryProcessor>();
-                var resultModel = query.ProcessAsync(new ReadModelByIdQuery<CustomerReadModel>(id), CancellationToken.None)
-                    .Result;
+                //var query = container.GetService<IQueryProcessor>();
+                //var resultModel = query.ProcessAsync(new ReadModelByIdQuery<CustomerReadModel>(id), CancellationToken.None)
+                //    .Result;
 
                 //Validate mapper
                 //var mapper = container.GetService<IMapper>();
                 //mapper.ConfigurationProvider.AssertConfigurationIsValid();
 
-                //////migrate
-                //Task.Run(() => {
-                //    var sql = container.GetService<IMsSqlDatabaseMigrator>();
-                //    EventFlowEventStoresMsSql.MigrateDatabase(sql);
-                //    EventFlowSnapshotStoresMsSql.MigrateDatabase(sql);
-                //});
+                
 
 
                 //var trader = container.GetService<TraderPersistenceService>();

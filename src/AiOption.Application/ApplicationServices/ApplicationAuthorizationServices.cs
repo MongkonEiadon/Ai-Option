@@ -1,19 +1,25 @@
-﻿using System.Threading;
+﻿using System;
+using System.Diagnostics;
+using System.Runtime.ExceptionServices;
+using System.Threading;
 using System.Threading.Tasks;
 
 using AiOption.Application.Repositories.ReadOnly;
+using AiOption.Domain.Account;
+using AiOption.Domain.Account.Commands;
 using AiOption.Domain.Customers;
 using AiOption.Domain.Customers.Commands;
 using AiOption.Domain.Customers.Queries;
-
+using AiOption.Query.Account;
 using EventFlow;
+using EventFlow.Commands;
 using EventFlow.Queries;
 
 namespace AiOption.Application.ApplicationServices {
 
     public interface IApplicationAuthorizationServices {
 
-        Task<CustomerReadModel> RegisterCustomerAsync(string userName, string password, string invitationCode);
+        Task<Account> RegisterCustomerAsync(string userName, string password, string invitationCode);
 
         Task<CustomerReadModel> LoginAsync(string userName, string password);
 
@@ -38,25 +44,16 @@ namespace AiOption.Application.ApplicationServices {
         }
 
 
-        public async Task<CustomerReadModel>
-            RegisterCustomerAsync(string userName, string password, string invitationCode) {
-            var ct = new CancellationToken();
+        public Task<Account> RegisterCustomerAsync(
+            string userName, 
+            string password, 
+            string invitationCode)
+        {
 
-            var existing = await _queryProcessor.ProcessAsync(new GetAuthorizeCustomerQuery(userName), ct);
+            var command = new AccountRegisterCommand(userName, password, invitationCode);
+            PublishAsync(command);
 
-            if (existing != null) return null;
-
-            if (invitationCode != "TheWinner") return null;
-
-            var id = CustomerId.New;
-            var customer = await _commandBus.PublishAsync(new CustomerRegisterCommand(id, new CustomerReadModel {
-                EmailAddress = userName,
-                //Password = password,
-                //InvitationCode = invitationCode,
-                //Id = id.GetGuid()
-            }), ct);
-
-            return null;
+            return Task.FromResult(new Account(AccountId.New, ""));
 
         }
 
@@ -71,6 +68,37 @@ namespace AiOption.Application.ApplicationServices {
 
 
             return default(CustomerReadModel);
+        }
+
+        [DebuggerStepThrough]
+        public void PublishAsync(params ICommand[] commands)
+        {
+            try
+            {
+                foreach (var command in commands)
+                {
+                    command.PublishAsync(_commandBus, CancellationToken.None);
+                }
+            }
+            catch (AggregateException e)
+            {
+                ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+                throw;
+            }
+        }
+
+        [DebuggerStepThrough]
+        public Task<TResult> QueryAsync<TResult>(IQuery<TResult> query)
+        {
+            try
+            {
+                return _queryProcessor.ProcessAsync(query, CancellationToken.None);
+            }
+            catch (AggregateException e)
+            {
+                ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+                throw;
+            }
         }
 
     }
