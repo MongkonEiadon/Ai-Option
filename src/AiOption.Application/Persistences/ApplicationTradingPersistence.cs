@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
-using AiOption.Domain.IqAccounts;
-using AiOption.Domain.IqAccounts.Commands;
-
+using AiOption.Domain.IqOptions;
+using AiOption.Domain.IqOptions.Commands;
 using EventFlow;
 
 namespace AiOption.Application.Persistences {
@@ -20,13 +18,13 @@ namespace AiOption.Application.Persistences {
 
             _commandBus = commandBus;
 
-            OpenAccountTradingsStream = new ConcurrentDictionary<Account, IDisposable>();
+            OpenAccountTradingsStream = new ConcurrentDictionary<IqAccount, IDisposable>();
         }
 
-        protected IDictionary<Account, IDisposable> OpenAccountTradingsStream { get; }
+        protected IDictionary<IqAccount, IDisposable> OpenAccountTradingsStream { get; }
 
 
-        public virtual Task RemoveAccountTask(Account account) {
+        public virtual Task RemoveAccountTask(IqAccount account) {
             if (OpenAccountTradingsStream.ContainsKey(account)) {
                 var dispose = OpenAccountTradingsStream[account];
                 dispose.Dispose();
@@ -42,25 +40,25 @@ namespace AiOption.Application.Persistences {
         }
 
 
-        public virtual async Task AppendAccountTask(Account account) {
+        public virtual async Task AppendAccountTask(IqAccount account) {
             if (!OpenAccountTradingsStream.ContainsKey(account)) {
 
                 if (string.IsNullOrEmpty(account.SecuredToken)) {
                     var loginResult = await _commandBus.PublishAsync(
-                        new LoginCommand(IqIdentity.New, account.EmailAddress, account.Password),
+                        new IqAccountLoginCommand(IqId.New, account.UserName.Value, account.Password.Value),
                         CancellationToken.None);
 
                     if (!loginResult.IsSuccess) return;
 
-                    account.SecuredToken = loginResult.Ssid;
+                    account.SetSecuredToken("");// .SecuredToken = "";
                 }
 
                 OpenAccountTradingsStream.Add(account, Handle(account));
             }
         }
 
-        public abstract Task<IDisposable> Handle(Account account);
-        public abstract Task<IEnumerable<Account>> GetAccounts();
+        public abstract Task<IDisposable> Handle(IqAccount account);
+        public abstract Task<IEnumerable<IqAccount>> GetAccounts();
 
     }
 

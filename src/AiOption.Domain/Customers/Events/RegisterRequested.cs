@@ -2,7 +2,7 @@
 
 namespace AiOption.Domain.Customers.Events {
 
-    public class RegisterRequested : AggregateEvent<CustomerAggregate, CustomerId> {
+    public class RegisterRequested : AggregateEvent<CustomerAggregateRoote, CustomerIdentity> {
 
         public RegisterRequested(CustomerReadModel newCustomer) {
             NewCustomer = newCustomer;

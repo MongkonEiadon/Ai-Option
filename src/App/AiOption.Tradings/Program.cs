@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Threading;
-using AiOption.Domain.Account;
-using AiOption.Domain.Account.Commands;
 using AiOption.Domain.Customers;
 using AiOption.Domain.Customers.Commands;
 
@@ -11,7 +9,6 @@ using EventFlow.Queries;
 using Microsoft.Extensions.DependencyInjection;
 
 using Serilog;
-
 namespace AiOption.Tradings {
 
     public class Program {
@@ -35,8 +32,8 @@ namespace AiOption.Tradings {
 
 
                 var bus = container.GetService<ICommandBus>();
-                var id = AccountId.New;
-                bus.PublishAsync(new AccountRegisterCommand(
+                var id = CustomerId.New;
+                bus.PublishAsync(new CustomerRequestRegisterCommand(
                     "m223@email.com",
                     "Code11054",
                     "Invitation"), CancellationToken.None).Wait();
@@ -58,14 +55,14 @@ namespace AiOption.Tradings {
 
                 //trader.AppendAccountTask(new Account
                 //{
-                //    EmailAddress = "mongkon.eiadon@gmail.com2",
+                //    UserName = "mongkon.eiadon@gmail.com2",
                 //    Password = "Code11054"
                 //}).ConfigureAwait(false);
 
 
                 //follower.AppendAccountTask(new Account
                 //{
-                //    EmailAddress = "liie.m@excelbangkok.com",
+                //    UserName = "liie.m@excelbangkok.com",
                 //    Password = "Code11054"
                 //}).ConfigureAwait(false);
 

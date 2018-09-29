@@ -10,10 +10,6 @@ using Autofac;
 using Autofac.Configuration;
 using Autofac.Extensions.DependencyInjection;
 
-using EventFlow.MsSql;
-using EventFlow.MsSql.EventStores;
-using EventFlow.MsSql.SnapshotStores;
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -79,12 +75,6 @@ namespace AiOption.WebPortal {
 
 
             //migrate
-            Task.Run(() => {
-                var sql = build.Resolve<IMsSqlDatabaseMigrator>();
-                EventFlowEventStoresMsSql.MigrateDatabase(sql);
-                EventFlowSnapshotStoresMsSql.MigrateDatabase(sql);
-            });
-
             return new AutofacServiceProvider(build);
         }
 

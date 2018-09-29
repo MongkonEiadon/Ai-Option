@@ -2,9 +2,9 @@
 
 namespace AiOption.Domain.Customers.Commands {
 
-    public class CustomerLoginCommand : Command<CustomerAggregate, CustomerId> {
+    public class CustomerLoginCommand : Command<CustomerAggregateRoote, CustomerIdentity> {
 
-        public CustomerLoginCommand(CustomerId aggregateId, string userName, string passwordHash) : base(aggregateId) {
+        public CustomerLoginCommand(CustomerIdentity aggregateIdentity, string userName, string passwordHash) : base(aggregateIdentity) {
             UserName = userName;
             PasswordHash = passwordHash;
         }

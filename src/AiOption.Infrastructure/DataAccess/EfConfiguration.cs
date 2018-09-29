@@ -27,16 +27,16 @@ namespace AiOption.Infrastructure.DataAccess {
                    
                 });
 
-            This.AddIdentityCore<CustomerDto>();
-            This.AddIdentity<CustomerDto, CustomerLevelDto>(identity => {
-                    identity.Password.RequireDigit = true;
-                    identity.Password.RequireLowercase = false;
-                    identity.Password.RequireNonAlphanumeric = false;
-                    identity.Password.RequiredLength = 6;
-                    identity.Password.RequiredUniqueChars = 0;
-                })
-                .AddEntityFrameworkStores<AiOptionDbContext>()
-                .AddDefaultTokenProviders();
+            //This.AddIdentityCore<CustomerDto>();
+            //This.AddIdentity<CustomerDto, CustomerLevelDto>(identity => {
+            //        identity.Password.RequireDigit = true;
+            //        identity.Password.RequireLowercase = false;
+            //        identity.Password.RequireNonAlphanumeric = false;
+            //        identity.Password.RequiredLength = 6;
+            //        identity.Password.RequiredUniqueChars = 0;
+            //    })
+            //    .AddEntityFrameworkStores<AiOptionDbContext>()
+            //    .AddDefaultTokenProviders();
 
 
             return This;

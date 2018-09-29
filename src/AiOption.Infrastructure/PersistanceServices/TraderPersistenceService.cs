@@ -9,9 +9,6 @@ using System.Threading.Tasks;
 using AiOption.Application.Bus;
 using AiOption.Application.Persistences;
 using AiOption.Domain.Accounts;
-using AiOption.Domain.IqAccounts;
-using AiOption.Domain.IqAccounts.Events;
-using AiOption.Domain.IqAccounts.Queries;
 
 using EventFlow;
 using EventFlow.Queries;

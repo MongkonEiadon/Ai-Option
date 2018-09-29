@@ -2,9 +2,9 @@
 
 namespace AiOption.Domain.Customers.Commands {
 
-    public class CustomerRegisterCommand : Command<CustomerAggregate, CustomerId> {
+    public class CustomerRegisterCommand : Command<CustomerAggregateRoote, CustomerIdentity> {
 
-        public CustomerRegisterCommand(CustomerId aggregateId, CustomerReadModel newCustomer) : base(aggregateId) {
+        public CustomerRegisterCommand(CustomerIdentity aggregateIdentity, CustomerReadModel newCustomer) : base(aggregateIdentity) {
             NewCustomer = newCustomer;
 
         }

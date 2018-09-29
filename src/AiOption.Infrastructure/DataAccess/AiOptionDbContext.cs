@@ -1,15 +1,17 @@
 ﻿using System;
+using AiOption.Domain.Common;
 using AiOption.Infrastructure.ReadStores.ReadModels;
 using EventFlow.EntityFramework.EventStores;
 using EventFlow.EntityFramework.Extensions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
 using Microsoft.Extensions.Configuration;
 
 namespace AiOption.Infrastructure.DataAccess {
 
-    public class AiOptionDbContext : IdentityDbContext<CustomerDto, CustomerLevelDto, Guid> {
+    public class AiOptionDbContext : DbContext {
 
         private readonly DbContextOptions<AiOptionDbContext> _options;
 
@@ -20,12 +22,9 @@ namespace AiOption.Infrastructure.DataAccess {
             _options = options;
         }
 
-        public DbSet<IqAccountDto> IqAccounts { get; set; }
-        public DbSet<CustomerDto> Customers { get; set; }
-        public DbSet<CustomerLevelDto> CustomerLevels { get; set; }
-
         //read models
-        public DbSet<AccountReadModel> AccountReadModels { get; set; }
+        public DbSet<CustomerReadModel> Customers { get; set; }
+        public DbSet<IqAccountReadModel> IqAccounts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
 
@@ -43,6 +42,21 @@ namespace AiOption.Infrastructure.DataAccess {
             modelBuilder
                 .AddEventFlowEvents()
                 .AddEventFlowSnapshots();
+
+            modelBuilder.Entity<CustomerReadModel>()
+                .Property(e => e.Password)
+                .HasConversion(v => v.Value.Decrypt("AiOption"), v => Password.With(v));
+            modelBuilder.Entity<CustomerReadModel>()
+                .Property(e => e.UserName)
+                .HasConversion(v => v.Value, v => new User(v));
+
+            modelBuilder.Entity<IqAccountReadModel>()
+                .Property(e => e.UserName)
+                .HasConversion(v => v.Value, v => new User(v));
+            modelBuilder.Entity<IqAccountReadModel>()
+                .Property(e => e.Password)
+                .HasConversion(v => v.Value, v => Password.With(v));
+
 
             base.OnModelCreating(modelBuilder);
 

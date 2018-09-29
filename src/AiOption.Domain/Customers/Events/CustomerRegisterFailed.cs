@@ -2,7 +2,7 @@
 
 namespace AiOption.Domain.Customers.Events {
 
-    public class CustomerRegisterFailed : AggregateEvent<CustomerAggregate, CustomerId> {
+    public class CustomerRegisterFailed : AggregateEvent<CustomerAggregateRoote, CustomerIdentity> {
 
         public CustomerRegisterFailed(string failedMessage) {
             FailedMessage = failedMessage;

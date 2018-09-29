@@ -17,14 +17,14 @@ namespace AiOption.Domain.Customers {
     }
     
     public class CustomerReadModel : 
-        IReadModel, //AggregateState<CustomerAggregate, CustomerId, CustomerReadModel>,
-        IAmReadModelFor<CustomerAggregate, CustomerId, RegisterRequested>
+        IReadModel, //AggregateState<CustomerAggregateRoote, CustomerIdentity, CustomerReadModel>,
+        IAmReadModelFor<CustomerAggregateRoote, CustomerIdentity, RegisterRequested>
     {
 
         public string EmailAddress { get; set; }
 
 
-        public void Apply(IReadModelContext context, IDomainEvent<CustomerAggregate, CustomerId, RegisterRequested> domainEvent)
+        public void Apply(IReadModelContext context, IDomainEvent<CustomerAggregateRoote, CustomerIdentity, RegisterRequested> domainEvent)
         {
             EmailAddress = domainEvent.AggregateEvent.NewCustomer.EmailAddress;
         }

@@ -4,24 +4,22 @@ using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-using AiOption.Application.Repositories.ReadOnly;
-using AiOption.Domain.Account;
-using AiOption.Domain.Account.Commands;
+using AiOption.Domain.Accounts;
+using AiOption.Domain.Common;
 using AiOption.Domain.Customers;
 using AiOption.Domain.Customers.Commands;
-using AiOption.Domain.Customers.Queries;
-using AiOption.Query.Account;
 using EventFlow;
 using EventFlow.Commands;
 using EventFlow.Queries;
+using CustomerId = AiOption.Domain.Customers.CustomerId;
 
 namespace AiOption.Application.ApplicationServices {
 
     public interface IApplicationAuthorizationServices {
 
-        Task<Account> RegisterCustomerAsync(string userName, string password, string invitationCode);
+        Task<Customer> RegisterCustomerAsync(string userName, string password, string invitationCode);
 
-        Task<CustomerReadModel> LoginAsync(string userName, string password);
+        Task<Customer> LoginAsync(string userName, string password);
 
     }
 
@@ -29,45 +27,40 @@ namespace AiOption.Application.ApplicationServices {
     public class ApplicationAuthorizationServices : IApplicationAuthorizationServices {
 
         private readonly ICommandBus _commandBus;
-        private readonly IReadCustomerRepository _customerRepository;
 
         private readonly IQueryProcessor _queryProcessor;
 
         public ApplicationAuthorizationServices(
             IQueryProcessor queryProcessor,
-            ICommandBus commandBus,
-            IReadCustomerRepository customerRepository) {
+            ICommandBus commandBus) {
             _queryProcessor = queryProcessor;
             _commandBus = commandBus;
-            _customerRepository = customerRepository;
 
         }
 
 
-        public Task<Account> RegisterCustomerAsync(
+        public Task<Customer> RegisterCustomerAsync(
             string userName, 
             string password, 
             string invitationCode)
         {
 
-            var command = new AccountRegisterCommand(userName, password, invitationCode);
+            var command = new CustomerRequestRegisterCommand(userName, password, invitationCode);
             PublishAsync(command);
 
-            return Task.FromResult(new Account(AccountId.New, ""));
+            return Task.FromResult(new Customer(CustomerId.New, new User(""), new Password("")));
 
         }
 
-        public async Task<CustomerReadModel> LoginAsync(string email, string password) {
+        public async Task<Customer> LoginAsync(string email, string password) {
+            
+            
 
-            var user = await _customerRepository.GetAuthorizedCustomerAsync(email);
-
-            if (user == null) return null;
-
-            var account = await _commandBus.PublishAsync(new CustomerLoginCommand(CustomerId.New, email, password),
-                CancellationToken.None);
+            //var account = await _commandBus.PublishAsync(new CustomerLoginCommand(Domain.Customers.CustomerIdentity.New, email, password),
+            //    CancellationToken.None);
 
 
-            return default(CustomerReadModel);
+            return default(Customer);
         }
 
         [DebuggerStepThrough]

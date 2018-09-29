@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 using AiOption.Application.Bus;
 using AiOption.Application.Persistences;
 using AiOption.Domain.Accounts;
-using AiOption.Domain.IqAccounts;
-using AiOption.Domain.IqAccounts.Queries;
-
+using AiOption.Domain.IqOptions;
 using EventFlow;
 using EventFlow.Queries;
 
@@ -28,7 +26,7 @@ namespace AiOption.Infrastructure.PersistanceServices {
 
 
         public FollowerPersistenceService(
-            IBusReceiver<ActiveAccountQueue, Account> activeAccountQueue,
+            IBusReceiver<ActiveAccountQueue, IqAccount> activeAccountQueue,
             ICommandBus commandBus,
             IQueryProcessor queryProcessor,
             ITraderPersistenceService tradersPersistenceService,

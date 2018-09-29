@@ -28,20 +28,10 @@
   <PropertyGroup Condition="'$(TargetFramework)'=='net46'">
     <DefineConstants>net46</DefineConstants>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="Saga\Events\RegisterCompleted.cs" />
-    <Compile Remove="Saga\RegisterSaga.cs" />
-  </ItemGroup>
 
   
   <ItemGroup>
     <PackageReference Include="EventFlow" Version="0.65.3664" />
-  </ItemGroup>
-
-  
-  <ItemGroup>
-    <Folder Include="Saga\" />
-    <Folder Include="Saga\Events\" />
   </ItemGroup>
 
 

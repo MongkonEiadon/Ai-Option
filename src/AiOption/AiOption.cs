@@ -6,11 +6,11 @@ using EventFlow.Extensions;
 
 namespace AiOption
 {
-    public static class AiOption
+    public static partial class AiOption
     {
         public static Assembly AiOptionAssembly => typeof(AiOption).Assembly;
 
-        public static IEventFlowOptions AddAiOptionsDomain(this IEventFlowOptions options) {
+        public static IEventFlowOptions AddEventFlowDefaultsForDomain(this IEventFlowOptions options) {
             return options.AddDefaults(AiOptionAssembly);
         }
     }

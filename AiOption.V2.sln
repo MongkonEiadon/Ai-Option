@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.Infrastructure", "src\AiOption.Infrastructure\AiOption.Infrastructure.csproj", "{B0C840D8-282C-49EF-93E6-E0E348737075}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.Domain", "src\AiOption.Domain\AiOption.Domain.csproj", "{ABFF54EE-7316-4C7A-9E0D-DB8E7C8DD9E3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.Application", "src\AiOption.Application\AiOption.Application.csproj", "{5D95DAA2-F040-4213-890C-A9D6D65C3CF9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.Tradings", "src\App\AiOption.Tradings\AiOption.Tradings.csproj", "{3EDDEBE9-5269-4E46-9DE2-6E61AB538516}"
@@ -25,9 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutofacContrib.Nsubstitute"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.TestCore", "tests\AiOption.TestCore\AiOption.TestCore.csproj", "{08C310D2-3CAF-4E26-835E-39BCBA68E3C6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.WebPortal", "src\App\AiOption.WebPortal\AiOption.WebPortal.csproj", "{D78F6711-55AF-4DFF-B5BD-F3E5A7D31C52}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AiOption", "src\AiOption\AiOption.csproj", "{9A4C3340-3FC0-4BFE-A7EC-D32915E87613}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption", "src\AiOption\AiOption.csproj", "{9A4C3340-3FC0-4BFE-A7EC-D32915E87613}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,10 +35,6 @@ Global
 		{B0C840D8-282C-49EF-93E6-E0E348737075}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0C840D8-282C-49EF-93E6-E0E348737075}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0C840D8-282C-49EF-93E6-E0E348737075}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ABFF54EE-7316-4C7A-9E0D-DB8E7C8DD9E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ABFF54EE-7316-4C7A-9E0D-DB8E7C8DD9E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ABFF54EE-7316-4C7A-9E0D-DB8E7C8DD9E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ABFF54EE-7316-4C7A-9E0D-DB8E7C8DD9E3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5D95DAA2-F040-4213-890C-A9D6D65C3CF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5D95DAA2-F040-4213-890C-A9D6D65C3CF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D95DAA2-F040-4213-890C-A9D6D65C3CF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -67,10 +59,6 @@ Global
 		{08C310D2-3CAF-4E26-835E-39BCBA68E3C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08C310D2-3CAF-4E26-835E-39BCBA68E3C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08C310D2-3CAF-4E26-835E-39BCBA68E3C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D78F6711-55AF-4DFF-B5BD-F3E5A7D31C52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D78F6711-55AF-4DFF-B5BD-F3E5A7D31C52}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D78F6711-55AF-4DFF-B5BD-F3E5A7D31C52}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D78F6711-55AF-4DFF-B5BD-F3E5A7D31C52}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9A4C3340-3FC0-4BFE-A7EC-D32915E87613}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9A4C3340-3FC0-4BFE-A7EC-D32915E87613}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A4C3340-3FC0-4BFE-A7EC-D32915E87613}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\Account\EventHandlers\" />
+    <Folder Include="Domain\Customers\EventHandlers\" />
   </ItemGroup>
 
 

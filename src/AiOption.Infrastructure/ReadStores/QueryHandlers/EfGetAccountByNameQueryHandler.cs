@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using AiOption.Domain.Account;
+using AiOption.Domain.Accounts;
+using AiOption.Domain.Customers;
 using AiOption.Infrastructure.DataAccess;
 using AiOption.Infrastructure.ReadStores.ReadModels;
-using AiOption.Query.Account;
+using AiOption.Query.Customers;
 using EventFlow.EntityFramework;
 using EventFlow.Queries;
 using EventFlow.ReadStores;
@@ -15,7 +16,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AiOption.Infrastructure.ReadStores.QueryHandlers
 {
-    class GetAccountByNameQueryHandler : IQueryHandler<GetAccountByEmailAddressQuery, Account>
+    class GetAccountByNameQueryHandler : IQueryHandler<GetCustomerByEmailAddressQuery, Customer>
     {
         private readonly IDbContextProvider<AiOptionDbContext> _dbContextProvider;
 
@@ -24,15 +25,16 @@ namespace AiOption.Infrastructure.ReadStores.QueryHandlers
             _dbContextProvider = dbContextProvider;
         }
 
-        public async Task<Account> ExecuteQueryAsync(GetAccountByEmailAddressQuery query, CancellationToken cancellationToken)
+        public async Task<Customer> ExecuteQueryAsync(GetCustomerByEmailAddressQuery query, CancellationToken cancellationToken)
         {
             using (var db = _dbContextProvider.CreateContext())
             {
-                var entity = (await db.AccountReadModels
-                        .FirstOrDefaultAsync( x => x.EmailAddressNormalize == query.User.Value, cancellationToken: cancellationToken))
-                    .ToAccount();
+                var entity = (await db.Customers
+                    .FirstOrDefaultAsync(x => x.EmailAddressNormalize == query.User.Value,
+                        cancellationToken: cancellationToken));
 
-                return entity;
+
+                return entity?.ToAccount();
             }
         }
     }

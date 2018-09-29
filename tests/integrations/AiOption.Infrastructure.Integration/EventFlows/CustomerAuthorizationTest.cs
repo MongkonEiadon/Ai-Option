@@ -20,25 +20,6 @@ namespace AiOption.Infrastructure.Integration.EventFlows {
         private readonly BaseSetup _baseSetup;
 
 
-        [Fact]
-        public async Task CustomerRegister_WithValidInvitationCode_NewCustomerRegistered() {
-
-            var bus = _baseSetup.Resolve<ICommandBus>();
-            var id = CustomerId.New;
-            await bus.PublishAsync(new CustomerRegisterCommand(id, new CustomerReadModel {
-                EmailAddress = "m@email.com",
-                //Password = "Code11054",
-                //InvitationCode = "Invitation"
-            }), CancellationToken.None);
-
-
-            var query = _baseSetup.Resolve<IQueryProcessor>();
-            var resultModel =
-                await query.ProcessAsync(new ReadModelByIdQuery<CustomerReadModel>(id), CancellationToken.None);
-
-
-        }
-
     }
 
 }

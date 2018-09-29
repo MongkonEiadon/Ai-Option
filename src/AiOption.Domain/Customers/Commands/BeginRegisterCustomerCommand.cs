@@ -8,9 +8,9 @@ using EventFlow.Commands;
 
 namespace AiOption.Domain.Customers.Commands {
 
-    public class BeginRegisterCustomerCommand : Command<CustomerAggregate, CustomerId, BaseResult> {
+    public class BeginRegisterCustomerCommand : Command<CustomerAggregateRoote, CustomerIdentity, BaseResult> {
 
-        public BeginRegisterCustomerCommand(CustomerId aggregateId, CustomerReadModel newCustomer) : base(aggregateId) {
+        public BeginRegisterCustomerCommand(CustomerIdentity aggregateIdentity, CustomerReadModel newCustomer) : base(aggregateIdentity) {
             NewCustomer = newCustomer;
         }
 

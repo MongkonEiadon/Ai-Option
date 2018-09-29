@@ -1,11 +1,9 @@
 ﻿using AiOption.Application;
 using AiOption.Domain.Common;
 using AiOption.Domain.Customers;
-using AiOption.Domain.IqAccounts.ReadModels;
 using AiOption.Infrastructure.DataAccess;
 using AiOption.Infrastructure.ReadStores;
 using AiOption.Infrastructure.ReadStores.ReadModels;
-using AiOption.Query.Account;
 using Autofac;
 
 using AutoMapper;
@@ -16,9 +14,9 @@ using EventFlow.EntityFramework;
 using EventFlow.EntityFramework.Extensions;
 using EventFlow.Extensions;
 using EventFlow.Snapshots.Strategies;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using CustomerReadModel = AiOption.Infrastructure.ReadStores.ReadModels.CustomerReadModel;
 
 namespace AiOption.Infrastructure.Modules {
 
@@ -37,23 +35,19 @@ namespace AiOption.Infrastructure.Modules {
             IConfiguration configuration,
             ContainerBuilder builder) {
 
-            services.AddEventFlow(config =>
-            {
-
+            services.AddEventFlow(config => {
                 config.UseAutofacContainerBuilder(builder)
-                    .Configure(c =>
-                    {
+                    .Configure(c => {
                         c.IsAsynchronousSubscribersEnabled = true;
                         c.ThrowSubscriberExceptions = true;
                     });
 
-                config.AddAiOptionsDomain();
+                config.AddEventFlowDefaultsForDomain();
+                config.AddEventflowDefaultsForInfrastructure();
                 config.UseEfCoreEventFlow();
 
                 config.UseInMemorySnapshotStore();
 
-                config.AddDefaults(typeof(BaseResult).Assembly);
-                config.AddDefaults(AiAssembly.ApplicationAssembly);
                 config.RegisterServices(c => { c.Register(ct => SnapshotEveryFewVersionsStrategy.With(100)); });
             });
 
@@ -68,7 +62,7 @@ namespace AiOption.Infrastructure.Modules {
                 .AddDbContextProvider<AiOptionDbContext, MsSqlDbContextProvider>()
                 .ConfigureAiOptionEventStore()
                 .ConfigureAiOptionSnapshotStore()
-                .UseEntityFrameworkReadModel<AccountReadModel, AiOptionDbContext>();
+                .ConfigureInfrastructureReadModelStore();
 
             return options;
 
@@ -89,8 +83,7 @@ namespace AiOption.Infrastructure.Modules {
         public static IEventFlowOptions ConfigureInfrastructureReadModelStore(this IEventFlowOptions options)
         {
             return options
-                .RegisterServices(x => x.RegisterType(typeof(MsSqlDbContextProvider)))
-                .UseEntityFrameworkReadModel<AccountReadModel, AiOptionDbContext>();
+                .UseEntityFrameworkReadModel<CustomerReadModel, AiOptionDbContext>();
 
         }
 
