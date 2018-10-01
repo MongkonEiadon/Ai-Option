@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading;
+using AiOption.Domain.Common;
 using AiOption.Domain.Customers;
 using AiOption.Domain.Customers.Commands;
-
+using AiOption.Query.Customers;
 using EventFlow;
 using EventFlow.Queries;
 
@@ -32,11 +33,18 @@ namespace AiOption.Tradings {
 
 
                 var bus = container.GetService<ICommandBus>();
-                var id = CustomerId.New;
-                bus.PublishAsync(new CustomerRequestRegisterCommand(
-                    "m223@email.com",
-                    "Code11054",
-                    "Invitation"), CancellationToken.None).Wait();
+                var query = container.GetService<IQueryProcessor>();
+                //var id = CustomerId.New;
+                //bus.PublishAsync(new RequestRegisterCommand(
+                //    "m223@email.com",
+                //    "Code11054",
+                //    "Invitation"), CancellationToken.None).Wait();
+                var cus = query.Process(new GetCustomerByEmailAddressQuery(new User("m223@email.com"), false),
+                    CancellationToken.None);
+
+
+                bus.PublishAsync(new ChangeLevelCommand(cus.Id, new Level(UserLevel.Administrator)),
+                    CancellationToken.None);
 
 
                 //var query = container.GetService<IQueryProcessor>();

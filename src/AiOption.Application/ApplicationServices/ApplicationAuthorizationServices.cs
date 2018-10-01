@@ -45,7 +45,7 @@ namespace AiOption.Application.ApplicationServices {
             string invitationCode)
         {
 
-            var command = new CustomerRequestRegisterCommand(userName, password, invitationCode);
+            var command = new RequestRegisterCommand(userName, password, invitationCode);
             PublishAsync(command);
 
             return Task.FromResult(new Customer(CustomerId.New, new User(""), new Password("")));
@@ -56,7 +56,7 @@ namespace AiOption.Application.ApplicationServices {
             
             
 
-            //var account = await _commandBus.PublishAsync(new CustomerLoginCommand(Domain.Customers.CustomerIdentity.New, email, password),
+            //var account = await _commandBus.PublishAsync(new LoginCommand(Domain.Customers.CustomerIdentity.New, email, password),
             //    CancellationToken.None);
 
 

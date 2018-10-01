@@ -4,14 +4,16 @@ using AiOption.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AiOption.Infrastructure.Migrations
 {
     [DbContext(typeof(AiOptionDbContext))]
-    partial class AiOptionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181001020813_AddCustomerLevel")]
+    partial class AddCustomerLevel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -9,13 +9,13 @@ using EventFlow.Queries;
 
 namespace AiOption.Domain.Customers.Commands
 {
-    public class CustomerRequestRegisterCommand : Command<CustomerAggregate, CustomerId>
+    public class RequestRegisterCommand : Command<CustomerAggregate, CustomerId>
     {
         public string EmailAddress { get; }
         public string Password { get; }
         public string InvitationCode { get; }
 
-        public CustomerRequestRegisterCommand(
+        public RequestRegisterCommand(
             string emailAddress, 
             string password, 
             string invitationCode) : base(CustomerId.New)
@@ -26,7 +26,7 @@ namespace AiOption.Domain.Customers.Commands
         }
     }
 
-    class CustomerRequestRegisterCommandHandler : CommandHandler<CustomerAggregate, CustomerId, CustomerRequestRegisterCommand>
+    class CustomerRequestRegisterCommandHandler : CommandHandler<CustomerAggregate, CustomerId, RequestRegisterCommand>
     {
         private readonly IQueryProcessor _queryProcessor;
 
@@ -35,7 +35,7 @@ namespace AiOption.Domain.Customers.Commands
             _queryProcessor = queryProcessor;
         }
 
-        public override async Task ExecuteAsync(CustomerAggregate aggregate, CustomerRequestRegisterCommand command, CancellationToken cancellationToken)
+        public override async Task ExecuteAsync(CustomerAggregate aggregate, RequestRegisterCommand command, CancellationToken cancellationToken)
         {
             var query = new GetCustomerByEmailAddressQuery(new User(command.EmailAddress), false);
             if (await _queryProcessor.ProcessAsync(query, cancellationToken) != null)

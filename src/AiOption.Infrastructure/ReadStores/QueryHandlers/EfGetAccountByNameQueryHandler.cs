@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -10,6 +9,7 @@ using AiOption.Infrastructure.DataAccess;
 using AiOption.Infrastructure.ReadStores.ReadModels;
 using AiOption.Query.Customers;
 using EventFlow.EntityFramework;
+using EventFlow.Exceptions;
 using EventFlow.Queries;
 using EventFlow.ReadStores;
 using Microsoft.EntityFrameworkCore;
@@ -33,8 +33,11 @@ namespace AiOption.Infrastructure.ReadStores.QueryHandlers
                     .FirstOrDefaultAsync(x => x.EmailAddressNormalize == query.User.Value,
                         cancellationToken: cancellationToken));
 
+                if (query.ThrowIfNotFound && entity == null) {
+                    throw DomainError.With($"{query.User} not found!");
+                }
 
-                return entity?.ToAccount();
+                return entity?.ToCustomer();
             }
         }
     }

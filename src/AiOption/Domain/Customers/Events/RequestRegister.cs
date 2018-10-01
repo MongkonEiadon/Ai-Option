@@ -4,13 +4,13 @@ using EventFlow.Aggregates;
 
 namespace AiOption.Domain.Customers.Events
 {
-    public class OpenAccount : AggregateEvent<CustomerAggregate, CustomerId>
+    public class RequestRegister : AggregateEvent<CustomerAggregate, CustomerId>
     {
         public User UserName { get; }
         public Password Password { get; }
         public string InvitationCode { get; }
 
-        public OpenAccount(
+        public RequestRegister(
             User userName, 
             Password password, 
             string invitationCode)

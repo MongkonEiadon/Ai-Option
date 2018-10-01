@@ -1,26 +1,28 @@
-﻿using AiOption.Domain.Accounts;
-using AiOption.Domain.Accounts.Events;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using AiOption.Domain.Accounts;
 using AiOption.Domain.Common;
 using AiOption.Domain.Customers.Events;
 using EventFlow.Aggregates;
 using EventFlow.Extensions;
+using EventFlow.Snapshots;
+using EventFlow.Snapshots.Strategies;
 
 namespace AiOption.Domain.Customers
 {
     [AggregateName("Customer")]
-    public class CustomerAggregate : AggregateRoot<CustomerAggregate, CustomerId>
+    public class CustomerAggregate : SnapshotAggregateRoot<CustomerAggregate, CustomerId, CustomerSnapShot>
     {
-        private readonly CustomerState state = new CustomerState();
+        private readonly CustomerState _state = new CustomerState();
 
-        public CustomerAggregate(CustomerId id) : base(id)
+        public CustomerAggregate(CustomerId id) : base(id, SnapshotEveryFewVersionsStrategy.With(10))
         {
-            Register(state);
+            Register(_state);
         }
 
         #region Emitters
 
         public string EmailAddress { get; private set; }
-        public string InvitationCode { get; private set; }
 
         public void RegisterAnAccount(User user, Password password, string invitationCode)
         {
@@ -28,10 +30,24 @@ namespace AiOption.Domain.Customers
                 .And(Specs.IsNew)
                 .ThrowDomainErrorIfNotSatisfied(this);
 
-            Emit(new OpenAccount(user, password, invitationCode));
+            Emit(new RequestRegister(user, password, invitationCode));
+        }
+
+        public void ChangeLevel(Level level)
+        {
+
+            Emit(new RequestChangeLevel(level));
         }
         
 
         #endregion
+
+        protected override Task<CustomerSnapShot> CreateSnapshotAsync(CancellationToken cancellationToken) {
+            return Task.FromResult(new CustomerSnapShot(_state));
+        }
+
+        protected override Task LoadSnapshotAsync(CustomerSnapShot snapshot, ISnapshotMetadata metadata, CancellationToken cancellationToken) {
+            return Task.CompletedTask;
+        }
     }
 }

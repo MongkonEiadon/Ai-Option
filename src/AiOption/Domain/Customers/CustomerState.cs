@@ -1,23 +1,41 @@
-﻿using AiOption.Domain.Common;
+﻿using System;
+using AiOption.Domain.Common;
 using AiOption.Domain.Customers.Events;
 using EventFlow.Aggregates;
 
 namespace AiOption.Domain.Customers
 {
     public class CustomerState : AggregateState<CustomerAggregate, CustomerId, CustomerState>,
-        IApply<OpenAccount>
+        IApply<RequestRegister>,
+        IApply<RequestChangeLevel>,
+        IApply<LoginSucceeded>
     {
         public User EmailAddress { get; private set; }
         public Password Password { get; private set; }
         public string InvitationCode { get; private set; }
-        public string AuthorizeToken { get; private set; }
 
+        public Level Level { get; private set; }
+        public DateTimeOffset LastLogin { get; private set; }
 
-        public void Apply(OpenAccount aggregateEvent)
+        public void Apply(RequestRegister aggregateEvent) {
+            ApplyChanged(
+                x => x.EmailAddress = aggregateEvent.UserName,
+                x => x.Password = aggregateEvent.Password,
+                x => x.InvitationCode = aggregateEvent.InvitationCode);
+        }
+
+        public void Apply(RequestChangeLevel aggregateEvent) {
+            ApplyChanged(x => x.Level = aggregateEvent.UserLevel);
+        }
+
+        private void ApplyChanged(params Action<CustomerState>[] actions)
         {
-            EmailAddress = aggregateEvent.UserName;
-            Password = aggregateEvent.Password;
-            InvitationCode = aggregateEvent.InvitationCode;
+            foreach (var action in actions)
+                action(this);
+        }
+
+        public void Apply(LoginSucceeded aggregateEvent) {
+            ApplyChanged(x => x.LastLogin = aggregateEvent.SuccessTime);
         }
     }
 }

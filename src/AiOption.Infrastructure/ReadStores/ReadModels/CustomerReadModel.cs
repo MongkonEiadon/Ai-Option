@@ -17,7 +17,9 @@ namespace AiOption.Infrastructure.ReadStores.ReadModels
     [Table("CustomerReadModel")]
     public class CustomerReadModel : 
         IReadModel,
-        IAmReadModelFor<CustomerAggregate, CustomerId, OpenAccount>
+        IAmReadModelFor<CustomerAggregate, CustomerId, RequestRegister>,
+        IAmReadModelFor<CustomerAggregate, CustomerId, RequestChangeLevel>,
+        IAmReadModelFor<CustomerAggregate, CustomerId, LoginSucceeded>
     {
         [Key] [Column("Id")] public string AggregateId { get; set;  }
 
@@ -27,21 +29,47 @@ namespace AiOption.Infrastructure.ReadStores.ReadModels
 
         public string InvitationCode { get; private set; }
 
-        public string EmailAddressNormalize => UserName.Value.ToUpper();
+        public Level Level { get; private set; }
 
+        public DateTimeOffset LastLogin { get; private set; }
+
+        public string EmailAddressNormalize => UserName.Value.ToUpper();
 
         public virtual ICollection<IqAccountReadModel> IqAccountReadModels { get; set; }
 
-        public void Apply(IReadModelContext context, IDomainEvent<CustomerAggregate, CustomerId, OpenAccount> domainEvent)
+        public void Apply(
+            IReadModelContext context, 
+            IDomainEvent<CustomerAggregate, CustomerId, RequestRegister> domainEvent)
         {
-            UserName = domainEvent.AggregateEvent.UserName;
-            Password = domainEvent.AggregateEvent.Password;
-            InvitationCode = domainEvent.AggregateEvent.InvitationCode;
+            ApplyChanged(
+                x => x.UserName = domainEvent.AggregateEvent.UserName,
+                x => x.Password = domainEvent.AggregateEvent.Password,
+                x => x.InvitationCode = domainEvent.AggregateEvent.InvitationCode);
         }
 
-        public Customer ToAccount()
+        public void Apply(IReadModelContext context,
+            IDomainEvent<CustomerAggregate, CustomerId, RequestChangeLevel> domainEvent) {
+            ApplyChanged(x => x.Level = domainEvent.AggregateEvent.UserLevel);
+        }
+
+        public Customer ToCustomer() => new Customer(CustomerId.With(AggregateId), UserName, Password);
+        
+
+        #region [Privates]
+
+         private void ApplyChanged(params Action<CustomerReadModel>[] paramActions)
         {
-            return new Customer(CustomerId.With(AggregateId), UserName, Password);
+            foreach (var paramAction in paramActions)
+            {
+                paramAction(this);
+            }
+        }
+
+        #endregion
+
+        public void Apply(IReadModelContext context, IDomainEvent<CustomerAggregate, CustomerId, LoginSucceeded> domainEvent) {
+            ApplyChanged(
+                x => x.LastLogin = domainEvent.Timestamp);
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-
-using AiOption.Domain.API;
-
+using AiOption.Application.API;
 using IqOptionApi.http;
 
 namespace AiOption.Infrastructure.Api {

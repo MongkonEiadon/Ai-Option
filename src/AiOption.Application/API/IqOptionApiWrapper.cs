@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace AiOption.Domain.API {
+namespace AiOption.Application.API {
 
     public interface IIqOptionApiWrapper {
 

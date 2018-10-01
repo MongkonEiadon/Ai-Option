@@ -45,9 +45,6 @@ namespace AiOption.Infrastructure.Modules {
                 config.AddEventFlowDefaultsForDomain();
                 config.AddEventflowDefaultsForInfrastructure();
                 config.UseEfCoreEventFlow();
-
-                config.UseInMemorySnapshotStore();
-
                 config.RegisterServices(c => { c.Register(ct => SnapshotEveryFewVersionsStrategy.With(100)); });
             });
 
@@ -84,7 +81,6 @@ namespace AiOption.Infrastructure.Modules {
         {
             return options
                 .UseEntityFrameworkReadModel<CustomerReadModel, AiOptionDbContext>();
-
         }
 
     }

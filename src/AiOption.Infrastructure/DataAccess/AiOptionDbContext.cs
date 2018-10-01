@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using AiOption.Domain.Common;
 using AiOption.Infrastructure.ReadStores.ReadModels;
 using EventFlow.EntityFramework.EventStores;
@@ -49,6 +50,10 @@ namespace AiOption.Infrastructure.DataAccess {
             modelBuilder.Entity<CustomerReadModel>()
                 .Property(e => e.UserName)
                 .HasConversion(v => v.Value, v => new User(v));
+            modelBuilder.Entity<CustomerReadModel>()
+                .Property(e => e.Level)
+                .HasConversion(v => v.Value, v => new Level(v));
+
 
             modelBuilder.Entity<IqAccountReadModel>()
                 .Property(e => e.UserName)

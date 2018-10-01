@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-
-using AiOption.Domain.API;
+using AiOption.Application.API;
 using AiOption.Domain.IqOptions;
 using AiOption.Domain.IqOptions.Commands;
 using EventFlow.Aggregates.ExecutionResults;
