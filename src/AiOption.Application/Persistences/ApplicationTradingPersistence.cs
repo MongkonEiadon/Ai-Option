@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AiOption.Domain.IqOptions;
-using AiOption.Domain.IqOptions.Commands;
+using AiOption.Domain.IqAccounts;
+using AiOption.Domain.IqAccounts.Commands;
 using EventFlow;
 
 namespace AiOption.Application.Persistences {
@@ -44,11 +44,7 @@ namespace AiOption.Application.Persistences {
             if (!OpenAccountTradingsStream.ContainsKey(account)) {
 
                 if (string.IsNullOrEmpty(account.SecuredToken)) {
-                    var loginResult = await _commandBus.PublishAsync(
-                        new IqAccountLoginCommand(IqId.New, account.UserName.Value, account.Password.Value),
-                        CancellationToken.None);
 
-                    if (!loginResult.IsSuccess) return;
 
                     account.SetSecuredToken("");// .SecuredToken = "";
                 }

@@ -25,5 +25,7 @@ namespace AiOption.Domain.Common
 
             return value.ToUpper();
         }
+
+        public static User New(string value) => new User(value);
     }
 }

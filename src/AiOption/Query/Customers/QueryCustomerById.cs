@@ -3,10 +3,10 @@ using EventFlow.Queries;
 
 namespace AiOption.Query.Customers
 {
-    public class GetCustomerByIdQuery : IQuery<Customer>
+    public class QueryCustomerById : IQuery<Customer>
     {
         public CustomerId CustomerId { get; }
-        public GetCustomerByIdQuery(CustomerId customerId)
+        public QueryCustomerById(CustomerId customerId)
         {
             CustomerId = customerId;
         }

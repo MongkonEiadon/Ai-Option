@@ -73,7 +73,7 @@ namespace AiOption.Infrastructure.Migrations
                         name: "FK_IqAccountReadModel_CustomerReadModel_CustomerReadModelAggregateId",
                         column: x => x.CustomerReadModelAggregateId,
                         principalTable: "CustomerReadModel",
-                        principalColumn: "Id",
+                        principalColumn: "AccountId",
                         onDelete: ReferentialAction.Restrict);
                 });
 

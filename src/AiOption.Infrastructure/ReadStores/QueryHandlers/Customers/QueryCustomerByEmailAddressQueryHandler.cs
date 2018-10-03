@@ -1,31 +1,25 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using AiOption.Domain.Accounts;
 using AiOption.Domain.Customers;
 using AiOption.Infrastructure.DataAccess;
-using AiOption.Infrastructure.ReadStores.ReadModels;
 using AiOption.Query.Customers;
 using EventFlow.EntityFramework;
 using EventFlow.Exceptions;
 using EventFlow.Queries;
-using EventFlow.ReadStores;
 using Microsoft.EntityFrameworkCore;
 
-namespace AiOption.Infrastructure.ReadStores.QueryHandlers
+namespace AiOption.Infrastructure.ReadStores.QueryHandlers.Customers
 {
-    class GetCustomerByEmailAddressQueryHandler : IQueryHandler<GetCustomerByEmailAddressQuery, Customer>
+    class QueryCustomerByEmailAddressQueryHandler : IQueryHandler<QueryCustomerByEmailAddress, Customer>
     {
         private readonly IDbContextProvider<AiOptionDbContext> _dbContextProvider;
 
-        public GetCustomerByEmailAddressQueryHandler(IDbContextProvider<AiOptionDbContext> dbContextProvider)
+        public QueryCustomerByEmailAddressQueryHandler(IDbContextProvider<AiOptionDbContext> dbContextProvider)
         {
             _dbContextProvider = dbContextProvider;
         }
 
-        public async Task<Customer> ExecuteQueryAsync(GetCustomerByEmailAddressQuery query, CancellationToken cancellationToken)
+        public async Task<Customer> ExecuteQueryAsync(QueryCustomerByEmailAddress query, CancellationToken cancellationToken)
         {
             using (var db = _dbContextProvider.CreateContext())
             {

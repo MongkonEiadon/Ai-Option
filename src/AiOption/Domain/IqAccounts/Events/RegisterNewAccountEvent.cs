@@ -1,13 +1,13 @@
 ﻿using AiOption.Domain.Common;
 using EventFlow.Aggregates;
 
-namespace AiOption.Domain.IqOptions.Events
+namespace AiOption.Domain.IqAccounts.Events
 {
-    public class IqAccountRequestRegisterEvent : AggregateEvent<IqAggregate, IqId> {
+    public class RegisterNewAccountEvent : AggregateEvent<IqAccountAggregate, IqAccountId> {
         public User UserName { get; }
         public Password Password { get; }
 
-        public IqAccountRequestRegisterEvent(User userName, Password password)
+        public RegisterNewAccountEvent(User userName, Password password)
         {
             UserName = userName;
             Password = password;

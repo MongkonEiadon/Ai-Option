@@ -1,0 +1,51 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using AiOption.Domain.Common;
+using FluentAssertions;
+using Xunit;
+
+namespace AiOption.Tests.Units.Commons
+{
+    public class PasswordTest
+    {
+        [Fact]
+        public void TestValidate()
+        {
+            // arrange
+            var password = new Password("PlainText");
+            var password2 = new Password("PlainText");
+
+            // act
+            var result = password.IsPasswordMatched(password2);
+
+            //act
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void TestValue()
+        {
+            // arrange
+            var password = new Password("PlainText");
+
+            // assert
+            password.Value.Should().NotBe("PlainText");
+
+        }
+
+        [Fact]
+        public void TestEquals()
+        {
+            // arrange
+            var password = new Password("PlainText");
+            var password2 = new Password("PlainText");
+            
+            // act
+            var result = password.Equals(password2);
+
+            // arrange
+            result.Should().BeTrue();
+        }
+    }
+}

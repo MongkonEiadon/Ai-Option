@@ -37,7 +37,7 @@ namespace AiOption.Domain.Customers.Commands
 
         public override async Task ExecuteAsync(CustomerAggregate aggregate, RequestRegisterCommand command, CancellationToken cancellationToken)
         {
-            var query = new GetCustomerByEmailAddressQuery(new User(command.EmailAddress), false);
+            var query = new QueryCustomerByEmailAddress(new User(command.EmailAddress), false);
             if (await _queryProcessor.ProcessAsync(query, cancellationToken) != null)
             {
                 throw DomainError.With($"UserName {command.EmailAddress} already exists.");

@@ -25,7 +25,7 @@ namespace AiOption.Domain.Customers.Commands
         }
         public override async Task ExecuteAsync(CustomerAggregate aggregate, LoginCommand command, CancellationToken cancellationToken)
         {
-            var user = await _queryProcessor.ProcessAsync(new GetCustomerByEmailAddressQuery(command.User, true),
+            var user = await _queryProcessor.ProcessAsync(new QueryCustomerByEmailAddress(command.User, true),
                 cancellationToken);
 
             if (user.Password.IsPasswordMatched(command.Password)) {

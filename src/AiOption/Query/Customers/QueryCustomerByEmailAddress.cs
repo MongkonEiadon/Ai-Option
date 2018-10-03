@@ -5,12 +5,12 @@ using EventFlow.Queries;
 
 namespace AiOption.Query.Customers
 {
-    public class GetCustomerByEmailAddressQuery : IQuery<Customer>
+    public class QueryCustomerByEmailAddress : IQuery<Customer>
     {
         public User User { get; }
         public bool ThrowIfNotFound { get; }
 
-        public GetCustomerByEmailAddressQuery(User user, bool throwIfNotFound = true)
+        public QueryCustomerByEmailAddress(User user, bool throwIfNotFound = true)
         {
             User = user;
             ThrowIfNotFound = throwIfNotFound;

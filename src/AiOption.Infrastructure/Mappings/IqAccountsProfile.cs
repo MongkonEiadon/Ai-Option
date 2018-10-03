@@ -10,7 +10,7 @@ namespace AiOption.Infrastructure.Mappings {
 
             //CreateMap<Account, IqAccountDto>()
             //    .ForMember(a => a.SecuredToken, c => c.MapFrom(u => u.SecuredToken))
-            //    .ForMember(a => a.Id, c => c.MapFrom(u => u.UserId))
+            //    .ForMember(a => a.AccountId, c => c.MapFrom(u => u.UserId))
             //    .ForMember(a => a.CustomerLevel, c => c.MapFrom(u => u.Level))
             //    .ForMember(a => a.CustomerId, c => c.Ignore())
             //    .ForMember(a => a.TradeMode, c => c.Ignore())
@@ -19,7 +19,7 @@ namespace AiOption.Infrastructure.Mappings {
             //    .ForMember(a => a.SecuredUpdated, c => c.Ignore());
 
             //CreateMap<IqAccountDto, Account>()
-            //    .ForMember(a => a.UserId, c => c.MapFrom(u => u.Id))
+            //    .ForMember(a => a.UserId, c => c.MapFrom(u => u.AccountId))
             //    .ForMember(a => a.SecuredToken, c => c.MapFrom(u => u.SecuredToken))
             //    .ForMember(a => a.Level, c => c.MapFrom(u => u.CustomerLevel));
         }

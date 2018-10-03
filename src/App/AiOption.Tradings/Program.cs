@@ -34,12 +34,12 @@ namespace AiOption.Tradings {
 
                 var bus = container.GetService<ICommandBus>();
                 var query = container.GetService<IQueryProcessor>();
-                //var id = CustomerId.New;
+                //var accountId = CustomerId.New;
                 //bus.PublishAsync(new RequestRegisterCommand(
                 //    "m223@email.com",
                 //    "Code11054",
                 //    "Invitation"), CancellationToken.None).Wait();
-                var cus = query.Process(new GetCustomerByEmailAddressQuery(new User("m223@email.com"), false),
+                var cus = query.Process(new QueryCustomerByEmailAddress(new User("m223@email.com"), false),
                     CancellationToken.None);
 
 
@@ -48,7 +48,7 @@ namespace AiOption.Tradings {
 
 
                 //var query = container.GetService<IQueryProcessor>();
-                //var resultModel = query.ProcessAsync(new ReadModelByIdQuery<CustomerReadModel>(id), CancellationToken.None)
+                //var resultModel = query.ProcessAsync(new ReadModelByIdQuery<CustomerReadModel>(accountId), CancellationToken.None)
                 //    .Result;
 
                 //Validate mapper

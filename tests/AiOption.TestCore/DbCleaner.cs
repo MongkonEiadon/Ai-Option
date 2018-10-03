@@ -77,8 +77,8 @@ namespace AiOption.TestCore {
                         ,   so_fk.name as ForeignKeyTable
                         from
 	                        sysforeignkeys sfk
-		                        inner join sysobjects so_pk on sfk.rkeyid = so_pk.id
-		                        inner join sysobjects so_fk on sfk.fkeyid = so_fk.id
+		                        inner join sysobjects so_pk on sfk.rkeyid = so_pk.accountId
+		                        inner join sysobjects so_fk on sfk.fkeyid = so_fk.accountId
                         order by
 	                        so_pk.name
                         ,   so_fk.name";

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
@@ -7,10 +8,13 @@ using EventFlow.ValueObjects;
 
 namespace AiOption.Domain.Common
 {
-    public class Password : SingleValueObject<string>
+    public class Password : SingleValueObject<string>, IEquatable<Password>
     {
         private const string Key = "AiOption";
-        public Password(string value): base(CreateEncryptePasscode(value)) { }
+
+        public Password(string value) : base(CreateEncryptePasscode(value))
+        {
+        }
 
         private static string CreateEncryptePasscode(string value)
         {
@@ -22,9 +26,27 @@ namespace AiOption.Domain.Common
             return passwordToValidate.Value.Decrypt(Key) == this.Value.Decrypt(Key);
         }
 
+        public string DecryptPassword()
+        {
+            return Value.Decrypt(Key);
+        }
+
         public static Password With(string value) => new Password(value.Decrypt(Key));
 
+        public bool Equals(Password password)
+        {
+            if (password == null) return false;
+            return password.IsPasswordMatched(this);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value.Decrypt(Key).GetHashCode();
+        }
+
+        public static Password New(string password) => new Password(password);
     }
+
 
     public static class UserPasswordExtensions
     {

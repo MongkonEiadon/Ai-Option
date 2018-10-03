@@ -25,7 +25,7 @@ namespace AiOption.Infrastructure.Migrations
                 {
                     b.Property<string>("AggregateId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Id");
+                        .HasColumnName("AccountId");
 
                     b.Property<string>("InvitationCode");
 
@@ -44,7 +44,7 @@ namespace AiOption.Infrastructure.Migrations
                 {
                     b.Property<string>("AggregateId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Id");
+                        .HasColumnName("AccountId");
 
                     b.Property<string>("CustomerReadModelAggregateId");
 
@@ -88,7 +88,7 @@ namespace AiOption.Infrastructure.Migrations
 
             modelBuilder.Entity("EventFlow.EntityFramework.SnapshotStores.SnapshotEntity", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<long>("AccountId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -102,7 +102,7 @@ namespace AiOption.Infrastructure.Migrations
 
                     b.Property<string>("Metadata");
 
-                    b.HasKey("Id");
+                    b.HasKey("AccountId");
 
                     b.HasIndex("AggregateName", "AggregateId", "AggregateSequenceNumber")
                         .IsUnique()

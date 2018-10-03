@@ -21,7 +21,7 @@ namespace AiOption.Infrastructure.ReadStores.ReadModels
         IAmReadModelFor<CustomerAggregate, CustomerId, RequestChangeLevel>,
         IAmReadModelFor<CustomerAggregate, CustomerId, LoginSucceeded>
     {
-        [Key] [Column("Id")] public string AggregateId { get; set;  }
+        [Key] [Column("AccountId")] public string AggregateId { get; set;  }
 
         public User UserName { get; private set; }
 

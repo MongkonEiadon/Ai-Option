@@ -26,11 +26,6 @@ namespace AiOption.Tests.Units.Domain.Customers.Commands
             await A<LoginCommandHandler>()
                 .ExecuteAsync(new CustomerAggregate(id),
                     new LoginCommand(id, new User(""), new Password("")), CancellationToken.None);
-
-
-
-
-
         }
     }
 }
