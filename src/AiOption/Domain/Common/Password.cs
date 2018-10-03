@@ -9,20 +9,20 @@ namespace AiOption.Domain.Common
 {
     public class Password : SingleValueObject<string>
     {
+        private const string Key = "AiOption";
         public Password(string value): base(CreateEncryptePasscode(value)) { }
 
         private static string CreateEncryptePasscode(string value)
         {
-            return value.Encrypt("AiOption");
+            return value.Encrypt(Key);
         }
 
-        public bool IsPasswordMatched(string passwordToValidate)
+        public bool IsPasswordMatched(Password passwordToValidate)
         {
-            return passwordToValidate == this.Value.Decrypt("AiOption");
+            return passwordToValidate.Value.Decrypt(Key) == this.Value.Decrypt(Key);
         }
 
-        public static Password With(string value) => 
-            new Password(value.Decrypt("AiOption"));
+        public static Password With(string value) => new Password(value.Decrypt(Key));
 
     }
 

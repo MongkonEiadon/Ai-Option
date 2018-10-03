@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 
 namespace AiOption.TestCore {
@@ -17,5 +18,4 @@ namespace AiOption.TestCore {
         }
 
     }
-
 }

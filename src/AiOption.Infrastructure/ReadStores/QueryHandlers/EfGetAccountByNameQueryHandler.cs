@@ -16,11 +16,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AiOption.Infrastructure.ReadStores.QueryHandlers
 {
-    class GetAccountByNameQueryHandler : IQueryHandler<GetCustomerByEmailAddressQuery, Customer>
+    class GetCustomerByEmailAddressQueryHandler : IQueryHandler<GetCustomerByEmailAddressQuery, Customer>
     {
         private readonly IDbContextProvider<AiOptionDbContext> _dbContextProvider;
 
-        public GetAccountByNameQueryHandler(IDbContextProvider<AiOptionDbContext> dbContextProvider)
+        public GetCustomerByEmailAddressQueryHandler(IDbContextProvider<AiOptionDbContext> dbContextProvider)
         {
             _dbContextProvider = dbContextProvider;
         }

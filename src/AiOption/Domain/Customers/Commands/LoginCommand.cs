@@ -17,19 +17,20 @@ namespace AiOption.Domain.Customers.Commands
         }
     }
 
-    class LoginCommandHandler : CommandHandler<CustomerAggregate, CustomerId, LoginCommand> {
+    public class LoginCommandHandler : CommandHandler<CustomerAggregate, CustomerId, LoginCommand> {
         private readonly IQueryProcessor _queryProcessor;
 
         public LoginCommandHandler(IQueryProcessor queryProcessor) {
             _queryProcessor = queryProcessor;
         }
-        public override Task ExecuteAsync(CustomerAggregate aggregate, LoginCommand command, CancellationToken cancellationToken)
+        public override async Task ExecuteAsync(CustomerAggregate aggregate, LoginCommand command, CancellationToken cancellationToken)
         {
-            var user = _queryProcessor.ProcessAsync(new GetCustomerByEmailAddressQuery(command.User, true),
+            var user = await _queryProcessor.ProcessAsync(new GetCustomerByEmailAddressQuery(command.User, true),
                 cancellationToken);
 
-
-            return Task.CompletedTask;
+            if (user.Password.IsPasswordMatched(command.Password)) {
+                //
+            }
         }
     }
 }
