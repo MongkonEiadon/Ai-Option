@@ -19,6 +19,7 @@ namespace AiOption.Domain.Customers
         public User UserName { get; }
         public Password Password { get; }
         public Level Level { get; }
+        public Token Token { get; }
 
         public Customer(CustomerId id, User userName, Password password) : base(id) {
             UserName = userName;

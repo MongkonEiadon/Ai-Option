@@ -8,14 +8,23 @@ namespace AiOption.Domain.Customers
     public class CustomerState : AggregateState<CustomerAggregate, CustomerId, CustomerState>,
         IApply<RequestRegister>,
         IApply<RequestChangeLevel>,
-        IApply<LoginSucceeded>
+        IApply<LoginSucceeded>,
+        IApply<CreateTokenSuccess>
     {
         public User EmailAddress { get; private set; }
         public Password Password { get; private set; }
         public string InvitationCode { get; private set; }
-
         public Level Level { get; private set; }
         public DateTimeOffset LastLogin { get; private set; }
+        public Token Token { get; private set; }
+
+
+        private void ApplyChanged(params Action<CustomerState>[] actions)
+        {
+            foreach (var action in actions)
+                action(this);
+        }
+
 
         public void Apply(RequestRegister aggregateEvent) {
             ApplyChanged(
@@ -28,14 +37,13 @@ namespace AiOption.Domain.Customers
             ApplyChanged(x => x.Level = aggregateEvent.UserLevel);
         }
 
-        private void ApplyChanged(params Action<CustomerState>[] actions)
-        {
-            foreach (var action in actions)
-                action(this);
-        }
 
         public void Apply(LoginSucceeded aggregateEvent) {
             ApplyChanged(x => x.LastLogin = aggregateEvent.SuccessTime);
+        }
+
+        public void Apply(CreateTokenSuccess aggregateEvent) {
+            ApplyChanged(x => x.Token = aggregateEvent.Token);
         }
     }
 }

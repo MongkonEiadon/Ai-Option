@@ -6,9 +6,12 @@ namespace AiOption.Query.Customers
     public class QueryCustomerById : IQuery<Customer>
     {
         public CustomerId CustomerId { get; }
-        public QueryCustomerById(CustomerId customerId)
+        public bool ThrowIfNotFound { get; }
+
+        public QueryCustomerById(CustomerId customerId, bool throwIfNotFound = true)
         {
             CustomerId = customerId;
+            ThrowIfNotFound = throwIfNotFound;
         }
     }
 }

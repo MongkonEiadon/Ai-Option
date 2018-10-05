@@ -19,7 +19,8 @@ namespace AiOption.Infrastructure.ReadStores.ReadModels
         IReadModel,
         IAmReadModelFor<CustomerAggregate, CustomerId, RequestRegister>,
         IAmReadModelFor<CustomerAggregate, CustomerId, RequestChangeLevel>,
-        IAmReadModelFor<CustomerAggregate, CustomerId, LoginSucceeded>
+        IAmReadModelFor<CustomerAggregate, CustomerId, LoginSucceeded>,
+        IAmReadModelFor<CustomerAggregate, CustomerId, CreateTokenSuccess>
     {
         [Key] [Column("AccountId")] public string AggregateId { get; set;  }
 
@@ -32,6 +33,10 @@ namespace AiOption.Infrastructure.ReadStores.ReadModels
         public Level Level { get; private set; }
 
         public DateTimeOffset LastLogin { get; private set; }
+
+        public Token Token { get; private set; }
+
+
 
         public string EmailAddressNormalize => UserName.Value.ToUpper();
 
@@ -70,6 +75,10 @@ namespace AiOption.Infrastructure.ReadStores.ReadModels
         public void Apply(IReadModelContext context, IDomainEvent<CustomerAggregate, CustomerId, LoginSucceeded> domainEvent) {
             ApplyChanged(
                 x => x.LastLogin = domainEvent.Timestamp);
+        }
+
+        public void Apply(IReadModelContext context, IDomainEvent<CustomerAggregate, CustomerId, CreateTokenSuccess> domainEvent) {
+            ApplyChanged(x => x.Token = domainEvent.AggregateEvent.Token);
         }
     }
 }

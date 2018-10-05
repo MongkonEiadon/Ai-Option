@@ -33,12 +33,12 @@ namespace AiOption.Domain.Customers
             Emit(new RequestRegister(user, password, invitationCode));
         }
 
-        public void ChangeLevel(Level level)
+        public void ChangeLevel(Level level) => Emit(new RequestChangeLevel(level));
+
+        public void CreateUserToken()
         {
 
-            Emit(new RequestChangeLevel(level));
         }
-        
 
         #endregion
 

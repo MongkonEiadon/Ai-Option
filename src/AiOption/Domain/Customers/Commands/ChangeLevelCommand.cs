@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AiOption.Domain.Common;
 using EventFlow.Commands;
+using EventFlow.Core;
 using EventFlow.Queries;
 
 namespace AiOption.Domain.Customers.Commands
