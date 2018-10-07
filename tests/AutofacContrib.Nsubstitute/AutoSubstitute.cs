@@ -1,23 +1,22 @@
 using System;
-
 using Autofac;
 using Autofac.Builder;
 using Autofac.Core;
 using Autofac.Features.ResolveAnything;
-
 using NSubstitute;
 
-namespace AutofacContrib.NSubstitute {
-
+namespace AutofacContrib.NSubstitute
+{
     /// <summary>
     ///     Auto mocking container using <see cref="Autofac" /> and <see cref="NSubstitute" />.
     /// </summary>
-    public class AutoSubstitute : IDisposable {
-
+    public class AutoSubstitute : IDisposable
+    {
         /// <summary>
         ///     Create an AutoSubstitute.
         /// </summary>
-        public AutoSubstitute() {
+        public AutoSubstitute()
+        {
             var builder = new ContainerBuilder();
 
             builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
@@ -30,7 +29,8 @@ namespace AutofacContrib.NSubstitute {
         ///     Create an AutoSubstitute, but modify the <see cref="Autofac.ContainerBuilder" /> before building a container.
         /// </summary>
         /// <param name="builderModifier">Action to modify the <see cref="Autofac.ContainerBuilder" /></param>
-        public AutoSubstitute(Action<ContainerBuilder> builderModifier) {
+        public AutoSubstitute(Action<ContainerBuilder> builderModifier)
+        {
             var builder = new ContainerBuilder();
 
             builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
@@ -49,7 +49,8 @@ namespace AutofacContrib.NSubstitute {
         /// <summary>
         ///     Cleans up the <see cref="Autofac.Core.Container" />.
         /// </summary>
-        public void Dispose() {
+        public void Dispose()
+        {
             Container.Dispose();
         }
 
@@ -59,7 +60,8 @@ namespace AutofacContrib.NSubstitute {
         /// <typeparam name="T">The type to resolve</typeparam>
         /// <param name="parameters">Optional constructor parameters</param>
         /// <returns>The resolved object</returns>
-        public T Resolve<T>(params Parameter[] parameters) {
+        public T Resolve<T>(params Parameter[] parameters)
+        {
             return Container.Resolve<T>(parameters);
         }
 
@@ -71,7 +73,8 @@ namespace AutofacContrib.NSubstitute {
         /// <typeparam name="TImplementation">The implementation type</typeparam>
         /// <param name="parameters">Optional constructor parameters</param>
         /// <returns>The resolved service instance</returns>
-        public TService Provide<TService, TImplementation>(params Parameter[] parameters) {
+        public TService Provide<TService, TImplementation>(params Parameter[] parameters)
+        {
             Container.ComponentRegistry.Register(RegistrationBuilder.ForType<TImplementation>()
                 .As<TService>().InstancePerLifetimeScope().CreateRegistration()
             );
@@ -86,7 +89,8 @@ namespace AutofacContrib.NSubstitute {
         /// <param name="instance">The object to register into the container</param>
         /// <returns>The instance resolved from container</returns>
         public TService Provide<TService>(TService instance)
-            where TService : class {
+            where TService : class
+        {
             Container.ComponentRegistry.Register(RegistrationBuilder.ForDelegate((c, p) => instance)
                 .InstancePerLifetimeScope().CreateRegistration()
             );
@@ -102,7 +106,8 @@ namespace AutofacContrib.NSubstitute {
         /// <param name="serviceKey">The key to register the service with</param>
         /// <returns>The instance resolved from container</returns>
         public TService Provide<TService>(TService instance, object serviceKey)
-            where TService : class {
+            where TService : class
+        {
             Container.ComponentRegistry.Register(RegistrationBuilder.ForDelegate((c, p) => instance)
                 .As(new KeyedService(serviceKey, typeof(TService)))
                 .InstancePerLifetimeScope().CreateRegistration()
@@ -122,7 +127,8 @@ namespace AutofacContrib.NSubstitute {
         /// <typeparam name="TService">The type to register and return a substitute for</typeparam>
         /// <param name="parameters">Optional constructor parameters</param>
         /// <returns>The instance resolved from the container</returns>
-        public TService SubstituteFor<TService>(params object[] parameters) where TService : class {
+        public TService SubstituteFor<TService>(params object[] parameters) where TService : class
+        {
             var substitute = Substitute.For<TService>(parameters);
 
             return Provide(substitute);
@@ -139,12 +145,11 @@ namespace AutofacContrib.NSubstitute {
         /// <typeparam name="TService">The type to register and return a substitute for</typeparam>
         /// <param name="parameters">Any constructor parameters that Autofac can't resolve automatically</param>
         /// <returns>The instance resolved from the container</returns>
-        public TService ResolveAndSubstituteFor<TService>(params Parameter[] parameters) where TService : class {
+        public TService ResolveAndSubstituteFor<TService>(params Parameter[] parameters) where TService : class
+        {
             var substitute = Resolve<TService>(parameters);
 
             return Provide(substitute);
         }
-
     }
-
 }

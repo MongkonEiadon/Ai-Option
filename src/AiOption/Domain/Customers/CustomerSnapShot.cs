@@ -1,11 +1,14 @@
 ﻿using EventFlow.Snapshots;
 
-namespace AiOption.Domain.Customers {
-    public class CustomerSnapShot : ISnapshot {
-        public CustomerState State { get; }
-
-        public CustomerSnapShot(CustomerState state) {
+namespace AiOption.Domain.Customers
+{
+    public class CustomerSnapShot : ISnapshot
+    {
+        public CustomerSnapShot(CustomerState state)
+        {
             State = state;
         }
+
+        public CustomerState State { get; }
     }
 }

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AiOption.Domain.Common;
 using AiOption.Domain.IqAccounts.Commands;
-using AiOption.Domain.IqAccounts.Events;
 using AiOption.Query.IqAccounts;
 using EventFlow;
 using EventFlow.Exceptions;
@@ -29,11 +26,9 @@ namespace AiOption.Application.ApplicationServices
             var ct = new CancellationTokenSource();
             try
             {
-                var result = await _queryProcessor.ProcessAsync(new QueryIqAccountByEmailAddress(emailAddress), ct.Token);
-                if (result != null)
-                {
-                    throw DomainError.With($"IqAccount with email: {emailAddress} already exists");
-                }
+                var result =
+                    await _queryProcessor.ProcessAsync(new QueryIqAccountByEmailAddress(emailAddress), ct.Token);
+                if (result != null) throw DomainError.With($"IqAccount with email: {emailAddress} already exists");
             }
             catch (Exception)
             {

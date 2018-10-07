@@ -2,19 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
 using Autofac;
 using Autofac.Builder;
 using Autofac.Core;
-
 using NSubstitute;
 
-namespace AutofacContrib.NSubstitute {
-
+namespace AutofacContrib.NSubstitute
+{
     /// <summary> Resolves unknown interfaces and Mocks using the <see cref="Substitute" />. </summary>
-    internal class NSubstituteRegistrationHandler : IRegistrationSource {
-
-        private static readonly IReadOnlyCollection<Type> GenericCollectionTypes = new List<Type> {
+    internal class NSubstituteRegistrationHandler : IRegistrationSource
+    {
+        private static readonly IReadOnlyCollection<Type> GenericCollectionTypes = new List<Type>
+        {
             typeof(IEnumerable<>),
             typeof(IList<>),
             typeof(IReadOnlyCollection<>),
@@ -32,7 +31,8 @@ namespace AutofacContrib.NSubstitute {
         ///     Registrations for the service.
         /// </returns>
         public IEnumerable<IComponentRegistration> RegistrationsFor
-            (Service service, Func<Service, IEnumerable<IComponentRegistration>> registrationAccessor) {
+            (Service service, Func<Service, IEnumerable<IComponentRegistration>> registrationAccessor)
+        {
             if (service == null)
                 throw new ArgumentNullException("service");
 
@@ -54,13 +54,12 @@ namespace AutofacContrib.NSubstitute {
 
         public bool IsAdapterForIndividualComponents => false;
 
-        private static bool IsGenericListOrCollectionInterface(Type serviceType) {
+        private static bool IsGenericListOrCollectionInterface(Type serviceType)
+        {
             // TODO make backwards compatible
             //return serviceType.IsGenericType && GenericCollectionTypes.Contains(serviceType.GetGenericTypeDefinition());
             return serviceType.GetTypeInfo().IsGenericType &&
                    GenericCollectionTypes.Contains(serviceType.GetGenericTypeDefinition());
         }
-
     }
-
 }

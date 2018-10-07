@@ -2,32 +2,33 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace AiOption.Infrastructure.Migrations
+namespace AiOption.Infrasturcture.ReadStores.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "CustomerReadModel",
-                columns: table => new
+                "CustomerReadModel",
+                table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    CustomerId = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
-                    InvitationCode = table.Column<string>(nullable: true)
+                    InvitationCode = table.Column<string>(nullable: true),
+                    Level = table.Column<int>(nullable: true),
+                    LastLogin = table.Column<DateTimeOffset>(nullable: false),
+                    Token = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CustomerReadModel", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_CustomerReadModel", x => x.CustomerId); });
 
             migrationBuilder.CreateTable(
-                name: "EventEntity",
-                columns: table => new
+                "EventEntity",
+                table => new
                 {
                     GlobalSequenceNumber = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy",
+                            SqlServerValueGenerationStrategy.IdentityColumn),
                     BatchId = table.Column<Guid>(nullable: false),
                     AggregateName = table.Column<string>(nullable: true),
                     AggregateId = table.Column<string>(nullable: true),
@@ -35,64 +36,61 @@ namespace AiOption.Infrastructure.Migrations
                     Metadata = table.Column<string>(nullable: true),
                     AggregateSequenceNumber = table.Column<int>(nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EventEntity", x => x.GlobalSequenceNumber);
-                });
+                constraints: table => { table.PrimaryKey("PK_EventEntity", x => x.GlobalSequenceNumber); });
 
             migrationBuilder.CreateTable(
-                name: "SnapshotEntity",
-                columns: table => new
+                "SnapshotEntity",
+                table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy",
+                            SqlServerValueGenerationStrategy.IdentityColumn),
                     AggregateId = table.Column<string>(nullable: true),
                     AggregateName = table.Column<string>(nullable: true),
                     AggregateSequenceNumber = table.Column<int>(nullable: false),
                     Data = table.Column<string>(nullable: true),
                     Metadata = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SnapshotEntity", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_SnapshotEntity", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "IqAccountReadModel",
-                columns: table => new
+                "IqAccountReadModel",
+                table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    AccountId = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
+                    IqOptionToken = table.Column<string>(nullable: true),
+                    TokenUpdatedDate = table.Column<DateTimeOffset>(nullable: false),
                     CustomerReadModelAggregateId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IqAccountReadModel", x => x.Id);
+                    table.PrimaryKey("PK_IqAccountReadModel", x => x.AccountId);
                     table.ForeignKey(
-                        name: "FK_IqAccountReadModel_CustomerReadModel_CustomerReadModelAggregateId",
-                        column: x => x.CustomerReadModelAggregateId,
-                        principalTable: "CustomerReadModel",
-                        principalColumn: "AccountId",
+                        "FK_IqAccountReadModel_CustomerReadModel_CustomerReadModelAggregateId",
+                        x => x.CustomerReadModelAggregateId,
+                        "CustomerReadModel",
+                        "CustomerId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EventEntity_AggregateId_AggregateSequenceNumber",
-                table: "EventEntity",
-                columns: new[] { "AggregateId", "AggregateSequenceNumber" },
+                "IX_EventEntity_AggregateId_AggregateSequenceNumber",
+                "EventEntity",
+                new[] {"AggregateId", "AggregateSequenceNumber"},
                 unique: true,
                 filter: "[AggregateId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IqAccountReadModel_CustomerReadModelAggregateId",
-                table: "IqAccountReadModel",
-                column: "CustomerReadModelAggregateId");
+                "IX_IqAccountReadModel_CustomerReadModelAggregateId",
+                "IqAccountReadModel",
+                "CustomerReadModelAggregateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SnapshotEntity_AggregateName_AggregateId_AggregateSequenceNumber",
-                table: "SnapshotEntity",
-                columns: new[] { "AggregateName", "AggregateId", "AggregateSequenceNumber" },
+                "IX_SnapshotEntity_AggregateName_AggregateId_AggregateSequenceNumber",
+                "SnapshotEntity",
+                new[] {"AggregateName", "AggregateId", "AggregateSequenceNumber"},
                 unique: true,
                 filter: "[AggregateName] IS NOT NULL AND [AggregateId] IS NOT NULL");
         }
@@ -100,16 +98,16 @@ namespace AiOption.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EventEntity");
+                "EventEntity");
 
             migrationBuilder.DropTable(
-                name: "IqAccountReadModel");
+                "IqAccountReadModel");
 
             migrationBuilder.DropTable(
-                name: "SnapshotEntity");
+                "SnapshotEntity");
 
             migrationBuilder.DropTable(
-                name: "CustomerReadModel");
+                "CustomerReadModel");
         }
     }
 }

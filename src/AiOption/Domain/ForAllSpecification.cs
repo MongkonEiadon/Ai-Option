@@ -11,13 +11,13 @@ namespace AiOption.Domain
 
         public ForAllSpecification(ISpecification<T> specification)
         {
-            this.inner = specification;
+            inner = specification;
         }
 
         protected override IEnumerable<string> IsNotSatisfiedBecause(IEnumerable<T> obj)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
-            return obj.SelectMany(o => this.inner.WhyIsNotSatisfiedBy(o));
+            return obj.SelectMany(o => inner.WhyIsNotSatisfiedBy(o));
         }
     }
 }

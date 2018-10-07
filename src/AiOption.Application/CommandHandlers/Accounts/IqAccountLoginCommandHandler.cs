@@ -5,27 +5,28 @@ using AiOption.Domain.IqAccounts;
 using AiOption.Domain.IqAccounts.Commands;
 using AiOption.Query.IqAccounts;
 using EventFlow;
-using EventFlow.Aggregates.ExecutionResults;
 using EventFlow.Commands;
 using EventFlow.Exceptions;
 using EventFlow.Queries;
 
-namespace AiOption.Application.CommandHandlers.Accounts {
-
-    class IqAccountLoginCommandHandler : CommandHandler<IqAccountAggregate, IqAccountId, IqAccountLoginCommand>
+namespace AiOption.Application.CommandHandlers.Accounts
+{
+    internal class IqAccountLoginCommandHandler : CommandHandler<IqAccountAggregate, IqAccountId, IqAccountLoginCommand>
     {
-        private readonly IQueryProcessor _query;
         private readonly IIqOptionApiWrapper _apiWrapper;
         private readonly ICommandBus _commandBus;
+        private readonly IQueryProcessor _query;
 
-        public IqAccountLoginCommandHandler(IQueryProcessor query, IIqOptionApiWrapper apiWrapper, ICommandBus commandBus)
+        public IqAccountLoginCommandHandler(IQueryProcessor query, IIqOptionApiWrapper apiWrapper,
+            ICommandBus commandBus)
         {
             _query = query;
             _apiWrapper = apiWrapper;
             _commandBus = commandBus;
         }
 
-        public override async Task ExecuteAsync(IqAccountAggregate aggregate, IqAccountLoginCommand command, CancellationToken cancellationToken)
+        public override async Task ExecuteAsync(IqAccountAggregate aggregate, IqAccountLoginCommand command,
+            CancellationToken cancellationToken)
         {
             // query existing account
             var account = await _query.ProcessAsync(new QueryIqAccountById(command.AggregateId), cancellationToken);

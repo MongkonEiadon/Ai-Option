@@ -1,5 +1,4 @@
-﻿using AiOption.Domain.Accounts;
-using AiOption.Domain.Common;
+﻿using AiOption.Domain.Common;
 using EventFlow.Entities;
 
 namespace AiOption.Domain.Customers
@@ -11,19 +10,20 @@ namespace AiOption.Domain.Customers
         RegisterSucceeded = 2,
 
 
-        RegisterFailed = -1,
+        RegisterFailed = -1
     }
 
     public class Customer : Entity<CustomerId>
     {
+        public Customer(CustomerId id, User userName, Password password) : base(id)
+        {
+            UserName = userName;
+            Password = password;
+        }
+
         public User UserName { get; }
         public Password Password { get; }
         public Level Level { get; }
         public Token Token { get; }
-
-        public Customer(CustomerId id, User userName, Password password) : base(id) {
-            UserName = userName;
-            Password = password;
-        }
     }
 }

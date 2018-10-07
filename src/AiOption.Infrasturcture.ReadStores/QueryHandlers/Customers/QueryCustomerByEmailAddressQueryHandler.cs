@@ -1,16 +1,15 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AiOption.Domain.Customers;
-using AiOption.Infrastructure.DataAccess;
 using AiOption.Query.Customers;
 using EventFlow.EntityFramework;
 using EventFlow.Exceptions;
 using EventFlow.Queries;
 using Microsoft.EntityFrameworkCore;
 
-namespace AiOption.Infrastructure.ReadStores.QueryHandlers.Customers
+namespace AiOption.Infrasturcture.ReadStores.QueryHandlers.Customers
 {
-    class QueryCustomerByEmailAddressQueryHandler : IQueryHandler<QueryCustomerByEmailAddress, Customer>
+    internal class QueryCustomerByEmailAddressQueryHandler : IQueryHandler<QueryCustomerByEmailAddress, Customer>
     {
         private readonly IDbContextProvider<AiOptionDbContext> _dbContextProvider;
 
@@ -19,17 +18,16 @@ namespace AiOption.Infrastructure.ReadStores.QueryHandlers.Customers
             _dbContextProvider = dbContextProvider;
         }
 
-        public async Task<Customer> ExecuteQueryAsync(QueryCustomerByEmailAddress query, CancellationToken cancellationToken)
+        public async Task<Customer> ExecuteQueryAsync(QueryCustomerByEmailAddress query,
+            CancellationToken cancellationToken)
         {
             using (var db = _dbContextProvider.CreateContext())
             {
-                var entity = (await db.Customers
+                var entity = await db.Customers
                     .FirstOrDefaultAsync(x => x.EmailAddressNormalize == query.User.Value,
-                        cancellationToken: cancellationToken));
+                        cancellationToken);
 
-                if (query.ThrowIfNotFound && entity == null) {
-                    throw DomainError.With($"{query.User} not found!");
-                }
+                if (query.ThrowIfNotFound && entity == null) throw DomainError.With($"{query.User} not found!");
 
                 return entity?.ToCustomer();
             }

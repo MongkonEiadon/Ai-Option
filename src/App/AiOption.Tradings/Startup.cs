@@ -1,27 +1,23 @@
 ﻿using System;
-
-using AiOption.Application;
-using AiOption.Infrastructure.DataAccess;
 using AiOption.Infrastructure.Modules;
-
+using AiOption.Infrasturcture.ReadStores;
 using Autofac;
 using Autofac.Configuration;
 using Autofac.Extensions.DependencyInjection;
-
+using EventFlow.Autofac.Extensions;
+using EventFlow.DependencyInjection.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
 using Serilog;
-
 using ILogger = Serilog.ILogger;
 
-namespace AiOption.Tradings {
-
-    public class Startup {
-
-        public Startup() {
-
+namespace AiOption.Tradings
+{
+    public class Startup
+    {
+        public Startup()
+        {
             Configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .Build();
@@ -29,7 +25,8 @@ namespace AiOption.Tradings {
 
         public IConfiguration Configuration { get; }
 
-        public IServiceProvider ConfigureServices() {
+        public IServiceProvider ConfigureServices()
+        {
             var services = new ServiceCollection();
             var builder = new ContainerBuilder();
 
@@ -44,10 +41,22 @@ namespace AiOption.Tradings {
             services.AddMvc();
             services.AddInfrastructureConfiguration();
             services.AddLogging(c => c.AddConsole());
-            services.AddEventFlowInfrastructure(Configuration, builder);
-
-            //efs
             services.AddEfConfigurationDomain(Configuration);
+
+            //event flows
+            services.AddEventFlow(cfg =>
+                cfg.UseAutofacContainerBuilder(builder)
+                    .Configure(c =>
+                    {
+                        c.IsAsynchronousSubscribersEnabled = true;
+                        c.ThrowSubscriberExceptions = true;
+                    })
+                    .UseServiceCollection(services)
+                    .AddDomain()
+                    .AddApplication()
+                    .AddInfrastructure()
+                    .AddInfrastructureReadStores()
+            );
 
 
             builder.Populate(services);
@@ -57,8 +66,8 @@ namespace AiOption.Tradings {
             return new AutofacServiceProvider(container);
         }
 
-        public void ConfigureContainer(ContainerBuilder builder) {
-
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
             var logger = new LoggerConfiguration()
 
                 //.ReadFrom.Configuration(Configuration)
@@ -73,9 +82,6 @@ namespace AiOption.Tradings {
 
 
             builder.Register(c => logger).As<ILogger>().SingleInstance();
-
         }
-
     }
-
 }

@@ -1,12 +1,12 @@
 ﻿using AiOption.Domain.Customers;
-using AiOption.Infrastructure.DataAccess;
 using AiOption.Infrastructure.ReadStores.ReadModels;
+using AiOption.Infrasturcture.ReadStores.ReadModels;
 using AutoMapper;
 
-namespace AiOption.Infrastructure.Mappings {
-
-    public class CustomersProfile : Profile {
-
+namespace AiOption.Infrasturcture.ReadStores.Mappings
+{
+    public class CustomersProfile : Profile
+    {
         public CustomersProfile()
         {
             CreateMap<Customer, CustomerReadModel>()
@@ -15,7 +15,5 @@ namespace AiOption.Infrastructure.Mappings {
                 .ForMember(rm => rm.UserName, o => o.MapFrom(c => c.UserName))
                 .ForMember(rm => rm.InvitationCode, o => o.Ignore());
         }
-
     }
-
 }

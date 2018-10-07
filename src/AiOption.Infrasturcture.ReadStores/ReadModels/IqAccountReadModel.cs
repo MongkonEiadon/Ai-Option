@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using AiOption.Domain.Common;
 using AiOption.Domain.IqAccounts;
 using AiOption.Domain.IqAccounts.Events;
+using AiOption.Infrasturcture.ReadStores.ReadModels;
 using EventFlow.Aggregates;
 using EventFlow.ReadStores;
 
@@ -13,9 +14,7 @@ namespace AiOption.Infrastructure.ReadStores.ReadModels
     public class IqAccountReadModel : IReadModel,
         IAmReadModelFor<IqAccountAggregate, IqAccountId, UpdateTokenEvent>
     {
-        [Key]
-        [Column("AccountId")]
-        public string AggregateId { get; set; }
+        [Key] [Column("AccountId")] public string AggregateId { get; set; }
 
         public User UserName { get; set; }
 
@@ -27,6 +26,13 @@ namespace AiOption.Infrastructure.ReadStores.ReadModels
 
         public CustomerReadModel CustomerReadModel { get; set; }
 
+        public void Apply(IReadModelContext context,
+            IDomainEvent<IqAccountAggregate, IqAccountId, UpdateTokenEvent> domainEvent)
+        {
+            IqOptionToken = domainEvent.AggregateEvent.Token;
+            TokenUpdatedDate = domainEvent.Timestamp;
+        }
+
 
         public IqAccount ToIqAccount()
         {
@@ -37,12 +43,6 @@ namespace AiOption.Infrastructure.ReadStores.ReadModels
 
             iq.SetSecuredToken(IqOptionToken);
             return iq;
-        }
-
-        public void Apply(IReadModelContext context, IDomainEvent<IqAccountAggregate, IqAccountId, UpdateTokenEvent> domainEvent)
-        {
-            IqOptionToken = domainEvent.AggregateEvent.Token;
-            TokenUpdatedDate = domainEvent.Timestamp;
         }
     }
 }

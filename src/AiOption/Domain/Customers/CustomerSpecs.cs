@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using AiOption.Domain.Customers;
 using EventFlow.Specifications;
 
@@ -14,10 +13,8 @@ namespace AiOption.Domain.Accounts
         {
             protected override IEnumerable<string> IsNotSatisfiedBecause(CustomerAggregate obj)
             {
-                if (!String.IsNullOrWhiteSpace(obj.EmailAddress))
-                {
+                if (!string.IsNullOrWhiteSpace(obj.EmailAddress))
                     yield return $"UserName {obj.EmailAddress} isn't correct.";
-                }
             }
         }
 

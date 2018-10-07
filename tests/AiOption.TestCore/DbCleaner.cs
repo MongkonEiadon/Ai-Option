@@ -2,13 +2,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Dapper;
 
-namespace AiOption.TestCore {
-
-    public class DbCleaner {
-
+namespace AiOption.TestCore
+{
+    public class DbCleaner
+    {
         private static readonly string[] IGNORED_TABLES = {"sysdiagrams", "__MigrationHistory"};
 
         private static readonly object LOCK_OBJ = new object();
@@ -19,19 +18,22 @@ namespace AiOption.TestCore {
 
         private readonly IDbConnection _dbConnection;
 
-        public DbCleaner(IDbConnection dbConnection) {
+        public DbCleaner(IDbConnection dbConnection)
+        {
             _dbConnection = dbConnection;
 
             BuildDeleteTables();
         }
 
-        public virtual Task DeleteAllData() {
+        public virtual Task DeleteAllData()
+        {
             return _dbConnection.ExecuteAsync(deleteSql);
         }
 
-        private void BuildDeleteTables() {
-
-            lock (LOCK_OBJ) {
+        private void BuildDeleteTables()
+        {
+            lock (LOCK_OBJ)
+            {
                 if (initialized)
                     return;
 
@@ -42,25 +44,29 @@ namespace AiOption.TestCore {
             }
         }
 
-        private static string BuildTableSql(IEnumerable<string> tablesToDelete) {
+        private static string BuildTableSql(IEnumerable<string> tablesToDelete)
+        {
             var sqls = tablesToDelete.Select(x => string.Format("delete from [{0}]", x)).ToArray();
 
             return string.Join(";", sqls);
         }
 
-        private string[] GetSortedTables() {
+        private string[] GetSortedTables()
+        {
             var allTables = GetAllTables().ToList();
 
             var allRelationships = GetRelationships().ToList();
 
             var sortedTables = new List<string>();
 
-            while (allTables.Any()) {
+            while (allTables.Any())
+            {
                 var leafTables = allTables.Except(allRelationships.Select(rel => rel.PrimaryKeyTable)).ToArray();
 
                 sortedTables.AddRange(leafTables);
 
-                foreach (var leafTable in leafTables) {
+                foreach (var leafTable in leafTables)
+                {
                     allTables.Remove(leafTable);
                     var relToRemove = allRelationships.Where(rel => rel.ForeignKeyTable == leafTable).ToArray();
                     foreach (var rel in relToRemove) allRelationships.Remove(rel);
@@ -70,7 +76,8 @@ namespace AiOption.TestCore {
             return sortedTables.ToArray();
         }
 
-        private IEnumerable<Relationship> GetRelationships() {
+        private IEnumerable<Relationship> GetRelationships()
+        {
             const string sql = @"
                         select
 	                        so_pk.name as PrimaryKeyTable
@@ -86,7 +93,8 @@ namespace AiOption.TestCore {
             return _dbConnection.Query<Relationship>(sql);
         }
 
-        private IEnumerable<string> GetAllTables() {
+        private IEnumerable<string> GetAllTables()
+        {
             return
                 _dbConnection.Query<Table>("select Name from sys.tables")
                     .Select(x => x.Name)
@@ -95,20 +103,16 @@ namespace AiOption.TestCore {
         }
 
 
-        private class Relationship {
-
+        private class Relationship
+        {
             public string PrimaryKeyTable { get; set; }
             public string ForeignKeyTable { get; set; }
-
         }
 
 
-        private class Table {
-
+        private class Table
+        {
             public string Name { get; set; }
-
         }
-
     }
-
 }

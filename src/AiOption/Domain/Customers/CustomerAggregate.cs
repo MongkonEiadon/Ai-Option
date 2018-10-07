@@ -20,6 +20,17 @@ namespace AiOption.Domain.Customers
             Register(_state);
         }
 
+        protected override Task<CustomerSnapShot> CreateSnapshotAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(new CustomerSnapShot(_state));
+        }
+
+        protected override Task LoadSnapshotAsync(CustomerSnapShot snapshot, ISnapshotMetadata metadata,
+            CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
         #region Emitters
 
         public string EmailAddress { get; private set; }
@@ -35,19 +46,12 @@ namespace AiOption.Domain.Customers
 
         public void ChangeLevel(Level level) => Emit(new RequestChangeLevel(level));
 
+        public void CompletedRegister() => Emit(new RegisterCompleted());
+
         public void CreateUserToken()
         {
-
         }
 
         #endregion
-
-        protected override Task<CustomerSnapShot> CreateSnapshotAsync(CancellationToken cancellationToken) {
-            return Task.FromResult(new CustomerSnapShot(_state));
-        }
-
-        protected override Task LoadSnapshotAsync(CustomerSnapShot snapshot, ISnapshotMetadata metadata, CancellationToken cancellationToken) {
-            return Task.CompletedTask;
-        }
     }
 }

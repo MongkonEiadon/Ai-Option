@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Data;
-using AiOption.Infrastructure.DataAccess;
 using EventFlow.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 
-namespace AiOption.Infrastructure.ReadStores
+namespace AiOption.Infrasturcture.ReadStores
 {
     public class MsSqlDbContextProvider : IDbContextProvider<AiOptionDbContext>, IDisposable
     {

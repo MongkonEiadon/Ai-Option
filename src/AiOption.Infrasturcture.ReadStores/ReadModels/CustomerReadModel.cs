@@ -1,28 +1,25 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using AiOption.Domain.Accounts;
 using AiOption.Domain.Common;
 using AiOption.Domain.Customers;
 using AiOption.Domain.Customers.Events;
+using AiOption.Infrastructure.ReadStores.ReadModels;
 using EventFlow.Aggregates;
 using EventFlow.ReadStores;
-using Microsoft.AspNetCore.Identity;
 
-namespace AiOption.Infrastructure.ReadStores.ReadModels
+namespace AiOption.Infrasturcture.ReadStores.ReadModels
 {
-
     [Table("CustomerReadModel")]
-    public class CustomerReadModel : 
+    public class CustomerReadModel :
         IReadModel,
         IAmReadModelFor<CustomerAggregate, CustomerId, RequestRegister>,
         IAmReadModelFor<CustomerAggregate, CustomerId, RequestChangeLevel>,
         IAmReadModelFor<CustomerAggregate, CustomerId, LoginSucceeded>,
         IAmReadModelFor<CustomerAggregate, CustomerId, CreateTokenSuccess>
     {
-        [Key] [Column("AccountId")] public string AggregateId { get; set;  }
+        [Key] [Column("CustomerId")] public string AggregateId { get; set; }
 
         public User UserName { get; private set; }
 
@@ -37,13 +34,31 @@ namespace AiOption.Infrastructure.ReadStores.ReadModels
         public Token Token { get; private set; }
 
 
-
         public string EmailAddressNormalize => UserName.Value.ToUpper();
 
         public virtual ICollection<IqAccountReadModel> IqAccountReadModels { get; set; }
 
+        public void Apply(IReadModelContext context,
+            IDomainEvent<CustomerAggregate, CustomerId, CreateTokenSuccess> domainEvent)
+        {
+            ApplyChanged(x => x.Token = domainEvent.AggregateEvent.Token);
+        }
+
+        public void Apply(IReadModelContext context,
+            IDomainEvent<CustomerAggregate, CustomerId, LoginSucceeded> domainEvent)
+        {
+            ApplyChanged(
+                x => x.LastLogin = domainEvent.Timestamp);
+        }
+
+        public void Apply(IReadModelContext context,
+            IDomainEvent<CustomerAggregate, CustomerId, RequestChangeLevel> domainEvent)
+        {
+            ApplyChanged(x => x.Level = domainEvent.AggregateEvent.UserLevel);
+        }
+
         public void Apply(
-            IReadModelContext context, 
+            IReadModelContext context,
             IDomainEvent<CustomerAggregate, CustomerId, RequestRegister> domainEvent)
         {
             ApplyChanged(
@@ -52,33 +67,19 @@ namespace AiOption.Infrastructure.ReadStores.ReadModels
                 x => x.InvitationCode = domainEvent.AggregateEvent.InvitationCode);
         }
 
-        public void Apply(IReadModelContext context,
-            IDomainEvent<CustomerAggregate, CustomerId, RequestChangeLevel> domainEvent) {
-            ApplyChanged(x => x.Level = domainEvent.AggregateEvent.UserLevel);
+        public Customer ToCustomer()
+        {
+            return new Customer(CustomerId.With(AggregateId), UserName, Password);
         }
 
-        public Customer ToCustomer() => new Customer(CustomerId.With(AggregateId), UserName, Password);
-        
 
         #region [Privates]
 
-         private void ApplyChanged(params Action<CustomerReadModel>[] paramActions)
+        private void ApplyChanged(params Action<CustomerReadModel>[] paramActions)
         {
-            foreach (var paramAction in paramActions)
-            {
-                paramAction(this);
-            }
+            foreach (var paramAction in paramActions) paramAction(this);
         }
 
         #endregion
-
-        public void Apply(IReadModelContext context, IDomainEvent<CustomerAggregate, CustomerId, LoginSucceeded> domainEvent) {
-            ApplyChanged(
-                x => x.LastLogin = domainEvent.Timestamp);
-        }
-
-        public void Apply(IReadModelContext context, IDomainEvent<CustomerAggregate, CustomerId, CreateTokenSuccess> domainEvent) {
-            ApplyChanged(x => x.Token = domainEvent.AggregateEvent.Token);
-        }
     }
 }

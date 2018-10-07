@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using EventFlow.ValueObjects;
@@ -16,6 +14,12 @@ namespace AiOption.Domain.Common
         {
         }
 
+        public bool Equals(Password password)
+        {
+            if (password == null) return false;
+            return password.IsPasswordMatched(this);
+        }
+
         private static string CreateEncryptePasscode(string value)
         {
             return value.Encrypt(Key);
@@ -23,7 +27,7 @@ namespace AiOption.Domain.Common
 
         public bool IsPasswordMatched(Password passwordToValidate)
         {
-            return passwordToValidate.Value.Decrypt(Key) == this.Value.Decrypt(Key);
+            return passwordToValidate.Value.Decrypt(Key) == Value.Decrypt(Key);
         }
 
         public string DecryptPassword()
@@ -31,12 +35,9 @@ namespace AiOption.Domain.Common
             return Value.Decrypt(Key);
         }
 
-        public static Password With(string value) => new Password(value.Decrypt(Key));
-
-        public bool Equals(Password password)
+        public static Password With(string value)
         {
-            if (password == null) return false;
-            return password.IsPasswordMatched(this);
+            return new Password(value.Decrypt(Key));
         }
 
         public override int GetHashCode()
@@ -44,7 +45,10 @@ namespace AiOption.Domain.Common
             return Value.Decrypt(Key).GetHashCode();
         }
 
-        public static Password New(string password) => new Password(password);
+        public static Password New(string password)
+        {
+            return new Password(password);
+        }
     }
 
 

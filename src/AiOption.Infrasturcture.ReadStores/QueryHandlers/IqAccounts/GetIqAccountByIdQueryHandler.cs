@@ -6,9 +6,9 @@ using AiOption.Query.IqAccounts;
 using EventFlow.Queries;
 using EventFlow.ReadStores;
 
-namespace AiOption.Infrastructure.ReadStores.QueryHandlers.IqAccounts
+namespace AiOption.Infrasturcture.ReadStores.QueryHandlers.IqAccounts
 {
-    class GetIqAccountByIdQueryHandler : IQueryHandler<QueryIqAccountById, IqAccount>
+    internal class GetIqAccountByIdQueryHandler : IQueryHandler<QueryIqAccountById, IqAccount>
     {
         private readonly IReadModelStore<IqAccountReadModel> _readModelStore;
 
@@ -17,7 +17,8 @@ namespace AiOption.Infrastructure.ReadStores.QueryHandlers.IqAccounts
             _readModelStore = readModelStore;
         }
 
-        public async Task<IqAccount> ExecuteQueryAsync(QueryIqAccountById queryIqAccount, CancellationToken cancellationToken)
+        public async Task<IqAccount> ExecuteQueryAsync(QueryIqAccountById queryIqAccount,
+            CancellationToken cancellationToken)
         {
             var result = await _readModelStore.GetAsync(queryIqAccount.AccountId.Value, cancellationToken);
 

@@ -13,21 +13,20 @@ namespace AiOption.Domain.Customers.Commands
         }
     }
 
-    class CreateNewTokenCommandHandler : CommandHandler<CustomerAggregate, CustomerId, CreateNewTokenCommand>
+    internal class CreateNewTokenCommandHandler : CommandHandler<CustomerAggregate, CustomerId, CreateNewTokenCommand>
     {
         private readonly IQueryProcessor _queryProcessor;
 
-        public CreateNewTokenCommandHandler(IQueryProcessor queryProcessor) {
+        public CreateNewTokenCommandHandler(IQueryProcessor queryProcessor)
+        {
             _queryProcessor = queryProcessor;
         }
 
         public override async Task ExecuteAsync(CustomerAggregate aggregate, CreateNewTokenCommand command,
-            CancellationToken cancellationToken) {
-
-            var customer = await _queryProcessor.ProcessAsync(new QueryCustomerById(aggregate.Id, true), cancellationToken);
-
-
-
+            CancellationToken cancellationToken)
+        {
+            var customer =
+                await _queryProcessor.ProcessAsync(new QueryCustomerById(aggregate.Id, true), cancellationToken);
         }
     }
 }

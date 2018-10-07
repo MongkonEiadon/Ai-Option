@@ -2,23 +2,23 @@
 using System.Threading.Tasks;
 using AiOption.Domain.Common;
 using EventFlow.Commands;
-using EventFlow.Core;
-using EventFlow.Queries;
 
 namespace AiOption.Domain.Customers.Commands
 {
-    public class ChangeLevelCommand : Command<CustomerAggregate, CustomerId> {
-        public Level CustomerLevel { get; }
-
+    public class ChangeLevelCommand : Command<CustomerAggregate, CustomerId>
+    {
         public ChangeLevelCommand(CustomerId aggregateId, Level customerLevel) : base(aggregateId)
         {
             CustomerLevel = customerLevel;
         }
+
+        public Level CustomerLevel { get; }
     }
 
-    class CustomerChangeLevelCommandHandler : CommandHandler<CustomerAggregate, CustomerId, ChangeLevelCommand>
+    internal class CustomerChangeLevelCommandHandler : CommandHandler<CustomerAggregate, CustomerId, ChangeLevelCommand>
     {
-        public override Task ExecuteAsync(CustomerAggregate aggregate, ChangeLevelCommand command, CancellationToken cancellationToken)
+        public override Task ExecuteAsync(CustomerAggregate aggregate, ChangeLevelCommand command,
+            CancellationToken cancellationToken)
         {
             aggregate.ChangeLevel(command.CustomerLevel);
             return Task.CompletedTask;

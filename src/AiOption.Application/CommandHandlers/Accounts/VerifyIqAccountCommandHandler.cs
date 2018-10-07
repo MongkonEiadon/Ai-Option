@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AiOption.Application.API;
 using AiOption.Domain.Common;
@@ -9,7 +8,8 @@ using EventFlow.Commands;
 
 namespace AiOption.Application.CommandHandlers.Accounts
 {
-    class VerifyIqAccountCommandHandler : CommandHandler<IqAccountAggregate, IqAccountId, VerifyIqAccountResult,
+    internal class VerifyIqAccountCommandHandler : CommandHandler<IqAccountAggregate, IqAccountId, VerifyIqAccountResult
+        ,
         VerifyIqAccountCommand>
     {
         private readonly IIqOptionApiWrapper _apiWrapper;

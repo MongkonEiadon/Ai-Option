@@ -6,18 +6,19 @@ using AiOption.Domain.Customers.Commands;
 using AiOption.Query.Customers;
 using EventFlow;
 using EventFlow.Queries;
-
 using Microsoft.Extensions.DependencyInjection;
-
 using Serilog;
-namespace AiOption.Tradings {
 
-    public class Program {
-
-        private static void Main(string[] args) {
+namespace AiOption.Tradings
+{
+    public class Program
+    {
+        private static void Main(string[] args)
+        {
             //TradingPersistenceService tradingPersistenceService = null;
 
-            try {
+            try
+            {
                 Console.WriteLine(@"
                                      █████╗ ██╗       ██████╗ ██████╗ ████████╗██╗ ██████╗ ███╗   ██╗
                                     ██╔══██╗██║      ██╔═══██╗██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
@@ -30,16 +31,17 @@ namespace AiOption.Tradings {
                 var logger = container.GetService<ILogger>();
 
                 ////migrate
-
-
                 var bus = container.GetService<ICommandBus>();
                 var query = container.GetService<IQueryProcessor>();
-                //var accountId = CustomerId.New;
-                //bus.PublishAsync(new RequestRegisterCommand(
-                //    "m223@email.com",
-                //    "Code11054",
-                //    "Invitation"), CancellationToken.None).Wait();
-                var cus = query.Process(new QueryCustomerByEmailAddress(new User("m223@email.com"), false),
+                var accountId = CustomerId.New;
+
+
+
+                bus.PublishAsync(new CustomerRegisterCommand(
+                    "m2233@email.com",
+                    "Code11054",
+                    "Invitation"), CancellationToken.None).Wait();
+                var cus = query.Process(new QueryCustomerByEmailAddress(new User("m2233@email.com"), false),
                     CancellationToken.None);
 
 
@@ -54,8 +56,6 @@ namespace AiOption.Tradings {
                 //Validate mapper
                 //var mapper = container.GetService<IMapper>();
                 //mapper.ConfigurationProvider.AssertConfigurationIsValid();
-
-                
 
 
                 //var trader = container.GetService<TraderPersistenceService>();
@@ -77,28 +77,25 @@ namespace AiOption.Tradings {
                 //Task.WhenAll(trader.InitialAccount(), follower.InitialAccount());
 
 
-                while (true) {
+                while (true)
+                {
                     var input = Console.ReadLine();
 
-                    switch (input) {
-                        case "-l": {
+                    switch (input)
+                    {
+                        case "-l":
+                        {
                             //tradingPersistenceService.GetListOfSubscribe();
                             break;
                         }
                     }
-
-
                 }
-
-
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Console.WriteLine(ex.Message);
                 Console.ReadLine();
             }
-
         }
-
     }
-
 }

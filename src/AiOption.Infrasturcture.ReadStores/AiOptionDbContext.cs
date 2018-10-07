@@ -1,24 +1,22 @@
-﻿using System;
-using System.ComponentModel;
-using AiOption.Domain.Common;
+﻿using AiOption.Domain.Common;
 using AiOption.Infrastructure.ReadStores.ReadModels;
-using EventFlow.EntityFramework.EventStores;
+using AiOption.Infrasturcture.ReadStores.ReadModels;
 using EventFlow.EntityFramework.Extensions;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
 using Microsoft.Extensions.Configuration;
 
-namespace AiOption.Infrastructure.DataAccess {
-
-    public class AiOptionDbContext : DbContext {
-
+namespace AiOption.Infrasturcture.ReadStores
+{
+    public class AiOptionDbContext : DbContext
+    {
         private readonly DbContextOptions<AiOptionDbContext> _options;
 
-        public AiOptionDbContext() { }
+        public AiOptionDbContext()
+        {
+        }
 
-        public AiOptionDbContext(DbContextOptions<AiOptionDbContext> options) : base(options) {
+        public AiOptionDbContext(DbContextOptions<AiOptionDbContext> options) : base(options)
+        {
             _options = options;
         }
 
@@ -26,9 +24,10 @@ namespace AiOption.Infrastructure.DataAccess {
         public DbSet<CustomerReadModel> Customers { get; set; }
         public DbSet<IqAccountReadModel> IqAccounts { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-
-            if (_options == null) {
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (_options == null)
+            {
                 var config = new ConfigurationBuilder()
                     .AddJsonFile("appsettings.json")
                     .Build();
@@ -66,9 +65,6 @@ namespace AiOption.Infrastructure.DataAccess {
 
 
             base.OnModelCreating(modelBuilder);
-
         }
-
     }
-
 }

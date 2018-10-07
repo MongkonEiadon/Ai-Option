@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
-using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using EventFlow.ValueObjects;
 
 namespace AiOption.Domain.Common
 {
     public class User : SingleValueObject<string>
     {
-        public User(string value) : base(ValidateAndConvert(value)) { }
+        public User(string value) : base(ValidateAndConvert(value))
+        {
+        }
 
         public override string ToString()
         {
-            return string.Join(" ", this.Value
+            return string.Join(" ", Value
                 .Split(' ')
                 .Select(token => char.ToUpper(token[0]) + token.Substring(1)));
         }
@@ -26,6 +24,9 @@ namespace AiOption.Domain.Common
             return value.ToUpper();
         }
 
-        public static User New(string value) => new User(value);
+        public static User New(string value)
+        {
+            return new User(value);
+        }
     }
 }

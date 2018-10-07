@@ -5,10 +5,11 @@ namespace AiOption.Domain.Customers.Events
 {
     public class RequestChangeLevel : AggregateEvent<CustomerAggregate, CustomerId>
     {
-        public Level UserLevel { get; }
         public RequestChangeLevel(Level userLevel)
         {
             UserLevel = userLevel;
         }
+
+        public Level UserLevel { get; }
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AiOption.Domain.Common;
+﻿using AiOption.Domain.Common;
 using FluentAssertions;
 using Xunit;
 
@@ -9,6 +6,20 @@ namespace AiOption.Tests.Units.Commons
 {
     public class PasswordTest
     {
+        [Fact]
+        public void TestEquals()
+        {
+            // arrange
+            var password = new Password("PlainText");
+            var password2 = new Password("PlainText");
+
+            // act
+            var result = password.Equals(password2);
+
+            // arrange
+            result.Should().BeTrue();
+        }
+
         [Fact]
         public void TestValidate()
         {
@@ -31,21 +42,6 @@ namespace AiOption.Tests.Units.Commons
 
             // assert
             password.Value.Should().NotBe("PlainText");
-
-        }
-
-        [Fact]
-        public void TestEquals()
-        {
-            // arrange
-            var password = new Password("PlainText");
-            var password2 = new Password("PlainText");
-            
-            // act
-            var result = password.Equals(password2);
-
-            // arrange
-            result.Should().BeTrue();
         }
     }
 }

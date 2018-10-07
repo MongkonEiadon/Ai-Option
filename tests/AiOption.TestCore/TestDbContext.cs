@@ -1,21 +1,20 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace AiOption.TestCore {
-
-    public class OneTimeSetupDataContextBase {
-
+namespace AiOption.TestCore
+{
+    public class OneTimeSetupDataContextBase
+    {
     }
 
 
-    public class TestDbContext : DbContext {
-
-        public TestDbContext() {
-
+    public class TestDbContext : DbContext
+    {
+        public TestDbContext()
+        {
         }
 
-        public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) {
+        public TestDbContext(DbContextOptions<TestDbContext> options) : base(options)
+        {
         }
-
     }
 }
