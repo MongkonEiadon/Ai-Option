@@ -1,5 +1,4 @@
 ﻿using AiOption.Domain.Common;
-using AiOption.Infrastructure.ReadStores.ReadModels;
 using AiOption.Infrasturcture.ReadStores.ReadModels;
 using EventFlow.EntityFramework.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -21,8 +20,8 @@ namespace AiOption.Infrasturcture.ReadStores
         }
 
         //read models
-        public DbSet<CustomerReadModel> Customers { get; set; }
-        public DbSet<IqAccountReadModel> IqAccounts { get; set; }
+        public DbSet<CustomerReadModelDto> Customers { get; set; }
+        public DbSet<IqAccountReadModelDto> IqAccounts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -42,24 +41,24 @@ namespace AiOption.Infrasturcture.ReadStores
                 .AddEventFlowEvents()
                 .AddEventFlowSnapshots();
 
-            modelBuilder.Entity<CustomerReadModel>()
+            modelBuilder.Entity<CustomerReadModelDto>()
                 .Property(e => e.Password)
                 .HasConversion(v => v.Value.Decrypt("AiOption"), v => Password.With(v));
-            modelBuilder.Entity<CustomerReadModel>()
+            modelBuilder.Entity<CustomerReadModelDto>()
                 .Property(e => e.UserName)
                 .HasConversion(v => v.Value, v => new User(v));
-            modelBuilder.Entity<CustomerReadModel>()
+            modelBuilder.Entity<CustomerReadModelDto>()
                 .Property(e => e.Level)
                 .HasConversion(v => v.Value, v => new Level(v));
-            modelBuilder.Entity<CustomerReadModel>()
+            modelBuilder.Entity<CustomerReadModelDto>()
                 .Property(e => e.Token)
                 .HasConversion(v => v.Value, v => new Token(v));
 
 
-            modelBuilder.Entity<IqAccountReadModel>()
+            modelBuilder.Entity<IqAccountReadModelDto>()
                 .Property(e => e.UserName)
                 .HasConversion(v => v.Value, v => new User(v));
-            modelBuilder.Entity<IqAccountReadModel>()
+            modelBuilder.Entity<IqAccountReadModelDto>()
                 .Property(e => e.Password)
                 .HasConversion(v => v.Value, v => Password.With(v));
 

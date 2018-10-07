@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AiOption.Domain.IqAccounts;
-using AiOption.Infrastructure.ReadStores.ReadModels;
+using AiOption.Infrasturcture.ReadStores.ReadModels;
 using AiOption.Query.IqAccounts;
 using EventFlow.Queries;
 using EventFlow.ReadStores;
@@ -10,9 +10,9 @@ namespace AiOption.Infrasturcture.ReadStores.QueryHandlers.IqAccounts
 {
     internal class GetIqAccountByIdQueryHandler : IQueryHandler<QueryIqAccountById, IqAccount>
     {
-        private readonly IReadModelStore<IqAccountReadModel> _readModelStore;
+        private readonly IReadModelStore<IqAccountReadModelDto> _readModelStore;
 
-        public GetIqAccountByIdQueryHandler(IReadModelStore<IqAccountReadModel> readModelStore)
+        public GetIqAccountByIdQueryHandler(IReadModelStore<IqAccountReadModelDto> readModelStore)
         {
             _readModelStore = readModelStore;
         }

@@ -36,7 +36,6 @@ namespace AiOption.Domain.Customers.Commands
 
             if (user.Password.IsPasswordMatched(command.Password))
             {
-                //
             }
         }
     }

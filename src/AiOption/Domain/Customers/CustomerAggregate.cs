@@ -48,6 +48,9 @@ namespace AiOption.Domain.Customers
 
         public void CompletedRegister() => Emit(new RegisterCompleted());
 
+
+
+
         public void CreateUserToken()
         {
         }

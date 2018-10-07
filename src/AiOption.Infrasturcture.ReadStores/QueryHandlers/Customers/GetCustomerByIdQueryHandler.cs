@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AiOption.Domain.Customers;
-using AiOption.Infrastructure.ReadStores.ReadModels;
 using AiOption.Infrasturcture.ReadStores.ReadModels;
 using AiOption.Query.Customers;
 using EventFlow.Exceptions;
@@ -12,9 +11,9 @@ namespace AiOption.Infrasturcture.ReadStores.QueryHandlers.Customers
 {
     internal class GetCustomerByIdQueryHandler : IQueryHandler<QueryCustomerById, Customer>
     {
-        private readonly IReadModelStore<CustomerReadModel> _customerReadModelStore;
+        private readonly IReadModelStore<CustomerReadModelDto> _customerReadModelStore;
 
-        public GetCustomerByIdQueryHandler(IReadModelStore<CustomerReadModel> customerReadModelStore)
+        public GetCustomerByIdQueryHandler(IReadModelStore<CustomerReadModelDto> customerReadModelStore)
         {
             _customerReadModelStore = customerReadModelStore;
         }

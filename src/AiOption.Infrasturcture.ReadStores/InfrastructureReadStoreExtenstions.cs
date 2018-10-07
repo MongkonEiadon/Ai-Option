@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using AiOption.Infrastructure.ReadStores.ReadModels;
 using AiOption.Infrasturcture.ReadStores.ReadModels;
 using EventFlow;
 using EventFlow.EntityFramework;
@@ -66,7 +65,8 @@ namespace AiOption.Infrasturcture.ReadStores
         public static IEventFlowOptions ConfigureInfrastructureReadModelStore(this IEventFlowOptions options)
         {
             return options
-                .UseEntityFrameworkReadModel<CustomerReadModel, AiOptionDbContext>();
+                .UseEntityFrameworkReadModel<CustomerReadModelDto, AiOptionDbContext>()
+                .UseEntityFrameworkReadModel<IqAccountReadModelDto, AiOptionDbContext>();
         }
     }
 }

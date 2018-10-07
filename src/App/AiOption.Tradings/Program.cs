@@ -38,10 +38,11 @@ namespace AiOption.Tradings
 
 
                 bus.PublishAsync(new CustomerRegisterCommand(
-                    "m2233@email.com",
+                    "m223345@email.com",
                     "Code11054",
                     "Invitation"), CancellationToken.None).Wait();
-                var cus = query.Process(new QueryCustomerByEmailAddress(new User("m2233@email.com"), false),
+
+                var cus = query.Process(new QueryCustomerByEmailAddress(new User("m223345@email.com"), false),
                     CancellationToken.None);
 
 
