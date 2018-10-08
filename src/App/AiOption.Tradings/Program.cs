@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using AiOption.Application.ApplicationServices;
 using AiOption.Domain.Common;
 using AiOption.Domain.Customers;
 using AiOption.Domain.Customers.Commands;
@@ -28,27 +29,13 @@ namespace AiOption.Tradings
                                     ╚═╝  ╚═╝╚═╝       ╚═════╝ ╚═╝        ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝");
                 var services = new ServiceCollection();
                 var container = new Startup().ConfigureServices();
-                var logger = container.GetService<ILogger>();
+                var process = container.GetService<ICustomerProcessManagerService>();
 
                 ////migrate
-                var bus = container.GetService<ICommandBus>();
-                var query = container.GetService<IQueryProcessor>();
-                var accountId = CustomerId.New;
 
+                var cust = process.RegisterCustomerAsync("m@email.com", "password", "invitationCode").Result;
 
-
-                bus.PublishAsync(new CustomerRegisterCommand(
-                    "m223345@email.com",
-                    "Code11054",
-                    "Invitation"), CancellationToken.None).Wait();
-
-                var cus = query.Process(new QueryCustomerByEmailAddress(new User("m223345@email.com"), false),
-                    CancellationToken.None);
-
-
-                bus.PublishAsync(new ChangeLevelCommand(cus.Id, new Level(UserLevel.Administrator)),
-                    CancellationToken.None);
-
+                process.ChangeCustomerLevel(cust.Id, new Level(UserLevel.Standard));
 
                 //var query = container.GetService<IQueryProcessor>();
                 //var resultModel = query.ProcessAsync(new ReadModelByIdQuery<CustomerReadModel>(accountId), CancellationToken.None)

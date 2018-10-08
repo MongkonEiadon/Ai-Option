@@ -4,8 +4,9 @@ using EventFlow;
 using EventFlow.Extensions;
 
 // ReSharper disable once CheckNamespace
-namespace AiOption
+namespace AiOption.Infrastructure.ReadStores
 {
+    internal static class ReadStore { }
     public static class AiOption
     {
         public static Assembly AiOptionAssembly => typeof(ReadStore).Assembly;
@@ -14,12 +15,5 @@ namespace AiOption
         {
             return options.AddDefaults(AiOptionAssembly);
         }
-    }
-}
-
-namespace AiOption.Infrastructure.ReadStores
-{
-    internal static class ReadStore
-    {
     }
 }

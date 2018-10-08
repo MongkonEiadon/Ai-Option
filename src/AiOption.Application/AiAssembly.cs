@@ -5,9 +5,9 @@ using EventFlow;
 using EventFlow.Extensions;
 using Module = Autofac.Module;
 
-namespace AiOption
+namespace AiOption.Application
 {
-    public static class AiOption
+    public static class AiOptionApplication
     {
         public static Assembly ApplicationAssembly => typeof(ApplicationAssembly).Assembly;
 
@@ -22,17 +22,14 @@ namespace AiOption
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(ThisAssembly)
-                .Where(x => x.Name.EndsWith("Services"))
+                .Where(x => x.Name.EndsWith("Service"))
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
 
             base.Load(builder);
         }
     }
-}
 
-namespace AiOption.Application
-{
     internal static class ApplicationAssembly
     {
     }

@@ -1,5 +1,7 @@
 ﻿using System;
+using AiOption.Application;
 using AiOption.Infrastructure.Modules;
+using AiOption.Infrastructure.ReadStores;
 using AiOption.Infrasturcture.ReadStores;
 using Autofac;
 using Autofac.Configuration;
