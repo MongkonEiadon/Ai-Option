@@ -1,30 +1,17 @@
-import 'bootstrap/dist/css/bootstrap.css';
-import './index.css';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'react-router-redux';
-import { createBrowserHistory } from 'history';
-import configureStore from './store/configureStore';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+// @flow
 
-// Create browser history to use in the Redux store
-const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
-const history = createBrowserHistory({ basename: baseUrl });
+import React from "react";
+import ReactDOM from "react-dom";
 
-// Get the application-wide store instance, prepopulating with state from the server where available.
-const initialState = window.initialReduxState;
-const store = configureStore(history, initialState);
+import "./index.css";
+import "./css/c3jscustom.css";
 
-const rootElement = document.getElementById('root');
+import App from "./App.react";
 
-ReactDOM.render(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <App />
-    </ConnectedRouter>
-  </Provider>,
-  rootElement);
+const rootElement = document.getElementById("root");
 
-registerServiceWorker();
+if (rootElement) {
+  ReactDOM.render(<App />, rootElement);
+} else {
+  throw new Error("Could not find root element to mount to!");
+}
