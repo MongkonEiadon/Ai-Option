@@ -4,17 +4,17 @@ export const userService = {
     Login
 };
 
-function Login(username, password) {
+function Login(username, password){
     const request = {
-        method: "POST",
-        headers: { 'Content-type': "application/json" },
-        body: Json.stringify({ username, password })
+        method: 'POST',
+        headers: { 'Content-type': 'application/json' },
+        body: Json.stringify({username, password})
     };
 
-    return fetch("api/customer/login", request)
+    return fetch('api/customer/login', request)
         .then(
-            (success) => {},
-            (error) => {}
+            (success) =>{},
+            (error) =>{}
         )
         .then(user => {
 

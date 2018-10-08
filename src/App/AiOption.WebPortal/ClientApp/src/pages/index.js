@@ -1,4 +1,4 @@
-import LoginPage from "./LoginPage.react";
+import LoginPage from './LoginPage.react';
 
 
 export { LoginPage };

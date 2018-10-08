@@ -1,120 +1,123 @@
 using System;
-using System.Text;
-using System.Threading.Tasks;
-
 using AiOption.Application;
-using AiOption.Infrastructure.DataAccess;
 using AiOption.Infrastructure.Modules;
-
+using AiOption.Infrastructure.ReadStores;
+using AiOption.Infrasturcture.ReadStores;
 using Autofac;
 using Autofac.Configuration;
 using Autofac.Extensions.DependencyInjection;
-
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using EventFlow.AspNetCore.Extensions;
+using EventFlow.Autofac.Extensions;
+using EventFlow.DependencyInjection.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-
+using Microsoft.Extensions.Logging;
 using Serilog;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
-using Swashbuckle.AspNetCore.Swagger;
-
-namespace AiOption.WebPortal {
-
-    public class Startup {
-
-        public Startup(IConfiguration configuration) {
+namespace AiOption.WebPortal
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services) {
+        public IServiceProvider ConfigureServices(IServiceCollection services)
+        {
+            var builder = new ContainerBuilder();
 
-            var container = new ContainerBuilder();
-            ConfigureContainer(container);
+            // Once you've registered everything in the ServiceCollection, call
+            // Populate to bring those registrations into Autofac. This is
+            // just like a foreach over the list of things in the collection
+            // to add them to Autofac.
+            ConfigureContainer(builder);
 
-            services
-                .AddCors()
-                .AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services
-                .AddInfrastructureConfiguration()
-                .AddEfConfigurationDomain(Configuration)
-                .AddEventFlowInfrastructure(Configuration, container)
-                .Configure<AppSettings>(Configuration.GetSection("AppSettings"))
-                .AddAuthentication(x => {
-                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(x => {
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("AiOptionJwtSecret")),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                });
+            //infra-configuration
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2); ;
+            services.AddInfrastructureConfiguration();
+            services.AddLogging(c => c.AddConsole());
+            services.AddEfConfigurationDomain(Configuration);
 
+            //event flows
+            services.AddEventFlow(cfg =>
+                cfg
+                    .UseAutofacContainerBuilder(builder)
+                    .AddAspNetCoreMetadataProviders()
+                    .Configure(c =>
+                    {
+                        c.IsAsynchronousSubscribersEnabled = true;
+                        c.ThrowSubscriberExceptions = true;
+                    })
+                    .AddDomain()
+                    .AddApplication()
+                    .AddInfrastructure()
+                    .AddInfrastructureReadStores()
+            );
+            
             // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/build";
+            });
 
-            // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info {Title = "My API", Version = "v1"}));
+            builder.Populate(services);
+            var container = builder.Build();
+            return new AutofacServiceProvider(container);
 
-            container.Populate(services);
-            var build = container.Build();
-
-
-            //migrate
-            return new AutofacServiceProvider(build);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
-            if (env.IsDevelopment()) {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
             }
-            else {
+            else
+            {
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-            app.UseCors(x => { x.AllowAnyOrigin().AllowAnyMethod().AllowCredentials(); })
-                .UseAuthentication();
 
-            app.UseMvc(routes => {
+            app.UseMvc(routes =>
+            {
                 routes.MapRoute(
-                    "default",
-                    "v1/{controller}/{action=Index}/{id?}");
+                    name: "default",
+                    template: "{controller}/{action=Index}/{id?}");
             });
 
-            app.UseSpa(spa => {
+            app.UseSpa(spa =>
+            {
                 spa.Options.SourcePath = "ClientApp";
 
-                if (env.IsDevelopment()) spa.UseReactDevelopmentServer("start");
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
             });
         }
 
-        public void ConfigureContainer(ContainerBuilder builder) {
 
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
             var logger = new LoggerConfiguration()
 
                 //.ReadFrom.Configuration(Configuration)
-                .WriteTo.Console()
                 .CreateLogger();
 
             builder.RegisterModule(new ConfigurationModule(Configuration));
@@ -124,11 +127,7 @@ namespace AiOption.WebPortal {
             builder.RegisterModule<ApplicationModule>();
 
 
-            builder.Register(c => logger).As<ILogger>().SingleInstance();
-
+            builder.Register(c => logger).As<Serilog.ILogger>().SingleInstance();
         }
-
     }
-
-
 }
