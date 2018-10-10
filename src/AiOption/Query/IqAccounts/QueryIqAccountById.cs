@@ -3,7 +3,7 @@ using EventFlow.Queries;
 
 namespace AiOption.Query.IqAccounts
 {
-    public class QueryIqAccountById : IQuery<IqAccount>
+    public abstract class QueryIqAccountById : IQuery<IqAccount>
     {
         public QueryIqAccountById(IqAccountId accountId)
         {

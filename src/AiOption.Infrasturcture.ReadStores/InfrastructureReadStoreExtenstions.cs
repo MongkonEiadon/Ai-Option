@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using AiOption.Domain.IqAccounts;
 using AiOption.Infrasturcture.ReadStores.ReadModels;
+using AiOption.Query;
 using EventFlow;
 using EventFlow.EntityFramework;
 using EventFlow.EntityFramework.Extensions;
+using EventFlow.EntityFramework.ReadStores;
+using EventFlow.ReadStores;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -65,8 +69,22 @@ namespace AiOption.Infrasturcture.ReadStores
         public static IEventFlowOptions ConfigureInfrastructureReadModelStore(this IEventFlowOptions options)
         {
             return options
-                .UseEntityFrameworkReadModel<CustomerReadModelDto, AiOptionDbContext>()
-                .UseEntityFrameworkReadModel<IqAccountReadModelDto, AiOptionDbContext>();
+                .ConfigureSearchableReadModelStore<CustomerReadModelDto, AiOptionDbContext>()
+                .ConfigureSearchableReadModelStore<IqAccountReadModelDto, AiOptionDbContext>();
+        }
+
+        public static IEventFlowOptions ConfigureSearchableReadModelStore<TReadModel, TDbContext>(
+            this IEventFlowOptions options)
+            where TReadModel : class, IReadModel, new()
+            where TDbContext : DbContext
+        {
+            return options
+                .UseEntityFrameworkReadModel<TReadModel, TDbContext>()
+                .RegisterServices(r =>
+                {
+                    r.RegisterGeneric(typeof(ISearchableReadModelStore<>), typeof(EfSearchableReadStore<,>));
+                    r.Register<ISearchableReadModelStore<TReadModel>, EfSearchableReadStore<TReadModel, TDbContext>>();
+                });
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AiOption.Domain.Accounts;
 using AiOption.Domain.Common;
 using AiOption.Domain.Customers.Events;
+using AiOption.Domain.IqAccounts.Events;
 using EventFlow.Aggregates;
 using EventFlow.Extensions;
 using EventFlow.Snapshots;
@@ -47,6 +48,7 @@ namespace AiOption.Domain.Customers
         public void ChangeLevel(Level level) => Emit(new RequestChangeLevel(level));
 
         public void CompletedRegister() => Emit(new RegisterCompleted());
+
 
 
 

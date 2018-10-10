@@ -1,7 +1,9 @@
 ﻿using AiOption.Domain.Common;
+using AiOption.Domain.Customers;
 using AiOption.Infrasturcture.ReadStores.ReadModels;
 using EventFlow.EntityFramework.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
 
 namespace AiOption.Infrasturcture.ReadStores
@@ -43,7 +45,7 @@ namespace AiOption.Infrasturcture.ReadStores
 
             modelBuilder.Entity<CustomerReadModelDto>()
                 .Property(e => e.Password)
-                .HasConversion(v => v.Value.Decrypt("AiOption"), v => Password.With(v));
+                .HasConversion(PasswordConverter);
             modelBuilder.Entity<CustomerReadModelDto>()
                 .Property(e => e.UserName)
                 .HasConversion(v => v.Value, v => new User(v));
@@ -60,10 +62,20 @@ namespace AiOption.Infrasturcture.ReadStores
                 .HasConversion(v => v.Value, v => new User(v));
             modelBuilder.Entity<IqAccountReadModelDto>()
                 .Property(e => e.Password)
-                .HasConversion(v => v.Value, v => Password.With(v));
+                .HasConversion(PasswordConverter);
+            modelBuilder.Entity<IqAccountReadModelDto>()
+                .Property(e => e.CustomerId)
+                .HasConversion(e => e.Value, v => CustomerId.With(v));
+
+
 
 
             base.OnModelCreating(modelBuilder);
         }
+
+        private ValueConverter<Password, string> PasswordConverter =>
+            new ValueConverter<Password, string>(
+                v => v.DecryptPassword(),
+                v => Password.With(v));
     }
 }

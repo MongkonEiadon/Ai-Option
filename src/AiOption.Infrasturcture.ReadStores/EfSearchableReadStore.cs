@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AiOption.Query;
+using EventFlow.Aggregates;
 using EventFlow.Core;
 using EventFlow.Core.RetryStrategies;
 using EventFlow.EntityFramework;
@@ -15,31 +16,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AiOption.Infrasturcture.ReadStores
 {
-    public class EfSearchableReadStore<TReadModel, TDbContext> : 
-        EntityFrameworkReadModelStore<TReadModel, TDbContext>,
+    public class EfSearchableReadStore<TReadModel, TDbContext> :
         ISearchableReadModelStore<TReadModel>
         where TReadModel : class, IReadModel, new() where TDbContext : DbContext
     {
-        private readonly IDbContextProvider<TDbContext> _contextProvider;
+        private readonly IEntityFrameworkReadModelStore<TReadModel> _readStore;
+        private readonly IDbContextProvider<TDbContext> _dbContextProvider;
 
 
         public EfSearchableReadStore(
-            IBulkOperationConfiguration bulkOperationConfiguration, 
-            ILog log, 
-            IReadModelFactory<TReadModel> readModelFactory, 
-            IDbContextProvider<TDbContext> contextProvider, 
-            ITransientFaultHandler<IOptimisticConcurrencyRetryStrategy> transientFaultHandler) 
-                : base(bulkOperationConfiguration, log, readModelFactory, contextProvider, transientFaultHandler)
+            IEntityFrameworkReadModelStore<TReadModel> readStore, 
+            IDbContextProvider<TDbContext> dbContextProvider)
         {
-            _contextProvider = contextProvider;
+            _readStore = readStore;
+            _dbContextProvider = dbContextProvider;
         }
 
         public async Task<IReadOnlyCollection<TReadModel>> FindAsync(Predicate<TReadModel> predicate,
             CancellationToken cancellationToken)
         {
-            using (var dbContext = _contextProvider.CreateContext())
+            using (var dbContext = _dbContextProvider.CreateContext())
             {
-
                 var readModelType = typeof(TReadModel);
 
                 var entity = await dbContext.Set<TReadModel>()
@@ -48,23 +45,33 @@ namespace AiOption.Infrasturcture.ReadStores
 
                 if (!entity.Any())
                 {
-                    Log.Verbose(() => $"Could not find any Entity Framework read model '{readModelType.PrettyPrint()}'");
                     return Enumerable.Empty<TReadModel>().ToList();
                 }
-
-                //var entry = dbContext.Entry(entity);
-                //var version = descriptor.GetVersion(entry);
-
-                Log.Verbose(() =>
-                    $"Found Entity Framework read model '{readModelType.PrettyPrint()}'");
-
-                //return version.HasValue
-                //    ? ReadModelEnvelope<TReadModel>.With(id, entity, version.Value)
-                //    : ReadModelEnvelope<TReadModel>.With(id, entity);
 
                 return entity;
             }
         }
-        
+
+        public Task DeleteAsync(string id, CancellationToken cancellationToken)
+        {
+            return _readStore.DeleteAsync(id, cancellationToken);
+        }
+
+        public Task DeleteAllAsync(CancellationToken cancellationToken)
+        {
+            return _readStore.DeleteAllAsync(cancellationToken);
+        }
+
+        public Task<ReadModelEnvelope<TReadModel>> GetAsync(string id, CancellationToken cancellationToken)
+        {
+            return _readStore.GetAsync(id, cancellationToken);
+        }
+
+        public Task UpdateAsync(IReadOnlyCollection<ReadModelUpdate> readModelUpdates, IReadModelContextFactory readModelContextFactory,
+            Func<IReadModelContext, IReadOnlyCollection<IDomainEvent>, ReadModelEnvelope<TReadModel>, CancellationToken, Task<ReadModelUpdateResult<TReadModel>>> updateReadModel, CancellationToken cancellationToken)
+        {
+            return _readStore.UpdateAsync(readModelUpdates, readModelContextFactory, updateReadModel,
+                cancellationToken);
+        }
     }
 }

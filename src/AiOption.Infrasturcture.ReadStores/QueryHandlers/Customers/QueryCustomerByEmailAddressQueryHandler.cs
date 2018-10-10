@@ -1,6 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AiOption.Domain.Customers;
+using AiOption.Infrasturcture.ReadStores.ReadModels;
+using AiOption.Query;
 using AiOption.Query.Customers;
 using EventFlow.EntityFramework;
 using EventFlow.Exceptions;
@@ -11,11 +13,12 @@ namespace AiOption.Infrasturcture.ReadStores.QueryHandlers.Customers
 {
     internal class QueryCustomerByEmailAddressQueryHandler : IQueryHandler<QueryCustomerByEmailAddress, Customer>
     {
+        private readonly ISearchableReadModelStore<CustomerReadModelDto> _readStore;
         private readonly IDbContextProvider<AiOptionDbContext> _dbContextProvider;
 
-        public QueryCustomerByEmailAddressQueryHandler(IDbContextProvider<AiOptionDbContext> dbContextProvider)
+        public QueryCustomerByEmailAddressQueryHandler(ISearchableReadModelStore<CustomerReadModelDto> readStore)
         {
-            _dbContextProvider = dbContextProvider;
+            _readStore = readStore;
         }
 
         public async Task<Customer> ExecuteQueryAsync(QueryCustomerByEmailAddress query,

@@ -20,22 +20,25 @@ namespace AiOption.Tradings
 
             try
             {
-                Console.WriteLine(@"
-                                     █████╗ ██╗       ██████╗ ██████╗ ████████╗██╗ ██████╗ ███╗   ██╗
-                                    ██╔══██╗██║      ██╔═══██╗██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
-                                    ███████║██║█████╗██║   ██║██████╔╝   ██║   ██║██║   ██║██╔██╗ ██║
-                                    ██╔══██║██║╚════╝██║   ██║██╔═══╝    ██║   ██║██║   ██║██║╚██╗██║
-                                    ██║  ██║██║      ╚██████╔╝██║        ██║   ██║╚██████╔╝██║ ╚████║
-                                    ╚═╝  ╚═╝╚═╝       ╚═════╝ ╚═╝        ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝");
+                //Console.WriteLine(@"
+                //                     █████╗ ██╗       ██████╗ ██████╗ ████████╗██╗ ██████╗ ███╗   ██╗
+                //                    ██╔══██╗██║      ██╔═══██╗██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
+                //                    ███████║██║█████╗██║   ██║██████╔╝   ██║   ██║██║   ██║██╔██╗ ██║
+                //                    ██╔══██║██║╚════╝██║   ██║██╔═══╝    ██║   ██║██║   ██║██║╚██╗██║
+                //                    ██║  ██║██║      ╚██████╔╝██║        ██║   ██║╚██████╔╝██║ ╚████║
+                //                    ╚═╝  ╚═╝╚═╝       ╚═════╝ ╚═╝        ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝");
                 var services = new ServiceCollection();
                 var container = new Startup().ConfigureServices();
-                var process = container.GetService<ICustomerProcessManagerService>();
+                var process = container.GetService<IIqAccountProcessManagerService>();
 
                 ////migrate
 
-                var cust = process.RegisterCustomerAsync("m@email.com", "password", "invitationCode").Result;
+                //var cust = process.RegisterCustomerAsync("m@email.com", "password", "invitationCode").Result;
 
-                process.ChangeCustomerLevel(cust.Id, new Level(UserLevel.Standard));
+                //process.ChangeCustomerLevel(cust.Id, new Level(UserLevel.Standard));
+
+                process.ProcessRegisterNewAccountTask("m@email.com", "Password", "AnyToken").Wait();
+
 
                 //var query = container.GetService<IQueryProcessor>();
                 //var resultModel = query.ProcessAsync(new ReadModelByIdQuery<CustomerReadModel>(accountId), CancellationToken.None)

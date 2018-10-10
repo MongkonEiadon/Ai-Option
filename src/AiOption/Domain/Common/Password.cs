@@ -8,7 +8,7 @@ namespace AiOption.Domain.Common
 {
     public class Password : SingleValueObject<string>, IEquatable<Password>
     {
-        private const string Key = "AiOption";
+        public const string Key = "AiOption";
 
         public Password(string value) : base(CreateEncryptePasscode(value))
         {

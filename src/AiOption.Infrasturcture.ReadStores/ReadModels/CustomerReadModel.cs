@@ -12,18 +12,9 @@ using EventFlow.ReadStores;
 
 namespace AiOption.Infrasturcture.ReadStores.ReadModels
 {
-    [Table("CustomerReadModel")]
+    [Table("Customers")]
     public class CustomerReadModelDto : CustomerReadModel
     {
         [Key] [Column("CustomerId")] public override string AggregateId { get; set; }
-
-        public virtual ICollection<IqAccountReadModelDto> IqAccountReadModelDto { get; set; }
-
-
-        [NotMapped] public override ICollection<IqAccountReadModel> IqAccountReadModels
-        {
-            get => IqAccountReadModelDto.Select(x => (IqAccountReadModel) x).ToList();
-            set { }
-        }
     }
 }
