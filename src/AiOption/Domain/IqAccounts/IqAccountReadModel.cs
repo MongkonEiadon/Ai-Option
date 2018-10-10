@@ -7,7 +7,7 @@ using EventFlow.ReadStores;
 
 namespace AiOption.Domain.IqAccounts
 {
-    public class IqAccountReadModel : IReadModel,
+    public partial class IqAccountReadModel : IReadModel,
         IAmReadModelFor<IqAccountAggregate, IqAccountId, RegisterNewAccountEvent>,
         IAmReadModelFor<IqAccountAggregate, IqAccountId, UpdateTokenEvent>
     {

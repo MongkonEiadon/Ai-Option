@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using AiOption.Domain.Common;
 using AiOption.Domain.IqAccounts;
 
-namespace AiOption.Infrasturcture.ReadStores.ReadModels
+namespace AiOption.Domain.IqAccounts
 {
     [Table("IqAccounts")]
-    public class IqAccountReadModelDto : IqAccountReadModel
+    public partial class IqAccountReadModel
     {
-        [Key] [Column("AccountId")] public override string AggregateId { get; set; }
+        [Key] [Column("AccountId")] public new string AggregateId { get; set; }
     }
 }

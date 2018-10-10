@@ -1,5 +1,6 @@
 ﻿using AiOption.Domain.Common;
 using AiOption.Domain.Customers;
+using AiOption.Domain.IqAccounts;
 using AiOption.Infrasturcture.ReadStores.ReadModels;
 using EventFlow.EntityFramework.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,7 @@ namespace AiOption.Infrasturcture.ReadStores
 
         //read models
         public DbSet<CustomerReadModelDto> Customers { get; set; }
-        public DbSet<IqAccountReadModelDto> IqAccounts { get; set; }
+        public DbSet<IqAccountReadModel> IqAccounts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
