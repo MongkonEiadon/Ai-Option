@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AiOption.Infrasturcture.ReadStores.Migrations
 {
-    public partial class InitialMigrations : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,17 +12,17 @@ namespace AiOption.Infrasturcture.ReadStores.Migrations
                 name: "Customers",
                 columns: table => new
                 {
+                    Id = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
                     InvitationCode = table.Column<string>(nullable: true),
                     Level = table.Column<int>(nullable: true),
                     LastLogin = table.Column<DateTimeOffset>(nullable: false),
-                    Token = table.Column<string>(nullable: true),
-                    CustomerId = table.Column<string>(nullable: false)
+                    Token = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.CustomerId);
+                    table.PrimaryKey("PK_Customers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,16 +47,16 @@ namespace AiOption.Infrasturcture.ReadStores.Migrations
                 name: "IqAccounts",
                 columns: table => new
                 {
+                    Id = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
                     IqOptionToken = table.Column<string>(nullable: true),
                     TokenUpdatedDate = table.Column<DateTimeOffset>(nullable: false),
-                    CustomerId = table.Column<string>(nullable: true),
-                    AccountId = table.Column<string>(nullable: false)
+                    CustomerId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IqAccounts", x => x.AccountId);
+                    table.PrimaryKey("PK_IqAccounts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(

@@ -14,5 +14,4 @@ using Xunit;
 
 namespace AiOption.Tests.Integrations.Customers
 {
-    
 }

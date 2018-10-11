@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using AiOption.Domain.Customers;
 using AiOption.Domain.IqAccounts;
-using AiOption.Infrasturcture.ReadStores.ReadModels;
 using AiOption.Query;
 using EventFlow;
 using EventFlow.EntityFramework;
@@ -69,8 +69,8 @@ namespace AiOption.Infrasturcture.ReadStores
         public static IEventFlowOptions ConfigureInfrastructureReadModelStore(this IEventFlowOptions options)
         {
             return options
-                .ConfigureSearchableReadModelStore<CustomerReadModelDto, AiOptionDbContext>()
-                .ConfigureSearchableReadModelStore<IqAccountReadModelDto, AiOptionDbContext>();
+                .ConfigureSearchableReadModelStore<CustomerReadModel, AiOptionDbContext>()
+                .ConfigureSearchableReadModelStore<IqAccountReadModel, AiOptionDbContext>();
         }
 
         public static IEventFlowOptions ConfigureSearchableReadModelStore<TReadModel, TDbContext>(

@@ -1,4 +1,7 @@
-﻿using AiOption.Infrasturcture.ReadStores;
+﻿using AiOption.Domain.Customers;
+using AiOption.Domain.IqAccounts;
+using EventFlow.DependencyInjection.Extensions;
+using EventFlow.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,8 +16,15 @@ namespace AiOption.Tests.Integrations
                     .Build();
 
             var services = new ServiceCollection();
-            services
-                .AddEfConfigurationDomain(config);
+
+
+            services.AddEventFlow(x =>
+                x.AddDomain()
+                    .UseServiceCollection(services)
+                    .UseInMemoryReadStoreFor<CustomerReadModel>()
+                    .UseInMemoryReadStoreFor<IqAccountReadModel>()
+                    .UseInMemorySnapshotStore()
+                    .UsingDomainInmemoryReadStore());
         }
     }
 }

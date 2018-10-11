@@ -19,11 +19,11 @@ namespace AiOption.Infrasturcture.ReadStores.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AiOption.Infrasturcture.ReadStores.ReadModels.CustomerReadModelDto", b =>
+            modelBuilder.Entity("AiOption.Domain.Customers.CustomerReadModel", b =>
                 {
                     b.Property<string>("AggregateId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("CustomerId");
+                        .HasColumnName("Id");
 
                     b.Property<string>("InvitationCode");
 
@@ -42,11 +42,11 @@ namespace AiOption.Infrasturcture.ReadStores.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("AiOption.Infrasturcture.ReadStores.ReadModels.IqAccountReadModelDto", b =>
+            modelBuilder.Entity("AiOption.Domain.IqAccounts.IqAccountReadModel", b =>
                 {
                     b.Property<string>("AggregateId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("AccountId");
+                        .HasColumnName("Id");
 
                     b.Property<string>("CustomerId");
 

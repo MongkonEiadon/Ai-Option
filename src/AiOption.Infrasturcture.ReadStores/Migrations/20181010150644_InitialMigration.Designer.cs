@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AiOption.Infrasturcture.ReadStores.Migrations
 {
     [DbContext(typeof(AiOptionDbContext))]
-    [Migration("20181010064054_InitialMigrations")]
-    partial class InitialMigrations
+    [Migration("20181010150644_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,11 +21,11 @@ namespace AiOption.Infrasturcture.ReadStores.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AiOption.Infrasturcture.ReadStores.ReadModels.CustomerReadModelDto", b =>
+            modelBuilder.Entity("AiOption.Domain.Customers.CustomerReadModel", b =>
                 {
                     b.Property<string>("AggregateId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("CustomerId");
+                        .HasColumnName("Id");
 
                     b.Property<string>("InvitationCode");
 
@@ -44,11 +44,11 @@ namespace AiOption.Infrasturcture.ReadStores.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("AiOption.Infrasturcture.ReadStores.ReadModels.IqAccountReadModelDto", b =>
+            modelBuilder.Entity("AiOption.Domain.IqAccounts.IqAccountReadModel", b =>
                 {
                     b.Property<string>("AggregateId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("AccountId");
+                        .HasColumnName("Id");
 
                     b.Property<string>("CustomerId");
 
