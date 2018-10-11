@@ -1,30 +1,57 @@
-﻿using AiOption.Domain.Customers;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using AiOption.Domain.Customers;
 using AiOption.Domain.IqAccounts;
+using AiOption.TestCore;
+using EventFlow;
+using EventFlow.Aggregates;
+using EventFlow.Aggregates.ExecutionResults;
+using EventFlow.Commands;
+using EventFlow.Core;
 using EventFlow.DependencyInjection.Extensions;
 using EventFlow.Extensions;
+using EventFlow.Queries;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AiOption.Tests.Integrations
 {
-    internal class IntegrationTest 
+    public class IntegrationTest  : Test
     {
+        public IServiceProvider Resolver { get; }
+
         public IntegrationTest()
         {
-            var config = new ConfigurationBuilder()
-                    .AddJsonFile("appsettings.json")
-                    .Build();
-
             var services = new ServiceCollection();
-
 
             services.AddEventFlow(x =>
                 x.AddDomain()
-                    .UseServiceCollection(services)
                     .UseInMemoryReadStoreFor<CustomerReadModel>()
                     .UseInMemoryReadStoreFor<IqAccountReadModel>()
                     .UseInMemorySnapshotStore()
                     .UsingDomainInmemoryReadStore());
+
+            Resolver = services.BuildServiceProvider();
+        }
+
+
+        public Task<TResult> QueryAsync<TResult>(IQuery<TResult> query)
+        {
+            return Resolver.GetService<IQueryProcessor>()
+                .ProcessAsync(query, CancellationToken.None);
+        }
+
+        public Task<TResult> PublishAsync<TAggregate, TIdentity, TResult>(
+            ICommand<TAggregate, TIdentity, TResult> command) 
+            where TAggregate : IAggregateRoot<TIdentity>
+            where TIdentity : IIdentity 
+            where TResult : IExecutionResult
+        {
+
+            return Resolver.GetService<ICommandBus>()
+                .PublishAsync(command, CancellationToken.None);
+
         }
     }
 }

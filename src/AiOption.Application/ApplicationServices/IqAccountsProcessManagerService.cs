@@ -3,6 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using AiOption.Domain.Common;
 using AiOption.Domain.Customers;
+using AiOption.Domain.Customers.Commands;
+using AiOption.Domain.IqAccounts;
 using AiOption.Domain.IqAccounts.Commands;
 using AiOption.Query.IqAccounts;
 using EventFlow;
@@ -14,7 +16,7 @@ namespace AiOption.Application.ApplicationServices
 {
     public interface IIqAccountProcessManagerService
     {
-        Task ProcessRegisterNewAccountTask(string emailAddress, string password, string token);
+        Task ProcessRegisterNewAccountTask(CustomerId customerId, string emailAddress, string password, string token);
     }
 
     public class IqAccountsProcessManagerService : IIqAccountProcessManagerService,
@@ -29,16 +31,15 @@ namespace AiOption.Application.ApplicationServices
             _queryProcessor = queryProcessor;
         }
 
-        public async Task ProcessRegisterNewAccountTask(string emailAddress, string password, string token)
+        public async Task ProcessRegisterNewAccountTask(CustomerId customerId, string emailAddress, string password, string token)
         {
             var ct = new CancellationTokenSource();
             try
             {
                 await _commandBus.PublishAsync(new CreateNewIqAccountCommand(
-                    CustomerId.With("customer-9e55a180-b3e6-4c6a-a4f5-ea4d910a90b1"),
-                    new User(emailAddress),
-                    new Password(password),
-                    "AnyToken"), ct.Token);
+                    customerId,
+                    User.New(emailAddress),
+                    Password.New(password)), ct.Token);
             }
             catch (Exception ex)
             {

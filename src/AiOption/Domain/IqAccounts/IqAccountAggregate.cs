@@ -14,12 +14,6 @@ namespace AiOption.Domain.IqAccounts
         }
 
 
-        public void CreateNewIqAccounts(CustomerId customerId, User user, Password password)
-        {
-            // emit create new customer
-            Emit(new RegisterNewAccountEvent(customerId, user, password));
-        }
-
         public void ChangeToken(string token)
         {
             Emit(new UpdateTokenEvent(token));

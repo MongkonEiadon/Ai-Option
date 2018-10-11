@@ -9,7 +9,8 @@ namespace AiOption.Domain.Customers
         IApply<RequestRegister>,
         IApply<RequestChangeLevel>,
         IApply<LoginSucceeded>,
-        IApply<CreateTokenSuccess>
+        IApply<CreateTokenSuccess>,
+        IApply<CreateNewIqAccountEvent>
     {
         public CustomerStatus Status { get;  private set; } = CustomerStatus.Undefined;
 
@@ -38,6 +39,10 @@ namespace AiOption.Domain.Customers
         {
             foreach (var action in actions)
                 action(this);
+        }
+
+        public void Apply(CreateNewIqAccountEvent aggregateEvent)
+        {
         }
     }
 }

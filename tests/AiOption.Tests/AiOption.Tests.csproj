@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Integrations\" />
+    <Folder Include="Integrations\Customers\" />
   </ItemGroup>
 
 </Project>

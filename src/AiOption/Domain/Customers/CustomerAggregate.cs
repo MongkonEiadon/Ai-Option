@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AiOption.Domain.Accounts;
 using AiOption.Domain.Common;
 using AiOption.Domain.Customers.Events;
+using AiOption.Domain.IqAccounts;
 using AiOption.Domain.IqAccounts.Events;
 using EventFlow.Aggregates;
 using EventFlow.Extensions;
@@ -49,7 +50,14 @@ namespace AiOption.Domain.Customers
 
         public void CompletedRegister() => Emit(new RegisterCompleted());
 
+        public void CreateNewIqAccount(IqAccount iqAccount)
+        {
+            Specs
+                .Exists
+                .ThrowDomainErrorIfNotSatisfied(this);
 
+            Emit(new CreateNewIqAccountEvent(iqAccount));
+        }
 
 
 
