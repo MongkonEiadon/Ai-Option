@@ -34,7 +34,6 @@
     <ProjectReference Include="..\..\src\AiOption.Infrastructure\AiOption.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\AiOption\AiOption.csproj" />
     <ProjectReference Include="..\AiOption.TestCore\AiOption.TestCore.csproj" />
-    <ProjectReference Include="..\AutofacContrib.Nsubstitute\AutofacContrib.Nsubstitute.csproj" />
   </ItemGroup>
 
   <ItemGroup>

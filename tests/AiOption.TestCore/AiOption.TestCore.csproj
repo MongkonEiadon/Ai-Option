@@ -31,7 +31,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\AiOption\AiOption.csproj" />
-    <ProjectReference Include="..\AutofacContrib.Nsubstitute\AutofacContrib.Nsubstitute.csproj" />
   </ItemGroup>
 
   <ItemGroup>

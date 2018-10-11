@@ -5,7 +5,6 @@ using AiOption.Query.Customers;
 using AiOption.TestCore;
 using EventFlow.Exceptions;
 using FluentAssertions;
-using NSubstitute.ExceptionExtensions;
 using Xunit;
 
 namespace AiOption.Tests.Integrations.Query
