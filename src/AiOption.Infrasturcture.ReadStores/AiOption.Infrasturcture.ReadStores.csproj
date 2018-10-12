@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20181007104459_InitialMigrations.cs" />
+    <Compile Remove="Migrations\20181010055214_ChangeCustomerReadModelToId.cs" />
+    <Compile Remove="Migrations\20181010063846_ChangeCustomerReadModelToId2.cs" />
+    <Compile Remove="Migrations\20181010064024_InitialMigrations.cs" />
+    <Compile Remove="Migrations\20181010064054_InitialMigrations.cs" />
+    <Compile Remove="Migrations\20181010092146_AddMoreStuff.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
 
     <PackageReference Include="Autofac" Version="4.8.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />

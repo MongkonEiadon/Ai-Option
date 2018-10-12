@@ -13,7 +13,6 @@ namespace AiOption.Domain.IqAccounts
 
         public User UserName { get; }
         public Password Password { get; }
-
         public string SecuredToken { get; private set; }
 
         public void SetSecuredToken(string token)

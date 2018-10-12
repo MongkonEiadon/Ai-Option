@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AiOption.Infrasturcture.ReadStores.Migrations
 {
     [DbContext(typeof(AiOptionDbContext))]
-    [Migration("20181007104459_InitialMigrations")]
-    partial class InitialMigrations
+    [Migration("20181010150644_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,11 +21,11 @@ namespace AiOption.Infrasturcture.ReadStores.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AiOption.Infrastructure.ReadStores.ReadModels.CustomerReadModel", b =>
+            modelBuilder.Entity("AiOption.Domain.Customers.CustomerReadModel", b =>
                 {
                     b.Property<string>("AggregateId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("CustomerId");
+                        .HasColumnName("Id");
 
                     b.Property<string>("InvitationCode");
 
@@ -41,16 +41,16 @@ namespace AiOption.Infrasturcture.ReadStores.Migrations
 
                     b.HasKey("AggregateId");
 
-                    b.ToTable("CustomerReadModel");
+                    b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("AiOption.Infrastructure.ReadStores.ReadModels.IqAccountReadModel", b =>
+            modelBuilder.Entity("AiOption.Domain.IqAccounts.IqAccountReadModel", b =>
                 {
                     b.Property<string>("AggregateId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("AccountId");
+                        .HasColumnName("Id");
 
-                    b.Property<string>("CustomerReadModelAggregateId");
+                    b.Property<string>("CustomerId");
 
                     b.Property<string>("IqOptionToken");
 
@@ -62,9 +62,7 @@ namespace AiOption.Infrasturcture.ReadStores.Migrations
 
                     b.HasKey("AggregateId");
 
-                    b.HasIndex("CustomerReadModelAggregateId");
-
-                    b.ToTable("IqAccountReadModel");
+                    b.ToTable("IqAccounts");
                 });
 
             modelBuilder.Entity("EventFlow.EntityFramework.EventStores.EventEntity", b =>
@@ -117,13 +115,6 @@ namespace AiOption.Infrasturcture.ReadStores.Migrations
                         .HasFilter("[AggregateName] IS NOT NULL AND [AggregateId] IS NOT NULL");
 
                     b.ToTable("SnapshotEntity");
-                });
-
-            modelBuilder.Entity("AiOption.Infrastructure.ReadStores.ReadModels.IqAccountReadModel", b =>
-                {
-                    b.HasOne("AiOption.Infrastructure.ReadStores.ReadModels.CustomerReadModel", "CustomerReadModel")
-                        .WithMany("IqAccountReadModels")
-                        .HasForeignKey("CustomerReadModelAggregateId");
                 });
 #pragma warning restore 612, 618
         }

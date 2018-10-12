@@ -29,10 +29,8 @@ namespace AiOption.Domain.Customers
 
         public Token Token { get; private set; }
 
-
         public string EmailAddressNormalize => UserName.Value.ToUpper();
 
-        public virtual ICollection<IqAccountReadModel> IqAccountReadModels { get; set; }
 
 
         public void Apply(IReadModelContext context,

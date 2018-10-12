@@ -1,7 +1,11 @@
-﻿using AiOption.Domain.Common;
-using AiOption.Infrasturcture.ReadStores.ReadModels;
+﻿using System;
+using AiOption.Domain.Common;
+using AiOption.Domain.Customers;
+using AiOption.Domain.IqAccounts;
 using EventFlow.EntityFramework.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
 
 namespace AiOption.Infrasturcture.ReadStores
@@ -10,9 +14,7 @@ namespace AiOption.Infrasturcture.ReadStores
     {
         private readonly DbContextOptions<AiOptionDbContext> _options;
 
-        public AiOptionDbContext()
-        {
-        }
+        public AiOptionDbContext() { }
 
         public AiOptionDbContext(DbContextOptions<AiOptionDbContext> options) : base(options)
         {
@@ -20,8 +22,8 @@ namespace AiOption.Infrasturcture.ReadStores
         }
 
         //read models
-        public DbSet<CustomerReadModelDto> Customers { get; set; }
-        public DbSet<IqAccountReadModelDto> IqAccounts { get; set; }
+        public DbSet<CustomerReadModel> Customers { get; set; }
+        public DbSet<IqAccountReadModel> IqAccounts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -37,33 +39,40 @@ namespace AiOption.Infrasturcture.ReadStores
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder
-                .AddEventFlowEvents()
-                .AddEventFlowSnapshots();
+            modelBuilder.AddEventFlowEvents().AddEventFlowSnapshots();
 
-            modelBuilder.Entity<CustomerReadModelDto>()
-                .Property(e => e.Password)
-                .HasConversion(v => v.Value.Decrypt("AiOption"), v => Password.With(v));
-            modelBuilder.Entity<CustomerReadModelDto>()
-                .Property(e => e.UserName)
-                .HasConversion(v => v.Value, v => new User(v));
-            modelBuilder.Entity<CustomerReadModelDto>()
-                .Property(e => e.Level)
-                .HasConversion(v => v.Value, v => new Level(v));
-            modelBuilder.Entity<CustomerReadModelDto>()
-                .Property(e => e.Token)
-                .HasConversion(v => v.Value, v => new Token(v));
+            ApplyBuilder<CustomerReadModel>(modelBuilder,
+                x => x.ToTable("Customers"),
+                x => x.HasKey(y => y.AggregateId),
+                x => x.Property(e => e.AggregateId).HasColumnName("Id"),
+                x => x.Property(e => e.Password).HasConversion(PasswordConverter),
+                x => x.Property(e => e.UserName).HasConversion(v => v.Value, v => new User(v)),
+                x => x.Property(e => e.Level).HasConversion(v => v.Value, v => new Level(v)),
+                x => x.Property(e => e.Token).HasConversion(v => v.Value, v => new Token(v)));
 
-
-            modelBuilder.Entity<IqAccountReadModelDto>()
-                .Property(e => e.UserName)
-                .HasConversion(v => v.Value, v => new User(v));
-            modelBuilder.Entity<IqAccountReadModelDto>()
-                .Property(e => e.Password)
-                .HasConversion(v => v.Value, v => Password.With(v));
-
+            ApplyBuilder<IqAccountReadModel>(modelBuilder,
+                x => x.ToTable("IqAccounts"),
+                x => x.HasKey(y => y.AggregateId),
+                x => x.Property(e => e.AggregateId).HasColumnName("Id"),
+                x => x.Property(e => e.UserName).HasConversion(v => v.Value, v => new User(v)),
+                x => x.Property(e => e.Password).HasConversion(PasswordConverter),
+                x => x.Property(e => e.CustomerId).HasConversion(e => e.Value, v => CustomerId.With(v)));
 
             base.OnModelCreating(modelBuilder);
         }
+
+        private void ApplyBuilder<TReadModel>(ModelBuilder builder, params Action<EntityTypeBuilder<TReadModel>>[] actions)
+            where TReadModel : class
+        {
+            foreach (var action in actions)
+            {
+                action(builder.Entity<TReadModel>());
+            }
+        }
+
+        private ValueConverter<Password, string> PasswordConverter =>
+            new ValueConverter<Password, string>(
+                v => v.DecryptPassword(),
+                v => Password.With(v));
     }
 }

@@ -20,5 +20,6 @@ namespace AiOption.Domain.IqAccounts
             foreach (var action in actions)
                 action(this);
         }
+
     }
 }
