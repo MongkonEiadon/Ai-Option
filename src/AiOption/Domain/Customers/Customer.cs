@@ -15,13 +15,13 @@ namespace AiOption.Domain.Customers
 
     public class Customer : Entity<CustomerId>
     {
-        public Customer(CustomerId id, User userName, Password password) : base(id)
+        public Customer(CustomerId id, Email userName, Password password) : base(id)
         {
             UserName = userName;
             Password = password;
         }
 
-        public User UserName { get; }
+        public Email UserName { get; }
         public Password Password { get; }
         public Level Level { get; }
         public Token Token { get; }

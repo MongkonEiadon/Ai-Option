@@ -1,11 +1,12 @@
 ﻿using EventFlow.Extensions;
+using EventFlow.ValueObjects;
 
 namespace AiOption.Domain.Common
 {
     /// <summary>
     /// The email describe for <see cref="Email"/> purpose
     /// </summary>
-    public class Email : User
+    public class Email : SingleValueObject<string>
     {
         public string EmailAddress { get; }
 

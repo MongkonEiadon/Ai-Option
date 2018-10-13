@@ -11,11 +11,11 @@
     <PackageReference Include="EventFlow.Autofac" Version="0.66.3673" />
     <PackageReference Include="EventFlow.DependencyInjection" Version="0.66.3673" />
     <PackageReference Include="EventFlow.EntityFramework" Version="0.66.3673" />
-    <PackageReference Include="iqoptionapi" Version="1.1.0.4" />
+    <PackageReference Include="iqoptionapi" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Microsoft.Azure.ServiceBus" Version="3.1.1" />
-    <PackageReference Include="System.Reactive" Version="4.1.1" />
+    <PackageReference Include="System.Reactive" Version="4.1.2" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.0" />
     <PackageReference Include="Microsoft.VisualStudio.SlowCheetah" Version="3.1.66" />
     <PackageReference Include="Dapper" Version="1.50.5" />

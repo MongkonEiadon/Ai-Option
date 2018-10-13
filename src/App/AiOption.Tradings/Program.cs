@@ -37,7 +37,7 @@ namespace AiOption.Tradings
 
                 //process.ChangeCustomerLevel(cust.Id, new Level(UserLevel.Standard));
 
-                process.ProcessRegisterNewAccountTask(CustomerId.With(""), "m@email.com", "Password", "AnyToken").Wait();
+               // process.ProcessRegisterNewAccountTask(CustomerId.With(""), "m@email.com", "Password", "AnyToken").Wait();
 
 
                 //var query = container.GetService<IQueryProcessor>();
