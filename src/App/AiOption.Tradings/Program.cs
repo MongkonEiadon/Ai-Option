@@ -29,11 +29,16 @@ namespace AiOption.Tradings
                 //                    ╚═╝  ╚═╝╚═╝       ╚═════╝ ╚═╝        ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝");
                 var services = new ServiceCollection();
                 var container = new Startup().ConfigureServices();
-                var process = container.GetService<IIqAccountProcessManagerService>();
+                var process = container.GetService<ICustomerProcessManagerService>();
 
                 ////migrate
 
-                //var cust = process.RegisterCustomerAsync("m@email.com", "password", "invitationCode").Result;
+                var cust = process.RegisterCustomerAsync("m@email.com", "password", "invitationCode").Result;
+
+                process.DeleteCustomerAsync(cust.Id).Wait();
+
+                process.GetCustomerAsync(cust.Id).Wait();
+
 
                 //process.ChangeCustomerLevel(cust.Id, new Level(UserLevel.Standard));
 

@@ -19,6 +19,10 @@ namespace AiOption.Application.ApplicationServices
         Task<Customer> RegisterCustomerAsync(string emailAddress, string password, string invitationCode);
 
         Task<Customer> ChangeCustomerLevel(CustomerId customerId, Level level);
+
+        Task DeleteCustomerAsync(CustomerId customerId);
+
+        Task<Customer> GetCustomerAsync(CustomerId customerId);
     }
     public class CustomerProcessManagerService : ICustomerProcessManagerService {
         private readonly ICommandBus _commandBus;
@@ -60,6 +64,16 @@ namespace AiOption.Application.ApplicationServices
 
             //query back
             return await QueryAsync(new QueryCustomerById(customerId));
+        }
+
+        public Task DeleteCustomerAsync(CustomerId customerId)
+        {
+            return PublishAsync(new DeleteCustomerCommand(customerId));
+        }
+
+        public Task<Customer> GetCustomerAsync(CustomerId customerId)
+        {
+            return QueryAsync(new QueryCustomerById(customerId, false));
         }
 
 

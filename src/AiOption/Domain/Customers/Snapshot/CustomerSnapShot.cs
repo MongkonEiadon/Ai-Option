@@ -1,14 +1,17 @@
-﻿using EventFlow.Snapshots;
+﻿using System.Collections.Generic;
+using System.Linq;
+using EventFlow.Snapshots;
 
-namespace AiOption.Domain.Customers
+namespace AiOption.Domain.Customers.Snapshot
 {
     public class CustomerSnapShot : ISnapshot
     {
-        public CustomerSnapShot(CustomerState state)
+        public CustomerSnapShot(IEnumerable<CustomerStatus> states)
         {
-            State = state;
+            States = states ?? Enumerable.Empty<CustomerStatus>();
         }
 
-        public CustomerState State { get; }
+        public IEnumerable<CustomerStatus> States { get; }
     }
+
 }

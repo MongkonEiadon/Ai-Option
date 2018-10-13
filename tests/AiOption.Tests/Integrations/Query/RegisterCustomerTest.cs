@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using AiOption.Domain.Customers;
 using AiOption.Query.Customers;
 using AiOption.TestCore;
+using AutoFixture;
 using EventFlow.Exceptions;
+using EventFlow.ReadStores;
 using FluentAssertions;
 using Xunit;
 
@@ -32,6 +35,5 @@ namespace AiOption.Tests.Integrations.Query
             // assert
             action.Should().Throw<DomainError>();
         }
-
     }
 }

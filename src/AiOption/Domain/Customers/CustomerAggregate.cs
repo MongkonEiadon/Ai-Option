@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AiOption.Domain.Accounts;
 using AiOption.Domain.Common;
 using AiOption.Domain.Customers.Events;
+using AiOption.Domain.Customers.Snapshot;
 using AiOption.Domain.IqAccounts;
 using AiOption.Domain.IqAccounts.Events;
 using EventFlow.Aggregates;
@@ -22,16 +23,22 @@ namespace AiOption.Domain.Customers
             Register(_state);
         }
 
+        #region [Snapshot]
+
+        
+
         protected override Task<CustomerSnapShot> CreateSnapshotAsync(CancellationToken cancellationToken)
         {
-            return Task.FromResult(new CustomerSnapShot(_state));
+            return Task.FromResult(new CustomerSnapShot(_state.Status));
         }
 
         protected override Task LoadSnapshotAsync(CustomerSnapShot snapshot, ISnapshotMetadata metadata,
             CancellationToken cancellationToken)
         {
+            _state.LoadState(snapshot.States);
             return Task.CompletedTask;
         }
+        #endregion
 
         #region Emitters
 
@@ -39,10 +46,6 @@ namespace AiOption.Domain.Customers
 
         public void RegisterAnAccount(Email user, Password password, string invitationCode)
         {
-            CustomerSpecs.NotCorrectEmailAddress
-                .And(Specs.IsNew)
-                .ThrowDomainErrorIfNotSatisfied(this);
-
             Emit(new RequestRegister(user, password, invitationCode));
         }
 
@@ -57,6 +60,15 @@ namespace AiOption.Domain.Customers
                 .ThrowDomainErrorIfNotSatisfied(this);
 
             Emit(new CreateNewIqAccountEvent(iqAccount));
+        }
+
+        public void DeleteCustomer()
+        {
+            Specs
+                .Exists
+                .ThrowDomainErrorIfNotSatisfied(this);
+
+            Emit(new DeleteCustomerEvent());
         }
 
 

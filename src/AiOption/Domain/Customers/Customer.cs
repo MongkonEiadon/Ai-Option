@@ -5,12 +5,14 @@ namespace AiOption.Domain.Customers
 {
     public enum CustomerStatus
     {
-        Undefined = 0,
-        RequestedRegister = 1,
-        RegisterSucceeded = 2,
-
-
-        RegisterFailed = -1
+        Undefined,
+        Register,
+        RegisterSucceeded,
+        RegisterFailed,
+        AddIqAccount,
+        ChangeLevel,
+        LoggedIn,
+        Deleted
     }
 
     public class Customer : Entity<CustomerId>

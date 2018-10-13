@@ -16,7 +16,8 @@ namespace AiOption.TestCore
         {
             Fixture = new Fixture().Customize(new AutoMoqCustomization());
 
-            Fixture.Customize<CustomerId>(x => x.FromFactory(() => CustomerId.New));
+            var id = CustomerId.New;
+            Fixture.Customize<CustomerId>(x => x.FromFactory(() => id));
             Fixture.Customize<IqAccountId>(x => x.FromFactory(() => IqAccountId.New));
 
             InjectMock<IQueryProcessor>();
