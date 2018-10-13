@@ -6,13 +6,13 @@ namespace AiOption.Query.Customers
 {
     public class QueryCustomerByEmailAddress : IQuery<Customer>
     {
-        public QueryCustomerByEmailAddress(User user, bool throwIfNotFound = true)
+        public QueryCustomerByEmailAddress(Email emailAddress, bool throwIfNotFound = true)
         {
-            User = user;
+            EmailAddress = emailAddress;
             ThrowIfNotFound = throwIfNotFound;
         }
 
-        public User User { get; }
+        public Email EmailAddress { get; }
         public bool ThrowIfNotFound { get; }
     }
 }

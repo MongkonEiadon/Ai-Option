@@ -17,7 +17,7 @@ namespace AiOption.Domain.Customers
     {
         public virtual string AggregateId { get; set; }
 
-        public User UserName { get; private set; }
+        public Email UserName { get; private set; }
 
         public Password Password { get; private set; }
 

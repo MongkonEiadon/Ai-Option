@@ -37,7 +37,7 @@ namespace AiOption.Domain.Customers
 
         public string EmailAddress { get; private set; }
 
-        public void RegisterAnAccount(User user, Password password, string invitationCode)
+        public void RegisterAnAccount(Email user, Password password, string invitationCode)
         {
             CustomerSpecs.NotCorrectEmailAddress
                 .And(Specs.IsNew)

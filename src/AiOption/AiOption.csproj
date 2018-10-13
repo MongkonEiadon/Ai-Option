@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="EventFlow" Version="0.65.3664" />
+    <PackageReference Include="fluentvalidation" Version="8.0.100" />
     <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
   </ItemGroup>
 

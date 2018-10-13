@@ -15,7 +15,7 @@ namespace AiOption.Domain.IqAccounts
     {
         public virtual string AggregateId { get; set; }
 
-        public User UserName { get; set; }
+        public Email UserName { get; set; }
 
         public Password Password { get; set; }
 

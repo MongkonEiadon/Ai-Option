@@ -38,7 +38,7 @@ namespace AiOption.Application.ApplicationServices
             {
                 await _commandBus.PublishAsync(new CreateNewIqAccountCommand(
                     customerId,
-                    User.New(emailAddress),
+                    Email.New(emailAddress),
                     Password.New(password)), ct.Token);
             }
             catch (Exception ex)
