@@ -46,6 +46,10 @@ namespace AiOption.Domain.Customers
 
         public void RegisterAnAccount(Email user, Password password, string invitationCode)
         {
+            CustomerSpecs.NotCorrectEmailAddress
+                .And(Specs.IsNew)
+                .ThrowDomainErrorIfNotSatisfied(this);
+
             Emit(new RequestRegister(user, password, invitationCode));
         }
 

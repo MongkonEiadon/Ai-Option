@@ -19,6 +19,6 @@ namespace AiOption.Domain.Common
                 .ThrowDomainErrorIfNotSatisfied(this);
         }
 
-        public new static Email New(string emailAddress) => new Email(emailAddress);
+        public static Email New(string emailAddress) => new Email(emailAddress);
     }
 }

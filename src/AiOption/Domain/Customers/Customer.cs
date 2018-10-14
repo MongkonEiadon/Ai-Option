@@ -17,10 +17,12 @@ namespace AiOption.Domain.Customers
 
     public class Customer : Entity<CustomerId>
     {
-        public Customer(CustomerId id, Email userName, Password password) : base(id)
+        public Customer(CustomerId id, Email userName, Password password, Level level, Token token) : base(id)
         {
             UserName = userName;
             Password = password;
+            Level = level;
+            Token = token;
         }
 
         public Email UserName { get; }
