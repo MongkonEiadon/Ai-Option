@@ -8,6 +8,7 @@ namespace AiOption.Domain.IqAccounts
         Trader,
         Follower
     }
+
     public class IqAccount : Entity<IqAccountId>
     {
         public IqAccount(IqAccountId accountId, Email userName, Password password) : base(accountId)
@@ -20,7 +21,5 @@ namespace AiOption.Domain.IqAccounts
         public Password Password { get; set; }
         public string SecuredToken { get; set; }
         public AccountType Type { get; set; }
-
-       
     }
 }

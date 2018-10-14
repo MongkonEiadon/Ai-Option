@@ -5,12 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using AiOption.Query;
 using EventFlow.Aggregates;
-using EventFlow.Core;
-using EventFlow.Core.RetryStrategies;
 using EventFlow.EntityFramework;
 using EventFlow.EntityFramework.ReadStores;
-using EventFlow.Extensions;
-using EventFlow.Logs;
 using EventFlow.ReadStores;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,12 +16,12 @@ namespace AiOption.Infrasturcture.ReadStores
         ISearchableReadModelStore<TReadModel>
         where TReadModel : class, IReadModel, new() where TDbContext : DbContext
     {
-        private readonly IEntityFrameworkReadModelStore<TReadModel> _readStore;
         private readonly IDbContextProvider<TDbContext> _dbContextProvider;
+        private readonly IEntityFrameworkReadModelStore<TReadModel> _readStore;
 
 
         public EfSearchableReadStore(
-            IEntityFrameworkReadModelStore<TReadModel> readStore, 
+            IEntityFrameworkReadModelStore<TReadModel> readStore,
             IDbContextProvider<TDbContext> dbContextProvider)
         {
             _readStore = readStore;
@@ -41,12 +37,9 @@ namespace AiOption.Infrasturcture.ReadStores
 
                 var entity = await dbContext.Set<TReadModel>()
                     .Where(x => predicate(x))
-                    .ToListAsync(cancellationToken: cancellationToken);
+                    .ToListAsync(cancellationToken);
 
-                if (!entity.Any())
-                {
-                    return Enumerable.Empty<TReadModel>().ToList();
-                }
+                if (!entity.Any()) return Enumerable.Empty<TReadModel>().ToList();
 
                 return entity;
             }
@@ -67,8 +60,10 @@ namespace AiOption.Infrasturcture.ReadStores
             return _readStore.GetAsync(id, cancellationToken);
         }
 
-        public Task UpdateAsync(IReadOnlyCollection<ReadModelUpdate> readModelUpdates, IReadModelContextFactory readModelContextFactory,
-            Func<IReadModelContext, IReadOnlyCollection<IDomainEvent>, ReadModelEnvelope<TReadModel>, CancellationToken, Task<ReadModelUpdateResult<TReadModel>>> updateReadModel, CancellationToken cancellationToken)
+        public Task UpdateAsync(IReadOnlyCollection<ReadModelUpdate> readModelUpdates,
+            IReadModelContextFactory readModelContextFactory,
+            Func<IReadModelContext, IReadOnlyCollection<IDomainEvent>, ReadModelEnvelope<TReadModel>, CancellationToken,
+                Task<ReadModelUpdateResult<TReadModel>>> updateReadModel, CancellationToken cancellationToken)
         {
             return _readStore.UpdateAsync(readModelUpdates, readModelContextFactory, updateReadModel,
                 cancellationToken);

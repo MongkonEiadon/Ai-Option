@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Threading;
 using AiOption.Application.ApplicationServices;
-using AiOption.Domain.Common;
-using AiOption.Domain.Customers;
-using AiOption.Domain.Customers.Commands;
-using AiOption.Query.Customers;
-using EventFlow;
-using EventFlow.Queries;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
 
 namespace AiOption.Tradings
 {
@@ -42,7 +34,7 @@ namespace AiOption.Tradings
 
                 //process.ChangeCustomerLevel(cust.Id, new Level(UserLevel.Standard));
 
-               // process.ProcessRegisterNewAccountTask(CustomerId.With(""), "m@email.com", "Password", "AnyToken").Wait();
+                // process.ProcessRegisterNewAccountTask(CustomerId.With(""), "m@email.com", "Password", "AnyToken").Wait();
 
 
                 //var query = container.GetService<IQueryProcessor>();

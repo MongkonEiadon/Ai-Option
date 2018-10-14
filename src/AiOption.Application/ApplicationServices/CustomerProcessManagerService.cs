@@ -24,7 +24,9 @@ namespace AiOption.Application.ApplicationServices
 
         Task<Customer> GetCustomerAsync(CustomerId customerId);
     }
-    public class CustomerProcessManagerService : ICustomerProcessManagerService {
+
+    public class CustomerProcessManagerService : ICustomerProcessManagerService
+    {
         private readonly ICommandBus _commandBus;
         private readonly IQueryProcessor _queryProcessor;
 
@@ -56,7 +58,7 @@ namespace AiOption.Application.ApplicationServices
 
             return result;
         }
-    
+
         public async Task<Customer> ChangeCustomerLevel(CustomerId customerId, Level level)
         {
             //command to change customer level
@@ -78,9 +80,10 @@ namespace AiOption.Application.ApplicationServices
 
 
         [DebuggerStepThrough]
-        private Task<TResult> PublishAsync<TAggregate, TIdentity, TResult>(ICommand<TAggregate, TIdentity, TResult> command)
+        private Task<TResult> PublishAsync<TAggregate, TIdentity, TResult>(
+            ICommand<TAggregate, TIdentity, TResult> command)
             where TAggregate : IAggregateRoot<TIdentity>
-            where TIdentity : IIdentity 
+            where TIdentity : IIdentity
             where TResult : IExecutionResult
         {
             return _commandBus.PublishAsync(command, CancellationToken.None);

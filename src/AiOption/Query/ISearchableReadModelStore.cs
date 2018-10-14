@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EventFlow.Aggregates;
-using EventFlow.Core;
 using EventFlow.Logs;
 using EventFlow.ReadStores;
 using EventFlow.ReadStores.InMemory;
@@ -21,12 +16,15 @@ namespace AiOption.Query
             CancellationToken cancellationToken);
     }
 
-    public class InMemorySearchableReadStore<TReadModel> : InMemoryReadStore<TReadModel>, ISearchableReadModelStore<TReadModel>
+    public class InMemorySearchableReadStore<TReadModel> : InMemoryReadStore<TReadModel>,
+        ISearchableReadModelStore<TReadModel>
         where TReadModel : class, IReadModel, new()
     {
         public InMemorySearchableReadStore(
             ILog log)
-            : base(log) { }
+            : base(log)
+        {
+        }
 
 
         public new Task<IReadOnlyCollection<TReadModel>> FindAsync(
@@ -36,5 +34,4 @@ namespace AiOption.Query
             return base.FindAsync(predicate, cancellationToken);
         }
     }
-
 }

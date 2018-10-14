@@ -25,7 +25,8 @@ namespace AiOption.Domain.Customers.Commands
         public override async Task ExecuteAsync(CustomerAggregate aggregate, CreateNewTokenCommand command,
             CancellationToken cancellationToken)
         {
-            var customer = await _queryProcessor.ProcessAsync(new QueryCustomerById(aggregate.Id, true), cancellationToken);
+            var customer =
+                await _queryProcessor.ProcessAsync(new QueryCustomerById(aggregate.Id, true), cancellationToken);
         }
     }
 }

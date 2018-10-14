@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using EventFlow.Specifications;
-using EventFlow.ValueObjects;
-using FluentValidation;
+﻿using EventFlow.ValueObjects;
 
 namespace AiOption.Domain.Common
 {

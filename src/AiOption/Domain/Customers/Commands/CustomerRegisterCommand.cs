@@ -25,7 +25,8 @@ namespace AiOption.Domain.Customers.Commands
         public string InvitationCode { get; }
     }
 
-    internal class CustomerRequestRegisterCommandHandler : CommandHandler<CustomerAggregate, CustomerId, CustomerRegisterCommand>
+    internal class
+        CustomerRequestRegisterCommandHandler : CommandHandler<CustomerAggregate, CustomerId, CustomerRegisterCommand>
     {
         private readonly IQueryProcessor _queryProcessor;
 

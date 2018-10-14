@@ -5,11 +5,11 @@ namespace AiOption.Domain.Customers.Events
 {
     public class CreateNewIqAccountEvent : AggregateEvent<CustomerAggregate, CustomerId>
     {
-        public IqAccount IqAccount { get; }
-
         public CreateNewIqAccountEvent(IqAccount iqAccount)
         {
             IqAccount = iqAccount;
         }
+
+        public IqAccount IqAccount { get; }
     }
 }

@@ -13,5 +13,4 @@ namespace AiOption.Domain.Customers.Snapshot
 
         public IEnumerable<CustomerStatus> States { get; }
     }
-
 }

@@ -7,11 +7,11 @@ namespace AiOption.Query.IqAccounts
 {
     public class QueryIqAccountsByCustomerId : IQuery<IReadOnlyCollection<IqAccount>>
     {
-        public CustomerId CustomerId { get; }
-
         public QueryIqAccountsByCustomerId(CustomerId customerId)
         {
             CustomerId = customerId;
         }
+
+        public CustomerId CustomerId { get; }
     }
 }

@@ -5,19 +5,18 @@ using EventFlow.Queries;
 
 namespace AiOption.Query.IqAccounts
 {
-    public abstract class QueryIqAccountById : IQuery<IqAccount>
-    {
+    public abstract class QueryIqAccountById : IQuery<IqAccount> {
+        public IqAccountId AccountId { get; }
+
         public QueryIqAccountById(IqAccountId accountId)
         {
             AccountId = accountId;
         }
 
-        public IqAccountId AccountId { get; }
     }
 
 
-     class QueryIqAccountByIdQueryHandler :
-        IQueryHandler<QueryIqAccountById, IqAccount>
+    internal class QueryIqAccountByIdQueryHandler : IQueryHandler<QueryIqAccountById, IqAccount>
     {
         private readonly ISearchableReadModelStore<IqAccountReadModel> _readStore;
 

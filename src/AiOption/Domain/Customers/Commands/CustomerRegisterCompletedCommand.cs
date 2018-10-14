@@ -11,7 +11,9 @@ namespace AiOption.Domain.Customers.Commands
         }
     }
 
-    class CustomerRegisterCompletedCommandHandler : CommandHandler<CustomerAggregate, CustomerId, CustomerRegisterCompletedCommand>
+    internal class
+        CustomerRegisterCompletedCommandHandler : CommandHandler<CustomerAggregate, CustomerId,
+            CustomerRegisterCompletedCommand>
     {
         public override Task ExecuteAsync(CustomerAggregate aggregate, CustomerRegisterCompletedCommand command,
             CancellationToken cancellationToken)

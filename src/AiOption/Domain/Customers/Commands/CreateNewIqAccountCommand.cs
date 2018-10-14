@@ -11,25 +11,29 @@ namespace AiOption.Domain.Customers.Commands
 {
     public class CreateNewIqAccountCommand : Command<CustomerAggregate, CustomerId>
     {
-        public Email EmailAddress { get; }
-        public Password Password { get; }
-
-        public CreateNewIqAccountCommand(CustomerId customerId, Email emailAddress, Password password) : base(customerId)
+        public CreateNewIqAccountCommand(CustomerId customerId, Email emailAddress, Password password) : base(
+            customerId)
         {
             EmailAddress = emailAddress;
             Password = password;
         }
+
+        public Email EmailAddress { get; }
+        public Password Password { get; }
     }
 
-    class CreateNewIqAccountCommandHandler : CommandHandler<CustomerAggregate, CustomerId, CreateNewIqAccountCommand>
+    internal class
+        CreateNewIqAccountCommandHandler : CommandHandler<CustomerAggregate, CustomerId, CreateNewIqAccountCommand>
     {
         private readonly IQueryProcessor _queryProcessor;
+
         public CreateNewIqAccountCommandHandler(IQueryProcessor queryProcessor)
         {
             _queryProcessor = queryProcessor;
         }
 
-        public override async Task ExecuteAsync(CustomerAggregate aggregate, CreateNewIqAccountCommand command, CancellationToken cancellationToken)
+        public override async Task ExecuteAsync(CustomerAggregate aggregate, CreateNewIqAccountCommand command,
+            CancellationToken cancellationToken)
         {
             var query = new QueryIqAccountByEmailAddress(command.EmailAddress.Value);
             var result = await _queryProcessor.ProcessAsync(query, cancellationToken);

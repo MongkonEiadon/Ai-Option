@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using AiOption.Domain.Common;
 using AiOption.Domain.Customers.Events;
-using AiOption.Domain.IqAccounts;
 using EventFlow.Aggregates;
 using EventFlow.ReadStores;
 
 namespace AiOption.Domain.Customers
 {
-    public class CustomerReadModel : 
+    public class CustomerReadModel :
         IReadModel,
         IAmReadModelFor<CustomerAggregate, CustomerId, CreateTokenSuccess>,
         IAmReadModelFor<CustomerAggregate, CustomerId, LoginSucceeded>,

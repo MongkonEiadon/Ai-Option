@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
 using AiOption.Domain.Customers;
 using AiOption.Domain.IqAccounts;
@@ -7,7 +6,6 @@ using AiOption.Query;
 using EventFlow;
 using EventFlow.EntityFramework;
 using EventFlow.EntityFramework.Extensions;
-using EventFlow.EntityFramework.ReadStores;
 using EventFlow.ReadStores;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +19,6 @@ namespace AiOption.Infrasturcture.ReadStores
         public static IServiceCollection AddEfConfigurationDomain(this IServiceCollection This,
             IConfiguration config)
         {
-
             var constring = config.GetConnectionString("aioptiondb");
 
             This

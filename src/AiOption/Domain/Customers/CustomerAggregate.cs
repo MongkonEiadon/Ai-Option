@@ -5,7 +5,6 @@ using AiOption.Domain.Common;
 using AiOption.Domain.Customers.Events;
 using AiOption.Domain.Customers.Snapshot;
 using AiOption.Domain.IqAccounts;
-using AiOption.Domain.IqAccounts.Events;
 using EventFlow.Aggregates;
 using EventFlow.Extensions;
 using EventFlow.Snapshots;
@@ -25,8 +24,6 @@ namespace AiOption.Domain.Customers
 
         #region [Snapshot]
 
-        
-
         protected override Task<CustomerSnapShot> CreateSnapshotAsync(CancellationToken cancellationToken)
         {
             return Task.FromResult(new CustomerSnapShot(_state.Status));
@@ -38,6 +35,7 @@ namespace AiOption.Domain.Customers
             _state.LoadState(snapshot.States);
             return Task.CompletedTask;
         }
+
         #endregion
 
         #region Emitters
@@ -53,9 +51,15 @@ namespace AiOption.Domain.Customers
             Emit(new RequestRegister(user, password, invitationCode));
         }
 
-        public void ChangeLevel(Level level) => Emit(new RequestChangeLevel(level));
+        public void ChangeLevel(Level level)
+        {
+            Emit(new RequestChangeLevel(level));
+        }
 
-        public void CompletedRegister() => Emit(new RegisterCompleted());
+        public void CompletedRegister()
+        {
+            Emit(new RegisterCompleted());
+        }
 
         public void CreateNewIqAccount(IqAccount iqAccount)
         {
@@ -74,7 +78,6 @@ namespace AiOption.Domain.Customers
 
             Emit(new DeleteCustomerEvent());
         }
-
 
 
         public void CreateUserToken()

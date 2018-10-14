@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using AiOption.Domain.Common;
 using EventFlow.Exceptions;
 using FluentAssertions;
@@ -8,7 +6,7 @@ using Xunit;
 
 namespace AiOption.Tests.Units.Commons
 {
-    public class EmailTest 
+    public class EmailTest
     {
         [Theory]
         [InlineData("")]
@@ -42,6 +40,5 @@ namespace AiOption.Tests.Units.Commons
 
             result.EmailAddress.Should().Be("m@email.com");
         }
-
     }
 }

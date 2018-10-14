@@ -18,9 +18,10 @@ namespace AiOption.Query.Customers
         public bool ThrowIfNotFound { get; }
     }
 
-    class QueryCustomerByIdQueryHandler : IQueryHandler<QueryCustomerById, Customer>
+    internal class QueryCustomerByIdQueryHandler : IQueryHandler<QueryCustomerById, Customer>
     {
         private readonly ISearchableReadModelStore<CustomerReadModel> _readStore;
+
         public QueryCustomerByIdQueryHandler(ISearchableReadModelStore<CustomerReadModel> readStore)
         {
             _readStore = readStore;
@@ -29,7 +30,7 @@ namespace AiOption.Query.Customers
         public async Task<Customer> ExecuteQueryAsync(QueryCustomerById query, CancellationToken cancellationToken)
         {
             var result = await _readStore.GetAsync(query.CustomerId.Value, cancellationToken);
-            if(result.ReadModel == null && query.ThrowIfNotFound) 
+            if (result.ReadModel == null && query.ThrowIfNotFound)
                 throw DomainError.With($"Not found customer with '{query.CustomerId}'");
 
             return result.ReadModel?.ToCustomer();

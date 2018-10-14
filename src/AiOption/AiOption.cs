@@ -27,16 +27,16 @@ namespace AiOption
                 .AddInmemoryReadStoreFor<IqAccountReadModel>();
         }
 
-        private static IEventFlowOptions AddInmemoryReadStoreFor<TReadModel>(this IEventFlowOptions options) 
+        private static IEventFlowOptions AddInmemoryReadStoreFor<TReadModel>(this IEventFlowOptions options)
             where TReadModel : class, IReadModel, new()
         {
             return options
                 .UseInMemoryReadStoreFor<TReadModel>()
                 .RegisterServices(r =>
-                    {
-                        r.RegisterGeneric(typeof(ISearchableReadModelStore<>), typeof(InMemorySearchableReadStore<>));
-                        r.Register<ISearchableReadModelStore<TReadModel>, InMemorySearchableReadStore<TReadModel>>();
-                    });
+                {
+                    r.RegisterGeneric(typeof(ISearchableReadModelStore<>), typeof(InMemorySearchableReadStore<>));
+                    r.Register<ISearchableReadModelStore<TReadModel>, InMemorySearchableReadStore<TReadModel>>();
+                });
         }
     }
 }
