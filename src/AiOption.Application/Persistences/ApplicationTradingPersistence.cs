@@ -45,7 +45,7 @@ namespace AiOption.Application.Persistences
         {
             if (!OpenAccountTradingsStream.ContainsKey(account))
             {
-                if (string.IsNullOrEmpty(account.SecuredToken)) account.SetSecuredToken(""); // .SecuredToken = "";
+                if (string.IsNullOrEmpty(account.SecuredToken)) account.SecuredToken = ""; // .SecuredToken = "";
 
                 OpenAccountTradingsStream.Add(account, Handle(account));
             }

@@ -11,12 +11,12 @@ namespace AiOption.Domain.Customers.Commands
 {
     public class CreateNewIqAccountCommand : Command<CustomerAggregate, CustomerId>
     {
-        public User User { get; }
+        public Email EmailAddress { get; }
         public Password Password { get; }
 
-        public CreateNewIqAccountCommand(CustomerId customerId, User user, Password password) : base(customerId)
+        public CreateNewIqAccountCommand(CustomerId customerId, Email emailAddress, Password password) : base(customerId)
         {
-            User = user;
+            EmailAddress = emailAddress;
             Password = password;
         }
     }
@@ -31,13 +31,13 @@ namespace AiOption.Domain.Customers.Commands
 
         public override async Task ExecuteAsync(CustomerAggregate aggregate, CreateNewIqAccountCommand command, CancellationToken cancellationToken)
         {
-            var query = new QueryIqAccountByEmailAddress(command.User.Value);
+            var query = new QueryIqAccountByEmailAddress(command.EmailAddress.Value);
             var result = await _queryProcessor.ProcessAsync(query, cancellationToken);
 
             if (result != null)
-                throw DomainError.With($"IqAccounts with {command.User} already exists in database!");
+                throw DomainError.With($"IqAccounts with {command.EmailAddress} already exists in database!");
 
-            var iqAccount = new IqAccount(IqAccountId.New, command.User, command.Password);
+            var iqAccount = new IqAccount(IqAccountId.New, command.EmailAddress, command.Password);
             aggregate.CreateNewIqAccount(iqAccount);
         }
     }

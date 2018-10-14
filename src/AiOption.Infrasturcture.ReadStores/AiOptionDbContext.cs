@@ -46,7 +46,7 @@ namespace AiOption.Infrasturcture.ReadStores
                 x => x.HasKey(y => y.AggregateId),
                 x => x.Property(e => e.AggregateId).HasColumnName("Id"),
                 x => x.Property(e => e.Password).HasConversion(PasswordConverter),
-                x => x.Property(e => e.UserName).HasConversion(v => v.Value, v => new User(v)),
+                x => x.Property(e => e.UserName).HasConversion(v => v.Value, v => new Email(v)),
                 x => x.Property(e => e.Level).HasConversion(v => v.Value, v => new Level(v)),
                 x => x.Property(e => e.Token).HasConversion(v => v.Value, v => new Token(v)));
 
@@ -54,9 +54,10 @@ namespace AiOption.Infrasturcture.ReadStores
                 x => x.ToTable("IqAccounts"),
                 x => x.HasKey(y => y.AggregateId),
                 x => x.Property(e => e.AggregateId).HasColumnName("Id"),
-                x => x.Property(e => e.UserName).HasConversion(v => v.Value, v => new User(v)),
+                x => x.Property(e => e.UserName).HasConversion(v => v.Value, v => new Email(v)),
                 x => x.Property(e => e.Password).HasConversion(PasswordConverter),
-                x => x.Property(e => e.CustomerId).HasConversion(e => e.Value, v => CustomerId.With(v)));
+                x => x.Property(e => e.CustomerId).HasConversion(e => e.Value, v => CustomerId.With(v)),
+                x => x.Property(e => e.Type).HasConversion(new EnumToStringConverter<AccountType>()));
 
             base.OnModelCreating(modelBuilder);
         }

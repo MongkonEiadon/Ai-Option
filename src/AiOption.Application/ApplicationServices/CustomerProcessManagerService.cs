@@ -14,6 +14,16 @@ using EventFlow.Queries;
 
 namespace AiOption.Application.ApplicationServices
 {
+    public interface ICustomerProcessManagerService
+    {
+        Task<Customer> RegisterCustomerAsync(string emailAddress, string password, string invitationCode);
+
+        Task<Customer> ChangeCustomerLevel(CustomerId customerId, Level level);
+
+        Task DeleteCustomerAsync(CustomerId customerId);
+
+        Task<Customer> GetCustomerAsync(CustomerId customerId);
+    }
     public class CustomerProcessManagerService : ICustomerProcessManagerService {
         private readonly ICommandBus _commandBus;
         private readonly IQueryProcessor _queryProcessor;
@@ -28,15 +38,15 @@ namespace AiOption.Application.ApplicationServices
 
 
         public async Task<Customer> RegisterCustomerAsync(
-            string userName,
+            string emailAddress,
             string password,
             string invitationCode)
         {
             // register
-            var command = await PublishAsync(new CustomerRegisterCommand(userName, password, invitationCode));
+            var command = await PublishAsync(new CustomerRegisterCommand(emailAddress, password, invitationCode));
 
             // get new customer
-            var result = await QueryAsync(new QueryCustomerByEmailAddress(new User(userName)));
+            var result = await QueryAsync(new QueryCustomerByEmailAddress(new Email(emailAddress)));
 
             //change level to standard
             await PublishAsync(new ChangeLevelCommand(result.Id, new Level(UserLevel.Standard)));
@@ -54,6 +64,16 @@ namespace AiOption.Application.ApplicationServices
 
             //query back
             return await QueryAsync(new QueryCustomerById(customerId));
+        }
+
+        public Task DeleteCustomerAsync(CustomerId customerId)
+        {
+            return PublishAsync(new DeleteCustomerCommand(customerId));
+        }
+
+        public Task<Customer> GetCustomerAsync(CustomerId customerId)
+        {
+            return QueryAsync(new QueryCustomerById(customerId, false));
         }
 
 

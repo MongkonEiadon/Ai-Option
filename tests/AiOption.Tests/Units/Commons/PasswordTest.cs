@@ -53,8 +53,5 @@ namespace AiOption.Tests.Units.Commons
             //assert
             password.DecryptPassword().Should().Be("PlainText");
         }
-
-
-
     }
 }

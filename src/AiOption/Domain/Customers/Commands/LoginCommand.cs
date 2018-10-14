@@ -9,13 +9,13 @@ namespace AiOption.Domain.Customers.Commands
 {
     public class LoginCommand : Command<CustomerAggregate, CustomerId>
     {
-        public LoginCommand(CustomerId aggregateId, User user, Password password) : base(aggregateId)
+        public LoginCommand(CustomerId aggregateId, Email user, Password password) : base(aggregateId)
         {
             User = user;
             Password = password;
         }
 
-        public User User { get; }
+        public Email User { get; }
         public Password Password { get; }
     }
 

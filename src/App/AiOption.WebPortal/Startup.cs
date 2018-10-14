@@ -44,7 +44,7 @@ namespace AiOption.WebPortal
 
 
             //infra-configuration
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2); ;
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1); ;
             services.AddInfrastructureConfiguration();
             services.AddLogging(c => c.AddConsole());
             services.AddEfConfigurationDomain(Configuration);

@@ -15,11 +15,13 @@ namespace AiOption.Domain.IqAccounts
     {
         public virtual string AggregateId { get; set; }
 
-        public User UserName { get; set; }
+        public Email UserName { get; set; }
 
         public Password Password { get; set; }
 
         public string IqOptionToken { get; set; }
+
+        public AccountType Type { get; set; }
 
         public DateTimeOffset TokenUpdatedDate { get; set; }
         
@@ -40,7 +42,7 @@ namespace AiOption.Domain.IqAccounts
                 UserName,
                 Password);
 
-            iq.SetSecuredToken(IqOptionToken);
+            iq.SecuredToken = this.IqOptionToken;
             return iq;
         }
 
@@ -57,7 +59,8 @@ namespace AiOption.Domain.IqAccounts
             UpdateReadModel(
                 x => x.CustomerId = domainEvent.AggregateIdentity,
                 x => x.UserName = domainEvent.AggregateEvent.IqAccount.UserName,
-                x => x.Password = domainEvent.AggregateEvent.IqAccount.Password);
+                x => x.Password = domainEvent.AggregateEvent.IqAccount.Password,
+                x => x.Type = domainEvent.AggregateEvent.IqAccount.Type);
         }
     }
 }

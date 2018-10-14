@@ -5,23 +5,27 @@ namespace AiOption.Domain.Customers
 {
     public enum CustomerStatus
     {
-        Undefined = 0,
-        RequestedRegister = 1,
-        RegisterSucceeded = 2,
-
-
-        RegisterFailed = -1
+        Undefined,
+        Register,
+        RegisterSucceeded,
+        RegisterFailed,
+        AddIqAccount,
+        ChangeLevel,
+        LoggedIn,
+        Deleted
     }
 
     public class Customer : Entity<CustomerId>
     {
-        public Customer(CustomerId id, User userName, Password password) : base(id)
+        public Customer(CustomerId id, Email userName, Password password, Level level, Token token) : base(id)
         {
             UserName = userName;
             Password = password;
+            Level = level;
+            Token = token;
         }
 
-        public User UserName { get; }
+        public Email UserName { get; }
         public Password Password { get; }
         public Level Level { get; }
         public Token Token { get; }

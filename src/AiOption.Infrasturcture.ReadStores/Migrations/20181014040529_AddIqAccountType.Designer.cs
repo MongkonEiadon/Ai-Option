@@ -4,14 +4,16 @@ using AiOption.Infrasturcture.ReadStores;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AiOption.Infrasturcture.ReadStores.Migrations
 {
     [DbContext(typeof(AiOptionDbContext))]
-    partial class AiOptionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181014040529_AddIqAccountType")]
+    partial class AddIqAccountType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

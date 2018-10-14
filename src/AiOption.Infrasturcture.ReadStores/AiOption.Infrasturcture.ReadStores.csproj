@@ -11,6 +11,7 @@
     <Compile Remove="Migrations\20181010064024_InitialMigrations.cs" />
     <Compile Remove="Migrations\20181010064054_InitialMigrations.cs" />
     <Compile Remove="Migrations\20181010092146_AddMoreStuff.cs" />
+    <Compile Remove="Migrations\20181013141311_ChangeToEmailInsteadOfUser.cs" />
   </ItemGroup>
 
   <ItemGroup>

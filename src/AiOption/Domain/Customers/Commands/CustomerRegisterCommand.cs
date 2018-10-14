@@ -37,12 +37,12 @@ namespace AiOption.Domain.Customers.Commands
         public override async Task ExecuteAsync(CustomerAggregate aggregate, CustomerRegisterCommand command,
             CancellationToken cancellationToken)
         {
-            var query = new QueryCustomerByEmailAddress(new User(command.EmailAddress), false);
+            var query = new QueryCustomerByEmailAddress(new Email(command.EmailAddress), false);
             if (await _queryProcessor.ProcessAsync(query, cancellationToken) != null)
                 throw DomainError.With($"UserName {command.EmailAddress} already exists.");
 
             aggregate.RegisterAnAccount(
-                new User(command.EmailAddress),
+                new Email(command.EmailAddress),
                 new Password(command.Password),
                 command.InvitationCode);
         }

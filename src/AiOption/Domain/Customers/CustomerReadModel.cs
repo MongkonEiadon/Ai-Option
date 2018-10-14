@@ -17,7 +17,7 @@ namespace AiOption.Domain.Customers
     {
         public virtual string AggregateId { get; set; }
 
-        public User UserName { get; private set; }
+        public Email UserName { get; private set; }
 
         public Password Password { get; private set; }
 
@@ -28,10 +28,6 @@ namespace AiOption.Domain.Customers
         public DateTimeOffset LastLogin { get; private set; }
 
         public Token Token { get; private set; }
-
-        public string EmailAddressNormalize => UserName.Value.ToUpper();
-
-
 
         public void Apply(IReadModelContext context,
             IDomainEvent<CustomerAggregate, CustomerId, CreateTokenSuccess> domainEvent)
@@ -64,7 +60,8 @@ namespace AiOption.Domain.Customers
 
         public Customer ToCustomer()
         {
-            return new Customer(CustomerId.With(AggregateId), UserName, Password);
+            var cust = new Customer(CustomerId.With(AggregateId), UserName, Password, Level, Token);
+            return cust;
         }
 
 

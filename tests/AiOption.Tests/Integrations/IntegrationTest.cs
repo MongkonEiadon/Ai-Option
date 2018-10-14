@@ -51,7 +51,11 @@ namespace AiOption.Tests.Integrations
 
             return Resolver.GetService<ICommandBus>()
                 .PublishAsync(command, CancellationToken.None);
+        }
 
+        public T Resolve<T>()
+        {
+            return Resolver.GetService<T>();
         }
     }
 }

@@ -3,21 +3,24 @@ using EventFlow.Entities;
 
 namespace AiOption.Domain.IqAccounts
 {
+    public enum AccountType
+    {
+        Trader,
+        Follower
+    }
     public class IqAccount : Entity<IqAccountId>
     {
-        public IqAccount(IqAccountId accountId, User userName, Password password) : base(accountId)
+        public IqAccount(IqAccountId accountId, Email userName, Password password) : base(accountId)
         {
             UserName = userName;
             Password = password;
         }
 
-        public User UserName { get; }
-        public Password Password { get; }
-        public string SecuredToken { get; private set; }
+        public Email UserName { get; set; }
+        public Password Password { get; set; }
+        public string SecuredToken { get; set; }
+        public AccountType Type { get; set; }
 
-        public void SetSecuredToken(string token)
-        {
-            SecuredToken = token;
-        }
+       
     }
 }
