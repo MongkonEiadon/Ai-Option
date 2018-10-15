@@ -70,15 +70,16 @@ namespace AiOption.Domain.Customers
             Emit(new CreateNewIqAccountEvent(iqAccount));
         }
 
-        public void DeleteCustomer()
+        public void Terminate()
         {
             Specs
                 .Exists
                 .ThrowDomainErrorIfNotSatisfied(this);
 
-            Emit(new DeleteCustomerEvent());
+            Emit(new TerminateRequested());
         }
 
+        public void Terminated() => Emit(new TerminateCustomerCompleted());
 
         public void CreateUserToken()
         {

@@ -18,12 +18,7 @@ namespace AiOption.Domain.IqAccounts
             Emit(new UpdateTokenEvent(token));
         }
 
-        public void LoginSucceeded()
-        {
-        }
 
-        public void LoginFailed(string failedMessage)
-        {
-        }
+        public void Terminated() => Emit(new TerminateIqAccountCompleted());
     }
 }

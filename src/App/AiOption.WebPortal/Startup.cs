@@ -6,9 +6,11 @@ using AiOption.Infrasturcture.ReadStores;
 using Autofac;
 using Autofac.Configuration;
 using Autofac.Extensions.DependencyInjection;
+using AutoMapper;
 using EventFlow.AspNetCore.Extensions;
 using EventFlow.Autofac.Extensions;
 using EventFlow.DependencyInjection.Extensions;
+using EventFlow.EntityFramework.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -48,17 +50,17 @@ namespace AiOption.WebPortal
             services.AddInfrastructureConfiguration();
             services.AddLogging(c => c.AddConsole());
             services.AddEfConfigurationDomain(Configuration);
+            services.AddAutoMapper();
 
             //event flows
             services.AddEventFlow(cfg =>
-                cfg
-                    .UseAutofacContainerBuilder(builder)
-                    .AddAspNetCoreMetadataProviders()
+                cfg.UseAutofacContainerBuilder(builder)
                     .Configure(c =>
                     {
                         c.IsAsynchronousSubscribersEnabled = true;
                         c.ThrowSubscriberExceptions = true;
                     })
+                    .UseServiceCollection(services)
                     .AddDomain()
                     .AddApplication()
                     .AddInfrastructure()
@@ -82,6 +84,7 @@ namespace AiOption.WebPortal
         {
             if (env.IsDevelopment())
             {
+                app.UseHttpsRedirection();
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -90,7 +93,6 @@ namespace AiOption.WebPortal
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 

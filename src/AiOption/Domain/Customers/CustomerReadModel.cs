@@ -7,7 +7,7 @@ using EventFlow.ReadStores;
 namespace AiOption.Domain.Customers
 {
     public class CustomerReadModel :
-        IReadModel,
+        IVersionReadModel,
         IAmReadModelFor<CustomerAggregate, CustomerId, CreateTokenSuccess>,
         IAmReadModelFor<CustomerAggregate, CustomerId, LoginSucceeded>,
         IAmReadModelFor<CustomerAggregate, CustomerId, RequestChangeLevel>,
@@ -26,6 +26,7 @@ namespace AiOption.Domain.Customers
         public DateTimeOffset LastLogin { get; private set; }
 
         public Token Token { get; private set; }
+        public long? Version { get; set; }
 
         public void Apply(IReadModelContext context,
             IDomainEvent<CustomerAggregate, CustomerId, CreateTokenSuccess> domainEvent)

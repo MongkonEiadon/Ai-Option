@@ -10,7 +10,10 @@ namespace AiOption.Domain.Customers
         IApply<LoginSucceeded>,
         IApply<CreateTokenSuccess>,
         IApply<CreateNewIqAccountEvent>,
-        IApply<DeleteCustomerEvent>
+        IApply<DeleteCustomerEvent>,
+
+        IApply<TerminateRequested>,
+        IApply<TerminateCustomerCompleted>
     {
         private readonly List<CustomerStatus> _status = new List<CustomerStatus>();
         public IReadOnlyCollection<CustomerStatus> Status => _status;
@@ -51,6 +54,15 @@ namespace AiOption.Domain.Customers
         public void LoadState(IEnumerable<CustomerStatus> status)
         {
             _status.AddRange(status);
+        }
+
+        public void Apply(TerminateRequested aggregateEvent)
+        {
+
+        }
+
+        public void Apply(TerminateCustomerCompleted aggregateEvent)
+        {
         }
     }
 }

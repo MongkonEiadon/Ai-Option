@@ -1,5 +1,6 @@
 ﻿using System;
 using AiOption.Application.ApplicationServices;
+using AiOption.Domain.Customers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AiOption.Tradings
@@ -25,12 +26,7 @@ namespace AiOption.Tradings
 
                 ////migrate
 
-                var cust = process.RegisterCustomerAsync("m@email.com", "password", "invitationCode").Result;
-
-                process.DeleteCustomerAsync(cust.Id).Wait();
-
-                process.GetCustomerAsync(cust.Id).Wait();
-
+                var cust = process.RegisterCustomerAsync("m@email.com", "password", "invitationCode").Result.Id;
 
                 //process.ChangeCustomerLevel(cust.Id, new Level(UserLevel.Standard));
 
@@ -71,11 +67,18 @@ namespace AiOption.Tradings
 
                     switch (input)
                     {
-                        case "-l":
+                        case "t":
                         {
                             //tradingPersistenceService.GetListOfSubscribe();
+                            process.DeleteCustomerAsync(cust).Wait();
                             break;
                         }
+                        case "g":
+                        {
+
+                            process.GetCustomerAsync(cust).Wait();
+                            break;
+                            }
                     }
                 }
             }

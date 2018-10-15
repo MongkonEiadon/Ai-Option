@@ -8,7 +8,7 @@ using EventFlow.ReadStores;
 
 namespace AiOption.Domain.IqAccounts
 {
-    public class IqAccountReadModel : IReadModel,
+    public class IqAccountReadModel : IVersionReadModel,
         IAmReadModelFor<IqAccountAggregate, IqAccountId, UpdateTokenEvent>,
         IAmReadModelFor<CustomerAggregate, CustomerId, CreateNewIqAccountEvent>
     {
@@ -25,6 +25,8 @@ namespace AiOption.Domain.IqAccounts
         public DateTimeOffset TokenUpdatedDate { get; set; }
 
         public CustomerId CustomerId { get; set; }
+
+        public long? Version { get; set; }
 
         public void Apply(IReadModelContext context,
             IDomainEvent<CustomerAggregate, CustomerId, CreateNewIqAccountEvent> domainEvent)
@@ -59,5 +61,6 @@ namespace AiOption.Domain.IqAccounts
         {
             foreach (var action in actions) action(this);
         }
+
     }
 }

@@ -1,10 +1,13 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AiOption.Domain.Common;
 using AiOption.Domain.Customers;
 using AiOption.Domain.Customers.Commands;
+using AiOption.Domain.IqAccounts.Commands;
 using AiOption.Query.Customers;
+using AiOption.Query.IqAccounts;
 using EventFlow;
 using EventFlow.Aggregates;
 using EventFlow.Aggregates.ExecutionResults;
@@ -68,9 +71,20 @@ namespace AiOption.Application.ApplicationServices
             return await QueryAsync(new QueryCustomerById(customerId));
         }
 
-        public Task DeleteCustomerAsync(CustomerId customerId)
+        public async Task DeleteCustomerAsync(CustomerId customerId)
         {
-            return PublishAsync(new DeleteCustomerCommand(customerId));
+            await PublishAsync(new TerminateRequestCommand(customerId));
+
+            var accounts = await QueryAsync(new QueryIqAccountsByCustomerId(customerId));
+            if (accounts.Any())
+            {
+                foreach (var account in accounts)
+                {
+                    await PublishAsync(new TerminateIqAccountCommand(account.Id));
+                }
+            }
+
+            await PublishAsync(new TerminateCustomerCommand(customerId));
         }
 
         public Task<Customer> GetCustomerAsync(CustomerId customerId)
