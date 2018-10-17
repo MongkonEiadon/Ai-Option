@@ -1,12 +1,14 @@
 ﻿using System.Reflection;
-using AiOption.Infrastructure.ReadStores;
 using EventFlow;
 using EventFlow.Extensions;
 
 // ReSharper disable once CheckNamespace
 namespace AiOption.Infrastructure.ReadStores
 {
-    internal static class ReadStore { }
+    internal static class ReadStore
+    {
+    }
+
     public static class AiOption
     {
         public static Assembly AiOptionAssembly => typeof(ReadStore).Assembly;

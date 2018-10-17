@@ -1,10 +1,13 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AiOption.Domain.Common;
 using AiOption.Domain.Customers;
 using AiOption.Domain.Customers.Commands;
+using AiOption.Domain.IqAccounts.Commands;
 using AiOption.Query.Customers;
+using AiOption.Query.IqAccounts;
 using EventFlow;
 using EventFlow.Aggregates;
 using EventFlow.Aggregates.ExecutionResults;
@@ -24,7 +27,9 @@ namespace AiOption.Application.ApplicationServices
 
         Task<Customer> GetCustomerAsync(CustomerId customerId);
     }
-    public class CustomerProcessManagerService : ICustomerProcessManagerService {
+
+    public class CustomerProcessManagerService : ICustomerProcessManagerService
+    {
         private readonly ICommandBus _commandBus;
         private readonly IQueryProcessor _queryProcessor;
 
@@ -56,7 +61,7 @@ namespace AiOption.Application.ApplicationServices
 
             return result;
         }
-    
+
         public async Task<Customer> ChangeCustomerLevel(CustomerId customerId, Level level)
         {
             //command to change customer level
@@ -66,9 +71,20 @@ namespace AiOption.Application.ApplicationServices
             return await QueryAsync(new QueryCustomerById(customerId));
         }
 
-        public Task DeleteCustomerAsync(CustomerId customerId)
+        public async Task DeleteCustomerAsync(CustomerId customerId)
         {
-            return PublishAsync(new DeleteCustomerCommand(customerId));
+            await PublishAsync(new TerminateRequestCommand(customerId));
+
+            var accounts = await QueryAsync(new QueryIqAccountsByCustomerId(customerId));
+            if (accounts.Any())
+            {
+                foreach (var account in accounts)
+                {
+                    await PublishAsync(new TerminateIqAccountCommand(account.Id));
+                }
+            }
+
+            await PublishAsync(new TerminateCustomerCommand(customerId));
         }
 
         public Task<Customer> GetCustomerAsync(CustomerId customerId)
@@ -78,9 +94,10 @@ namespace AiOption.Application.ApplicationServices
 
 
         [DebuggerStepThrough]
-        private Task<TResult> PublishAsync<TAggregate, TIdentity, TResult>(ICommand<TAggregate, TIdentity, TResult> command)
+        private Task<TResult> PublishAsync<TAggregate, TIdentity, TResult>(
+            ICommand<TAggregate, TIdentity, TResult> command)
             where TAggregate : IAggregateRoot<TIdentity>
-            where TIdentity : IIdentity 
+            where TIdentity : IIdentity
             where TResult : IExecutionResult
         {
             return _commandBus.PublishAsync(command, CancellationToken.None);

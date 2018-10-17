@@ -14,7 +14,9 @@ namespace AiOption.Infrasturcture.ReadStores
     {
         private readonly DbContextOptions<AiOptionDbContext> _options;
 
-        public AiOptionDbContext() { }
+        public AiOptionDbContext()
+        {
+        }
 
         public AiOptionDbContext(DbContextOptions<AiOptionDbContext> options) : base(options)
         {
@@ -24,6 +26,11 @@ namespace AiOption.Infrasturcture.ReadStores
         //read models
         public DbSet<CustomerReadModel> Customers { get; set; }
         public DbSet<IqAccountReadModel> IqAccounts { get; set; }
+
+        private ValueConverter<Password, string> PasswordConverter =>
+            new ValueConverter<Password, string>(
+                v => v.DecryptPassword(),
+                v => Password.With(v));
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -62,18 +69,11 @@ namespace AiOption.Infrasturcture.ReadStores
             base.OnModelCreating(modelBuilder);
         }
 
-        private void ApplyBuilder<TReadModel>(ModelBuilder builder, params Action<EntityTypeBuilder<TReadModel>>[] actions)
+        private void ApplyBuilder<TReadModel>(ModelBuilder builder,
+            params Action<EntityTypeBuilder<TReadModel>>[] actions)
             where TReadModel : class
         {
-            foreach (var action in actions)
-            {
-                action(builder.Entity<TReadModel>());
-            }
+            foreach (var action in actions) action(builder.Entity<TReadModel>());
         }
-
-        private ValueConverter<Password, string> PasswordConverter =>
-            new ValueConverter<Password, string>(
-                v => v.DecryptPassword(),
-                v => Password.With(v));
     }
 }

@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Threading;
 using AiOption.Application.ApplicationServices;
-using AiOption.Domain.Common;
 using AiOption.Domain.Customers;
-using AiOption.Domain.Customers.Commands;
-using AiOption.Query.Customers;
-using EventFlow;
-using EventFlow.Queries;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
 
 namespace AiOption.Tradings
 {
@@ -33,16 +26,11 @@ namespace AiOption.Tradings
 
                 ////migrate
 
-                var cust = process.RegisterCustomerAsync("m@email.com", "password", "invitationCode").Result;
-
-                process.DeleteCustomerAsync(cust.Id).Wait();
-
-                process.GetCustomerAsync(cust.Id).Wait();
-
+                var cust = process.RegisterCustomerAsync("m@email.com", "password", "invitationCode").Result.Id;
 
                 //process.ChangeCustomerLevel(cust.Id, new Level(UserLevel.Standard));
 
-               // process.ProcessRegisterNewAccountTask(CustomerId.With(""), "m@email.com", "Password", "AnyToken").Wait();
+                // process.ProcessRegisterNewAccountTask(CustomerId.With(""), "m@email.com", "Password", "AnyToken").Wait();
 
 
                 //var query = container.GetService<IQueryProcessor>();
@@ -79,11 +67,18 @@ namespace AiOption.Tradings
 
                     switch (input)
                     {
-                        case "-l":
+                        case "t":
                         {
                             //tradingPersistenceService.GetListOfSubscribe();
+                            process.DeleteCustomerAsync(cust).Wait();
                             break;
                         }
+                        case "g":
+                        {
+
+                            process.GetCustomerAsync(cust).Wait();
+                            break;
+                            }
                     }
                 }
             }

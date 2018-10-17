@@ -20,7 +20,7 @@ namespace AiOption.Query.Customers
         public bool ThrowIfNotFound { get; }
     }
 
-    class QueryCustomerByEmailAddressQueryHandler : IQueryHandler<QueryCustomerByEmailAddress, Customer>
+    internal class QueryCustomerByEmailAddressQueryHandler : IQueryHandler<QueryCustomerByEmailAddress, Customer>
     {
         private readonly ISearchableReadModelStore<CustomerReadModel> _readModelStore;
 
@@ -37,7 +37,6 @@ namespace AiOption.Query.Customers
                     if (query.ThrowIfNotFound && !t.Result.Any())
                         throw DomainError.With($"Not found customer by '{query.EmailAddress}'");
                     return t.Result?.FirstOrDefault()?.ToCustomer();
-
                 }, cancellationToken);
         }
     }

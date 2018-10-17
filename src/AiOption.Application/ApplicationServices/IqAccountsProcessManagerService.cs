@@ -4,12 +4,8 @@ using System.Threading.Tasks;
 using AiOption.Domain.Common;
 using AiOption.Domain.Customers;
 using AiOption.Domain.Customers.Commands;
-using AiOption.Domain.IqAccounts;
-using AiOption.Domain.IqAccounts.Commands;
 using AiOption.Query.IqAccounts;
 using EventFlow;
-using EventFlow.Exceptions;
-using EventFlow.Logs;
 using EventFlow.Queries;
 
 namespace AiOption.Application.ApplicationServices
@@ -20,7 +16,7 @@ namespace AiOption.Application.ApplicationServices
     }
 
     public class IqAccountsProcessManagerService : IIqAccountProcessManagerService,
-            IQueryHandler<QueryNewValidTokenForUser, string>
+        IQueryHandler<QueryNewValidTokenForUser, string>
     {
         private readonly ICommandBus _commandBus;
         private readonly IQueryProcessor _queryProcessor;
@@ -31,7 +27,8 @@ namespace AiOption.Application.ApplicationServices
             _queryProcessor = queryProcessor;
         }
 
-        public async Task ProcessRegisterNewAccountTask(CustomerId customerId, string emailAddress, string password, string token)
+        public async Task ProcessRegisterNewAccountTask(CustomerId customerId, string emailAddress, string password,
+            string token)
         {
             var ct = new CancellationTokenSource();
             try

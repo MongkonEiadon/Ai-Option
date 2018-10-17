@@ -17,7 +17,7 @@ namespace AiOption.Query.IqAccounts
         public string EmailAddress { get; }
     }
 
-    class QueryIqAccountByEmailAddressQueryHandler :
+    internal class QueryIqAccountByEmailAddressQueryHandler :
         IQueryHandler<QueryIqAccountByEmailAddress, IqAccount>
     {
         private readonly ISearchableReadModelStore<IqAccountReadModel> _readStore;
@@ -27,9 +27,10 @@ namespace AiOption.Query.IqAccounts
         {
             _readStore = readStore;
         }
-        
 
-        public async Task<IqAccount> ExecuteQueryAsync(QueryIqAccountByEmailAddress query, CancellationToken cancellationToken)
+
+        public async Task<IqAccount> ExecuteQueryAsync(QueryIqAccountByEmailAddress query,
+            CancellationToken cancellationToken)
         {
             var result = await _readStore.FindAsync(x => x.UserName == new User(query.EmailAddress), cancellationToken);
 

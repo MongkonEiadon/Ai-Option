@@ -12,15 +12,12 @@ using EventFlow.Core;
 using EventFlow.DependencyInjection.Extensions;
 using EventFlow.Extensions;
 using EventFlow.Queries;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AiOption.Tests.Integrations
 {
-    public class IntegrationTest  : Test
+    public class IntegrationTest : Test
     {
-        public IServiceProvider Resolver { get; }
-
         public IntegrationTest()
         {
             var services = new ServiceCollection();
@@ -35,6 +32,8 @@ namespace AiOption.Tests.Integrations
             Resolver = services.BuildServiceProvider();
         }
 
+        public IServiceProvider Resolver { get; }
+
 
         public Task<TResult> QueryAsync<TResult>(IQuery<TResult> query)
         {
@@ -43,12 +42,11 @@ namespace AiOption.Tests.Integrations
         }
 
         public Task<TResult> PublishAsync<TAggregate, TIdentity, TResult>(
-            ICommand<TAggregate, TIdentity, TResult> command) 
+            ICommand<TAggregate, TIdentity, TResult> command)
             where TAggregate : IAggregateRoot<TIdentity>
-            where TIdentity : IIdentity 
+            where TIdentity : IIdentity
             where TResult : IExecutionResult
         {
-
             return Resolver.GetService<ICommandBus>()
                 .PublishAsync(command, CancellationToken.None);
         }

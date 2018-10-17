@@ -5,7 +5,8 @@ using EventFlow.Aggregates;
 namespace AiOption.Domain.IqAccounts
 {
     public class IqAggregateState : AggregateState<IqAccountAggregate, IqAccountId, IqAggregateState>,
-        IApply<UpdateTokenEvent>
+        IApply<UpdateTokenEvent>,
+        IApply<TerminateIqAccountCompleted>
     {
         public string SecuredToken { get; private set; }
 
@@ -21,5 +22,8 @@ namespace AiOption.Domain.IqAccounts
                 action(this);
         }
 
+        public void Apply(TerminateIqAccountCompleted aggregateEvent)
+        {
+        }
     }
 }

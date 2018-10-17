@@ -29,5 +29,7 @@ namespace AiOption.Domain.Customers
         public Password Password { get; }
         public Level Level { get; }
         public Token Token { get; }
+
+        public string InvitationCode { get; set; }
     }
 }

@@ -8,7 +8,7 @@ using FluentValidation;
 
 namespace AiOption
 {
-    public partial class Specs
+    public class Specs
     {
         public static ISpecification<Email> IsValidEmail { get; } = new EmailValidSpecification();
         public static ISpecification<IAggregateRoot> Exists { get; } = new AggregateIsCreatedSpecification();
@@ -36,16 +36,16 @@ namespace AiOption
                 return _validator.Validate(obj).Errors.Select(x => x.ErrorMessage);
             }
 
-            private class EmailValidation : FluentValidation.AbstractValidator<Email>
+            private class EmailValidation : AbstractValidator<Email>
             {
                 public EmailValidation()
                 {
                     RuleFor(x => x.EmailAddress).NotNull();
                     RuleFor(x => x.EmailAddress).NotEmpty();
-                    RuleFor(x => x.EmailAddress).EmailAddress().WithMessage((email => $"{email.EmailAddress} invalid format"));
+                    RuleFor(x => x.EmailAddress).EmailAddress()
+                        .WithMessage(email => $"{email.EmailAddress} invalid format");
                 }
             }
         }
-
     }
 }

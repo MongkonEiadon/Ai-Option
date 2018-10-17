@@ -2,5 +2,7 @@
 
 namespace AiOption.Domain.Customers.Events
 {
-    public class RegisterCompleted :AggregateEvent<CustomerAggregate, CustomerId> { }
+    public class RegisterCompleted : AggregateEvent<CustomerAggregate, CustomerId>
+    {
+    }
 }
