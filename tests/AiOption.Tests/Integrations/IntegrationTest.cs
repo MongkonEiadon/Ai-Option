@@ -27,7 +27,7 @@ namespace AiOption.Tests.Integrations
                     .UseInMemoryReadStoreFor<CustomerReadModel>()
                     .UseInMemoryReadStoreFor<IqAccountReadModel>()
                     .UseInMemorySnapshotStore()
-                    .UsingDomainInmemoryReadStore());
+                    .UsingDomainInMemoryReadStore());
 
             Resolver = services.BuildServiceProvider();
         }

@@ -30,6 +30,8 @@ namespace AiOption.Tradings
 
                 //process.ChangeCustomerLevel(cust.Id, new Level(UserLevel.Standard));
 
+                process.DeleteCustomerAsync(cust).Wait();
+
                 // process.ProcessRegisterNewAccountTask(CustomerId.With(""), "m@email.com", "Password", "AnyToken").Wait();
 
 

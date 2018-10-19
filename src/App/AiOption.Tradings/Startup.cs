@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using AiOption.Application;
+using AiOption.Domain.Sagas.Terminate;
 using AiOption.Infrastructure.Modules;
 using AiOption.Infrastructure.ReadStores;
 using AiOption.Infrasturcture.ReadStores;
@@ -8,6 +10,8 @@ using Autofac.Configuration;
 using Autofac.Extensions.DependencyInjection;
 using EventFlow.Autofac.Extensions;
 using EventFlow.DependencyInjection.Extensions;
+using EventFlow.Sagas;
+using EventFlow.Sagas.AggregateSagas;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -45,6 +49,8 @@ namespace AiOption.Tradings
             services.AddLogging(c => c.AddConsole());
             services.AddEfConfigurationDomain(Configuration);
 
+            builder.Populate(services);
+
             //event flows
             services.AddEventFlow(cfg =>
                 cfg.UseAutofacContainerBuilder(builder)
@@ -53,19 +59,15 @@ namespace AiOption.Tradings
                         c.IsAsynchronousSubscribersEnabled = true;
                         c.ThrowSubscriberExceptions = true;
                     })
-                    .UseServiceCollection(services)
                     .AddDomain()
                     .AddApplication()
                     .AddInfrastructure()
                     .AddInfrastructureReadStores()
             );
 
-
-            builder.Populate(services);
             var container = builder.Build();
-
-
-            return new AutofacServiceProvider(container);
+            var resolver =  new AutofacServiceProvider(container);
+            return resolver;
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

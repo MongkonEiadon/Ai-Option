@@ -75,16 +75,16 @@ namespace AiOption.Application.ApplicationServices
         {
             await PublishAsync(new TerminateRequestCommand(customerId));
 
-            var accounts = await QueryAsync(new QueryIqAccountsByCustomerId(customerId));
-            if (accounts.Any())
-            {
-                foreach (var account in accounts)
-                {
-                    await PublishAsync(new TerminateIqAccountCommand(account.Id));
-                }
-            }
+            //var accounts = await QueryAsync(new QueryIqAccountsByCustomerId(customerId));
+            //if (accounts.Any())
+            //{
+            //    foreach (var account in accounts)
+            //    {
+            //        await PublishAsync(new TerminateIqAccountCommand(account.Id));
+            //    }
+            //}
 
-            await PublishAsync(new TerminateCustomerCommand(customerId));
+            //await PublishAsync(new TerminateCustomerCommand(customerId));
         }
 
         public Task<Customer> GetCustomerAsync(CustomerId customerId)

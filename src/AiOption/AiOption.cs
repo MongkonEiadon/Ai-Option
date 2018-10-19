@@ -20,14 +20,14 @@ namespace AiOption
                     .RegisterServices(c => c.Register(ct => SnapshotEveryFewVersionsStrategy.With(10)));
         }
 
-        public static IEventFlowOptions UsingDomainInmemoryReadStore(this IEventFlowOptions This)
+        public static IEventFlowOptions UsingDomainInMemoryReadStore(this IEventFlowOptions This)
         {
             return This
-                .AddInmemoryReadStoreFor<CustomerReadModel>()
-                .AddInmemoryReadStoreFor<IqAccountReadModel>();
+                .AddInMemoryReadStoreFor<CustomerReadModel>()
+                .AddInMemoryReadStoreFor<IqAccountReadModel>();
         }
 
-        private static IEventFlowOptions AddInmemoryReadStoreFor<TReadModel>(this IEventFlowOptions options)
+        private static IEventFlowOptions AddInMemoryReadStoreFor<TReadModel>(this IEventFlowOptions options)
             where TReadModel : class, IReadModel, new()
         {
             return options

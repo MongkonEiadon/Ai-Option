@@ -8,10 +8,10 @@
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="Autofac" Version="4.8.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
-    <PackageReference Include="EventFlow.Autofac" Version="0.66.3673" />
-    <PackageReference Include="EventFlow.DependencyInjection" Version="0.66.3673" />
-    <PackageReference Include="EventFlow.EntityFramework" Version="0.66.3673" />
-    <PackageReference Include="iqoptionapi" Version="1.1.0" />
+    <PackageReference Include="EventFlow.Autofac" Version="0.67.3697" />
+    <PackageReference Include="EventFlow.DependencyInjection" Version="0.67.3697" />
+    <PackageReference Include="EventFlow.EntityFramework" Version="0.67.3697" />
+    <PackageReference Include="iqoptionapi" Version="1.1.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Microsoft.Azure.ServiceBus" Version="3.1.1" />

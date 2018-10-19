@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.Infrasturcture.Rea
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.WebPortal", "src\App\AiOption.WebPortal\AiOption.WebPortal.csproj", "{CD22688E-DE96-45FF-96E9-49337EB7137D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AiOption.Infrastructure.ReadStores.Mongo", "src\AiOption.Infrastructure.ReadStores.Mongo\AiOption.Infrastructure.ReadStores.Mongo.csproj", "{D700399A-3907-4005-A6BD-668E628167AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{CD22688E-DE96-45FF-96E9-49337EB7137D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD22688E-DE96-45FF-96E9-49337EB7137D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD22688E-DE96-45FF-96E9-49337EB7137D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D700399A-3907-4005-A6BD-668E628167AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D700399A-3907-4005-A6BD-668E628167AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D700399A-3907-4005-A6BD-668E628167AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D700399A-3907-4005-A6BD-668E628167AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{08C310D2-3CAF-4E26-835E-39BCBA68E3C6} = {B8DF9780-6ADB-4470-AEC2-69CAC6078F88}
 		{538E3EB1-600E-40C8-B894-80679321ABBA} = {B8DF9780-6ADB-4470-AEC2-69CAC6078F88}
 		{471671D0-69B0-4292-BAF9-4D0256846098} = {10B009BF-0579-4209-BC6A-D0042B8E3889}
+		{D700399A-3907-4005-A6BD-668E628167AB} = {10B009BF-0579-4209-BC6A-D0042B8E3889}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {45A6F755-7349-459E-B474-C21814ACC978}

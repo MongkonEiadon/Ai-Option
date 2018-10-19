@@ -18,9 +18,9 @@
 
     <PackageReference Include="Autofac" Version="4.8.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
-    <PackageReference Include="EventFlow.Autofac" Version="0.66.3673" />
-    <PackageReference Include="EventFlow.DependencyInjection" Version="0.66.3673" />
-    <PackageReference Include="EventFlow.EntityFramework" Version="0.66.3673" />
+    <PackageReference Include="EventFlow.Autofac" Version="0.67.3697" />
+    <PackageReference Include="EventFlow.DependencyInjection" Version="0.67.3697" />
+    <PackageReference Include="EventFlow.EntityFramework" Version="0.67.3697" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.4" />
