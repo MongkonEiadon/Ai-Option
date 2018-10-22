@@ -19,11 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.Tests", "tests\AiO
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructures", "Infrastructures", "{10B009BF-0579-4209-BC6A-D0042B8E3889}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.Infrasturcture.ReadStores", "src\AiOption.Infrasturcture.ReadStores\AiOption.Infrasturcture.ReadStores.csproj", "{471671D0-69B0-4292-BAF9-4D0256846098}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.Infrastructure.ReadStores", "src\AiOption.Infrasturcture.ReadStores\AiOption.Infrastructure.ReadStores.csproj", "{471671D0-69B0-4292-BAF9-4D0256846098}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.WebPortal", "src\App\AiOption.WebPortal\AiOption.WebPortal.csproj", "{CD22688E-DE96-45FF-96E9-49337EB7137D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AiOption.Infrastructure.ReadStores.Mongo", "src\AiOption.Infrastructure.ReadStores.Mongo\AiOption.Infrastructure.ReadStores.Mongo.csproj", "{D700399A-3907-4005-A6BD-668E628167AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.Infrastructure.ReadStores.Mongo", "src\AiOption.Infrastructure.ReadStores.Mongo\AiOption.Infrastructure.ReadStores.Mongo.csproj", "{D700399A-3907-4005-A6BD-668E628167AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

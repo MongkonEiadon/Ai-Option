@@ -2,7 +2,6 @@ using System;
 using AiOption.Application;
 using AiOption.Infrastructure.Modules;
 using AiOption.Infrastructure.ReadStores;
-using AiOption.Infrasturcture.ReadStores;
 using Autofac;
 using Autofac.Configuration;
 using Autofac.Extensions.DependencyInjection;
@@ -63,7 +62,6 @@ namespace AiOption.WebPortal
                     .UseServiceCollection(services)
                     .AddDomain()
                     .AddApplication()
-                    .AddInfrastructure()
                     .AddInfrastructureReadStores()
             );
             

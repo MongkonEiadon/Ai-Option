@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace AiOption.Infrasturcture.ReadStores.Migrations
+namespace AiOption.Infrastructure.ReadStores.Migrations
 {
     public partial class AddVersionReadModel : Migration
     {

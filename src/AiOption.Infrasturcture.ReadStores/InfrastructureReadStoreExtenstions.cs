@@ -2,17 +2,19 @@
 using System.Data.SqlClient;
 using AiOption.Domain.Customers;
 using AiOption.Domain.IqAccounts;
+using AiOption.Infrasturcture.ReadStores;
 using AiOption.Query;
 using EventFlow;
 using EventFlow.EntityFramework;
 using EventFlow.EntityFramework.Extensions;
+using EventFlow.Extensions;
 using EventFlow.ReadStores;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace AiOption.Infrasturcture.ReadStores
+namespace AiOption.Infrastructure.ReadStores
 {
     public static class InfrastructureReadStoreExtenstions
     {
@@ -41,6 +43,7 @@ namespace AiOption.Infrasturcture.ReadStores
             options
                 .ConfigureEntityFramework(EntityFrameworkConfiguration.New)
                 .AddDbContextProvider<AiOptionDbContext, MsSqlDbContextProvider>()
+                .AddDefaults(typeof(InfrastructureReadStoreExtenstions).Assembly)
                 .ConfigureAiOptionEventStore()
                 .ConfigureAiOptionSnapshotStore()
                 .ConfigureInfrastructureReadModelStore();

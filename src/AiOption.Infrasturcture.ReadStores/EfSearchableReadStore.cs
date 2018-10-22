@@ -10,7 +10,7 @@ using EventFlow.EntityFramework.ReadStores;
 using EventFlow.ReadStores;
 using Microsoft.EntityFrameworkCore;
 
-namespace AiOption.Infrasturcture.ReadStores
+namespace AiOption.Infrastructure.ReadStores
 {
     public class EfSearchableReadStore<TReadModel, TDbContext> :
         ISearchableReadModelStore<TReadModel>

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Linq;
 using AiOption.Application;
-using AiOption.Domain.Sagas.Terminate;
 using AiOption.Infrastructure.Modules;
 using AiOption.Infrastructure.ReadStores;
-using AiOption.Infrasturcture.ReadStores;
 using Autofac;
 using Autofac.Configuration;
 using Autofac.Extensions.DependencyInjection;
@@ -61,7 +59,6 @@ namespace AiOption.Tradings
                     })
                     .AddDomain()
                     .AddApplication()
-                    .AddInfrastructure()
                     .AddInfrastructureReadStores()
             );
 

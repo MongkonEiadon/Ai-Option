@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using AiOption.Domain.Customers;
+using EventFlow.Aggregates;
 using EventFlow.MongoDB.ReadStores;
 using EventFlow.MongoDB.ReadStores.Attributes;
+using EventFlow.ReadStores;
 
 namespace AiOption.Infrastructure.ReadStores.Mongo.ReadModels
 {
@@ -16,6 +18,15 @@ namespace AiOption.Infrastructure.ReadStores.Mongo.ReadModels
         {
             get => Version;
             set => Version = value;
+        }
+
+    }
+
+    public interface ICustomerReadModelLocator : IReadModelLocator { }
+    public class CustomerReadModelLocator : ICustomerReadModelLocator {
+        public IEnumerable<string> GetReadModelIds(IDomainEvent domainEvent)
+        {
+            throw new NotImplementedException();
         }
     }
 }

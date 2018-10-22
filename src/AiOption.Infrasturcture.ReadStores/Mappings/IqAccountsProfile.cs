@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace AiOption.Infrasturcture.ReadStores.Mappings
+namespace AiOption.Infrastructure.ReadStores.Mappings
 {
     public class IqAccountsProfile : Profile
     {

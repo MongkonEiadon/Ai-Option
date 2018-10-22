@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace AiOption.Infrasturcture.ReadStores.Migrations
+namespace AiOption.Infrastructure.ReadStores.Migrations
 {
     public partial class InitialMigration : Migration
     {

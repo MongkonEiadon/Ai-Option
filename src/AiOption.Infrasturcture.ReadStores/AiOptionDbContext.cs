@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
 
-namespace AiOption.Infrasturcture.ReadStores
+namespace AiOption.Infrastructure.ReadStores
 {
     public class AiOptionDbContext : DbContext
     {

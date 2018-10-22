@@ -1,7 +1,7 @@
 ﻿using AiOption.Domain.Customers;
 using AutoMapper;
 
-namespace AiOption.Infrasturcture.ReadStores.Mappings
+namespace AiOption.Infrastructure.ReadStores.Mappings
 {
     public class CustomersProfile : Profile
     {

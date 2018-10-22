@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using AiOption.Infrastructure.ReadStores;
 using EventFlow.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 

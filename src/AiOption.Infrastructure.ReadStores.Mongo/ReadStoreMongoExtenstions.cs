@@ -11,9 +11,12 @@ namespace AiOption.Infrastructure.ReadStores.Mongo
     {
         public static IEventFlowOptions UseReadStoreOnMongoDb(this IEventFlowOptions options)
         {
-            return options.ConfigureMongoDb("")
+            return options
+                .ConfigureMongoDb(
+                    "mongodb://localhost:C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==@localhost:10255/admin?ssl=true")
                 .AddDefaults(typeof(ReadStoreMongoExtensions).Assembly)
-                .UseReadModelOnMongoDb<CustomerReadModelOnMongo>();
+                .UseEventStoreOnMongoDb()
+                .UseSnapshotStoreOnMongoDb();//.UseReadModelOnMongoDb<CustomerReadModelOnMongo>();
         }
 
         public static IEventFlowOptions UseReadModelOnMongoDb<TReadModel>(this IEventFlowOptions options) 
@@ -31,4 +34,6 @@ namespace AiOption.Infrastructure.ReadStores.Mongo
             return options.UseMongoDbSnapshotStore();
         }
     }
+
+
 }
