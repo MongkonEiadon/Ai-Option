@@ -5,9 +5,9 @@
 
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
     <PackageReference Include="Autofac" Version="4.8.1" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="EventFlow.Autofac" Version="0.67.3697" />
     <PackageReference Include="EventFlow.DependencyInjection" Version="0.67.3697" />
     <PackageReference Include="EventFlow.EntityFramework" Version="0.67.3697" />
@@ -16,7 +16,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Microsoft.Azure.ServiceBus" Version="3.1.1" />
     <PackageReference Include="System.Reactive" Version="4.1.2" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.1" />
     <PackageReference Include="Microsoft.VisualStudio.SlowCheetah" Version="3.1.66" />
     <PackageReference Include="Dapper" Version="1.50.5" />
   </ItemGroup>
