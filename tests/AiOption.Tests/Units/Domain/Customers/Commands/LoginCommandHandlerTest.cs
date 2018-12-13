@@ -1,12 +1,12 @@
 ﻿using AiOption.Domain.Customers.Commands;
 using AiOption.TestCore;
-using Xunit;
+using NUnit.Framework;
 
 namespace AiOption.Tests.Units.Domain.Customers.Commands
 {
     public class LoginCommandHandlerTest : Test
     {
-        [Fact]
+        [Test]
         public void TestCommand()
         {
             var handler = A<LoginCommandHandler>();

@@ -5,14 +5,14 @@ using AiOption.Query.Customers;
 using AiOption.TestCore;
 using EventFlow.Exceptions;
 using FluentAssertions;
-using Xunit;
+using NUnit.Framework;
 
 namespace AiOption.Tests.Integrations.Query
 {
-    [Trait("Category", Category.Integrations)]
+    [Category(Category.Integrations)]
     public class QueryCustomerTests : IntegrationTest
     {
-        [Fact]
+        [Test]
         public async Task QueryEmptyReadModel_WithNotThrowOnNotFound_ExceptionShouldNotThrow()
         {
             // act
@@ -22,7 +22,7 @@ namespace AiOption.Tests.Integrations.Query
             result.Should().BeNull();
         }
 
-        [Fact]
+        [Test]
         public void QueryEmptyReadModel_WithThrowOnNotFound_ExceptionShouldThrew()
         {
             //act

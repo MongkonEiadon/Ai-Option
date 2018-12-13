@@ -20,6 +20,7 @@ namespace AiOption.Infrastructure.ReadStores.Mongo.ReadModels
             set => Version = value;
         }
 
+        public string Id { get; }
     }
 
     public interface ICustomerReadModelLocator : IReadModelLocator { }

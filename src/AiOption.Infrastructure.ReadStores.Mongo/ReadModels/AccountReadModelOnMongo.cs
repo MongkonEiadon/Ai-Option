@@ -13,5 +13,7 @@ namespace AiOption.Infrastructure.ReadStores.Mongo.ReadModels
             get => Version;
             set => Version = value;
         }
+
+        public string Id { get; }
     }
 }

@@ -7,6 +7,7 @@ using Autofac;
 using Autofac.Configuration;
 using Autofac.Extensions.DependencyInjection;
 using EventFlow.Autofac.Extensions;
+using EventFlow.Core.VersionedTypes;
 using EventFlow.DependencyInjection.Extensions;
 using EventFlow.Sagas;
 using EventFlow.Sagas.AggregateSagas;
@@ -64,6 +65,7 @@ namespace AiOption.Tradings
 
             var container = builder.Build();
             var resolver =  new AutofacServiceProvider(container);
+
             return resolver;
         }
 

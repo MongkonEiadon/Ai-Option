@@ -2,16 +2,16 @@
 using AiOption.Domain.Common;
 using EventFlow.Exceptions;
 using FluentAssertions;
-using Xunit;
+using NUnit.Framework;
 
 namespace AiOption.Tests.Units.Commons
 {
     public class EmailTest
     {
-        [Theory]
-        [InlineData("")]
-        [InlineData(null)]
-        [InlineData("Invalid")]
+        [Test]
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("Invalid")]
         public void TestEmailWithInValid(string invalid)
         {
             Action a = () =>
@@ -23,9 +23,9 @@ namespace AiOption.Tests.Units.Commons
         }
 
         [Theory]
-        [InlineData("")]
-        [InlineData(null)]
-        [InlineData("Invalid")]
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("Invalid")]
         public void CreateWithNewTest(string invalid)
         {
             Action a = () => { Email.New(invalid); };
@@ -33,7 +33,7 @@ namespace AiOption.Tests.Units.Commons
             a.Should().Throw<DomainError>();
         }
 
-        [Fact]
+        [Test]
         public void CreateEmailWithValid()
         {
             var result = Email.New("m@email.com");

@@ -2,42 +2,47 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AiOption.Domain.Customers;
+using AiOption.Domain.Customers.Commands;
+using AiOption.Domain.Customers.Events;
 using AiOption.Domain.IqAccounts;
 using AiOption.TestCore;
 using EventFlow;
 using EventFlow.Aggregates;
 using EventFlow.Aggregates.ExecutionResults;
 using EventFlow.Commands;
+using EventFlow.Configuration;
 using EventFlow.Core;
 using EventFlow.DependencyInjection.Extensions;
 using EventFlow.Extensions;
 using EventFlow.Queries;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace AiOption.Tests.Integrations
 {
     public class IntegrationTest : Test
     {
-        public IntegrationTest()
+        [SetUp]
+        public void SetupIntegrationTest()
         {
-            var services = new ServiceCollection();
-
-            services.AddEventFlow(x =>
-                x.AddDomain()
+            var ops = EventFlowOptions.New
+                .AddDomain()
                     .UseInMemoryReadStoreFor<CustomerReadModel>()
                     .UseInMemoryReadStoreFor<IqAccountReadModel>()
                     .UseInMemorySnapshotStore()
-                    .UsingDomainInMemoryReadStore());
+                    .UsingDomainInMemoryReadStore();
 
-            Resolver = services.BuildServiceProvider();
+            LazyResolver = new Lazy<IRootResolver>(() => ops.CreateResolver());
         }
 
-        public IServiceProvider Resolver { get; }
+        private Lazy<IRootResolver> LazyResolver { get; set; }
+        public IRootResolver Resolver => LazyResolver.Value;
 
 
         public Task<TResult> QueryAsync<TResult>(IQuery<TResult> query)
         {
-            return Resolver.GetService<IQueryProcessor>()
+            return Resolver.Resolve<IQueryProcessor>()
                 .ProcessAsync(query, CancellationToken.None);
         }
 
@@ -47,13 +52,13 @@ namespace AiOption.Tests.Integrations
             where TIdentity : IIdentity
             where TResult : IExecutionResult
         {
-            return Resolver.GetService<ICommandBus>()
+            return Resolver.Resolve<ICommandBus>()
                 .PublishAsync(command, CancellationToken.None);
         }
 
         public T Resolve<T>()
         {
-            return Resolver.GetService<T>();
+            return Resolver.Resolve<T>();
         }
     }
 }

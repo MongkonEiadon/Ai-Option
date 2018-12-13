@@ -1,12 +1,13 @@
 ﻿using AiOption.Domain.Common;
+using AiOption.TestCore;
 using FluentAssertions;
-using Xunit;
+using NUnit.Framework;
 
 namespace AiOption.Tests.Units.Commons
 {
     public class PasswordTest
     {
-        [Fact]
+        [Test]
         public void TestEquals()
         {
             // arrange
@@ -20,7 +21,7 @@ namespace AiOption.Tests.Units.Commons
             result.Should().BeTrue();
         }
 
-        [Fact]
+        [Test]
         public void TestValidate()
         {
             // arrange
@@ -34,7 +35,7 @@ namespace AiOption.Tests.Units.Commons
             result.Should().BeTrue();
         }
 
-        [Fact]
+        [Test]
         public void TestValue()
         {
             // arrange
@@ -44,7 +45,7 @@ namespace AiOption.Tests.Units.Commons
             password.Value.Should().NotBe("PlainText");
         }
 
-        [Fact]
+        [Test]
         public void TestWith()
         {
             // arrange
