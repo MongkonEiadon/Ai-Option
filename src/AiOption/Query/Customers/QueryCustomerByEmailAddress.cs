@@ -5,6 +5,7 @@ using AiOption.Domain.Common;
 using AiOption.Domain.Customers;
 using EventFlow.Exceptions;
 using EventFlow.Queries;
+using EventFlow.ReadStores.InMemory;
 
 namespace AiOption.Query.Customers
 {
@@ -23,10 +24,12 @@ namespace AiOption.Query.Customers
     internal class QueryCustomerByEmailAddressQueryHandler : IQueryHandler<QueryCustomerByEmailAddress, Customer>
     {
         private readonly ISearchableReadModelStore<CustomerReadModel> _readModelStore;
+        private readonly IInMemoryReadStore<CustomerReadModel> _customerInMemoryReadStore;
 
-        public QueryCustomerByEmailAddressQueryHandler(ISearchableReadModelStore<CustomerReadModel> readModelStore)
+        public QueryCustomerByEmailAddressQueryHandler(ISearchableReadModelStore<CustomerReadModel> readModelStore, IInMemoryReadStore<CustomerReadModel> customerInMemoryReadStore)
         {
             _readModelStore = readModelStore;
+            _customerInMemoryReadStore = customerInMemoryReadStore;
         }
 
         public Task<Customer> ExecuteQueryAsync(QueryCustomerByEmailAddress query, CancellationToken cancellationToken)

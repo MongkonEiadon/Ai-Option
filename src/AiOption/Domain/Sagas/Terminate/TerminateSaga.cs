@@ -17,7 +17,7 @@ namespace AiOption.Domain.Sagas.Terminate
 {
     public class TerminateSaga : 
         AggregateSaga<TerminateSaga, TerminateSagaId, TerminateSagaLocator>,
-        ISagaIsStartedBy<CustomerAggregate, CustomerId, TerminateRequested>, // stop this until double execute saga
+        ISagaIsStartedBy<CustomerAggregate, CustomerId, TerminateRequested>, 
         ISagaHandles<CustomerAggregate, CustomerId, TerminateCustomerCompleted>
         
     {

@@ -34,7 +34,7 @@ namespace AiOption.Tests.Integrations.Customers.Commands
         {
             // arrange
             var id = A<CustomerId>();
-            await Resolve<IReadModelFactory<CustomerReadModel>>().CreateAsync(id.Value, CancellationToken.None);
+            CreateReadModel<CustomerReadModel>(id.Value);
 
             // act
             await PublishAsync(new ChangeLevelCommand(id, new Level(level)));
@@ -49,13 +49,28 @@ namespace AiOption.Tests.Integrations.Customers.Commands
         {
             // arrange
             var id = A<CustomerId>();
-            await Resolve<IReadModelFactory<CustomerReadModel>>().CreateAsync(id.Value, CancellationToken.None);
+            CreateReadModel<CustomerReadModel>(id.Value);
 
             // act
             await PublishAsync(new ChangeLevelCommand(id, new Level(level)));
 
             // assert
             var result = await Resolve<IInMemoryReadStore<CustomerReadModel>>().FindAsync(rm => true, CancellationToken.None);
+            result.Count.Should().Be(1);
+        }
+
+        [TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.UserLevels))]
+        public async Task ChangeLevelCommand_WithAllUserLevel_OneEventShouldRised(UserLevel level)
+        {
+            // arrange
+            var id = A<CustomerId>();
+            CreateReadModel<CustomerReadModel>(id.Value);
+
+            // act
+            await PublishAsync(new ChangeLevelCommand(id, new Level(level)));
+
+            // assert
+            var result = await Resolve<IEventStore>().LoadEventsAsync<CustomerAggregate, CustomerId>(id, CancellationToken.None);
             result.Count.Should().Be(1);
         }
     }

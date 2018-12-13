@@ -5,6 +5,7 @@ using AiOption.Query;
 using EventFlow;
 using EventFlow.Extensions;
 using EventFlow.ReadStores;
+using EventFlow.ReadStores.InMemory;
 using EventFlow.Snapshots.Strategies;
 
 namespace AiOption
@@ -36,6 +37,7 @@ namespace AiOption
                 {
                     r.RegisterGeneric(typeof(ISearchableReadModelStore<>), typeof(InMemorySearchableReadStore<>));
                     r.Register<ISearchableReadModelStore<TReadModel>, InMemorySearchableReadStore<TReadModel>>();
+                    r.Register<IReadModelStore<TReadModel>, InMemoryReadStore<TReadModel>>();
                 });
         }
     }

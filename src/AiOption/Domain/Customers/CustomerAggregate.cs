@@ -7,6 +7,7 @@ using AiOption.Domain.Customers.Snapshot;
 using AiOption.Domain.IqAccounts;
 using EventFlow.Aggregates;
 using EventFlow.Extensions;
+using EventFlow.Sagas;
 using EventFlow.Snapshots;
 using EventFlow.Snapshots.Strategies;
 
