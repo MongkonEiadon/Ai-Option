@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EventFlow" Version="0.67.3697" />
-    <PackageReference Include="EventFlow.MongoDB" Version="0.1.26" />
+    <PackageReference Include="EventFlow" Version="0.68.3728" />
+    <PackageReference Include="EventFlow.MongoDB" Version="0.68.3728" />
   </ItemGroup>
 
   <ItemGroup>
