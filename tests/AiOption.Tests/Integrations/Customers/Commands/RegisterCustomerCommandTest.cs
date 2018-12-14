@@ -33,19 +33,5 @@ namespace AiOption.Tests.Integrations.Customers.Commands
             var result = await Resolve<IInMemoryReadStore<CustomerReadModel>>().FindAsync(x => true, CancellationToken.None);
             result.Count.Should().Be(1);
         }
-
-
-        [Test]
-        public async Task CustomerRegisterCommand_WithDoubleRequest_CustomerShouldCreateOnlyOne()
-        {
-            // act
-            await PublishAsync(new CustomerRegisterCommand("m@email.com", "passcode", "invite"));
-            await PublishAsync(new CustomerRegisterCommand("m@email.com", "passcode", "invite"));
-
-            // assert
-            var result = await Resolve<IInMemoryReadStore<CustomerReadModel>>().FindAsync(x => true, CancellationToken.None);
-            result.Count.Should().Be(1);
-        }
-
     }
 }
