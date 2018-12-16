@@ -1,13 +1,10 @@
 ﻿using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AiOption.Domain.Common;
 using AiOption.Domain.Customers;
 using AiOption.Domain.Customers.Commands;
-using AiOption.Domain.IqAccounts.Commands;
 using AiOption.Query.Customers;
-using AiOption.Query.IqAccounts;
 using EventFlow;
 using EventFlow.Aggregates;
 using EventFlow.Aggregates.ExecutionResults;

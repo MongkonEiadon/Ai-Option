@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Commands;
-using EventFlow.ReadStores;
 
 namespace AiOption.Domain.Customers.Commands
 {
@@ -12,7 +11,8 @@ namespace AiOption.Domain.Customers.Commands
         }
     }
 
-    class TerminateRequestCommandHandler : CommandHandler<CustomerAggregate, CustomerId, TerminateRequestCommand>
+    internal class
+        TerminateRequestCommandHandler : CommandHandler<CustomerAggregate, CustomerId, TerminateRequestCommand>
     {
         public override Task ExecuteAsync(CustomerAggregate aggregate, TerminateRequestCommand requestCommand,
             CancellationToken cancellationToken)

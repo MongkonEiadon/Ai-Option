@@ -7,25 +7,25 @@ namespace AiOption.Infrastructure.ReadStores.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<long>(
-                name: "Version",
-                table: "IqAccounts",
+                "Version",
+                "IqAccounts",
                 nullable: true);
 
             migrationBuilder.AddColumn<long>(
-                name: "Version",
-                table: "Customers",
+                "Version",
+                "Customers",
                 nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Version",
-                table: "IqAccounts");
+                "Version",
+                "IqAccounts");
 
             migrationBuilder.DropColumn(
-                name: "Version",
-                table: "Customers");
+                "Version",
+                "Customers");
         }
     }
 }

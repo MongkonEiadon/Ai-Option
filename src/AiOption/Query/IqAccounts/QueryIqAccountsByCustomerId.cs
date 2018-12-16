@@ -18,22 +18,24 @@ namespace AiOption.Query.IqAccounts
         public CustomerId CustomerId { get; }
     }
 
-    class QueryIqAccountByCustomerIdQueryHandler : IQueryHandler<QueryIqAccountsByCustomerId, IReadOnlyCollection<IqAccount>>
+    internal class
+        QueryIqAccountByCustomerIdQueryHandler : IQueryHandler<QueryIqAccountsByCustomerId,
+            IReadOnlyCollection<IqAccount>>
     {
         private readonly ISearchableReadModelStore<IqAccountReadModel> _searchableReadModelStore;
 
-        public QueryIqAccountByCustomerIdQueryHandler(ISearchableReadModelStore<IqAccountReadModel> searchableReadModelStore)
+        public QueryIqAccountByCustomerIdQueryHandler(
+            ISearchableReadModelStore<IqAccountReadModel> searchableReadModelStore)
         {
             _searchableReadModelStore = searchableReadModelStore;
         }
 
-        public async Task<IReadOnlyCollection<IqAccount>> ExecuteQueryAsync(QueryIqAccountsByCustomerId query, CancellationToken cancellationToken)
+        public async Task<IReadOnlyCollection<IqAccount>> ExecuteQueryAsync(QueryIqAccountsByCustomerId query,
+            CancellationToken cancellationToken)
         {
-            var result = await _searchableReadModelStore.FindAsync(x => x.CustomerId == query.CustomerId, cancellationToken);
-            if (result.Any())
-            {
-                return result.Select(x => x.ToIqAccount()).ToList();
-            }
+            var result =
+                await _searchableReadModelStore.FindAsync(x => x.CustomerId == query.CustomerId, cancellationToken);
+            if (result.Any()) return result.Select(x => x.ToIqAccount()).ToList();
 
             return Enumerable.Empty<IqAccount>().ToList();
         }

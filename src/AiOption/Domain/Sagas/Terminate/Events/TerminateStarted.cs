@@ -2,7 +2,7 @@
 
 namespace AiOption.Domain.Sagas.Terminate.Events
 {
-    public class TerminateStarted :AggregateEvent<TerminateSaga, TerminateSagaId>
+    public class TerminateStarted : AggregateEvent<TerminateSaga, TerminateSagaId>
     {
     }
 }

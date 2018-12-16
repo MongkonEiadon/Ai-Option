@@ -11,7 +11,9 @@ namespace AiOption.Domain.Customers.Commands
         {
         }
     }
-    class TerminateCustomerCommandHandler : CommandHandler<CustomerAggregate, CustomerId, TerminateCustomerCommand>
+
+    internal class
+        TerminateCustomerCommandHandler : CommandHandler<CustomerAggregate, CustomerId, TerminateCustomerCommand>
     {
         private readonly IReadModelPopulator _readModelPopulator;
 
@@ -20,18 +22,15 @@ namespace AiOption.Domain.Customers.Commands
             _readModelPopulator = readModelPopulator;
         }
 
-        public override Task ExecuteAsync(CustomerAggregate aggregate, TerminateCustomerCommand command, CancellationToken cancellationToken)
+        public override Task ExecuteAsync(CustomerAggregate aggregate, TerminateCustomerCommand command,
+            CancellationToken cancellationToken)
         {
             return _readModelPopulator
                 .DeleteAsync(command.AggregateId.Value, typeof(CustomerReadModel), cancellationToken)
                 .ContinueWith(t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        aggregate.Terminated();
-                    }
+                    if (t.IsCompleted) aggregate.Terminated();
                 }, cancellationToken);
-
         }
     }
 }

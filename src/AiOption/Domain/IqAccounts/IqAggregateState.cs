@@ -10,6 +10,10 @@ namespace AiOption.Domain.IqAccounts
     {
         public string SecuredToken { get; private set; }
 
+        public void Apply(TerminateIqAccountCompleted aggregateEvent)
+        {
+        }
+
 
         public void Apply(UpdateTokenEvent aggregateEvent)
         {
@@ -20,10 +24,6 @@ namespace AiOption.Domain.IqAccounts
         {
             foreach (var action in actions)
                 action(this);
-        }
-
-        public void Apply(TerminateIqAccountCompleted aggregateEvent)
-        {
         }
     }
 }

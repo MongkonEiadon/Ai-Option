@@ -9,8 +9,8 @@ namespace AiOption.Infrastructure.ReadStores.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Customers",
-                columns: table => new
+                "Customers",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(nullable: true),
@@ -20,17 +20,15 @@ namespace AiOption.Infrastructure.ReadStores.Migrations
                     LastLogin = table.Column<DateTimeOffset>(nullable: false),
                     Token = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Customers", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "EventEntity",
-                columns: table => new
+                "EventEntity",
+                table => new
                 {
                     GlobalSequenceNumber = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy",
+                            SqlServerValueGenerationStrategy.IdentityColumn),
                     BatchId = table.Column<Guid>(nullable: false),
                     AggregateName = table.Column<string>(nullable: true),
                     AggregateId = table.Column<string>(nullable: true),
@@ -38,14 +36,11 @@ namespace AiOption.Infrastructure.ReadStores.Migrations
                     Metadata = table.Column<string>(nullable: true),
                     AggregateSequenceNumber = table.Column<int>(nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EventEntity", x => x.GlobalSequenceNumber);
-                });
+                constraints: table => { table.PrimaryKey("PK_EventEntity", x => x.GlobalSequenceNumber); });
 
             migrationBuilder.CreateTable(
-                name: "IqAccounts",
-                columns: table => new
+                "IqAccounts",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(nullable: true),
@@ -54,39 +49,34 @@ namespace AiOption.Infrastructure.ReadStores.Migrations
                     TokenUpdatedDate = table.Column<DateTimeOffset>(nullable: false),
                     CustomerId = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IqAccounts", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_IqAccounts", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "SnapshotEntity",
-                columns: table => new
+                "SnapshotEntity",
+                table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy",
+                            SqlServerValueGenerationStrategy.IdentityColumn),
                     AggregateId = table.Column<string>(nullable: true),
                     AggregateName = table.Column<string>(nullable: true),
                     AggregateSequenceNumber = table.Column<int>(nullable: false),
                     Data = table.Column<string>(nullable: true),
                     Metadata = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SnapshotEntity", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_SnapshotEntity", x => x.Id); });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EventEntity_AggregateId_AggregateSequenceNumber",
-                table: "EventEntity",
-                columns: new[] { "AggregateId", "AggregateSequenceNumber" },
+                "IX_EventEntity_AggregateId_AggregateSequenceNumber",
+                "EventEntity",
+                new[] {"AggregateId", "AggregateSequenceNumber"},
                 unique: true,
                 filter: "[AggregateId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SnapshotEntity_AggregateName_AggregateId_AggregateSequenceNumber",
-                table: "SnapshotEntity",
-                columns: new[] { "AggregateName", "AggregateId", "AggregateSequenceNumber" },
+                "IX_SnapshotEntity_AggregateName_AggregateId_AggregateSequenceNumber",
+                "SnapshotEntity",
+                new[] {"AggregateName", "AggregateId", "AggregateSequenceNumber"},
                 unique: true,
                 filter: "[AggregateName] IS NOT NULL AND [AggregateId] IS NOT NULL");
         }
@@ -94,16 +84,16 @@ namespace AiOption.Infrastructure.ReadStores.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Customers");
+                "Customers");
 
             migrationBuilder.DropTable(
-                name: "EventEntity");
+                "EventEntity");
 
             migrationBuilder.DropTable(
-                name: "IqAccounts");
+                "IqAccounts");
 
             migrationBuilder.DropTable(
-                name: "SnapshotEntity");
+                "SnapshotEntity");
         }
     }
 }

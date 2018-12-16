@@ -2,5 +2,7 @@
 
 namespace AiOption.Domain.IqAccounts.Events
 {
-    public class TerminateIqAccountCompleted : AggregateEvent<IqAccountAggregate, IqAccountId> { }
+    public class TerminateIqAccountCompleted : AggregateEvent<IqAccountAggregate, IqAccountId>
+    {
+    }
 }

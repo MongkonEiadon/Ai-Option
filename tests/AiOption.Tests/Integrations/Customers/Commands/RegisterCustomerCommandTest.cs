@@ -1,10 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AiOption.Application.ApplicationServices;
-using AiOption.Domain.Common;
 using AiOption.Domain.Customers;
 using AiOption.Domain.Customers.Commands;
-using AiOption.Domain.IqAccounts;
 using AiOption.TestCore;
 using EventFlow.ReadStores.InMemory;
 using FluentAssertions;
@@ -18,7 +16,7 @@ namespace AiOption.Tests.Integrations.Customers.Commands
         [SetUp]
         public void SetupTerminateCustomerCommandTest()
         {
-            base.EventFlowOptions
+            EventFlowOptions
                 .RegisterServices(r =>
                     r.Register(typeof(ICustomerProcessManagerService), typeof(CustomerProcessManagerService)));
         }
@@ -30,7 +28,8 @@ namespace AiOption.Tests.Integrations.Customers.Commands
             await PublishAsync(new CustomerRegisterCommand("m@email.com", "passcode", "invite"));
 
             // assert
-            var result = await Resolve<IInMemoryReadStore<CustomerReadModel>>().FindAsync(x => true, CancellationToken.None);
+            var result = await Resolve<IInMemoryReadStore<CustomerReadModel>>()
+                .FindAsync(x => true, CancellationToken.None);
             result.Count.Should().Be(1);
         }
     }

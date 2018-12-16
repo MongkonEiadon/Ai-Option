@@ -7,7 +7,6 @@ using AiOption.Domain.Customers.Snapshot;
 using AiOption.Domain.IqAccounts;
 using EventFlow.Aggregates;
 using EventFlow.Extensions;
-using EventFlow.Sagas;
 using EventFlow.Snapshots;
 using EventFlow.Snapshots.Strategies;
 
@@ -80,7 +79,10 @@ namespace AiOption.Domain.Customers
             Emit(new TerminateRequested());
         }
 
-        public void Terminated() => Emit(new TerminateCustomerCompleted());
+        public void Terminated()
+        {
+            Emit(new TerminateCustomerCompleted());
+        }
 
         public void CreateUserToken()
         {

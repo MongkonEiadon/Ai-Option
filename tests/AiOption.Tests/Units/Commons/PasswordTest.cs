@@ -1,5 +1,4 @@
 ﻿using AiOption.Domain.Common;
-using AiOption.TestCore;
 using FluentAssertions;
 using NUnit.Framework;
 

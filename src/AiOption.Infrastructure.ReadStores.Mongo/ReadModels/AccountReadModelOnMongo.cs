@@ -8,6 +8,7 @@ namespace AiOption.Infrastructure.ReadStores.Mongo.ReadModels
     public class AccountReadModelOnMongo : IqAccountReadModel, IMongoDbReadModel
     {
         public string _id => AggregateId;
+
         public long? _version
         {
             get => Version;

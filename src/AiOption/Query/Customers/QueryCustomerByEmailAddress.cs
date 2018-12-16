@@ -23,10 +23,11 @@ namespace AiOption.Query.Customers
 
     internal class QueryCustomerByEmailAddressQueryHandler : IQueryHandler<QueryCustomerByEmailAddress, Customer>
     {
-        private readonly ISearchableReadModelStore<CustomerReadModel> _readModelStore;
         private readonly IInMemoryReadStore<CustomerReadModel> _customerInMemoryReadStore;
+        private readonly ISearchableReadModelStore<CustomerReadModel> _readModelStore;
 
-        public QueryCustomerByEmailAddressQueryHandler(ISearchableReadModelStore<CustomerReadModel> readModelStore, IInMemoryReadStore<CustomerReadModel> customerInMemoryReadStore)
+        public QueryCustomerByEmailAddressQueryHandler(ISearchableReadModelStore<CustomerReadModel> readModelStore,
+            IInMemoryReadStore<CustomerReadModel> customerInMemoryReadStore)
         {
             _readModelStore = readModelStore;
             _customerInMemoryReadStore = customerInMemoryReadStore;

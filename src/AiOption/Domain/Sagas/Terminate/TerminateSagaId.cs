@@ -6,26 +6,27 @@ using EventFlow.ValueObjects;
 
 namespace AiOption.Domain.Sagas.Terminate
 {
-    public class TerminateSagaId : ValueObject, ISagaId {
-
+    public class TerminateSagaId : ValueObject, ISagaId
+    {
         private static readonly Regex Regex =
             new Regex("^saga-(customer-[0-9a-f-]+)$",
                 RegexOptions.Compiled);
-        public CustomerId Customer { get; }
 
-        public TerminateSagaId(CustomerId customer) { Customer = customer; }
+        public TerminateSagaId(CustomerId customer)
+        {
+            Customer = customer;
+        }
 
         public TerminateSagaId(string value)
         {
             var match = Regex.Match(value);
-            if (!match.Success)
-            {
-                throw new ArgumentException("Could not parse id.");
-            }
+            if (!match.Success) throw new ArgumentException("Could not parse id.");
 
-            this.Customer = new CustomerId(match.Groups[1].Value);
+            Customer = new CustomerId(match.Groups[1].Value);
         }
 
-        public string Value => $"saga-{this.Customer.Value}";
+        public CustomerId Customer { get; }
+
+        public string Value => $"saga-{Customer.Value}";
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using AiOption.Application.ApplicationServices;
-using AiOption.Domain.Customers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AiOption.Tradings
@@ -77,10 +76,9 @@ namespace AiOption.Tradings
                         }
                         case "g":
                         {
-
                             process.GetCustomerAsync(cust).Wait();
                             break;
-                            }
+                        }
                     }
                 }
             }

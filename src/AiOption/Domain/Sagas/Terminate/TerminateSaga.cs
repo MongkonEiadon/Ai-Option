@@ -15,16 +15,15 @@ using EventFlow.Sagas.AggregateSagas;
 
 namespace AiOption.Domain.Sagas.Terminate
 {
-    public class TerminateSaga : 
+    public class TerminateSaga :
         AggregateSaga<TerminateSaga, TerminateSagaId, TerminateSagaLocator>,
-        ISagaIsStartedBy<CustomerAggregate, CustomerId, TerminateRequested>, 
+        ISagaIsStartedBy<CustomerAggregate, CustomerId, TerminateRequested>,
         ISagaHandles<CustomerAggregate, CustomerId, TerminateCustomerCompleted>
-        
+
     {
         private readonly IQueryProcessor _queryProcessor;
 
-        private List<string> _state = new List<string>();
-        public IReadOnlyCollection<string> State => _state;
+        private readonly List<string> _state = new List<string>();
 
         public TerminateSaga(TerminateSagaId id, IQueryProcessor queryProcessor) : base(id)
         {
@@ -37,38 +36,36 @@ namespace AiOption.Domain.Sagas.Terminate
                 Complete();
             });
         }
-        
+
+        public IReadOnlyCollection<string> State => _state;
 
         public Task HandleAsync(
-            IDomainEvent<CustomerAggregate, CustomerId, TerminateRequested> domainEvent, 
-            ISagaContext sagaContext, 
-            CancellationToken cancellationToken)
-        {
-            this.Emit(new TerminateStarted());
-
-            return _queryProcessor.ProcessAsync(new QueryIqAccountsByCustomerId(domainEvent.AggregateIdentity),
-                cancellationToken).ContinueWith(t =>
-            {
-                if (t.Result.Any())
-                {
-                    foreach (var iqAccount in t.Result)
-                    {
-                        Publish(new TerminateIqAccountCommand(iqAccount.Id));
-                    }
-                }
-
-                Publish(new TerminateCustomerCommand(domainEvent.AggregateIdentity));
-            }, cancellationToken);
-        }
-
-        public Task HandleAsync(
-            IDomainEvent<CustomerAggregate, CustomerId, TerminateCustomerCompleted> domainEvent, 
-            ISagaContext sagaContext, 
+            IDomainEvent<CustomerAggregate, CustomerId, TerminateCustomerCompleted> domainEvent,
+            ISagaContext sagaContext,
             CancellationToken cancellationToken)
         {
             Emit(new TerminateCompleted());
             Complete();
             return Task.CompletedTask;
+        }
+
+
+        public Task HandleAsync(
+            IDomainEvent<CustomerAggregate, CustomerId, TerminateRequested> domainEvent,
+            ISagaContext sagaContext,
+            CancellationToken cancellationToken)
+        {
+            Emit(new TerminateStarted());
+
+            return _queryProcessor.ProcessAsync(new QueryIqAccountsByCustomerId(domainEvent.AggregateIdentity),
+                cancellationToken).ContinueWith(t =>
+            {
+                if (t.Result.Any())
+                    foreach (var iqAccount in t.Result)
+                        Publish(new TerminateIqAccountCommand(iqAccount.Id));
+
+                Publish(new TerminateCustomerCommand(domainEvent.AggregateIdentity));
+            }, cancellationToken);
         }
     }
 }

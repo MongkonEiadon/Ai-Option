@@ -19,6 +19,9 @@ namespace AiOption.Domain.IqAccounts
         }
 
 
-        public void Terminated() => Emit(new TerminateIqAccountCompleted());
+        public void Terminated()
+        {
+            Emit(new TerminateIqAccountCompleted());
+        }
     }
 }

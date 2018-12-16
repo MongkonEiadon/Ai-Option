@@ -26,8 +26,6 @@ namespace AiOption.Domain.IqAccounts
 
         public CustomerId CustomerId { get; set; }
 
-        public long? Version { get; set; }
-
         public void Apply(IReadModelContext context,
             IDomainEvent<CustomerAggregate, CustomerId, CreateNewIqAccountEvent> domainEvent)
         {
@@ -45,6 +43,8 @@ namespace AiOption.Domain.IqAccounts
             TokenUpdatedDate = domainEvent.Timestamp;
         }
 
+        public long? Version { get; set; }
+
 
         public IqAccount ToIqAccount()
         {
@@ -61,6 +61,5 @@ namespace AiOption.Domain.IqAccounts
         {
             foreach (var action in actions) action(this);
         }
-
     }
 }

@@ -2,5 +2,7 @@
 
 namespace AiOption.Domain.Customers.Events
 {
-    public class TerminateCustomerCompleted :AggregateEvent<CustomerAggregate, CustomerId> { }
+    public class TerminateCustomerCompleted : AggregateEvent<CustomerAggregate, CustomerId>
+    {
+    }
 }

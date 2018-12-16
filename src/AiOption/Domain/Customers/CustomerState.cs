@@ -11,7 +11,6 @@ namespace AiOption.Domain.Customers
         IApply<CreateTokenSuccess>,
         IApply<CreateNewIqAccountEvent>,
         IApply<DeleteCustomerEvent>,
-
         IApply<TerminateRequested>,
         IApply<TerminateCustomerCompleted>
     {
@@ -51,18 +50,17 @@ namespace AiOption.Domain.Customers
             _status.Add(CustomerStatus.Register);
         }
 
-        public void LoadState(IEnumerable<CustomerStatus> status)
+        public void Apply(TerminateCustomerCompleted aggregateEvent)
         {
-            _status.AddRange(status);
         }
 
         public void Apply(TerminateRequested aggregateEvent)
         {
-
         }
 
-        public void Apply(TerminateCustomerCompleted aggregateEvent)
+        public void LoadState(IEnumerable<CustomerStatus> status)
         {
+            _status.AddRange(status);
         }
     }
 }

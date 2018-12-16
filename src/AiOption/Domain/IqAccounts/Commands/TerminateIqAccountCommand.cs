@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Commands;
 using EventFlow.ReadStores;
@@ -15,7 +12,8 @@ namespace AiOption.Domain.IqAccounts.Commands
         }
     }
 
-    public class TerminateIqAccountCommandHandler :CommandHandler<IqAccountAggregate, IqAccountId, TerminateIqAccountCommand>
+    public class
+        TerminateIqAccountCommandHandler : CommandHandler<IqAccountAggregate, IqAccountId, TerminateIqAccountCommand>
     {
         private readonly IReadModelPopulator _readModelPopulator;
 
@@ -24,18 +22,15 @@ namespace AiOption.Domain.IqAccounts.Commands
             _readModelPopulator = readModelPopulator;
         }
 
-        public override Task ExecuteAsync(IqAccountAggregate aggregate, TerminateIqAccountCommand command, CancellationToken cancellationToken)
+        public override Task ExecuteAsync(IqAccountAggregate aggregate, TerminateIqAccountCommand command,
+            CancellationToken cancellationToken)
         {
             return _readModelPopulator.DeleteAsync(command.AggregateId.Value, typeof(IqAccountReadModel),
                     cancellationToken)
                 .ContinueWith(t =>
                 {
-                    if (t.IsCompleted)
-                    {
-                        aggregate.Terminated();
-                    }
+                    if (t.IsCompleted) aggregate.Terminated();
                 }, cancellationToken);
-
         }
     }
 }

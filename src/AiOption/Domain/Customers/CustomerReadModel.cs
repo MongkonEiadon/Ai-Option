@@ -26,7 +26,6 @@ namespace AiOption.Domain.Customers
         public DateTimeOffset LastLogin { get; private set; }
 
         public Token Token { get; private set; }
-        public long? Version { get; set; }
 
         public void Apply(IReadModelContext context,
             IDomainEvent<CustomerAggregate, CustomerId, CreateTokenSuccess> domainEvent)
@@ -56,6 +55,8 @@ namespace AiOption.Domain.Customers
                 x => x.Password = domainEvent.AggregateEvent.Password,
                 x => x.InvitationCode = domainEvent.AggregateEvent.InvitationCode);
         }
+
+        public long? Version { get; set; }
 
         public Customer ToCustomer()
         {
