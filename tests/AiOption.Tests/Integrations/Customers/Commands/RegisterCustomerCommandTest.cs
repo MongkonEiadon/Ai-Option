@@ -1,10 +1,8 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using System;
 using AiOption.Application.ApplicationServices;
-using AiOption.Domain.Customers;
 using AiOption.Domain.Customers.Commands;
 using AiOption.TestCore;
-using EventFlow.ReadStores.InMemory;
+using EventFlow.Exceptions;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -22,15 +20,16 @@ namespace AiOption.Tests.Integrations.Customers.Commands
         }
 
         [Test]
-        public async Task CustomerRegisterCommand_WithOneRequest_CustomerShouldCreated()
+        public void CustomerRegisterCommand_WithMultipleRequest_ExceptionMustThrew()
         {
             // act
-            await PublishAsync(new CustomerRegisterCommand("m@email.com", "passcode", "invite"));
+            Action action = () =>
+            {
+                PublishAsync(new CustomerRegisterCommand("m@email.com", "passcode", "invite")).Wait();
+                PublishAsync(new CustomerRegisterCommand("m@email.com", "passcode", "invite")).Wait();
+            };
 
-            // assert
-            var result = await Resolve<IInMemoryReadStore<CustomerReadModel>>()
-                .FindAsync(x => true, CancellationToken.None);
-            result.Count.Should().Be(1);
+            action.Should().Throw<DomainError>();
         }
     }
 }

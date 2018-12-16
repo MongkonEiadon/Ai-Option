@@ -1,10 +1,13 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AiOption.Domain.Common;
+using AiOption.Query;
 using AiOption.Query.Customers;
 using EventFlow.Commands;
 using EventFlow.Exceptions;
 using EventFlow.Queries;
+using EventFlow.ReadStores;
+using EventFlow.ReadStores.InMemory;
 
 namespace AiOption.Domain.Customers.Commands
 {
@@ -25,21 +28,24 @@ namespace AiOption.Domain.Customers.Commands
         public string InvitationCode { get; }
     }
 
-    internal class
-        CustomerRequestRegisterCommandHandler : CommandHandler<CustomerAggregate, CustomerId, CustomerRegisterCommand>
+    internal class CustomerRequestRegisterCommandHandler : CommandHandler<CustomerAggregate, CustomerId, CustomerRegisterCommand>
     {
         private readonly IQueryProcessor _queryProcessor;
+        private readonly ISearchableReadModelStore<CustomerReadModel> _readStore;
 
-        public CustomerRequestRegisterCommandHandler(IQueryProcessor queryProcessor)
+        public CustomerRequestRegisterCommandHandler(
+            IQueryProcessor queryProcessor,
+            ISearchableReadModelStore<CustomerReadModel> readStore)
         {
             _queryProcessor = queryProcessor;
+            _readStore = readStore;
         }
 
         public override async Task ExecuteAsync(CustomerAggregate aggregate, CustomerRegisterCommand command,
             CancellationToken cancellationToken)
         {
-            var query = new QueryCustomerByEmailAddress(new Email(command.EmailAddress), false);
-            if (await _queryProcessor.ProcessAsync(query, cancellationToken) != null)
+            var query = new QueryEmailAddressExists(new Email(command.EmailAddress));
+            if (await _queryProcessor.ProcessAsync(query, cancellationToken))
                 throw DomainError.With($"UserName {command.EmailAddress} already exists.");
 
             aggregate.RegisterAnAccount(

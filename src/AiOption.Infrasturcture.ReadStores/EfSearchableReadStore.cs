@@ -45,6 +45,16 @@ namespace AiOption.Infrastructure.ReadStores
             }
         }
 
+        public Task<bool> AnyAsync(Predicate<TReadModel> predicate, CancellationToken cancellationToken)
+        {
+            using (var dbContext = _dbContextProvider.CreateContext())
+            {
+                return dbContext.Set<TReadModel>()
+                    .Where(x => predicate(x))
+                    .AnyAsync(cancellationToken: cancellationToken);
+            }
+        }
+
         public Task DeleteAsync(string id, CancellationToken cancellationToken)
         {
             return _readStore.DeleteAsync(id, cancellationToken);

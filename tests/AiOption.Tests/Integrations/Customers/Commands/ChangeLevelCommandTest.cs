@@ -12,6 +12,7 @@ using NUnit.Framework;
 
 namespace AiOption.Tests.Integrations.Customers.Commands
 {
+    [TestFixture]
     [Category(Category.Integrations)]
     public class ChangeLevelCommandTest : IntegrationTest
     {
@@ -20,6 +21,7 @@ namespace AiOption.Tests.Integrations.Customers.Commands
             Fixture.Customize<CustomerId>(c => c.FromFactory(() => CustomerId.New));
         }
 
+        [Test]
         [TestCaseSource(typeof(UserLevelTestCaseSources))]
         public async Task ChangeLevelCommand_WithAllUserLevel_UserLevelShouldApplied(UserLevel level)
         {
@@ -35,6 +37,7 @@ namespace AiOption.Tests.Integrations.Customers.Commands
             result.Level.Value.Should().Be(level);
         }
 
+        [Test]
         [TestCaseSource(typeof(UserLevelTestCaseSources))]
         public async Task ChangeLevelCommand_WithAllUserLevel_ShouldNotMoreThanOneReadStoreCreated(UserLevel level)
         {
@@ -50,9 +53,10 @@ namespace AiOption.Tests.Integrations.Customers.Commands
                 .FindAsync(rm => true, CancellationToken.None);
             result.Count.Should().Be(1);
         }
-        
+
+        [Test]
         [TestCaseSource(typeof(UserLevelTestCaseSources))]
-        public async Task ChangeLevelCommand_WithAllUserLevel_OneEventShouldRised(UserLevel level)
+        public async Task ChangeLevelCommand_WithAllUserLevel_OneEventShouldRosed(UserLevel level)
         {
             // arrange
             var id = A<CustomerId>();

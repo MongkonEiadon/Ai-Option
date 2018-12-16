@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 namespace AiOption.Tests.Units.Commons
 {
+    [TestFixture]
     public class EmailTest
     {
         [Test]
@@ -39,6 +40,19 @@ namespace AiOption.Tests.Units.Commons
             var result = Email.New("m@email.com");
 
             result.EmailAddress.Should().Be("m@email.com");
+        }
+
+        [Test]
+        [TestCase("m@email.com", "M@email.com")]
+        [TestCase("m2@email.com", "M2@email.com")]
+        public void CompareEmail_WithValidCases_AllMustEqual(string email1, string email2)
+        {
+            // arrange
+            var e1 = Email.New(email1);
+            var e2 = Email.New(email2);
+
+            // assert
+            e1.Equals(e2).Should().BeTrue();
         }
     }
 }
