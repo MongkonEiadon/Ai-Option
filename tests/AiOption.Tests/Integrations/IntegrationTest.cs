@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,6 +19,7 @@ using EventFlow.DependencyInjection.Extensions;
 using EventFlow.Extensions;
 using EventFlow.Queries;
 using EventFlow.ReadStores;
+using EventFlow.ReadStores.InMemory;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
@@ -76,6 +79,13 @@ namespace AiOption.Tests.Integrations
             var rm = Resolve<IReadModelFactory<TReadModel>>().CreateAsync(id, CancellationToken.None).Result;
 
             return rm;
+        }
+
+        [DebuggerStepThrough]
+        protected Task<IReadOnlyCollection<TReadModel>> FindAsync<TReadModel>(Predicate<TReadModel> predicate)
+            where TReadModel : class, IReadModel
+        {
+            return Resolve<IInMemoryReadStore<TReadModel>>().FindAsync(predicate, CancellationToken.None);
         }
 
 

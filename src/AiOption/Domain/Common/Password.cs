@@ -35,9 +35,9 @@ namespace AiOption.Domain.Common
             return Value.Decrypt(Key);
         }
 
-        public static Password With(string value)
+        public static Password With(string cypherText)
         {
-            return new Password(value.Decrypt(Key));
+            return new Password(cypherText.Decrypt(Key));
         }
 
         public override int GetHashCode()
@@ -45,9 +45,9 @@ namespace AiOption.Domain.Common
             return Value.Decrypt(Key).GetHashCode();
         }
 
-        public static Password New(string password)
+        public static Password New(string plainText)
         {
-            return new Password(password);
+            return new Password(plainText);
         }
     }
 
@@ -57,9 +57,9 @@ namespace AiOption.Domain.Common
         public static string Encrypt(this string text, string key)
         {
             if (string.IsNullOrEmpty(key))
-                throw new ArgumentException("Key must have valid value.", nameof(key));
+                throw new ArgumentException("Key must have valid cypherText.", nameof(key));
             if (string.IsNullOrEmpty(text))
-                throw new ArgumentException("The text must have valid value.", nameof(text));
+                throw new ArgumentException("The text must have valid cypherText.", nameof(text));
 
             var buffer = Encoding.UTF8.GetBytes(text);
             var hash = new SHA512CryptoServiceProvider();
@@ -95,9 +95,9 @@ namespace AiOption.Domain.Common
         public static string Decrypt(this string encryptedText, string key)
         {
             if (string.IsNullOrEmpty(key))
-                throw new ArgumentException("Key must have valid value.", nameof(key));
+                throw new ArgumentException("Key must have valid cypherText.", nameof(key));
             if (string.IsNullOrEmpty(encryptedText))
-                throw new ArgumentException("The encrypted text must have valid value.", nameof(encryptedText));
+                throw new ArgumentException("The encrypted text must have valid cypherText.", nameof(encryptedText));
 
             var combined = Convert.FromBase64String(encryptedText);
             var buffer = new byte[combined.Length];
