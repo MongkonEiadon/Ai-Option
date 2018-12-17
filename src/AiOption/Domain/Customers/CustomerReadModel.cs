@@ -51,6 +51,7 @@ namespace AiOption.Domain.Customers
             IDomainEvent<CustomerAggregate, CustomerId, RequestRegister> domainEvent)
         {
             ApplyChanged(
+                x => x.AggregateId = domainEvent.AggregateIdentity.Value,
                 x => x.UserName = domainEvent.AggregateEvent.UserName,
                 x => x.Password = domainEvent.AggregateEvent.Password,
                 x => x.InvitationCode = domainEvent.AggregateEvent.InvitationCode);

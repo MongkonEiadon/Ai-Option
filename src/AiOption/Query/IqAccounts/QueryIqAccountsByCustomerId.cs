@@ -33,8 +33,7 @@ namespace AiOption.Query.IqAccounts
         public async Task<IReadOnlyCollection<IqAccount>> ExecuteQueryAsync(QueryIqAccountsByCustomerId query,
             CancellationToken cancellationToken)
         {
-            var result =
-                await _searchableReadModelStore.FindAsync(x => x.CustomerId == query.CustomerId, cancellationToken);
+            var result = await _searchableReadModelStore.FindAsync(x => x.CustomerId == query.CustomerId, cancellationToken);
             if (result.Any()) return result.Select(x => x.ToIqAccount()).ToList();
 
             return Enumerable.Empty<IqAccount>().ToList();

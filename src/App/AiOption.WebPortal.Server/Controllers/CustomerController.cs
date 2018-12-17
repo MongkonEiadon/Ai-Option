@@ -76,7 +76,7 @@ namespace AiOption.WebPortal.Server.Controllers
             try
             {
 
-                await _customerService.DeleteCustomerAsync(CustomerId.With(customerId));
+                await _customerService.TerminateCustomerAsync(CustomerId.With(customerId));
 
                 return Ok();
             }

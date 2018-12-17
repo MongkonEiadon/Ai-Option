@@ -20,7 +20,7 @@ namespace AiOption.Application.ApplicationServices
 
         Task<Customer> ChangeCustomerLevel(CustomerId customerId, Level level);
 
-        Task DeleteCustomerAsync(CustomerId customerId);
+        Task TerminateCustomerAsync(CustomerId customerId);
 
         Task<Customer> GetCustomerAsync(CustomerId customerId);
     }
@@ -68,20 +68,9 @@ namespace AiOption.Application.ApplicationServices
             return await QueryAsync(new QueryCustomerById(customerId));
         }
 
-        public async Task DeleteCustomerAsync(CustomerId customerId)
+        public async Task TerminateCustomerAsync(CustomerId customerId)
         {
-            await PublishAsync(new TerminateRequestCommand(customerId));
-
-            //var accounts = await QueryAsync(new QueryIqAccountsByCustomerId(customerId));
-            //if (accounts.Any())
-            //{
-            //    foreach (var account in accounts)
-            //    {
-            //        await PublishAsync(new TerminateIqAccountCommand(account.Id));
-            //    }
-            //}
-
-            //await PublishAsync(new TerminateCustomerCommand(customerId));
+            await PublishAsync(new RequestToTerminateCustomerCommand(customerId));
         }
 
         public Task<Customer> GetCustomerAsync(CustomerId customerId)

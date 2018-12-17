@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AiOption.Domain.IqAccounts;
 using EventFlow;
 
-namespace AiOption.Application.Persistences
+namespace AiOption.Application.Persistence
 {
     public abstract class ApplicationTradingPersistence
     {

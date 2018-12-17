@@ -79,10 +79,8 @@ namespace AiOption.Domain.Customers
             Emit(new TerminateRequested());
         }
 
-        public void Terminated()
-        {
-            Emit(new TerminateCustomerCompleted());
-        }
+        public void Terminated() => Emit(new TerminateCustomerCompleted());
+        
 
         public void CreateUserToken()
         {
