@@ -30,7 +30,6 @@ namespace AiOption.Tests.Integrations.Customers.Commands
                 .ConfigureAwait(true);
 
             var query = await QueryAsync(new QueryCustomerByEmailAddress(Email.New("m@email.com"))).ConfigureAwait(true);
-            
 
             // act
             await PublishAsync(new RequestToTerminateCustomerCommand(query.Id));
