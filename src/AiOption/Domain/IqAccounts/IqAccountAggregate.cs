@@ -3,6 +3,7 @@ using EventFlow.Aggregates;
 
 namespace AiOption.Domain.IqAccounts
 {
+    [AggregateName("IqAccount")]
     public class IqAccountAggregate : AggregateRoot<IqAccountAggregate, IqAccountId>
     {
         public IqAccountAggregate(IqAccountId accountId) : base(accountId)
