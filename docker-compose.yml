@@ -23,25 +23,11 @@ services:
       - 2113:2113
       - 1113:1113
     networks:
-      - backend
+      backend:
+        aliases:
+          - es.prod.aioption.com
 
-
-  redis:
-    container_name: "aioption_redis"
-    image: redis:alpine
-    ports:
-      - 32768:6379
-    networks:
-      - frontend
-    # deploy:
-    #   replicas: 2
-    #   update_config:
-    #     parallelism: 2
-    #     delay: 10s
-    #   restart_policy:
-    #     condition: on-failure
-
-  aioption.tradings:  
+  aioption.tradings:
     container_name: "aioption_tradings"
     image: ${DOCKER_REGISTRY-}aioptiontradings
     build:

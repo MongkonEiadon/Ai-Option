@@ -11,10 +11,9 @@ namespace AiOption.Infrastructure.EventStores
 {
     public static class EventStoreConfigurations
     {
-        public static IEventFlowOptions UsingAiOptionEventStores(this IEventFlowOptions Options)
+        public static IEventFlowOptions AddAiOptionEventStores(this IEventFlowOptions Options)
         {
             var uri = new Uri("http://d006629:2113/");
-
 
             var conn = ConnectionSettings.Create()
                 .EnableVerboseLogging()

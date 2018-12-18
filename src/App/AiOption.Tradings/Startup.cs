@@ -1,5 +1,6 @@
 ﻿using System;
 using AiOption.Application;
+using AiOption.Infrastructure.EventStores;
 using AiOption.Infrastructure.Modules;
 using AiOption.Infrastructure.ReadStores;
 using Autofac;
@@ -43,7 +44,6 @@ namespace AiOption.Tradings
             services.AddInfrastructureConfiguration();
             services.AddLogging(c => c.AddConsole());
             services.AddEfConfigurationDomain(Configuration);
-
             builder.Populate(services);
 
             //event flows
@@ -57,6 +57,7 @@ namespace AiOption.Tradings
                     .AddDomain()
                     .AddApplication()
                     .AddInfrastructureReadStores()
+                    .AddAiOptionEventStores()
             );
 
             var container = builder.Build();
