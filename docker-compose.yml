@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+  mssql:
+    image: "microsoft/mssql-server-linux"
+    environment:
+        SA_PASSWORD: "Str0ngPassword!"
+        ACCEPT_EULA: "Y"    
+    healthcheck:
+      test: sqlcmd -S db.prod.aioption.com -U SA -P 'Str0ngPassword!' -Q 'select 1'
+    ports:
+      - 1401:1433    
+    networks:
+      backend:
+        aliases:
+          - db.prod.aioption.com
+  
+  redis:
+    image: redis:alpine
+    ports:
+      - 32768:6379
+    networks:
+      - frontend
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  aioption.tradings:
+    image: ${DOCKER_REGISTRY-}aioptiontradings
+    build:
+      context: .
+      dockerfile: src/App/AiOption.Tradings/Dockerfile
+    networks:
+      - backend
+    depends_on:
+      - mssql
+ 
+networks:  
+  frontend:
+  backend:

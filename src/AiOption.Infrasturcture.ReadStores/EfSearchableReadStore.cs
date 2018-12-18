@@ -49,9 +49,7 @@ namespace AiOption.Infrastructure.ReadStores
         {
             using (var dbContext = _dbContextProvider.CreateContext())
             {
-                return dbContext.Set<TReadModel>()
-                    .Where(x => predicate(x))
-                    .AnyAsync(cancellationToken: cancellationToken);
+                return Task.FromResult(dbContext.Set<TReadModel>().Any(x => predicate(x)));
             }
         }
 

@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.WebPortal.Client",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AiOption.WebPortal.Shared", "src\App\AiOption.WebPortal.Shared\AiOption.WebPortal.Shared.csproj", "{0B056516-80EB-43DE-99AF-E0255E7E19A1}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{6209394C-7CF4-4014-99F6-8038A0EAA291}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{0B056516-80EB-43DE-99AF-E0255E7E19A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B056516-80EB-43DE-99AF-E0255E7E19A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B056516-80EB-43DE-99AF-E0255E7E19A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6209394C-7CF4-4014-99F6-8038A0EAA291}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6209394C-7CF4-4014-99F6-8038A0EAA291}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6209394C-7CF4-4014-99F6-8038A0EAA291}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6209394C-7CF4-4014-99F6-8038A0EAA291}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

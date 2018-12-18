@@ -1,4 +1,4 @@
-FROM microsoft/aspnetcore-build:lts
+FROM microsoft/dotnet:sdk AS build-env
 
 COPY .  /src
 
