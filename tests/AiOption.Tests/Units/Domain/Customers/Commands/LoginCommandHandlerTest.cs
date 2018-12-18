@@ -10,6 +10,8 @@ namespace AiOption.Tests.Units.Domain.Customers.Commands
         public void TestCommand()
         {
             var handler = A<LoginCommandHandler>();
+            
+            Assert.IsNotNull(handler);
         }
     }
 }

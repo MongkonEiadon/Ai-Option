@@ -2,6 +2,7 @@ version: '3.4'
 
 services:
   mssql:
+    container_name: "aioption_mssql"
     image: "microsoft/mssql-server-linux"
     environment:
         SA_PASSWORD: "Str0ngPassword!"
@@ -14,22 +15,34 @@ services:
       backend:
         aliases:
           - db.prod.aioption.com
-  
+
+  eventstore:
+    image: "eventstore/eventstore"
+    container_name: "aioption_eventstore"
+    ports:
+      - 2113:2113
+      - 1113:1113
+    networks:
+      - backend
+
+
   redis:
+    container_name: "aioption_redis"
     image: redis:alpine
     ports:
       - 32768:6379
     networks:
       - frontend
-    deploy:
-      replicas: 2
-      update_config:
-        parallelism: 2
-        delay: 10s
-      restart_policy:
-        condition: on-failure
+    # deploy:
+    #   replicas: 2
+    #   update_config:
+    #     parallelism: 2
+    #     delay: 10s
+    #   restart_policy:
+    #     condition: on-failure
 
-  aioption.tradings:
+  aioption.tradings:  
+    container_name: "aioption_tradings"
     image: ${DOCKER_REGISTRY-}aioptiontradings
     build:
       context: .

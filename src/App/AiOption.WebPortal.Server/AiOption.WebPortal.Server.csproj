@@ -16,8 +16,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\AiOption.Application\AiOption.Application.csproj" />
+    <ProjectReference Include="..\..\AiOption.Infrastructure.ReadStores\AiOption.Infrastructure.ReadStores.csproj" />
     <ProjectReference Include="..\..\AiOption.Infrastructure\AiOption.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\AiOption.Infrasturcture.ReadStores\AiOption.Infrastructure.ReadStores.csproj" />
     <ProjectReference Include="..\..\AiOption\AiOption.csproj" />
     <ProjectReference Include="..\AiOption.WebPortal.Client\AiOption.WebPortal.Client.csproj" />
     <ProjectReference Include="..\AiOption.WebPortal.Shared\AiOption.WebPortal.Shared.csproj" />
