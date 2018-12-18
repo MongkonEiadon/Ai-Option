@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\AiOption.Application\AiOption.Application.csproj" />
+    <ProjectReference Include="..\..\AiOption.Infrastructure.EventStores\AiOption.Infrastructure.EventStores.csproj" />
     <ProjectReference Include="..\..\AiOption.Infrastructure.ReadStores\AiOption.Infrastructure.ReadStores.csproj" />
     <ProjectReference Include="..\..\AiOption.Infrastructure\AiOption.Infrastructure.csproj" />
     <ProjectReference Include="..\..\AiOption\AiOption.csproj" />
