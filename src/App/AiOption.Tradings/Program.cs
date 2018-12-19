@@ -1,5 +1,5 @@
 ﻿using System;
-using AiOption.Application.ApplicationServices;
+using AiOption.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AiOption.Tradings

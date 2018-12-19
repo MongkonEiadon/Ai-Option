@@ -32,4 +32,8 @@
     <ProjectReference Include="..\AiOption.TestCore\AiOption.TestCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Units\Applications\" />
+  </ItemGroup>
+
 </Project>

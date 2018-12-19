@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using AiOption.Application.API;
 using IqOptionApi.http;
 
-namespace AiOption.Infrastructure.Api
+namespace AiOption.Infrastructure.API
 {
     public class IqOptionLoginWrapper : IIqOptionApiWrapper
     {

@@ -8,7 +8,7 @@ using AiOption.Query.IqAccounts;
 using EventFlow;
 using EventFlow.Queries;
 
-namespace AiOption.Application.ApplicationServices
+namespace AiOption.Application.Services
 {
     public interface IIqAccountProcessManagerService
     {

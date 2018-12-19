@@ -12,7 +12,7 @@ using EventFlow.Commands;
 using EventFlow.Core;
 using EventFlow.Queries;
 
-namespace AiOption.Application.ApplicationServices
+namespace AiOption.Application.Services
 {
     public interface ICustomerProcessManagerService
     {
