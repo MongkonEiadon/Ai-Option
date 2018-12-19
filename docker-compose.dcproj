@@ -5,6 +5,10 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>6209394c-7cf4-4014-99f6-8038a0eaa291</ProjectGuid>
   </PropertyGroup>
+  <PropertyGroup>
+    <DockerLaunchAction>None</DockerLaunchAction>
+    <DockerServiceName>aioption.tradings</DockerServiceName>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>

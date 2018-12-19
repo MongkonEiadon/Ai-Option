@@ -13,7 +13,7 @@ namespace AiOption.Infrastructure.EventStores
     {
         public static IEventFlowOptions AddAiOptionEventStores(this IEventFlowOptions Options)
         {
-            var uri = new Uri("http://d006629:2113/");
+            var uri = new Uri("http://localhost,2113/");
 
             var conn = ConnectionSettings.Create()
                 .EnableVerboseLogging()

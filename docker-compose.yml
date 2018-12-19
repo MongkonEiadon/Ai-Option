@@ -17,8 +17,8 @@ services:
           - db.prod.aioption.com
 
   eventstore:
-    image: "eventstore/eventstore"
     container_name: "aioption_eventstore"
+    image: "eventstore/eventstore"
     ports:
       - 2113:2113
       - 1113:1113
@@ -26,6 +26,17 @@ services:
       backend:
         aliases:
           - es.prod.aioption.com
+
+  caddy:
+    container_name: "aioption_caddy"
+    image: "abiosoft/caddy"
+    ports:
+      - 8080:80
+      - 2015:2015
+    volumes:
+      - ./docker/caddy/Caddyfile:/etc/Caddyfile
+    cap_add:
+      - NET_BIND_SERVICE
 
   aioption.tradings:
     container_name: "aioption_tradings"
@@ -37,7 +48,7 @@ services:
       - backend
     depends_on:
       - mssql
- 
+      
 networks:  
   frontend:
   backend:
