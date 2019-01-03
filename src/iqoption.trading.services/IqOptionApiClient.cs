@@ -36,24 +36,29 @@ namespace iqoption.trading.services {
 
                 switch (Account.Level)
                 {
+                    case UserLevel.Standard:
+                    {
+                        sum = sum / 2;
+                        break;
+                    }
                     case UserLevel.Silver:
                     {
-                        sum = sum * 2;
+                        sum = sum * 1;
                         break;
                     }
                     case UserLevel.Gold:
                     {
-                        sum = sum * 3;
+                        sum = sum * 2;
                         break;
                     }
                     case UserLevel.Platinum:
                     {
-                        sum = sum * 4;
+                        sum = sum * 3;
                         break;
                     }
                     case UserLevel.Vip:
                     {
-                        sum = sum * 5;
+                        sum = sum * 4;
                         break;
                     }
                 }
