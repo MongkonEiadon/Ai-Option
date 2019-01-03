@@ -10,7 +10,9 @@ using iqoption.core.Collections;
 using iqoption.domain.IqOption;
 using iqoption.domain.IqOption.Commands;
 using iqoption.domain.IqOption.Queries;
+using iqoption.domain.Users;
 using IqOptionApi.Models;
+using IqOptionApi.ws;
 using Microsoft.Extensions.Logging;
 
 namespace iqoption.trading.services.Manager {
@@ -45,9 +47,10 @@ namespace iqoption.trading.services.Manager {
 
             //check if not existing
             if (Followers.All(x => x.Account.IqOptionUserName != account.IqOptionUserName)) {
+                
                 var client = new IqOptionApiClient(account);
-                var isConnect = await client.Client.OpenSecuredSocketAsync(account.Ssid);
-                if (!isConnect) {
+                if (!client.Client.IsConnected) {
+                    
                     //if ssid not working -re get ssid
                     var loginResult = await _commandBus.PublishAsync(
                         new IqLoginCommand(IqIdentity.New, account.IqOptionUserName, account.Password), ct);
@@ -99,5 +102,7 @@ namespace iqoption.trading.services.Manager {
                         !Followers.Select(y => y.Account.IqOptionUserName).Contains(x.IqOptionUserName)).ToList());
             
         }
+
+        
     }
 }

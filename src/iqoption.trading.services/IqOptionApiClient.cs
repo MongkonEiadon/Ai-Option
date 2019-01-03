@@ -16,7 +16,11 @@ namespace iqoption.trading.services {
 
         public IqOptionApiClient(IqAccount account) {
             Account = account;
-            Client = new IqOptionWebSocketClient();
+            Client = new IqOptionWebSocketClient(ws =>
+            {
+                ws.OpenSecuredSocketAsync(account.Ssid);
+            });
+            
         }
 
         public Task UpdateSsidTask(string ssid) {
